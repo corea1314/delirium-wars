@@ -3,16 +3,21 @@
 
 #include "Entity.h"
 
+#include <set>
+
+class CPump;
+
 class CDeposit : public CEntity
 {
 private:
 	// set of connected pump rod
-	std::set<CPumpRod*>	m_psetPumpRod;
+	std::set<CPump*>	m_psetPumpRod;
 
 public:
 	bool	CanPump()
 	{
-
+		//todo
+		return true;
 	}
 
 	bool	TryPumping( float& io_fAmount )
