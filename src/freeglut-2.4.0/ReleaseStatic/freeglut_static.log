@@ -1,0 +1,96 @@
+﻿Build started 12/10/2010 9:18:47 PM.
+     1>Project "C:\Work\Delirium Wars\src\freeglut-2.4.0\freeglut_static.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating ".\ReleaseStatic\freeglut_static.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Iinclude /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D NDEBUG /D FREEGLUT_STATIC /D WIN32 /D _LIB /D _VC80_UPGRADE=0x0600 /D _MBCS /GF /Gm- /EHsc /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\ReleaseStatic/" /Fd".\ReleaseStatic/vc100.pdb" /Gd /TC /analyze- /errorReport:prompt src\freeglut_callbacks.c src\freeglut_cursor.c src\freeglut_display.c src\freeglut_ext.c src\freeglut_font.c src\freeglut_font_data.c src\freeglut_gamemode.c src\freeglut_geometry.c src\freeglut_glutfont_definitions.c src\freeglut_init.c src\freeglut_joystick.c src\freeglut_main.c src\freeglut_menu.c src\freeglut_misc.c src\freeglut_overlay.c src\freeglut_state.c src\freeglut_stroke_mono_roman.c src\freeglut_stroke_roman.c src\freeglut_structure.c src\freeglut_teapot.c src\freeglut_videoresize.c src\freeglut_window.c
+         freeglut_callbacks.c
+         freeglut_cursor.c
+         freeglut_display.c
+         freeglut_ext.c
+         freeglut_font.c
+         freeglut_font_data.c
+         freeglut_gamemode.c
+     1>src\freeglut_gamemode.c(394): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\freeglut_gamemode.c(395): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\freeglut_gamemode.c(396): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\freeglut_gamemode.c(397): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\freeglut_gamemode.c(398): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\freeglut_gamemode.c(399): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\freeglut_gamemode.c(400): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+         freeglut_geometry.c
+         freeglut_glutfont_definitions.c
+         freeglut_init.c
+     1>src\freeglut_init.c(520): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdlib.h(433) : see declaration of 'getenv'
+     1>src\freeglut_init.c(524): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(325) : see declaration of 'sscanf'
+     1>src\freeglut_init.c(533): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdlib.h(433) : see declaration of 'getenv'
+     1>src\freeglut_init.c(713): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(197) : see declaration of 'strtok'
+     1>src\freeglut_init.c(883): warning C4996: 'strtok': This function or variable may be unsafe. Consider using strtok_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(197) : see declaration of 'strtok'
+         freeglut_joystick.c
+     1>src\freeglut_joystick.c(1002): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\freeglut_joystick.c(1012): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\freeglut_joystick.c(1020): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\stdio.h(371) : see declaration of 'sprintf'
+     1>src\freeglut_joystick.c(1249): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(188) : see declaration of 'strncpy'
+         freeglut_main.c
+         freeglut_menu.c
+         freeglut_misc.c
+         freeglut_overlay.c
+         freeglut_state.c
+         freeglut_stroke_mono_roman.c
+         freeglut_stroke_roman.c
+         freeglut_structure.c
+         freeglut_teapot.c
+         Generating Code...
+         Compiling...
+         freeglut_videoresize.c
+         freeglut_window.c
+         fgSetupPixelFormat(): there is still some work to do here!
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\Lib.exe /OUT:".\ReleaseStatic\freeglut_static.lib" /NOLOGO .\ReleaseStatic/freeglut_callbacks.obj
+         .\ReleaseStatic/freeglut_cursor.obj
+         .\ReleaseStatic/freeglut_display.obj
+         .\ReleaseStatic/freeglut_ext.obj
+         .\ReleaseStatic/freeglut_font.obj
+         .\ReleaseStatic/freeglut_font_data.obj
+         .\ReleaseStatic/freeglut_gamemode.obj
+         .\ReleaseStatic/freeglut_geometry.obj
+         .\ReleaseStatic/freeglut_glutfont_definitions.obj
+         .\ReleaseStatic/freeglut_init.obj
+         .\ReleaseStatic/freeglut_joystick.obj
+         .\ReleaseStatic/freeglut_main.obj
+         .\ReleaseStatic/freeglut_menu.obj
+         .\ReleaseStatic/freeglut_misc.obj
+         .\ReleaseStatic/freeglut_overlay.obj
+         .\ReleaseStatic/freeglut_state.obj
+         .\ReleaseStatic/freeglut_stroke_mono_roman.obj
+         .\ReleaseStatic/freeglut_stroke_roman.obj
+         .\ReleaseStatic/freeglut_structure.obj
+         .\ReleaseStatic/freeglut_teapot.obj
+         .\ReleaseStatic/freeglut_videoresize.obj
+         .\ReleaseStatic/freeglut_window.obj
+         freeglut_static.vcxproj -> C:\Work\Delirium Wars\src\freeglut-2.4.0\.\ReleaseStatic\freeglut_static.lib
+       FinalizeBuildStatus:
+         Deleting file ".\ReleaseStatic\freeglut_static.unsuccessfulbuild".
+         Touching ".\ReleaseStatic\freeglut_static.lastbuildstate".
+     1>Done Building Project "C:\Work\Delirium Wars\src\freeglut-2.4.0\freeglut_static.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.93
