@@ -71,8 +71,8 @@ void gl_RenderText( int x, int y, char* text, ... )
 	static char buffer[1024];
 	static float pos[2];
 
-	pos[0] = x;
-	pos[1] = y;
+	pos[0] = (float)x;
+	pos[1] = (float)y;
 	
 	glRasterPos2fv( pos );
 	

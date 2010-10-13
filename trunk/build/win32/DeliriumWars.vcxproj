@@ -93,7 +93,6 @@
       </HeaderFileName>
     </Midl>
     <ClCompile>
-      <AdditionalOptions>/MP4 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
@@ -146,6 +145,9 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\Math\Matrix2x2.cpp" />
+    <ClCompile Include="..\..\src\Math\Matrix3x3.cpp" />
+    <ClCompile Include="..\..\src\Math\Matrix4x4.cpp" />
+    <ClCompile Include="..\..\src\Math\Quaternion.cpp" />
     <ClCompile Include="..\..\src\menu.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -155,11 +157,21 @@
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\context.h" />
     <ClInclude Include="..\..\src\fw.h" />
+    <ClInclude Include="..\..\src\Game\Box2.h" />
+    <ClInclude Include="..\..\src\Game\Deposit.h" />
+    <ClInclude Include="..\..\src\Game\Entity.h" />
+    <ClInclude Include="..\..\src\Game\Pod.h" />
+    <ClInclude Include="..\..\src\Game\Pump.h" />
+    <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
     <ClInclude Include="..\..\src\Math\Macros.h" />
     <ClInclude Include="..\..\src\Math\Matrix2x2.h" />
+    <ClInclude Include="..\..\src\Math\Matrix3x3.h" />
+    <ClInclude Include="..\..\src\Math\Matrix4x4.h" />
+    <ClInclude Include="..\..\src\Math\Quaternion.h" />
     <ClInclude Include="..\..\src\Math\Vector2.h" />
     <ClInclude Include="..\..\src\Math\Vector3.h" />
+    <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\menu.h" />
   </ItemGroup>
   <ItemGroup>

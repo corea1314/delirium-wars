@@ -51,7 +51,7 @@ public:
 	}
 	*/
 
-	Matrix2x2 Tranpose() const
+	Matrix2x2 Transpose() const
 	{
 		Matrix2x2 T;
 
