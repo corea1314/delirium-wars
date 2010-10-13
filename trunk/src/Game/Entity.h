@@ -1,7 +1,8 @@
 #ifndef _ENTITY_H
 #define _ENTITY_H
 
-#include "Vector2.h"
+#include "../Math/Vector2.h"
+#include "Box2.h"
 
 class CEntity
 {
@@ -15,5 +16,6 @@ public:
 
 	void OnDamage( CEntity* in_pInflictor, float in_fDamage );
 };
+
 
 #endif//_ENTITY_H

@@ -1,6 +1,7 @@
 #ifndef _PUMP_H
 #define _PUMP_H
 
+#include "Entity.h"
 
 class CPump : public CEntity
 {
