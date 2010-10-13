@@ -29,8 +29,8 @@ void Screen_2_App( int x, int y, Vector2& v )
 
 	gluUnProject( x,y,0, M, P, V, &X, &Y, &Z );
 
-	v.x = X;
-	v.y = Y;
+	v.x = (float)X;
+	v.y = (float)Y;
 }
 
 void App_2_Screen( const Vector2& v, int& x, int& y )
@@ -56,8 +56,8 @@ void App_2_Screen( const Vector2& v, int& x, int& y )
 
 	gluProject( v.x,v.y,0, M, P, V, &X, &Y, &Z );
 
-	x = X;
-	y = Y;
+	x = (int)X;
+	y = (int)Y;
 }
 
 void glut_OnDisplay( void )
