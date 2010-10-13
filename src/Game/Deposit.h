@@ -1,6 +1,7 @@
 #ifndef _DEPOSIT_H
 #define _DEPOSIT_H
 
+#include "Entity.h"
 
 class CDeposit : public CEntity
 {

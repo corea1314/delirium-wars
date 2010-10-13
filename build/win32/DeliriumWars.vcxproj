@@ -138,6 +138,11 @@
       <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ProgramDataBaseFileName>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\..\src\Game\Deposit.cpp" />
+    <ClCompile Include="..\..\src\Game\Entity.cpp" />
+    <ClCompile Include="..\..\src\Game\Field.cpp" />
+    <ClCompile Include="..\..\src\Game\Pump.cpp" />
+    <ClCompile Include="..\..\src\Game\Timer.cpp" />
     <ClCompile Include="..\..\src\gfx.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ObjectFileName>
@@ -160,7 +165,7 @@
     <ClInclude Include="..\..\src\Game\Box2.h" />
     <ClInclude Include="..\..\src\Game\Deposit.h" />
     <ClInclude Include="..\..\src\Game\Entity.h" />
-    <ClInclude Include="..\..\src\Game\Pod.h" />
+    <ClInclude Include="..\..\src\Game\Field.h" />
     <ClInclude Include="..\..\src\Game\Pump.h" />
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
