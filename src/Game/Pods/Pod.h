@@ -1,6 +1,6 @@
 
-#ifndef _ENTITY_H
-#define _ENTITY_H
+#ifndef _POD_H
+#define _POD_H
 
 #include "../Entity.h"
 
@@ -13,4 +13,4 @@ public:
 
 
 
-#endif//_ENTITY_H
+#endif//_POD_H

@@ -3,6 +3,8 @@
 
 #include "../Entity.h"
 
+#include "../Pump.h"
+
 class CPodPump : public CEntity
 {
 private:
@@ -10,17 +12,9 @@ private:
 	CPump	m_Pump;
 
 public:
-	float TryCollecting()
-	{
-		float fReturn = m_fCurrentDepositCollected;
-		m_fCurrentDepositCollected = 0.0f;
-		return fReturn;
-	}
+	float TryCollecting();
 
-	void OnUpdate( const CTimer& in_Timer )
-	{
-		m_fCurrentDepositCollected += m_Pump.TryCollecting();
-	}
+	void OnUpdate( const CTimer& in_Timer );
 };
 
 

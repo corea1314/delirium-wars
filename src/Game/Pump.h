@@ -3,6 +3,9 @@
 
 #include "Entity.h"
 
+class CDeposit;
+class CTimer;
+
 class CPump : public CEntity
 {
 private:
@@ -21,67 +24,22 @@ private:
 
 
 private:
-	bool PumpDepthReached()
-	{
-		if( m_vPos.y - m_fDigDepth < m_pDeposit->GetExtent().vMax.y )
-			return true;
+	bool PumpDepthReached();
 
-		return false;
-	}
+	void Dig( const CTimer& in_Timer );
 
-	void Dig( const CTimer& in_Timer )
-	{
-		m_fDigDepth += m_fDigRate * in_Timer.GetDeltaTime();
-	}
+	void OnStateDeploying( const CTimer& in_Timer );
 
-	void OnStateDeploying( const CTimer& in_Timer )
-	{
-		// in this state we have the rod move down to the mineral deposit
-
-		if( PumpDepthReached() )
-		{
-			Dig( in_Timer );
-		}
-		else
-		{
-			// seems we reached the deposit
-			m_eState = ePumping;
-		}
-	}
-
-	void OnStatePumping( const CTimer& in_Timer )
-	{
-		// in this state, we pump the mineral deposit
-
-		float fWishPump = in_Timer.GetDeltaTime() * m_fPumpRate;
-		if( m_pDeposit->TryPumping( fWishPump ) )
-			m_fCurrentDepositCollected += fWishPump;
-	}
+	void OnStatePumping( const CTimer& in_Timer );
 
 
 public:
 
-	float TryCollecting()
-	{
-		float fReturn = m_fCurrentDepositCollected;
-		m_fCurrentDepositCollected = 0.0f;
-		return fReturn;
-	}
+	float TryCollecting();
 
-	void Deploy( CDeposit* in_pDeposit )
-	{
-		m_pDeposit = in_pDeposit;
-		m_eState = eDeploying;
-	}
+	void Deploy( CDeposit* in_pDeposit );
 
-	void OnUpdate( const CTimer& in_Timer )
-	{
-		switch( m_eState )
-		{
-		case eDeploying:	OnStateDeploying( in_Timer );	break;
-		case ePumping:		OnStatePumping( in_Timer );		break;
-		}
-	}
+	void OnUpdate( const CTimer& in_Timer );
 };
 
 #endif//_PUMP_H

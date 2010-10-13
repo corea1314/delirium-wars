@@ -6,7 +6,7 @@
 #ifndef _VECTOR3_H_
 #define _VECTOR3_H_ 
 
-#include "Macros.h"
+#include "../macros.h"
 
 #include <math.h>
 #include <float.h>

@@ -1,7 +1,7 @@
 #ifndef _BOX2_H
 #define _BOX2_H
 
-#include "Vector2.h"
+#include "../Math/Vector2.h"
 
 class Box2
 {

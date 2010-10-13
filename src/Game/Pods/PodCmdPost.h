@@ -2,6 +2,7 @@
 #define _POD_CMDPOST_H
 
 #include "../Entity.h"
+#include "../Pump.h"
 
 class CPodCommandPost : public CEntity
 {

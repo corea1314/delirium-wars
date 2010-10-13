@@ -11,14 +11,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Computer related
 
-/////
-// BYTE
-//! Defines byte
-//
-#ifndef BYTE
-#define BYTE	unsigned char
-#endif//BYTE
-
 //////
 // BYTESWAP_16
 //!		Inverts the byte order of a 16-bit value.
@@ -45,7 +37,7 @@
 // _bz_swap_float
 //!		Inverts the byte order of a 32-bit float value.
 //
-inline float _bz_swap_float(
+inline float SWAP_FLOAT(
 	float x)
 {
 	union
@@ -57,38 +49,6 @@ inline float _bz_swap_float(
 	cnv.l = BYTESWAP_32(cnv.l);
 	return cnv.f;
 }
-
-//////
-// LOBYTE
-//!		Returns the low-byte of a WORD.
-//
-#ifndef LOBYTE
-	#define LOBYTE(x)	((x) & 0xFF)
-#endif
-
-//////
-// HIBYTE
-//!		Returns the hi-byte of a WORD.
-//
-#ifndef HIBYTE
-	#define HIBYTE(x)	LOBYTE((x) >> 8)
-#endif
-
-//////
-// LOWORD
-//!		Returns the low-word of a DWORD.
-//
-#ifndef LOWORD
-	#define LOWORD(x)	((x) & 0xFFFF)
-#endif
-
-//////
-// HIWORD
-//!		Returns the low-word of a DWORD.
-//
-#ifndef HIWORD
-	#define HIWORD(x)	LOWORD((x) >> 16)
-#endif
 
 //////
 // SET_BITS

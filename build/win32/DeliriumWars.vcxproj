@@ -141,6 +141,9 @@
     <ClCompile Include="..\..\src\Game\Deposit.cpp" />
     <ClCompile Include="..\..\src\Game\Entity.cpp" />
     <ClCompile Include="..\..\src\Game\Field.cpp" />
+    <ClCompile Include="..\..\src\Game\Pods\Pod.cpp" />
+    <ClCompile Include="..\..\src\Game\Pods\PodCmdPost.cpp" />
+    <ClCompile Include="..\..\src\Game\Pods\PopPump.cpp" />
     <ClCompile Include="..\..\src\Game\Pump.cpp" />
     <ClCompile Include="..\..\src\Game\Timer.cpp" />
     <ClCompile Include="..\..\src\gfx.cpp">
@@ -166,6 +169,9 @@
     <ClInclude Include="..\..\src\Game\Deposit.h" />
     <ClInclude Include="..\..\src\Game\Entity.h" />
     <ClInclude Include="..\..\src\Game\Field.h" />
+    <ClInclude Include="..\..\src\Game\Pods\Pod.h" />
+    <ClInclude Include="..\..\src\Game\Pods\PodCmdPost.h" />
+    <ClInclude Include="..\..\src\Game\Pods\PodPump.h" />
     <ClInclude Include="..\..\src\Game\Pump.h" />
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
