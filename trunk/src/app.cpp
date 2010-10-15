@@ -127,7 +127,7 @@ void App::Render()
 	glPushMatrix();
 	glTranslatef( -g_App.cam_pos_x, -g_App.cam_pos_y, 0.0f );
 
-
+	//todo: emit any other render related signals
 	m_pEngine->Render();
 
 	{
@@ -152,6 +152,7 @@ void App::Update( float dt )
 {
 	timeSeconds += dt;
 
+	//todo: emit any other update related signals
 	m_pEngine->Update( dt );
 }
 

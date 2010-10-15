@@ -3,6 +3,8 @@
 
 #include "Entity.h"
 
+#include "../Math/Vector2.h"
+
 class CDeposit;
 class CTimer;
 
@@ -40,6 +42,9 @@ public:
 	void Deploy( CDeposit* in_pDeposit );
 
 	void OnUpdate( const CTimer& in_Timer );
+
+	virtual void Connect( CEngine* );
+	virtual void Disconnect( CEngine* );
 };
 
 #endif//_PUMP_H
