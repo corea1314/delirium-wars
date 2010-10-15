@@ -4,6 +4,8 @@
 
 #include "app.h"
 
+#include "Game/Engine.h"
+
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
 
@@ -30,6 +32,18 @@ App::App()
 
 	animate = false;
 	timeSeconds = 0.0f;
+
+
+}
+
+void App::Init()
+{
+	m_pEngine = new CEngine;
+}
+
+void App::Exit()
+{
+	delete m_pEngine;
 }
 
 void App::ZoomIn()
@@ -113,6 +127,9 @@ void App::Render()
 	glPushMatrix();
 	glTranslatef( -g_App.cam_pos_x, -g_App.cam_pos_y, 0.0f );
 
+
+	m_pEngine->Render();
+
 	{
 		// Render grid
 		gl_RenderPoints( vb_grid, 0, vb_grid_size, 2 );
@@ -131,4 +148,10 @@ void App::Render()
 	gl_RenderText( 8, 8, "Zoom: %d -- Grid: %d -- Snap: %s", zoom, grid_size, snap ? "true" : "false" );
 }
 
+void App::Update( float dt )
+{
+	timeSeconds += dt;
+
+	m_pEngine->Update( dt );
+}
 

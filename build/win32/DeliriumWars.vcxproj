@@ -139,6 +139,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Deposit.cpp" />
+    <ClCompile Include="..\..\src\Game\Engine.cpp" />
     <ClCompile Include="..\..\src\Game\Entity.cpp" />
     <ClCompile Include="..\..\src\Game\Field.cpp" />
     <ClCompile Include="..\..\src\Game\Pods\Pod.cpp" />
@@ -167,12 +168,14 @@
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\Game\Box2.h" />
     <ClInclude Include="..\..\src\Game\Deposit.h" />
+    <ClInclude Include="..\..\src\Game\Engine.h" />
     <ClInclude Include="..\..\src\Game\Entity.h" />
     <ClInclude Include="..\..\src\Game\Field.h" />
     <ClInclude Include="..\..\src\Game\Pods\Pod.h" />
     <ClInclude Include="..\..\src\Game\Pods\PodCmdPost.h" />
     <ClInclude Include="..\..\src\Game\Pods\PodPump.h" />
     <ClInclude Include="..\..\src\Game\Pump.h" />
+    <ClInclude Include="..\..\src\Game\SigSlot.h" />
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
     <ClInclude Include="..\..\src\Math\Macros.h" />
