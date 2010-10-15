@@ -235,6 +235,13 @@ void glut_OnIdle()
 	glutPostRedisplay();
 }
 
+void glut_OnExit()
+{
+	g_App.Exit();
+
+	 menu_Destroy();
+}
+
 int main( int argc, char** argv )
 {
      glutInit(&argc, argv);
@@ -243,9 +250,11 @@ int main( int argc, char** argv )
      glutInitWindowSize    ( 1000 , 1000 );
      glutInitWindowPosition( 25 , 25 );
      
-	 glutCreateWindow( "Curve Editor by uberyoji" );
+	 glutCreateWindow( "Delirium Wars alpha" );
 	 
 	 menu_Create();
+
+	 g_App.Init();
      
 	 glutDisplayFunc(glut_OnDisplay);
      glutReshapeFunc(glut_OnReshape);
@@ -257,9 +266,9 @@ int main( int argc, char** argv )
 
      gl_Init();
 
-	 glutMainLoop();
+	 atexit(glut_OnExit);
 
-	 menu_Destroy();
+	 glutMainLoop();
 
 	 return 0;
 }

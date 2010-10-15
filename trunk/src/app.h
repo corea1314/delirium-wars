@@ -4,24 +4,25 @@
 #define MAX_ZOOM_LEVEL		64
 #define MAX_GRID_SIZE		512
 
+class CEngine;
+
 class App
 {
 public:
 	App();
+	
+	void Init();
+	void Exit();
+	void Update( float dt );
 	void Render();
-
+	
+// todo: remove those
 	void ZoomIn();
 	void ZoomOut();
 	void ZoomReset();
 	
 	void IncreaseGridSize();
 	void DecreaseGridSize();
-
-	void Update( float dt )
-	{
-		timeSeconds += dt;
-	}
-
 	
 	int last_mx;
 	int last_my;
@@ -50,6 +51,7 @@ private:
 	Vertex vb_grid[(MAX_GRID_SIZE+1)*(MAX_GRID_SIZE+1)];
 	int vb_grid_size;
 
+	CEngine* m_pEngine;
 	
 };
 
