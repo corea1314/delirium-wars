@@ -5,9 +5,6 @@
 
 bool CPump::PumpDepthReached()
 {
-	if( m_vPos.y - m_fDigDepth < m_pDeposit->GetExtent().vMax.y )
-		return true;
-
 	return false;
 }
 

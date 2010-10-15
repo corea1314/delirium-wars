@@ -15,6 +15,9 @@ public:
 	{
 		m_fCurrentDepositCollected += m_Pump.TryCollecting();
 	}
+
+	virtual void Connect( CEngine* );
+	virtual void Disconnect( CEngine* );
 };
 
 

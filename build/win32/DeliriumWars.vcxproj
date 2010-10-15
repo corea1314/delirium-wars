@@ -138,6 +138,7 @@
       <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ProgramDataBaseFileName>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\..\src\Game\Clock.cpp" />
     <ClCompile Include="..\..\src\Game\Deposit.cpp" />
     <ClCompile Include="..\..\src\Game\Engine.cpp" />
     <ClCompile Include="..\..\src\Game\Entity.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="..\..\src\context.h" />
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\Game\Box2.h" />
+    <ClInclude Include="..\..\src\Game\Clock.h" />
     <ClInclude Include="..\..\src\Game\Deposit.h" />
     <ClInclude Include="..\..\src\Game\Engine.h" />
     <ClInclude Include="..\..\src\Game\Entity.h" />

@@ -13,8 +13,11 @@ private:
 
 public:
 	float TryCollecting();
-
 	void OnUpdate( const CTimer& in_Timer );
+
+	virtual void Connect( CEngine* );
+	virtual void Disconnect( CEngine* );
+
 };
 
 
