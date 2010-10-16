@@ -404,15 +404,6 @@ if (_p_p)					\
 	('\0' == (_p_szVal[0]))
 #endif
 
-/////
-// LERP
-//!		Linearly interpolates a value between a,b with ratio r.
-//
-#ifndef LERP
-#define LERP(a,b,r)	\
-	((a) + ((b)-(a))*(r))
-#endif
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Display
@@ -484,5 +475,25 @@ if (_p_p)					\
 	(((p_value) < (p_min))? ((p_value) - (p_min)) + (p_max) : ((p_value) > (p_max))? ((p_value) - (p_max)) + (p_min) : (p_value))
 #endif
 
+/////
+// LERP
+//!		Linearly interpolates a value between a,b with ratio r.
+//
+#ifndef LERP
+#define LERP(a,b,r)	\
+	((a) + ((b)-(a))*(r))
+#endif
+
+/////
+// SMOOTH_STEP
+//!		Linearly interpolates a value between a,b with ratio r.
+//
+inline float SMOOTH_STEP (float edge0, float edge1, float x)
+{
+	// Scale, bias and saturate x to 0..1 range
+	x = CLAMP((x - edge0) / (edge1 - edge0),0.0f,1.0f); 
+	// Evaluate polynomial
+	return x*x*(3-2*x);
+}
 
 #endif	// _MACROS_H
