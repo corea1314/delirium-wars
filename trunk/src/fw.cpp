@@ -6,20 +6,26 @@ int g_delta_time = 0;
 
 #include "app.h"
 
+#include "Game/Engine.h"
+#include "Game/Camera.h"
+
 void Screen_2_App( int x, int y, Vector2& v )
 {
 	double P[16];
 	double M[16];
 	int V[4];
 
+	Vector2 vPos = g_App.GetEngine()->GetCamera()->GetPos();
+	float fZoom = g_App.GetEngine()->GetCamera()->GetZoom();
+
 	// Construct matrices used in curver rendering and grab them to undo the transformations
 	glPushMatrix();
 		glLoadIdentity();
-		gluOrtho2D( -0.5f / g_App.cam_zoom, 0.5f / g_App.cam_zoom, -0.5f / g_App.cam_zoom, 0.5f / g_App.cam_zoom );
+		gluOrtho2D( -g_App.w/2*fZoom, g_App.w/2*fZoom, -g_App.h/2*fZoom,  g_App.h/2*fZoom );
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
-		glTranslatef( -g_App.cam_pos_x, -g_App.cam_pos_y, 0.0f );
+		glTranslatef( -vPos.x, -vPos.y, 0.0f );
 		glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();
 
@@ -39,14 +45,17 @@ void App_2_Screen( const Vector2& v, int& x, int& y )
 	double M[16];
 	int V[4];
 
+	Vector2 vPos = g_App.GetEngine()->GetCamera()->GetPos();
+	float fZoom = g_App.GetEngine()->GetCamera()->GetZoom();
+
 	// Construct matrices used in curver rendering and grab them to undo the transformations
 	glPushMatrix();
 		glLoadIdentity();
-		gluOrtho2D( -0.5f / g_App.cam_zoom, 0.5f / g_App.cam_zoom, -0.5f / g_App.cam_zoom, 0.5f / g_App.cam_zoom );
+		gluOrtho2D( -g_App.w/2*fZoom, g_App.w/2*fZoom, -g_App.h/2*fZoom,  g_App.h/2*fZoom );
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
-		glTranslatef( -g_App.cam_pos_x, -g_App.cam_pos_y, 0.0f );
+		glTranslatef( -vPos.x, -vPos.y, 0.0f );
 		glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();
 
@@ -66,15 +75,13 @@ void glut_OnDisplay( void )
 	glLoadIdentity();
 
 	g_App.Render();
-
-//	gl_RenderText( g_App.mx, g_App.my, "%d, %d", g_App.mx, g_App.my );
-//	gl_RenderText( 8, 16, "t: %0.2fs (dt: %0.3fs)", time/1000.0f, delta_time/1000.0f );
 	
 	glutSwapBuffers();
 }
 
 void glut_OnReshape( int w, int h )
 {
+	//todo: properly redirect reshape to app
 	g_App.w = w;
 	g_App.h = h;
 
@@ -107,11 +114,11 @@ void glut_OnMotion(int x,int y)
 	Screen_2_App( x, y, v );
 	Vector2 d = v - last;	
 
+	//todo: properly redirect drag motion to app
 	{
 		if( g_App.Buttons[GLUT_LEFT_BUTTON] )
 		{
-			g_App.cam_pos_x -= d.x;
-			g_App.cam_pos_y -= d.y;
+			//todo: scrolling here using d.x, d.y
 		}
 	}
 
@@ -132,43 +139,21 @@ void glut_OnMouse(int b,int s,int x,int y)
 	g_App.my = y;
 	g_App.last_mx=x;
 	g_App.last_my=y;
-
-	
+		
 	Vector2 v; Screen_2_App( x, y, v );
 	
+	//todo: properly redirect button states to app
 	g_App.Buttons[b] = ((GLUT_DOWN==s)?1:0);
 
 	switch(b)
 	{
-	case GLUT_LEFT_BUTTON:		
-		{
-		}
-		break;
-	case GLUT_MIDDLE_BUTTON:
-		{
-		}
-		break;
-	case GLUT_RIGHT_BUTTON:		
-		{
-			
-		}
-		break;
-
-	case GLUT_WHEEL_UP:
-		if( g_App.Buttons[b] == 0 )
-		{
-			g_App.ZoomIn();	
-		}
-		break;
-
-	case GLUT_WHEEL_DOWN:
-		if( g_App.Buttons[b] == 0 )
-		{
-			g_App.ZoomOut();
-		}
-		break;
+	case GLUT_LEFT_BUTTON:		g_App.OnLeftClick(x, y, v);	break;	
+	case GLUT_MIDDLE_BUTTON:	g_App.OnMiddleClick(x, y, v);	break;	
+	case GLUT_RIGHT_BUTTON:		g_App.OnRightClick(x, y, v);	break;	
+	case GLUT_WHEEL_UP:			g_App.OnWheelUp();		break;	
+	case GLUT_WHEEL_DOWN:		g_App.OnWheelDown();	break;	
 	default:
-		break;		
+		break;
 	}
 
 	glutPostRedisplay();
@@ -176,25 +161,12 @@ void glut_OnMouse(int b,int s,int x,int y)
 
 void glut_OnKeyboard(unsigned char key, int posX, int posY )
 {	
-	switch(key)
-	{
-	case 127:	// delete
-		break;
-	case '-':
-		g_App.DecreaseGridSize();
-		break;
-
-	case '=':
-		g_App.IncreaseGridSize();
-		break;
-
-	case ' ':
-		break;
-	}
+	g_App.OnKeyboard( key );
 }
 
 void glut_OnSpecialKey( int key, int posX, int posY )
 {	
+	//todo: redirect special keys to app
 	const float KeyOffset = 0.01f;
 
 	switch(key)
@@ -212,10 +184,10 @@ void glut_OnSpecialKey( int key, int posX, int posY )
 		case GLUT_KEY_F11:			break;
 		case GLUT_KEY_F12:			break;
 		
-		case GLUT_KEY_LEFT:			g_App.cam_pos_x += KeyOffset;	break;
-		case GLUT_KEY_DOWN:			g_App.cam_pos_y += KeyOffset;	break;
-		case GLUT_KEY_RIGHT:		g_App.cam_pos_x -= KeyOffset;	break;
-		case GLUT_KEY_UP:			g_App.cam_pos_y -= KeyOffset;	break;
+		case GLUT_KEY_LEFT:			break;
+		case GLUT_KEY_DOWN:			break;
+		case GLUT_KEY_RIGHT:		break;
+		case GLUT_KEY_UP:			break;
 
 		case GLUT_KEY_PAGE_UP:		break;
 		case GLUT_KEY_PAGE_DOWN:	break;
@@ -247,7 +219,7 @@ int main( int argc, char** argv )
      glutInit(&argc, argv);
 	 glutInitDisplayMode   ( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH  );
 
-     glutInitWindowSize    ( 1000 , 1000 );
+     glutInitWindowSize    ( 1280 , 800 );
      glutInitWindowPosition( 25 , 25 );
      
 	 glutCreateWindow( "Delirium Wars alpha" );
@@ -273,48 +245,3 @@ int main( int argc, char** argv )
 	 return 0;
 }
 
-
-/*
-
-
-  // sample menu
-
-#define RED 1
-#define GREEN 2
-#define BLUE 3
-#define WHITE 4
-
-void processMenuEvents(int option) 
-{
-	switch (option) 
-	{
-		case RED:
-			break;
-		case GREEN:
-			break;
-		case BLUE:
-			break;
-		case WHITE:
-			break;
-	}
-}
-
-void createGLUTMenus() 
-{
-	int menu,submenu;
-
-	submenu = glutCreateMenu(processMenuEvents);
-	glutAddMenuEntry("child0",RED);
-	glutAddMenuEntry("child1",BLUE);
-	glutAddMenuEntry("child2",GREEN);
-
-	menu = glutCreateMenu(processMenuEvents);
-	glutAddMenuEntry("root0",WHITE);
-	glutAddSubMenu("root1",submenu);
-	
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
-}
-
- */
-	
-	
