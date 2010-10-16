@@ -36,6 +36,7 @@
 
 class CField;
 class CClock;
+class CCamera;
 
 class CEngine
 {
@@ -43,12 +44,17 @@ public:
 	CEngine();
 	virtual ~CEngine();
 
+	const CClock*	GetClock() const { return m_pClock; }
+	CCamera*		GetCamera() const { return m_pCamera; }
+
 	NEW_SIGNAL1( Update, float );	// delta time
 	NEW_SIGNAL0( Render );
+	NEW_SIGNAL0( RenderGUI );
 
 private:
-	CField*	m_pField;
-	CClock*	m_pClock;
+	CField*		m_pField;
+	CClock*		m_pClock;
+	CCamera*	m_pCamera;
 
 	//todo: add entity factories here
 };
