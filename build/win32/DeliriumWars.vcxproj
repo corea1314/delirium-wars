@@ -138,6 +138,7 @@
       <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ProgramDataBaseFileName>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\..\src\Game\Camera.cpp" />
     <ClCompile Include="..\..\src\Game\Clock.cpp" />
     <ClCompile Include="..\..\src\Game\Deposit.cpp" />
     <ClCompile Include="..\..\src\Game\Engine.cpp" />
@@ -165,9 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h" />
-    <ClInclude Include="..\..\src\context.h" />
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\Game\Box2.h" />
+    <ClInclude Include="..\..\src\Game\Camera.h" />
     <ClInclude Include="..\..\src\Game\Clock.h" />
     <ClInclude Include="..\..\src\Game\Deposit.h" />
     <ClInclude Include="..\..\src\Game\Engine.h" />
@@ -180,7 +181,7 @@
     <ClInclude Include="..\..\src\Game\SigSlot.h" />
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
-    <ClInclude Include="..\..\src\Math\Macros.h" />
+    <ClInclude Include="..\..\src\macros.h" />
     <ClInclude Include="..\..\src\Math\Matrix2x2.h" />
     <ClInclude Include="..\..\src\Math\Matrix3x3.h" />
     <ClInclude Include="..\..\src\Math\Matrix4x4.h" />
