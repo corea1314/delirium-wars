@@ -195,6 +195,9 @@
     <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />
     <Library Include="..\..\src\freeglut-2.4.0\ReleaseStatic\freeglut_static.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\todo.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
