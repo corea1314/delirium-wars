@@ -5,8 +5,6 @@
 typedef struct 
 {
 	int hFileMenu;
-	int hGridMenu;
-	int hZoomMenu;
 
 } SMenuEntry;
 
@@ -18,21 +16,8 @@ void menu_Create()
 	glutAddMenuEntry( "  Save  ",		EMenuEntries::eFile_Save );
 	glutAddMenuEntry( "  Load  ",		EMenuEntries::eFile_Load );
 
-	g_MenuEntry.hGridMenu = glutCreateMenu( menu_Process );
-	glutAddMenuEntry( " Increase ",		EMenuEntries::eGrid_Increase );
-	glutAddMenuEntry( " Decrease ",		EMenuEntries::eGrid_Decrease );
-	glutAddMenuEntry( " Snap ",			EMenuEntries::eGrid_Decrease );
-
-	g_MenuEntry.hZoomMenu = glutCreateMenu( menu_Process );
-	glutAddMenuEntry( " In    ",		EMenuEntries::eZoom_In );
-	glutAddMenuEntry( " Out   ",		EMenuEntries::eZoom_Out );
-	glutAddMenuEntry( " Reset ",		EMenuEntries::eZoom_Reset );
-	
 	glutCreateMenu( menu_Process );
 	glutAddSubMenu(   "  File... ",		g_MenuEntry.hFileMenu );
-	glutAddSubMenu(   "  Grid... ",		g_MenuEntry.hGridMenu );
-	glutAddSubMenu(   "  Zoom... ",		g_MenuEntry.hZoomMenu );
-	glutAddMenuEntry( "  Animate ",		EMenuEntries::eAnimate );
 	glutAddMenuEntry( "  Help    ",		EMenuEntries::eHelp );
 	glutAddMenuEntry( "  Quit    ",		EMenuEntries::eQuit );
 	
@@ -50,11 +35,11 @@ void menu_Destroy()
 
 bool lock = false;
 
+static const char* OPENFILE_EXTENSION = "dwl";
+static const char* OPENFILE_FILTER = "Delirium War Level\0*.dwl\0";
+
 bool getSaveFilename( char filename[], int count )
 {
-	static const char* OPENFILE_EXTENSION = "bcf";
-	static const char* OPENFILE_FILTER = "Bezier Curve File\0*.bcf\0";
-
 	::OPENFILENAME openFilename = {0};
 	
 	openFilename.lStructSize     = sizeof(::OPENFILENAME);
@@ -88,9 +73,6 @@ void menu_FileSave()
 
 bool getLoadFilename( char filename[], int count )
 {
-	static const char* OPENFILE_EXTENSION = "bcf";
-	static const char* OPENFILE_FILTER = "Bezier Curve File\0*.bcf\0";
-
 	::OPENFILENAME openFilename = {0};
 	
 	openFilename.lStructSize     = sizeof(::OPENFILENAME);
@@ -120,12 +102,6 @@ void menu_FileLoad()
 	}
 }
 
-void menu_Animate()
-{
-	g_App.animate = !g_App.animate;
-	g_App.timeSeconds = 0.0f;
-}
-
 void menu_Help()
 {
 	puts( "Shortcuts" );
@@ -139,7 +115,6 @@ void menu_Help()
 	puts( "Right Button:        Popup context menu" );
 	puts( "Left Button:         Selects a control point" );
 	puts( "Middle Button:       Adds a control point" );
-	puts( "Wheel:               Zooms In / Out" );
 }
 
 void menu_Quit()
@@ -156,24 +131,10 @@ void menu_Process( int item )
 	case EMenuEntries::eFile_Load:		menu_FileLoad();	break;
 	case EMenuEntries::eFile_Save:		menu_FileSave();	break;
 
-	// Grid
-	case EMenuEntries::eGrid_Increase:	g_App.IncreaseGridSize(); break;
-	case EMenuEntries::eGrid_Decrease:	g_App.DecreaseGridSize(); break;
-
-	// Zoom
-	case EMenuEntries::eZoom_In:		g_App.ZoomIn();		break;
-	case EMenuEntries::eZoom_Out:		g_App.ZoomOut();	break;
-	case EMenuEntries::eZoom_Reset:		g_App.ZoomReset();	break;
-
-	// Animate
-	case EMenuEntries::eAnimate:		menu_Animate();		break;
-
 	// Help
 	case EMenuEntries::eHelp:			menu_Help();		break;
 
 	// Quit
 	case EMenuEntries::eQuit:			menu_Quit();		break;
 	}
-
-	
 }
