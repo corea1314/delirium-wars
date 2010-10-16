@@ -5,6 +5,7 @@
 #include "app.h"
 
 #include "Game/Engine.h"
+#include "Game/Camera.h"
 
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
@@ -20,20 +21,6 @@ App::App()
 	Buttons[0] = 0;
 	Buttons[1] = 0;
 	Buttons[2] = 0;
-	
-	snap = false;
-	grid_size = 16;
-	UpdateGrid();
-
-	cam_pos_x = 0.5f;
-	cam_pos_y = 0.5f;
-	zoom = -1;
-	UpdateZoom();
-
-	animate = false;
-	timeSeconds = 0.0f;
-
-
 }
 
 void App::Init()
@@ -46,65 +33,136 @@ void App::Exit()
 	delete m_pEngine;
 }
 
-void App::ZoomIn()
+void App::OnLeftClick( int x, int y, const Vector2& v )
 {
-	zoom = MIN( ++zoom,  MAX_ZOOM_LEVEL );
-	UpdateZoom();
+	GetEngine()->GetCamera()->Goto( v, 1.0f );
 }
 
-void App::ZoomOut()
+void App::OnRightClick( int x, int y, const Vector2& v )
 {
-	zoom = MAX( --zoom, -MAX_ZOOM_LEVEL );
-	UpdateZoom();
+
 }
 
-void App::ZoomReset()
+void App::OnMiddleClick( int x, int y, const Vector2& v )
 {
-	cam_pos_x = 0.5f;
-	cam_pos_y = 0.5f;
-	zoom = -1;
-	UpdateZoom();
+
 }
 
-void App::UpdateZoom()
+void App::OnWheelUp()
 {
-	if( zoom > 0 )
-		cam_zoom = 1.0f + zoom * 0.05f;
-	else if( zoom < 0 )
-		cam_zoom = 1.0f / (1.0f + (-1 * zoom * 0.05f));
-	else
-		cam_zoom = 1.0f;
+	float fCurrZoom = g_App.GetEngine()->GetCamera()->GetZoom();
+	if( fCurrZoom >= 0.25f )
+	{
+		GetEngine()->GetCamera()->ZoomTo( fCurrZoom / 2.0f, 1.0f );
+	}
 }
 
-void App::IncreaseGridSize()
+void App::OnWheelDown()
+{
+	float fCurrZoom = g_App.GetEngine()->GetCamera()->GetZoom();
+	if( fCurrZoom <= 4.0f )
+	{
+		GetEngine()->GetCamera()->ZoomTo( fCurrZoom * 2, 1.0f );
+	}
+}
+
+void App::OnKeyboard( unsigned char key )
+{
+	switch(key)
+	{
+	case 127:	// delete
+		break;
+	case '-':
+		m_Grid.DecreaseGridSize();
+		break;
+
+	case '=':
+		m_Grid.IncreaseGridSize();
+		break;
+
+	case ' ':
+		g_App.GetEngine()->GetCamera()->Goto( Vector2(0,0), 1.0f );
+		GetEngine()->GetCamera()->ZoomTo( 1.0f, 1.0f );
+		break;
+	}
+}
+
+void App::Render()
+{
+	Vector2 vPos = GetEngine()->GetCamera()->GetPos();
+	float fZoom = GetEngine()->GetCamera()->GetZoom();
+
+	glMatrixMode( GL_PROJECTION );
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D( -g_App.w/2*fZoom, g_App.w/2*fZoom, -g_App.h/2*fZoom,  g_App.h/2*fZoom );
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glTranslatef( -vPos.x, -vPos.y, 0.0f );
+	
+	// todo: remove this test rendering
+	m_Grid.Render();
+
+	m_pEngine->Render();
+	
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+
+	glMatrixMode( GL_MODELVIEW);
+	glLoadIdentity();
+		
+	m_pEngine->RenderGUI();
+
+	gl_SetColor(COLORS::eWHITE);
+	gl_RenderText( 8, 8, "Zoom: %0.1fX -- w:%d, %d", m_pEngine->GetCamera()->GetZoom(), w, h );
+}
+
+void App::Update( float dt )
+{
+	//todo: emit any other update related signals
+	m_pEngine->Update( dt );
+}
+
+
+// TEST GRID
+
+
+Grid::Grid()
+{
+	grid_size = 16;
+	UpdateGrid();
+}
+
+void Grid::IncreaseGridSize()
 {
 	grid_size *= 2;
 	grid_size = MIN( grid_size, MAX_GRID_SIZE );
 	UpdateGrid();
 }
 
-void App::DecreaseGridSize()
+void Grid::DecreaseGridSize()
 {
 	grid_size /= 2;
 	grid_size = MAX( grid_size, 1 );
 	UpdateGrid();
 }
 
-void App::UpdateGrid()
+void Grid::UpdateGrid()
 {
 	Vertex* p = vb_grid;
-	
-	int c = g_App.grid_size + 1;
 
-	float d = 1.0f / g_App.grid_size;
+	int c = grid_size + 1;
+
+	float d = 1000.0f / grid_size;
 
 	int i,j;
 	for( i=0; i<c; i++ )
 	{
 		for( j=0; j<c; j++ )
 		{
-			p->x = i * d;
-			p->y = j * d;
+			p->x = i * d - 500.0f;
+			p->y = j * d- 500.0f;
 			p->z = 0;
 			p->color = COLORS::eYELLOW;
 			++p;
@@ -114,45 +172,7 @@ void App::UpdateGrid()
 	vb_grid_size = c * c;
 }
 
-void App::Render()
+void Grid::Render()
 {
-	// Projection
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	gluOrtho2D( -0.5f / cam_zoom, 0.5f / cam_zoom, -0.5f / cam_zoom, 0.5f / cam_zoom );
-	
-	// Model view
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glTranslatef( -g_App.cam_pos_x, -g_App.cam_pos_y, 0.0f );
-
-	//todo: emit any other render related signals
-	m_pEngine->Render();
-
-	{
-		// Render grid
-		gl_RenderPoints( vb_grid, 0, vb_grid_size, 2 );
-		
-		glPointSize( 8.0f );
-		glLineWidth( 2.0f );
-	}
-
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-
-	glMatrixMode( GL_MODELVIEW);
-	glPopMatrix();
-
-	gl_SetColor(COLORS::eWHITE);
-	gl_RenderText( 8, 8, "Zoom: %d -- Grid: %d -- Snap: %s", zoom, grid_size, snap ? "true" : "false" );
+	gl_RenderPoints( vb_grid, 0, vb_grid_size, 2 );
 }
-
-void App::Update( float dt )
-{
-	timeSeconds += dt;
-
-	//todo: emit any other update related signals
-	m_pEngine->Update( dt );
-}
-

@@ -1,10 +1,26 @@
 #ifndef _APP_H
 #define _APP_H
 
-#define MAX_ZOOM_LEVEL		64
 #define MAX_GRID_SIZE		512
 
 class CEngine;
+
+class Grid
+{
+public:
+	Grid();
+
+	void IncreaseGridSize();
+	void DecreaseGridSize();
+	void UpdateGrid();
+
+	void Render();
+
+private:
+	int grid_size;
+	Vertex vb_grid[(MAX_GRID_SIZE+1)*(MAX_GRID_SIZE+1)];
+	int vb_grid_size;
+};
 
 class App
 {
@@ -15,41 +31,31 @@ public:
 	void Exit();
 	void Update( float dt );
 	void Render();
+
+	void OnWheelUp();
+	void OnWheelDown();
 	
-// todo: remove those
-	void ZoomIn();
-	void ZoomOut();
-	void ZoomReset();
-	
-	void IncreaseGridSize();
-	void DecreaseGridSize();
-	
+	void OnLeftClick( int x, int y, const Vector2& v );
+	void OnRightClick( int x, int y, const Vector2& v );
+	void OnMiddleClick( int x, int y, const Vector2& v );
+
+	void OnKeyboard( unsigned char key );
+		
+	// todo: better handle mouse position and button states from framework
 	int last_mx;
 	int last_my;
 	int mx;
 	int my;
+	unsigned char Buttons[5];
+
+	// todo: better handle window change event variables from framework
 	int w;
 	int h;
-	unsigned char Buttons[5];	//
-
-	float cam_pos_x;
-	float cam_pos_y;
-	float cam_zoom;
-
-	bool snap;
-	int grid_size;
-
-	bool animate;
-	float timeSeconds;
+		
+	CEngine* GetEngine() const { return m_pEngine; }
 
 private:
-	void UpdateZoom();
-	int zoom;
-
-	void UpdateGrid();
-	
-	Vertex vb_grid[(MAX_GRID_SIZE+1)*(MAX_GRID_SIZE+1)];
-	int vb_grid_size;
+	Grid	m_Grid;	//todo: remove at some point
 
 	CEngine* m_pEngine;
 	
