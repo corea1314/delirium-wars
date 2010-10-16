@@ -1,0 +1,46 @@
+TODOLIST
+--------
+
+For now, the following list is not ordered properly to reflect the priority.
+
+
+ENGINE
+- Have some sort of field class
+** Define data, vector field ? Model density, mineral concentration ?
+** Have some basic visual representation for different type of soil including mineral. Marching square ?
+
+- Have some sort of cheezy physics/collision detection engine
+** Make sure pods and ground collides
+** Make sure we can shoot pods (ballistics)
+
+- Better handle multiple inputs for multiplayer
+** If playing on same computer
+
+- Get network support
+** Make sure current engine architecture works with network
+
+- Work on minimal GUI module (or get an open source one)
+** Needed for pod controls such as deploy, salvage, etc.
+** Text display
+** Sprite display
+
+
+GAMEPLAY
+- Have the pods harvest delirium ore
+* Display pump shaft
+
+- Have projectiles destroy soil layers, mineral deposit.
+** Create math model for explosions and how the affect soil (take into account soil density)
+** Simulate cave in when holes are created ?
+
+- Try out different kind of soil density to affect digging and harvesting
+
+- Try out infector pod to affect ore harvest rate
+
+- Try out defender pod
+
+- Try out soft bombs that harden top soils to slow down digging
+
+- Try out probe pod to scan soil layers and display delirium ore deposit
+
+- Try out turn based gameplay. Maybe it could be more fun.
