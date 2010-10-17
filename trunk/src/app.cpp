@@ -6,6 +6,7 @@
 
 #include "Game/Engine.h"
 #include "Game/Camera.h"
+#include "Game/Field.h"
 
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
@@ -87,6 +88,11 @@ void App::OnKeyboard( unsigned char key )
 	}
 }
 
+void App::OnOpenFile( const char* in_szFilename )
+{
+	m_pEngine->LoadFile( in_szFilename );
+}
+
 void App::Render()
 {
 	Vector2 vPos = GetEngine()->GetCamera()->GetPos();
@@ -102,7 +108,7 @@ void App::Render()
 	glTranslatef( -vPos.x, -vPos.y, 0.0f );
 	
 	// todo: remove this test rendering
-	m_Grid.Render();
+//	m_Grid.Render();
 
 	m_pEngine->Render();
 	
