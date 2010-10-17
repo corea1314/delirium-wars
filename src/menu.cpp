@@ -99,6 +99,7 @@ void menu_FileLoad()
 
 	if( !lock && getLoadFilename(filename,sizeof(filename)) )
 	{
+		g_App.OnOpenFile( filename );
 	}
 }
 
