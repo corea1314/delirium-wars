@@ -40,6 +40,8 @@ public:
 	void OnMiddleClick( int x, int y, const Vector2& v );
 
 	void OnKeyboard( unsigned char key );
+
+	void OnOpenFile( const char* in_szFilename );
 		
 	// todo: better handle mouse position and button states from framework
 	int last_mx;
