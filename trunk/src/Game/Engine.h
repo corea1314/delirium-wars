@@ -46,11 +46,14 @@ public:
 
 	const CClock*	GetClock() const { return m_pClock; }
 	CCamera*		GetCamera() const { return m_pCamera; }
+	CField*			GetField() const { return m_pField; }
 
 	NEW_SIGNAL1( Update, float );	// delta time
 	NEW_SIGNAL0( Render );
 	NEW_SIGNAL0( RenderGUI );
 
+	NEW_SIGNAL1( LoadFile, const char* ); // filename
+	
 private:
 	CField*		m_pField;
 	CClock*		m_pClock;
