@@ -53,7 +53,7 @@ void gl_RenderLines( Vertex* buffer, int start, int count, float lwidth )
 
 void gl_Init( void )
 {
-	glClearColor(0.2f,0.2f,0.2f,1.0f);
+	glClearColor(0.0f,0.0f,0.0f,1.0f);
 	glShadeModel(GL_SMOOTH);
 
 	glEnable (GL_LINE_SMOOTH);
