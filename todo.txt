@@ -24,6 +24,7 @@ ENGINE
 ** Text display
 ** Sprite display
 
+- Need to implement an image loader (or get an open source one)
 
 GAMEPLAY
 - Have the pods harvest delirium ore
