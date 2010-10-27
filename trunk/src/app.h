@@ -41,6 +41,8 @@ public:
 
 	void OnKeyboard( unsigned char key );
 
+	void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
+
 	void OnOpenFile( const char* in_szFilename );
 		
 	// todo: better handle mouse position and button states from framework
