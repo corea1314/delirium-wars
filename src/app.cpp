@@ -82,9 +82,20 @@ void App::OnKeyboard( unsigned char key )
 		break;
 
 	case ' ':
-		g_App.GetEngine()->GetCamera()->Goto( Vector2(0,0), 1.0f );
+		GetEngine()->GetCamera()->Goto( Vector2(0,0), 1.0f );
 		GetEngine()->GetCamera()->ZoomTo( 1.0f, 1.0f );
 		break;
+	}
+}
+
+void App::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values )
+{
+	switch( gamepad )
+	{
+	case 0:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
+	case 1:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
+	case 2:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
+	case 3:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
 	}
 }
 

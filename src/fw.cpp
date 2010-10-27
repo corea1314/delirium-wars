@@ -197,6 +197,11 @@ void glut_OnSpecialKey( int key, int posX, int posY )
 	}
 }
 
+void glut_OnJoystickEx( unsigned int gamepad, unsigned int buttons, int axe_count, float* axe_values )
+{	
+	g_App.OnGamepad( gamepad, buttons, axe_count, axe_values );
+}
+
 void glut_OnIdle()
 {
 	g_delta_time =  glutGet(GLUT_ELAPSED_TIME) - g_time;
@@ -234,7 +239,8 @@ int main( int argc, char** argv )
 	 glutMotionFunc(glut_OnMotion);
 	 glutKeyboardFunc(glut_OnKeyboard);
 	 glutSpecialFunc(glut_OnSpecialKey);
-	 glutIdleFunc( glut_OnIdle );
+	 glutJoystickExFunc( glut_OnJoystickEx, 0 );
+	 glutIdleFunc( glut_OnIdle );	 
 
      gl_Init();
 
