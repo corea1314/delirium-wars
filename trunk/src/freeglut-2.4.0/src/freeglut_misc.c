@@ -137,6 +137,8 @@ void FGAPIENTRY glutForceJoystickFunc( void )
     freeglut_return_if_fail( fgStructure.CurrentWindow != NULL );
     freeglut_return_if_fail( FETCH_WCB( *( fgStructure.CurrentWindow ), Joystick ) );
     fgJoystickPollWindow( fgStructure.CurrentWindow );
+	freeglut_return_if_fail( FETCH_WCB( *( fgStructure.CurrentWindow ), JoystickEx ) );
+	fgJoystickExPollWindow( fgStructure.CurrentWindow );	//JB:Added
 #endif /* !TARGET_HOST_WINCE */
 }
 

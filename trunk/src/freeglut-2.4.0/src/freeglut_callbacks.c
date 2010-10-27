@@ -190,6 +190,27 @@ void FGAPIENTRY glutJoystickFunc( void (* callback)
 }
 
 /*
+ * Sets the joystick callback and polling rate for the current window
+ * JB: Trying to fix the joystick mess.
+ */
+void FGAPIENTRY glutJoystickExFunc( void (* callback)
+                                  ( unsigned int, unsigned int, int, float* ),
+                                  int pollInterval )
+{
+    FREEGLUT_EXIT_IF_NOT_INITIALISED ( "glutJoystickFuncEx" );
+    fgInitialiseJoysticks ();
+
+    SET_CALLBACK( JoystickEx );
+    fgStructure.CurrentWindow->State.JoystickPollRate = pollInterval;
+
+    fgStructure.CurrentWindow->State.JoystickLastPoll =
+        fgElapsedTime() - fgStructure.CurrentWindow->State.JoystickPollRate;
+
+    if( fgStructure.CurrentWindow->State.JoystickLastPoll < 0 )
+        fgStructure.CurrentWindow->State.JoystickLastPoll = 0;
+}
+
+/*
  * Sets the mouse callback for the current window
  */
 void FGAPIENTRY glutMouseFunc( void (* callback)( int, int, int, int ) )

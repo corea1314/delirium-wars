@@ -472,6 +472,7 @@ FGAPI void    FGAPIENTRY glutEntryFunc( void (* callback)( int ) );
 FGAPI void    FGAPIENTRY glutKeyboardUpFunc( void (* callback)( unsigned char, int, int ) );
 FGAPI void    FGAPIENTRY glutSpecialUpFunc( void (* callback)( int, int, int ) );
 FGAPI void    FGAPIENTRY glutJoystickFunc( void (* callback)( unsigned int, int, int, int ), int pollInterval );
+FGAPI void    FGAPIENTRY glutJoystickExFunc( void (* callback)( unsigned int, unsigned int, int, float* ), int pollInterval );	//JB: added
 FGAPI void    FGAPIENTRY glutMenuStateFunc( void (* callback)( int ) );
 FGAPI void    FGAPIENTRY glutMenuStatusFunc( void (* callback)( int, int, int ) );
 FGAPI void    FGAPIENTRY glutOverlayDisplayFunc( void (* callback)( void ) );
