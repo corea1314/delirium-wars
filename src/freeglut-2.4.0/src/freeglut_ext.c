@@ -106,6 +106,7 @@ static GLUTproc fghGetProcAddress( const char* procName )
     CHECK_NAME(glutSpecialUpFunc);
 #if !TARGET_HOST_WINCE
     CHECK_NAME(glutJoystickFunc);
+	CHECK_NAME(glutJoystickExFunc);	//ADDED
 #endif /* !TARGET_HOST_WINCE */
     CHECK_NAME(glutSetColor);
     CHECK_NAME(glutGetColor);

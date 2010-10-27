@@ -446,7 +446,7 @@ static void fghJoystickAddHatElement ( SFG_Joystick* joy, CFDictionaryRef hat );
 /*
  * The static joystick structure pointer
  */
-#define MAX_NUM_JOYSTICKS  2
+#define MAX_NUM_JOYSTICKS  4 //JB: was 2
 static SFG_Joystick *fgJoystick [ MAX_NUM_JOYSTICKS ];
 
 
@@ -1541,6 +1541,16 @@ static void fghJoystickInit( int ident )
         fgJoystick[ ident ]->js_id = JOYSTICKID2;
         fgJoystick[ ident ]->error = GL_FALSE;
         break;
+		// JB: added ->
+	case 2:
+		fgJoystick[ ident ]->js_id = 2;
+		fgJoystick[ ident ]->error = GL_FALSE;
+		break;
+	case 3:
+		fgJoystick[ ident ]->js_id = 3;
+		fgJoystick[ ident ]->error = GL_FALSE;
+		break;
+		// <- JB: added 
     default:
         fgJoystick[ ident ]->num_axes = 0;
         fgJoystick[ ident ]->error = GL_TRUE;
@@ -1675,6 +1685,30 @@ void fgJoystickPollWindow( SFG_Window* window )
     }
 }
 
+void fgJoystickExPollWindow( SFG_Window* window )	//JB: Added
+{
+	float axes[ _JS_MAX_AXES ];
+	int buttons;
+	int ident;
+	int axe;
+
+	freeglut_return_if_fail( window );
+	freeglut_return_if_fail( FETCH_WCB( *window, JoystickEx ) );
+
+	for( ident = 0; ident < MAX_NUM_JOYSTICKS; ident++ )
+	{
+		if( fgJoystick[ident] )
+		{
+			fghJoystickRead( fgJoystick[ident], &buttons, axes );
+
+			for( axe=0; axe<fgJoystick[ident]->num_axes; axe++ )
+				axes[axe] *= 1000.0f;
+
+			if( !fgJoystick[ident]->error )
+				INVOKE_WCB( *window, JoystickEx, ( ident, buttons, fgJoystick[ident]->num_axes, axes ) );
+		}
+	}
+}
 /*
  * Implementation for glutDeviceGet(GLUT_HAS_JOYSTICK)
  */

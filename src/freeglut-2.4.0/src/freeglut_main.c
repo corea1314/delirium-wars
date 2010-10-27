@@ -264,6 +264,7 @@ static void fghcbCheckJoystickPolls( SFG_Window *window,
     {
 #if !TARGET_HOST_WINCE
         fgJoystickPollWindow( window );
+		fgJoystickExPollWindow( window );	//JB:Added
 #endif /* !TARGET_HOST_WINCE */
         window->State.JoystickLastPoll = checkTime;
     }

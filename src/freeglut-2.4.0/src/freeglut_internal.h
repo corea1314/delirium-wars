@@ -131,6 +131,7 @@ typedef void (* FGCBEntry         )( int );
 typedef void (* FGCBWindowStatus  )( int );
 typedef void (* FGCBSelect        )( int, int, int );
 typedef void (* FGCBJoystick      )( unsigned int, int, int, int );
+typedef void (* FGCBJoystickEx    )( unsigned int, unsigned int, int, float* );	//JB: added
 typedef void (* FGCBKeyboardUp    )( unsigned char, int, int );
 typedef void (* FGCBSpecialUp     )( int, int, int );
 typedef void (* FGCBOverlayDisplay)( void );
@@ -477,6 +478,7 @@ enum
     CB_Visibility,
     CB_WindowStatus,
     CB_Joystick,
+	CB_JoystickEx,	//JB added
     CB_Destroy,
 
     /* Presently ignored */
@@ -766,6 +768,7 @@ int         fgJoystickDetect( void );
 void        fgInitialiseJoysticks( void );
 void        fgJoystickClose( void );
 void        fgJoystickPollWindow( SFG_Window* window );
+void        fgJoystickExPollWindow( SFG_Window* window );	//JB:Added
 
 /* More joystick functions.  Should these go into the API?  */
 int  glutJoystickGetNumAxes( int ident );
