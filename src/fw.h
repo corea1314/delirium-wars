@@ -4,14 +4,11 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+#include "glee/GLee.h"	//todo: boot glee properly
 #include "freeglut-2.4.0/include/gl/freeglut.h"
 //#include <GL/glut.h>
 #include <stdio.h>
 #include <math.h>
-
-#ifndef WIN32
-#include <GL/glx.h>
-#endif
 
 #include "gfx.h"
 #include "menu.h"
