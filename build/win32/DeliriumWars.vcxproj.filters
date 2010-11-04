@@ -13,6 +13,24 @@
     <Filter Include="source\Game\Pods">
       <UniqueIdentifier>{a5213ea6-6f8a-4a8c-9023-8d1bec1d2a1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\glee">
+      <UniqueIdentifier>{bab0774c-75a6-43b6-bf34-8d25ecec12f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\minIni">
+      <UniqueIdentifier>{a9877101-149e-4e5a-8243-0d3b76385080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Image">
+      <UniqueIdentifier>{cd1273c8-6c37-4e2f-a13b-4a52391ccf3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Image\picoPNG">
+      <UniqueIdentifier>{b70946f3-e3fb-4a5b-bee9-8cfccc4b8aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Sprite">
+      <UniqueIdentifier>{60f8b984-b7e4-4699-b43f-44571dc63497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Texture">
+      <UniqueIdentifier>{2be9703e-171a-4aa5-a00e-90fc547c0c96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -71,6 +89,21 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Camera.cpp">
       <Filter>source\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\glee\GLee.c">
+      <Filter>source\glee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\minIni\minIni.c">
+      <Filter>source\minIni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Image\picoPNG\picoPNG.cpp">
+      <Filter>source\Image\picoPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Image\Image.cpp">
+      <Filter>source\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Texture\Texture.cpp">
+      <Filter>source\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +182,27 @@
     <ClInclude Include="..\..\src\macros.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\glee\GLee.h">
+      <Filter>source\glee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\minIni\minGlue.h">
+      <Filter>source\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\minIni\minIni.h">
+      <Filter>source\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Image\picoPNG\picoPNG.h">
+      <Filter>source\Image\picoPNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Image\Image.h">
+      <Filter>source\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Sprite\Sprite.h">
+      <Filter>source\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Texture\Texture.h">
+      <Filter>source\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />
@@ -156,5 +210,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todo.txt" />
+    <None Include="..\..\src\Sprite\sample.spr">
+      <Filter>source\Sprite</Filter>
+    </None>
+    <None Include="..\..\src\Sprite\sample.xml">
+      <Filter>source\Sprite</Filter>
+    </None>
   </ItemGroup>
 </Project>
