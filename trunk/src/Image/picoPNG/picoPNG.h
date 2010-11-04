@@ -1,7 +1,13 @@
 #ifndef _PICOPNG_H
 #define _PICOPNG_H
 
-class picoPNG
+//todo: rename this class properly
+
+#include "../Image.h"
+
+#include <vector>
+
+class picoPNG : public Image
 {
 public:
 	bool Load( std::string in_szFilename );
@@ -13,8 +19,8 @@ public:
 
 private:
 	unsigned long m_nWidth;
-	unsigned int m_nHeight;
-	std::vector<unsigned char> m_vecPixel;
+	unsigned long m_nHeight;
+	std::vector<unsigned char> m_vecPixel;	//todo: sad sad implementation of picopng forces this vector
 };
 
 #endif//_PICOPNG_H
