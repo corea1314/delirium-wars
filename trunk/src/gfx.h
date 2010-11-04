@@ -52,7 +52,37 @@ void gl_RenderLines( Vertex* buffer, int start, int count, float lwidth );
 void gl_Init( void );
 
 
+class CDebugGraphic
+{
+public:
+	void SetColor(const Color& color);
+	void SetLineWidth( float width );
 
+	void DrawCircle(float x, float y, float radius);
+	void FillCircle(float x, float y, float radius);
+
+	void DrawEllipse(float x, float y, float w, float h);
+	void FillEllipse(float x, float y, float w, float h);
+
+	void DrawLine(float x1, float y1, float x2, float y2);
+
+	void FillRectangle(float x, float y, float width, float height);
+	void FillTriangle(float x, float y, float width, float height);
+	void FillTriangle(float x, float y, float width, float height, float angle);
+
+	void DrawPoly(float x, float y, Vertex poly[], float count );
+	void FillPoly(float x, float y, Vertex poly[], float count );
+	void DrawPoly(float x, float y, Vertex poly[], float count, float angle );
+	void FillPoly(float x, float y, Vertex poly[], float count, float angle );
+
+
+private:
+	Vertex*	m_pLineVB;	// vertex buffer used for line drawing
+	Vertex*	m_pFillVB;	// vertex buffer used for triangle filling
+
+	unsigned int	m_nCountLineVB;
+	unsigned int	m_nCountFillVB;
+};
 
 
 /*
