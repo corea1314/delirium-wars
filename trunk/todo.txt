@@ -3,6 +3,19 @@ TODOLIST
 
 For now, the following list is not ordered properly to reflect the priority.
 
+REAL SHORT TERM TASK LIST
+-------------------------
+** Complete SpriteMan		(in progress)
+** Complete SequenceMan
+** Complete TextureMan		(in progress)
+** Complete ImageMan		(in progress)
+** Complete SoundMan
+** Complete DebugDrawMan	(in progress)
+** Add them all to Engine for now
+
+If have time before JAM
+** Complete FactoryMan and Entity Factory
+
 
 ENGINE
 - Have some sort of field class
