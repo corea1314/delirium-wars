@@ -21,6 +21,7 @@ ENGINE
 - Have some sort of field class
 ** Define data, vector field ? Model density, mineral concentration ?
 ** Have some basic visual representation for different type of soil including mineral. Marching square ?
+- Maybe have a proxy engine that any objects can use. Now, all objects know engine and engine knows all objects.
 
 - Have some sort of cheezy physics/collision detection engine
 ** Make sure pods and ground collides
