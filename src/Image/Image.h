@@ -6,7 +6,7 @@
 class Image
 {
 public:
-	virtual bool Load( std::string in_szFilename ) = 0;
+	virtual bool Load( const std::string& in_szFilename ) = 0;
 	virtual unsigned long GetWidth() const = 0;
 	virtual unsigned long GetHeight() const = 0;
 	virtual unsigned long GetBytePerPixel()  = 0;
@@ -16,8 +16,10 @@ public:
 class ImageMan
 {
 public:
-	bool Load( Image** out_pImage, std::string in_szFilename );
+	bool Load( Image** out_pImage, const std::string& in_szFilename );
 	bool Unload( Image** in_pImage );
+
+	bool Preload( const std::string& in_szFilename );
 };
 
 #endif//_IMAGE_H
