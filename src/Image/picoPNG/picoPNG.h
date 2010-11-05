@@ -10,7 +10,7 @@
 class picoPNG : public Image
 {
 public:
-	bool Load( std::string in_szFilename );
+	bool Load( const std::string& in_szFilename );
 	unsigned long GetWidth() const { return m_nWidth; }
 	unsigned long GetHeight() const { return m_nHeight; }
 	unsigned long GetBytePerPixel() { return 4; }	// hardcoded to 32 bits, sorry, picoPNG limitation
