@@ -167,6 +167,8 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\minIni\minIni.c" />
+    <ClCompile Include="..\..\src\Sprite\Sequence.cpp" />
+    <ClCompile Include="..\..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
     <ClCompile Include="..\..\src\Texture\Texture.cpp" />
@@ -202,6 +204,7 @@
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\minIni\minGlue.h" />
     <ClInclude Include="..\..\src\minIni\minIni.h" />
+    <ClInclude Include="..\..\src\Sprite\Sequence.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Sprite\Sprite.h" />

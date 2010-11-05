@@ -108,6 +108,12 @@
     <ClCompile Include="..\..\src\Texture\Texture.cpp">
       <Filter>source\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Sprite\Sprite.cpp">
+      <Filter>source\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Sprite\Sequence.cpp">
+      <Filter>source\Sprite</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp">
       <Filter>source\Physics</Filter>
     </ClCompile>
@@ -211,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Texture\Texture.h">
       <Filter>source\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Sprite\Sequence.h">
+      <Filter>source\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h">
       <Filter>source\Physics</Filter>
