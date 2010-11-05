@@ -9,6 +9,9 @@ class Image;
 class Texture
 {
 public:
+	Texture();
+	virtual ~Texture();
+
 	void Bind();
 	void Unbind();
 
@@ -22,14 +25,22 @@ public:
 	void SetWrap( WrapCoord::Enum, WrapMode::Enum );
 	void SetFilterMag( FilterMag::Enum );
 	void SetFilterMin( FilterMin::Enum );
+
+	unsigned long GetWidth() const { return m_nWidth; }
+	unsigned long GetHeight() const { return m_nHeight; }
 			
 private:
 	unsigned int m_nId;
+
+	unsigned long m_nWidth;
+	unsigned long m_nHeight;
 };
 
 class TextureMan
 {
 public:
+	bool Preload( const std::string& in_szFilename );
+	
 	bool Load( Image* in_pImage, Texture** out_pTexture );
 	
 private:
