@@ -13,6 +13,11 @@
     <Filter Include="source\Game\Pods">
       <UniqueIdentifier>{a5213ea6-6f8a-4a8c-9023-8d1bec1d2a1c}</UniqueIdentifier>
     </Filter>
+<<<<<<< .mine
+    <Filter Include="source\objLoader">
+      <UniqueIdentifier>{75356bf3-53d6-49fd-9618-9ddb82cac08c}</UniqueIdentifier>
+    </Filter>
+=======
     <Filter Include="source\glee">
       <UniqueIdentifier>{bab0774c-75a6-43b6-bf34-8d25ecec12f3}</UniqueIdentifier>
     </Filter>
@@ -34,6 +39,7 @@
     <Filter Include="source\Physics">
       <UniqueIdentifier>{500847b0-dcaf-489d-bab7-9389982e927b}</UniqueIdentifier>
     </Filter>
+>>>>>>> .r56
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -93,6 +99,11 @@
     <ClCompile Include="..\..\src\Game\Camera.cpp">
       <Filter>source\Game</Filter>
     </ClCompile>
+<<<<<<< .mine
+    <ClCompile Include="..\..\src\objLoader\Obj.cpp">
+      <Filter>source\objLoader</Filter>
+    </ClCompile>
+=======
     <ClCompile Include="..\..\src\glee\GLee.c">
       <Filter>source\glee</Filter>
     </ClCompile>
@@ -120,6 +131,7 @@
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp">
       <Filter>source\Physics</Filter>
     </ClCompile>
+>>>>>>> .r56
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -197,6 +209,11 @@
     <ClInclude Include="..\..\src\macros.h">
       <Filter>source</Filter>
     </ClInclude>
+<<<<<<< .mine
+    <ClInclude Include="..\..\src\objLoader\Obj.h">
+      <Filter>source\objLoader</Filter>
+    </ClInclude>
+=======
     <ClInclude Include="..\..\src\glee\GLee.h">
       <Filter>source\glee</Filter>
     </ClInclude>
@@ -227,6 +244,7 @@
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h">
       <Filter>source\Physics</Filter>
     </ClInclude>
+>>>>>>> .r56
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />

@@ -166,12 +166,16 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+<<<<<<< .mine
+    <ClCompile Include="..\..\src\objLoader\Obj.cpp" />
+=======
     <ClCompile Include="..\..\src\minIni\minIni.c" />
     <ClCompile Include="..\..\src\Sprite\Sequence.cpp" />
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
     <ClCompile Include="..\..\src\Texture\Texture.cpp" />
+>>>>>>> .r56
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h" />
@@ -202,6 +206,9 @@
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\menu.h" />
+<<<<<<< .mine
+    <ClInclude Include="..\..\src\objLoader\Obj.h" />
+=======
     <ClInclude Include="..\..\src\minIni\minGlue.h" />
     <ClInclude Include="..\..\src\minIni\minIni.h" />
     <ClInclude Include="..\..\src\Sprite\Sequence.h" />
@@ -209,6 +216,7 @@
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Sprite\Sprite.h" />
     <ClInclude Include="..\..\src\Texture\Texture.h" />
+>>>>>>> .r56
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />
