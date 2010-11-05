@@ -119,7 +119,7 @@ void App::Render()
 	glTranslatef( -vPos.x, -vPos.y, 0.0f );
 	
 	// todo: remove this test rendering
-//	m_Grid.Render();
+	m_Grid.Render();
 
 	m_pEngine->Render();
 	

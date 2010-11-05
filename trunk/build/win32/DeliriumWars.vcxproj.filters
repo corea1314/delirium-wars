@@ -31,6 +31,9 @@
     <Filter Include="source\Texture">
       <UniqueIdentifier>{2be9703e-171a-4aa5-a00e-90fc547c0c96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Physics">
+      <UniqueIdentifier>{500847b0-dcaf-489d-bab7-9389982e927b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -104,6 +107,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Texture\Texture.cpp">
       <Filter>source\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp">
+      <Filter>source\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp">
+      <Filter>source\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Texture\Texture.h">
       <Filter>source\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Physics\PhysicsBody.h">
+      <Filter>source\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Physics\PhysicsManager.h">
+      <Filter>source\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
