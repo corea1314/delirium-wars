@@ -2,7 +2,7 @@
 
 #include "picoPNG/picoPNG.h"
 
-bool ImageMan::Load( Image** out_pImage, std::string in_szFilename )
+bool ImageMan::Load( Image** out_pImage, const std::string& in_szFilename )
 {
 	if( (*out_pImage) == 0 )
 	{
