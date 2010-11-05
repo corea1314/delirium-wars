@@ -536,7 +536,7 @@ void loadFile(std::vector<unsigned char>& buffer, const std::string& filename) /
   else buffer.clear();
 }
 
-bool picoPNG::Load( std::string in_szFilename )
+bool picoPNG::Load( const std::string& in_szFilename )
 {
 	std::vector<unsigned char> buffer;
 	loadFile(buffer, in_szFilename);
@@ -546,6 +546,8 @@ bool picoPNG::Load( std::string in_szFilename )
 	//if there's an error, display it
 	if(error != 0)
 		return false;
+
+	return true;
 };
 
 /*
