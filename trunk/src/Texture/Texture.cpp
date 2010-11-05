@@ -5,6 +5,16 @@
 
 #include "../Image/Image.h"
 
+Texture::Texture() : m_nWidth(0),m_nHeight(0)
+{
+	glGenTextures( 1, &m_nId );
+}
+
+Texture::~Texture()
+{
+	glDeleteTextures( 1, &m_nId );
+}
+
 void Texture::Bind()
 {
 	glBindTexture( GL_TEXTURE_2D, m_nId );
@@ -66,6 +76,9 @@ bool Texture::LoadFromImage( Image* in_pImage )
 		SetFilterMag( FilterMag::Linear );
 
 		glBindTexture( GL_TEXTURE_2D, 0 );
+
+		m_nWidth = in_pImage->GetWidth();
+		m_nHeight = in_pImage->GetHeight();
 
 		return false;
 	}
