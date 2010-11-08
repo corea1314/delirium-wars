@@ -20,6 +20,8 @@
  *  Version: $Id: minGlue.h 29 2010-07-06 13:38:05Z thiadmer.riemersma $
  */
 
+#define INI_READONLY
+
 /* map required file I/O to the standard C library */
 #include <stdio.h>
 #define ini_openread(filename,file)   ((*(file) = fopen((filename),"rt")) != NULL)
