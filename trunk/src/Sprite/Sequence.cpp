@@ -1,6 +1,10 @@
 #include "Sequence.h"
 
-#include "../Texture/Texture.h"
+#include "../Lair/Lair.h"
+
+#include "../minIni/minIni.h"
+
+#include <string>
 
 Frame::Frame()
 {
@@ -14,8 +18,11 @@ Frame::~Frame()
 
 bool Frame::Load( const std::string& in_szFilename )
 {
-	//todo: load texture here
-	return false;
+	m_pTexture = Lair::GetTextureMan()->Get( in_szFilename );
+	
+	// todo: validate that the texture was loaded properly
+
+	return true;
 }
 
 bool Frame::Unload()
@@ -35,6 +42,21 @@ Sequence::~Sequence()
 
 bool Sequence::Load( const std::string& in_szFilename )
 {
+	minIni iniSequence( in_szFilename.c_str() );
+
+	std::string szValue;
+	char szKey[64];
+	
+	int i=0;
+	
+	do
+	{
+		sprintf_s( szKey, "frame%d", i );
+		szValue = iniSequence.gets( "Frames", szKey );
+		++i;
+
+	} while( ParseFrameScript( szValue ) );
+
 	return false;
 }
 
@@ -48,7 +70,7 @@ bool Sequence::Unload()
 	return true;
 }
 
-void Sequence::ParseFrameScript( std::string& in_szFrameScript )
+bool Sequence::ParseFrameScript( std::string& in_szFrameScript )
 {
 //	<string:image> <int:duration(milliseconds)> <number:offset_x(pixel)> <number:offset_y(pixel)> <number:angle(degrees)>  <number:scale_X> <number:scale_y> 
 
@@ -73,32 +95,39 @@ void Sequence::ParseFrameScript( std::string& in_szFrameScript )
 			pFrame->SetSize(vSize);
 
 			m_vecFrame.push_back(pFrame);
-			return;
+			return true;
 		}
 		// something went wrong at this point, delete the allocated frame
 		delete pFrame;
 	}
+	return false;
 }
 
-bool SequenceMan::Load( Sequence** out_pSequence, const std::string& in_szFilename )
+
+// ============================================================================
+
+Sequence* SequenceMan::Get( const std::string& in_szFilename )
 {
 	std::map< std::string, Sequence* >::iterator it = m_mapSequence.find( in_szFilename );
 
-	if( it != m_mapSequence.end() && (*out_pSequence) == 0 )
+	if( it != m_mapSequence.end() )
 	{
 		// found it, return it
-		(*out_pSequence) = it->second;
-		return true;
+		Lair::GetLogMan()->Log( "SequenceMan", "Loaded sequence from map (%s)", in_szFilename.c_str() );
+		return it->second;
 	}
 	else
 	{
 		// not found, load it, return it
-		(*out_pSequence) = new Sequence;
-		if( (*out_pSequence)->Load( in_szFilename ) )
-			return true;
-
-		delete (*out_pSequence);
-	}
-	(*out_pSequence) = 0;
-	return false;
+		Sequence* pSequence = new Sequence;
+		if( pSequence->Load( in_szFilename ) )
+		{
+			Lair::GetLogMan()->Log( "SequenceMan", "Loaded sequence from file named %s", in_szFilename.c_str() );
+			return pSequence;
+		}
+		Lair::GetLogMan()->Log( "SequenceMan", "Could not load sequence from file named %s", in_szFilename.c_str() );
+		delete pSequence;
+	}	
+	return 0;
 }
+

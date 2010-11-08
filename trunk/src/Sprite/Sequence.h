@@ -74,7 +74,7 @@ public:
 	Frame* GetFrame();
 
 private:
-	void ParseFrameScript( std::string& in_szFrameScript );
+	bool ParseFrameScript( std::string& in_szFrameScript );
 
 private:
 	std::vector< Frame* >	m_vecFrame;
@@ -84,10 +84,7 @@ private:
 class SequenceMan
 {
 public:
-	bool Load( Sequence** out_pSequence, const std::string& in_szFilename );
-	bool Unload( Sequence** in_pSequence );
-
-	bool Preload( const std::string& in_szFilename );
+	Sequence* Get( const std::string& in_szFilename );
 
 private:
 	std::map< std::string, Sequence* >	m_mapSequence;		//todo: move to SequenceMan and have sequence shared among everybody
