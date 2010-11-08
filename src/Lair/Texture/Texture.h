@@ -39,12 +39,13 @@ private:
 class TextureMan
 {
 public:
-	bool Preload( const std::string& in_szFilename );
-	
-	bool Load( Image* in_pImage, Texture** out_pTexture );
-	
+	Texture* Get( const std::string& in_szFilename );
+		
 private:
-	std::map< Image*, Texture* >	m_mapTexture;
+	bool LoadFromImage( Image* in_pImage, Texture** out_pTexture );
+
+private:
+	std::map< std::string, Texture* >	m_mapTexture;
 };
 
 #endif//_TEXTURE_H
