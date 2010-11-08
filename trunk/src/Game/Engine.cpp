@@ -4,10 +4,15 @@
 #include "Clock.h"
 #include "Camera.h"
 
+#include "../Lair/Lair.h"
+
 #include "../macros.h"
 
 CEngine::CEngine()
 {
+	// Create lair
+	Lair::Create();
+
 	// Create the clock
 	m_pClock = new CClock;
 	m_pClock->Connect(this);
@@ -32,4 +37,6 @@ CEngine::~CEngine()
 
 	m_pClock->Disconnect(this);
 	SAFE_DELETE(m_pClock);
+
+	Lair::Release();
 }
