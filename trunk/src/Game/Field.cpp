@@ -21,7 +21,8 @@ void CField::Render()
 
 void CField::LoadFile( const char* in_szFilename )
 {
-	FILE* pFile = fopen( in_szFilename, "rb" );
+	FILE* pFile = 0;
+	fopen_s( &pFile, in_szFilename, "rb" );
 
 	unsigned int* pBuffer = new unsigned int[FIELD_SIZE_X*FIELD_SIZE_Y];
 
@@ -31,8 +32,6 @@ void CField::LoadFile( const char* in_szFilename )
 		fclose(pFile);
 
 		unsigned char* pCell = (unsigned char*)pBuffer;
-
-		unsigned int nTemp;
 
 //		for ( int y=0;y<FIELD_SIZE_Y; y++ )
 		for ( int y=FIELD_SIZE_Y-1;y>=0; y-- )
@@ -60,9 +59,9 @@ void CField::RebuildGrid()
 	{
 		for( x=0; x<FIELD_SIZE_X; x++ )
 		{
-			p->x = 2 * (x - FIELD_SIZE_X/2);
-			p->y = 2 * (y - FIELD_SIZE_Y/2);
-			p->z = 0;
+			p->x = 2.0f * (x - FIELD_SIZE_X/2);
+			p->y = 2.0f * (y - FIELD_SIZE_Y/2);
+			p->z = 0.0f;
 			p->color = (m_pCell[y*FIELD_SIZE_X+x].nDensity | 0xff000000);
 			++p;
 		}
