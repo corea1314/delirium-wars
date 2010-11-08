@@ -135,6 +135,9 @@
     <ClCompile Include="..\..\src\Lair\Texture\Texture.cpp">
       <Filter>source\Lair\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Lair.cpp">
+      <Filter>source\Lair</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Texture\Texture.h">
       <Filter>source\Lair\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Lair.h">
+      <Filter>source\Lair</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
