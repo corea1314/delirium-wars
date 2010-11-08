@@ -16,10 +16,7 @@ public:
 class ImageMan
 {
 public:
-	bool Load( Image** out_pImage, const std::string& in_szFilename );
-	bool Unload( Image** in_pImage );
-
-	bool Preload( const std::string& in_szFilename );
+	Image* Get( const std::string& in_szFilename );
 };
 
 #endif//_IMAGE_H

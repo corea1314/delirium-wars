@@ -2,22 +2,19 @@
 
 #include "picoPNG/picoPNG.h"
 
-bool ImageMan::Load( Image** out_pImage, const std::string& in_szFilename )
-{
-	if( (*out_pImage) == 0 )
-	{
-		(*out_pImage) = new picoPNG;	//todo: for now it is only supporting the png image format
-		return (*out_pImage)->Load( in_szFilename );
-	}
-	return false;
-}
+#include "../Lair.h"
 
-bool ImageMan::Unload( Image** in_pImage )
+Image* ImageMan::Get( const std::string& in_szFilename )
 {
-	if( (*in_pImage) != 0 )
-	{
-		delete (*in_pImage);
-		return true;
+	Image* pImage = new picoPNG;	//todo: for now it is only supporting the png image format
+
+	if( pImage->Load( in_szFilename ) )
+	{	
+		Lair::GetLogMan()->Log( "ImageMan", "Loaded image named %s", in_szFilename.c_str() );
+		return pImage;
 	}
-	return false;
+	Lair::GetLogMan()->Log( "ImageMan", "Could not load image named %s", in_szFilename.c_str() );
+
+	delete pImage;
+	return 0;
 }
