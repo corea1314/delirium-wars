@@ -1,0 +1,23 @@
+<globals>
+	<point name="pt"/>
+	<rect name="box"/>
+	<vector name="vec"/>
+	
+	<image name="frame0" file="frame0.png" rect="0 0 64 64"/>	<!-- if rect is not specified, whole image is taken-->
+	<image name="frame1" file="frame1.png" rect="0 0 64 64"/>	<!-- if rect is not specified, whole image is taken-->
+	<image name="frame2" file="frame2.png" rect="0 0 64 64"/>	<!-- if rect is not specified, whole image is taken-->
+	<image name="frame3" file="frame3.png" rect="0 0 64 64"/>	<!-- if rect is not specified, whole image is taken-->
+	<image name="frame4" file="frame4.png" rect="0 0 64 64"/>	<!-- if rect is not specified, whole image is taken-->
+
+</globals>
+
+<sequence name="seq0">
+	<frame delay=10>	<!-- delay is ms, represents time spent on this frame -->
+		<layer image="frame0" offset_x="0" offset_y="-32"/> <!-- offset* is in image space-->
+		<layer image="frame0" offset_x="0" offset_y="32"/>
+	</frame>
+	<frame delay=10>	<!-- delay is ms, represents time spent on this frame -->
+		<layer image="frame0" offset_x="0" offset_y="-32"/> <!-- offset* is in image space-->
+		<layer image="frame0" offset_x="0" offset_y="32"/>
+	</frame>
+</sequence>
