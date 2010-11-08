@@ -1,9 +1,9 @@
 
 #include "Texture.h"
 
-#include "../fw.h"	//todo: include opengl properly
+#include "../../fw.h"	//todo: include opengl properly
 
-#include "../Image/Image.h"
+#include "../Lair.h"
 
 Texture::Texture() : m_nWidth(0),m_nHeight(0)
 {
@@ -80,7 +80,7 @@ bool Texture::LoadFromImage( Image* in_pImage )
 		m_nWidth = in_pImage->GetWidth();
 		m_nHeight = in_pImage->GetHeight();
 
-		return false;
+		return true;
 	}
 
 	return false;
@@ -88,25 +88,43 @@ bool Texture::LoadFromImage( Image* in_pImage )
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool TextureMan::Load( Image* in_pImage, Texture** out_pTexture )
+Texture* TextureMan::Get( const std::string& in_szFilename )
 {
-	std::map< Image*, Texture* >::iterator it = m_mapTexture.find( in_pImage );
-	
-	if( it != m_mapTexture.end() && (*out_pTexture) == 0 )
+	std::map< std::string, Texture* >::iterator it = m_mapTexture.find( in_szFilename );
+
+	if( it != m_mapTexture.end() )
 	{
 		// found it, return it
-		(*out_pTexture) = it->second;
-		return true;
+		Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from map (%s)", in_szFilename.c_str() );
+		return it->second;
 	}
 	else
 	{
 		// not found, load it, return it
-		(*out_pTexture) = new Texture;
-		if( (*out_pTexture)->LoadFromImage( in_pImage ) )
-			return true;
+		Texture* pTexture = new Texture;
+		if( pTexture->LoadFromImage( Lair::GetImageMan()->Get( in_szFilename ) ) )
+		{
+			m_mapTexture.insert( std::make_pair(in_szFilename,pTexture) );
+			Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from image named %s", in_szFilename.c_str() );
+			return pTexture;
+		}
+		Lair::GetLogMan()->Log( "TextureMan", "Could not load texture from image named %s", in_szFilename.c_str() );
 
-		delete (*out_pTexture);
+		delete pTexture;
 	}
+	return 0;
+}
+
+bool TextureMan::LoadFromImage( Image* in_pImage, Texture** out_pTexture )
+{
+	// not found, load it, return it
+	(*out_pTexture) = new Texture;
+	
+	if( (*out_pTexture)->LoadFromImage( in_pImage ) )
+		return true;
+
+	delete (*out_pTexture);
 	(*out_pTexture) = 0;
+
 	return false;
 }
