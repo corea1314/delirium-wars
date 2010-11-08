@@ -156,8 +156,10 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\glee\GLee.c" />
-    <ClCompile Include="..\..\src\Image\Image.cpp" />
-    <ClCompile Include="..\..\src\Image\picoPNG\picoPNG.cpp" />
+    <ClCompile Include="..\..\src\Lair\Image\Image.cpp" />
+    <ClCompile Include="..\..\src\Lair\Image\picoPNG\picoPNG.cpp" />
+    <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
+    <ClCompile Include="..\..\src\Lair\Texture\Texture.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix2x2.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix3x3.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix4x4.cpp" />
@@ -166,16 +168,12 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-<<<<<<< .mine
     <ClCompile Include="..\..\src\objLoader\Obj.cpp" />
-=======
     <ClCompile Include="..\..\src\minIni\minIni.c" />
     <ClCompile Include="..\..\src\Sprite\Sequence.cpp" />
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
-    <ClCompile Include="..\..\src\Texture\Texture.cpp" />
->>>>>>> .r56
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h" />
@@ -195,8 +193,10 @@
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
     <ClInclude Include="..\..\src\glee\GLee.h" />
-    <ClInclude Include="..\..\src\Image\Image.h" />
-    <ClInclude Include="..\..\src\Image\picoPNG\picoPNG.h" />
+    <ClInclude Include="..\..\src\Lair\Image\Image.h" />
+    <ClInclude Include="..\..\src\Lair\Image\picoPNG\picoPNG.h" />
+    <ClInclude Include="..\..\src\Lair\Log\Log.h" />
+    <ClInclude Include="..\..\src\Lair\Texture\Texture.h" />
     <ClInclude Include="..\..\src\macros.h" />
     <ClInclude Include="..\..\src\Math\Matrix2x2.h" />
     <ClInclude Include="..\..\src\Math\Matrix3x3.h" />
@@ -206,17 +206,13 @@
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\menu.h" />
-<<<<<<< .mine
     <ClInclude Include="..\..\src\objLoader\Obj.h" />
-=======
     <ClInclude Include="..\..\src\minIni\minGlue.h" />
     <ClInclude Include="..\..\src\minIni\minIni.h" />
     <ClInclude Include="..\..\src\Sprite\Sequence.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Sprite\Sprite.h" />
-    <ClInclude Include="..\..\src\Texture\Texture.h" />
->>>>>>> .r56
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />

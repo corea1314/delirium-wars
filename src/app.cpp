@@ -8,6 +8,8 @@
 #include "Game/Camera.h"
 #include "Game/Field.h"
 
+#include "Sprite/Sequence.h"
+
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
 
@@ -33,6 +35,10 @@ App::App()
 void App::Init()
 {
 	m_pEngine = new CEngine;
+
+	Sequence	seq;
+
+	seq.Load( "sample.spr" );
 }
 
 void App::Exit()

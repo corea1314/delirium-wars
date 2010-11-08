@@ -13,33 +13,36 @@
     <Filter Include="source\Game\Pods">
       <UniqueIdentifier>{a5213ea6-6f8a-4a8c-9023-8d1bec1d2a1c}</UniqueIdentifier>
     </Filter>
-<<<<<<< .mine
     <Filter Include="source\objLoader">
       <UniqueIdentifier>{75356bf3-53d6-49fd-9618-9ddb82cac08c}</UniqueIdentifier>
     </Filter>
-=======
     <Filter Include="source\glee">
       <UniqueIdentifier>{bab0774c-75a6-43b6-bf34-8d25ecec12f3}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\minIni">
       <UniqueIdentifier>{a9877101-149e-4e5a-8243-0d3b76385080}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Image">
-      <UniqueIdentifier>{cd1273c8-6c37-4e2f-a13b-4a52391ccf3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\Image\picoPNG">
-      <UniqueIdentifier>{b70946f3-e3fb-4a5b-bee9-8cfccc4b8aad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Sprite">
       <UniqueIdentifier>{60f8b984-b7e4-4699-b43f-44571dc63497}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\Texture">
-      <UniqueIdentifier>{2be9703e-171a-4aa5-a00e-90fc547c0c96}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\Physics">
       <UniqueIdentifier>{500847b0-dcaf-489d-bab7-9389982e927b}</UniqueIdentifier>
     </Filter>
->>>>>>> .r56
+    <Filter Include="source\Lair">
+      <UniqueIdentifier>{4aac959a-3f3c-4cfe-8d95-f088671e6d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Log">
+      <UniqueIdentifier>{7c6b4f32-7a43-45c9-ac86-6c1f7a317593}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Image">
+      <UniqueIdentifier>{cd1273c8-6c37-4e2f-a13b-4a52391ccf3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Image\picoPNG">
+      <UniqueIdentifier>{b70946f3-e3fb-4a5b-bee9-8cfccc4b8aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Texture">
+      <UniqueIdentifier>{2be9703e-171a-4aa5-a00e-90fc547c0c96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -99,25 +102,14 @@
     <ClCompile Include="..\..\src\Game\Camera.cpp">
       <Filter>source\Game</Filter>
     </ClCompile>
-<<<<<<< .mine
     <ClCompile Include="..\..\src\objLoader\Obj.cpp">
       <Filter>source\objLoader</Filter>
     </ClCompile>
-=======
     <ClCompile Include="..\..\src\glee\GLee.c">
       <Filter>source\glee</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\minIni\minIni.c">
       <Filter>source\minIni</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Image\picoPNG\picoPNG.cpp">
-      <Filter>source\Image\picoPNG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Image\Image.cpp">
-      <Filter>source\Image</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Texture\Texture.cpp">
-      <Filter>source\Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp">
       <Filter>source\Sprite</Filter>
@@ -131,7 +123,18 @@
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp">
       <Filter>source\Physics</Filter>
     </ClCompile>
->>>>>>> .r56
+    <ClCompile Include="..\..\src\Lair\Image\picoPNG\picoPNG.cpp">
+      <Filter>source\Lair\Image\picoPNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Image\Image.cpp">
+      <Filter>source\Lair\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Log\Log.cpp">
+      <Filter>source\Lair\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Texture\Texture.cpp">
+      <Filter>source\Lair\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -209,11 +212,9 @@
     <ClInclude Include="..\..\src\macros.h">
       <Filter>source</Filter>
     </ClInclude>
-<<<<<<< .mine
     <ClInclude Include="..\..\src\objLoader\Obj.h">
       <Filter>source\objLoader</Filter>
     </ClInclude>
-=======
     <ClInclude Include="..\..\src\glee\GLee.h">
       <Filter>source\glee</Filter>
     </ClInclude>
@@ -223,17 +224,8 @@
     <ClInclude Include="..\..\src\minIni\minIni.h">
       <Filter>source\minIni</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Image\picoPNG\picoPNG.h">
-      <Filter>source\Image\picoPNG</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Image\Image.h">
-      <Filter>source\Image</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Sprite\Sprite.h">
       <Filter>source\Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Texture\Texture.h">
-      <Filter>source\Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Sprite\Sequence.h">
       <Filter>source\Sprite</Filter>
@@ -244,7 +236,18 @@
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h">
       <Filter>source\Physics</Filter>
     </ClInclude>
->>>>>>> .r56
+    <ClInclude Include="..\..\src\Lair\Image\picoPNG\picoPNG.h">
+      <Filter>source\Lair\Image\picoPNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Image\Image.h">
+      <Filter>source\Lair\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Log\Log.h">
+      <Filter>source\Lair\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Texture\Texture.h">
+      <Filter>source\Lair\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />
