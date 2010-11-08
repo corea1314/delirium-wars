@@ -18,11 +18,12 @@ LogMan::~LogMan()
 
 void LogMan::Log( const char* in_szModule, const char* in_szLog, ... )
 {
-	fputs( in_szModule, m_pLogFile );
+	fprintf( m_pLogFile, "(%s): ", in_szModule );
 	va_list marker;
 	va_start( marker, in_szLog );
 	vfprintf( m_pLogFile, in_szLog, marker );
 	va_end(marker);
+	fputs("\n",m_pLogFile);
 
 	fflush( m_pLogFile );
 }
