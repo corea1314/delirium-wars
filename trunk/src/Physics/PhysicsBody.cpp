@@ -38,4 +38,30 @@ void CPhysicsBody::SetMass( float in_fMass)
 		m_fMass = in_fMass;
 		m_fInverseMass = 1 / in_fMass;
 	}
+/*
+    //Draw debug
+    if(  IsActive() )
+    {
+        Vector2 v2Lower = m_v2PhysicsPosition - m_v2HalfShape;
+        Vector2 v2Higher = m_v2PhysicsPosition + m_v2HalfShape;
+
+        //When everything is on, it is with
+        Vector3 v3Color(0.5f,0.5f,0.5f);
+
+        if( !IsCollisionEnable() )
+        {
+            v3Color.x = 1.0f;
+        }
+
+        if( !IsSimulationEnable() )
+        {
+            v3Color.y = 1.0f;
+        }
+
+        if( !IsCollideWithGrid )
+        {
+            v3Color.z = 1.0f;
+        }
+    }*/
 }
+

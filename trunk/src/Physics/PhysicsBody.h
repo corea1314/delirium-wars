@@ -183,7 +183,7 @@ public :
 	//Should the object be simulated with forces, impulse, velocities and so on?
 	//true by default
 	void SetSimulationEnable( bool in_bIsSimulationEnabled ){ m_bIsSimulationEnable = in_bIsSimulationEnabled; }
-	bool IsPhysicsEnable() const{ return m_bIsSimulationEnable; }
+	bool IsSimulationEnable() const{ return m_bIsSimulationEnable; }
 
 	//Should the object try to collide with other bodies?
 	void SetCollisionEnable( bool in_bCollisionEnable){ m_bIsCollisionEnable = in_bCollisionEnable; }
@@ -194,9 +194,7 @@ public :
 
     void SetCollideWithGrid(bool val) { m_bCollideWithGrid = val; }
     bool IsCollideWithGrid() const { return m_bCollideWithGrid; }
-
-
-
+    
 	std::string GetName() const {return m_strName; }
 };
 
