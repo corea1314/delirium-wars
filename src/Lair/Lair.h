@@ -10,6 +10,7 @@ private:																	\
 #include "Log/Log.h"
 #include "Image/Image.h"
 #include "Texture/Texture.h"
+#include "Sound/Sound.h"
 
 class Lair
 {	
@@ -23,6 +24,7 @@ public:
 	DEFINE(LogMan);
 	DEFINE(ImageMan);
 	DEFINE(TextureMan);
+	DEFINE(SoundMan);
 	
 private:
 	static Lair* Get() { return ms_pInstance; }
