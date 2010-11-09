@@ -134,6 +134,7 @@ void App::Render()
 //	m_Grid.Render();
 
 	m_pEngine->Render();
+	m_pEngine->RenderDebugDraw();
 	
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
