@@ -2,7 +2,7 @@
 
 #include "../Lair/Lair.h"
 
-#include "../minIni/minIni.h"
+#include <minIni/minIni.h>
 
 #include <string>
 
