@@ -14,12 +14,14 @@ Lair::Lair()
 	NEW(LogMan);
 	NEW(ImageMan);
 	NEW(TextureMan);
+	NEW(SoundMan);
 }
 
 Lair::~Lair()
 {
-	DELETE(LogMan);
-	DELETE(ImageMan);
+	DELETE(SoundMan);
 	DELETE(TextureMan);
+	DELETE(ImageMan);
+	DELETE(LogMan);
 }
 
