@@ -17,7 +17,8 @@ m_fMass(1.0f),
 m_fInverseMass(1.0f),
 m_bIsSimulationEnable(true),
 m_bIsCollisionEnable(true),
-m_bIsActive(true)
+m_bIsActive(true),
+m_bCollideWithGrid(true)
 {
 }
 
