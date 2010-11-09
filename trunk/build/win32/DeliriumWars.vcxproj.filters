@@ -49,6 +49,12 @@
     <Filter Include="sdk\objLoader">
       <UniqueIdentifier>{75356bf3-53d6-49fd-9618-9ddb82cac08c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\DebugDraw">
+      <UniqueIdentifier>{4b67c394-c2a4-45f1-83ea-e6067b46a0d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bin">
+      <UniqueIdentifier>{518332b1-b129-4388-b375-0cb4d8987fc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -146,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="..\..\sdk\objLoader\obj.cpp">
       <Filter>sdk\objLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp">
+      <Filter>source\DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +275,9 @@
     <ClInclude Include="..\..\sdk\objLoader\obj.h">
       <Filter>sdk\objLoader</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h">
+      <Filter>source\DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
@@ -273,11 +285,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todo.txt" />
-    <None Include="..\..\src\Sprite\sample.spr">
-      <Filter>source\Sprite</Filter>
+    <None Include="..\..\bin\sample.spr">
+      <Filter>bin</Filter>
     </None>
-    <None Include="..\..\src\Sprite\sample.xml">
-      <Filter>source\Sprite</Filter>
+    <None Include="..\..\bin\sample.xml">
+      <Filter>bin</Filter>
+    </None>
+    <None Include="..\..\bin\system.log">
+      <Filter>bin</Filter>
     </None>
   </ItemGroup>
 </Project>
