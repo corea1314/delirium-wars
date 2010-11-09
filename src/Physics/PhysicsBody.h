@@ -7,16 +7,10 @@
 
 typedef int CollisionMask;
 
-//to be defined
-class CSubGrid;
 class CPhysicsBody;
 
 class CCollisionBodyOnBodyResult 
 {
-
-	//Normal always goes away from the listening body
-	Vector2 m_v2Normal;
-	Vector2 m_v2ContactPoint;
 	CPhysicsBody* m_pListenerBody;
 	CPhysicsBody* m_pForeignBody;
 
@@ -24,54 +18,57 @@ class CCollisionBodyOnBodyResult
 
 		CCollisionBodyOnBodyResult()
 			:m_pListenerBody(NULL),
-			m_pForeignBody(NULL),
-			m_v2Normal(Vector2(0,0)),
-			m_v2ContactPoint(Vector2(0,0))
+			m_pForeignBody(NULL)
 		{}
 		~CCollisionBodyOnBodyResult(){}
-
-		Vector2 GetNormal() const { return m_v2Normal; }
-		void SetNormal( const Vector2 & in_v2Normal ) { m_v2Normal = in_v2Normal; }
-		
-		Vector2 GetContactPoint() const { return m_v2ContactPoint; }
-		void SetContactPoint( const Vector2 & in_v2ContactPoint ) { m_v2ContactPoint = in_v2ContactPoint; }
 
 		void SetListenerPhysicsBody( CPhysicsBody* in_pListenerPhysicsBody) { m_pListenerBody = in_pListenerPhysicsBody; }
 		CPhysicsBody* GetListenerPhysicsBody() const { return m_pListenerBody; }
 
 		void SetForeignPhysicsBody( CPhysicsBody* in_pForeignPhysicsBody) { m_pForeignBody = in_pForeignPhysicsBody; }
 		CPhysicsBody* GetForeignPhysicsBody() const{ return m_pForeignBody; }
-
-
-		//setters n getters will come
-
 };
 
 class CCollisionBodyOnGridResult
 {
-
 	//Normal always goes away from the listening body
-	Vector2 m_v2Normal;
-	Vector2 m_v2ContactPoint;
 	CPhysicsBody* m_pListenerBody;
-	CSubGrid* m_pSubGrid;
+
+    //Sub grid portion that collides
+    unsigned int m_nFromX;
+    unsigned int m_nToX;
+    unsigned int m_nFromY;
+    unsigned int m_nToY;
 
 public :
 
-	CCollisionBodyOnGridResult();
-	~CCollisionBodyOnGridResult();
+	CCollisionBodyOnGridResult()
+    :m_pListenerBody(NULL),
+    m_nFromX(0),
+    m_nFromY(0),
+    m_nToX(0),
+    m_nToY(0)
+    {}
+    ~CCollisionBodyOnGridResult(){}
+        
+	void SetPhysicsBody( CPhysicsBody* in_pListenerPhysicsBody) { m_pListenerBody = in_pListenerPhysicsBody; }
+	CPhysicsBody* GetPhysicsBody() const { return m_pListenerBody; }
 
-	Vector2 GetNormal() const { return m_v2Normal; }
-	void SetNormal( const Vector2 & in_v2Normal ) { m_v2Normal = in_v2Normal; }
+    unsigned int GetFromX() const { return m_nFromX; }
+    unsigned int& GetFromX() { return m_nFromX; }
+    void SetFromX(unsigned int val) { m_nFromX = val; }
 
-	Vector2 GetContactPoint() const { return m_v2ContactPoint; }
-	void SetContactPoint( const Vector2 & in_v2ContactPoint ) { m_v2ContactPoint = in_v2ContactPoint; }
+    unsigned int GetToX() const { return m_nToX; }
+    unsigned int& GetToX() { return m_nToX; }
+    void SetToX(unsigned int val) { m_nToX = val; }
 
-	void SetListenerPhysicsBody( CPhysicsBody* in_pListenerPhysicsBody) { m_pListenerBody = in_pListenerPhysicsBody; }
-	CPhysicsBody* GetListenerPhysicsBody() const { return m_pListenerBody; }
+    unsigned int GetFromY() const { return m_nFromY; }
+    unsigned int& GetFromY() { return m_nFromY; }
+    void SetFromY(unsigned int val) { m_nFromY = val; }
 
-	void SetSubGrid( CSubGrid* in_pSubGrid) { m_pSubGrid = in_pSubGrid; }
-	CSubGrid* GetSubGrid() const{ return m_pSubGrid; }
+    unsigned int GetToY() const { return m_nToY; }
+    unsigned int& GetToY() { return m_nToY; }
+    void SetToY(unsigned int val) { m_nToY = val; }
 };
 
 //This is meant to implements all the physics and collision related stuff: applying forces, enable/disable collision response, mask, and all that good jazz.
@@ -101,6 +98,7 @@ private :
 	bool m_bIsSimulationEnable;
 	bool m_bIsCollisionEnable;
 	bool m_bIsActive;
+    bool m_bCollideWithGrid;
 
 public :
 	CPhysicsBody( const char * in_szName );
@@ -193,6 +191,11 @@ public :
 
 	void SetActive( bool in_bIsActive) { m_bIsActive = in_bIsActive; }
 	bool IsActive() const { return m_bIsActive; }
+
+    void SetCollideWithGrid(bool val) { m_bCollideWithGrid = val; }
+    bool IsCollideWithGrid() const { return m_bCollideWithGrid; }
+
+
 
 	std::string GetName() const {return m_strName; }
 };

@@ -2,15 +2,19 @@
 #define _PHYSICS_MANAGER_H__
 
 #include <vector>
+#include "../Game/SigSlot.h"
 
+class CField;
 class CPhysicsBody;
 //This is mean to be the physics engine. It will implement the main update loop and will broadcast physics signal so the syncher an collision listener can operate.
-class CPhysicsManager
+class CPhysicsManager : public has_slots<>
 {
 	private :
 		float m_fTimeResolution;
 		int m_nMaxSubStep;
 		float m_fTimeAccumulator;
+
+        CField* m_pGrid;
 
 		//We choose vector because it is easier to iterate over it and pushing new elements is very fast
 		std::vector<CPhysicsBody*> m_vPhysicsBody;
@@ -19,13 +23,14 @@ class CPhysicsManager
 
 		void PhysicsSubStep( float in_fDeltaTime , float in_fInterpolationRatio);
 		void ApplyPhysics( float in_fDeltaTime, float in_fInterpolationRatio);
-		void HandleCollision();
+		void HandleCollisionBodyOnBody();
+        void HandleCollisionBodyOnGrid();
 
 	public :
-		CPhysicsManager( float in_fTimeResolution , int in_mMaximumSubStep);
+		CPhysicsManager( float in_fTimeResolution = 0.1666 , int in_mMaximumSubStep = 0 );
 		~CPhysicsManager();
 
-		void SetMaximumSubStep( int in_nMaxSubStep ) { m_nMaxSubStep = in_nMaxSubStep; }
+		void SetMaximumSubStep( int in_nMaxSubStep ) { m_nMaxSubStep = in_nMaxSubStep = 10; }
 		int GetMaximumSubStep() const { return m_nMaxSubStep; }
 
 		void SetTimeResolution( float in_fTimeResolution) { m_fTimeResolution = in_fTimeResolution; }
@@ -34,7 +39,7 @@ class CPhysicsManager
 		//Return the amount of substep accomplished
 		int Update( float in_fDeltaTime );
 
-		//Body createion/getter/destruction methods
+		//Body creation/getter/destruction methods
 		//Create
 		//Object are always in the world but are not activated by default. Call Activate(true) on a body to activate it.
 		CPhysicsBody* CreatePhysicsBody(const char * in_szName);
@@ -45,6 +50,12 @@ class CPhysicsManager
 		//Destroy
 		void DestroyPhysicsbody( CPhysicsBody* in_pPhysicsbody );
 		void DestroyAllBody();
+
+        CField* GetGrid() const { return m_pGrid; }
+        void SetGrid(CField* val) { m_pGrid = val; }
 };
+
+
+
 
 #endif //_PHYSICS_MANAGER_H__

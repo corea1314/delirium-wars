@@ -1,11 +1,13 @@
 #include "PhysicsManager.h"
 
 #include "PhysicsBody.h"
+#include "../Game/Field.h"
 
 CPhysicsManager::CPhysicsManager( float in_fTimeResolution , int in_mMaximumSubStep)
 :m_fTimeResolution(in_fTimeResolution),
 m_nMaxSubStep(in_mMaximumSubStep),
-m_fTimeAccumulator(0.0f)
+m_fTimeAccumulator(0.0f),
+m_pGrid(NULL)
 {
 
 }
@@ -62,7 +64,8 @@ void CPhysicsManager::PhysicsSubStep( float in_fDeltaTime, float in_fInterpolati
 
 	ApplyPhysics(in_fDeltaTime,in_fInterpolationRatio);
 	//ComputeInterpolatedPosition();
-	HandleCollision();
+	HandleCollisionBodyOnBody();
+    HandleCollisionBodyOnGrid();
 
 	//PostSync
 	for( i = 0; i < m_vActivePhysicsBody.size(); ++i)
@@ -103,7 +106,7 @@ void CPhysicsManager::ApplyPhysics( float in_fDeltaTime, float in_fInterpolation
 	}
 }
 
-void CPhysicsManager::HandleCollision()
+void CPhysicsManager::HandleCollisionBodyOnBody()
 {
 	unsigned int i,j;
 	std::vector<CCollisionBodyOnBodyResult*> vBodyOnBody;
@@ -196,6 +199,73 @@ void CPhysicsManager::HandleCollision()
 	vBodyOnBody.clear();
 }
 
+
+void CPhysicsManager::HandleCollisionBodyOnGrid()
+{
+
+    if( m_pGrid != NULL )
+    {
+        unsigned int i;
+        std::vector<CCollisionBodyOnGridResult*> vBodyOnGridCollide;
+
+        for( i = 0; i < m_vActivePhysicsBody.size(); ++i)
+        {
+            if( m_vActivePhysicsBody[i]->IsCollideWithGrid() )
+            {
+                //Test with the grid and fill result
+                unsigned int unLeft = 0;
+                unsigned int unRight = 0;
+                unsigned int unDown = 0;
+                unsigned int unUp = 0;
+
+                Vector2 v2BodyLower( m_vActivePhysicsBody[i]->GetPhysicsPosition() - m_vActivePhysicsBody[i]->GetHalfShape() );
+                Vector2 v2BodyHigher( m_vActivePhysicsBody[i]->GetPhysicsPosition() + m_vActivePhysicsBody[i]->GetHalfShape() );
+                Vector2 v2GridLower( m_pGrid->GetPosition() );
+                Vector2 v2GridHigher( m_pGrid->GetPosition() + m_pGrid->GetGridWorldSize() );
+
+                //redo that!!!1111oneone
+                //Does the grid ans the body overlap? If yes, we gotta see wassup.
+                if( (v2BodyHigher.x >= v2GridLower.x && v2BodyLower.x <= v2GridHigher.x) || (v2GridHigher.x >= v2BodyLower.x && v2GridLower.x <= v2BodyHigher.x) )
+                {
+                    if( (v2BodyHigher.y >= v2GridLower.y && v2BodyLower.y <= v2GridHigher.y) || (v2GridHigher.y >= v2GridLower.y && v2GridLower.y <= v2BodyHigher.y) )
+                    {
+                       if( !m_pGrid->WorldPositionToIndexHorizontal(v2BodyLower.x,unLeft) )
+                       {
+                            unLeft = 0 ;
+                       }
+
+                       if( !m_pGrid->WorldPositionToIndexHorizontal(v2BodyHigher.x,unRight) )
+                       {
+                           unRight = m_pGrid->GetGridSizeX()-1 ;
+                       }
+
+                       if( !m_pGrid->WorldPositionToIndexVertical(v2BodyLower.y,unDown) )
+                       {
+                           unDown = 0 ;
+                       }
+
+                       if( !m_pGrid->WorldPositionToIndexVertical(v2BodyHigher.y,unUp) )
+                       {
+                           unUp = m_pGrid->GetGridSizeY()-1 ;
+                       }
+
+                       //Todo:: fill the collision result structure
+                    }
+                }      
+            }
+        }
+
+        for( i = 0; i < vBodyOnGridCollide.size(); ++i)
+        {
+            vBodyOnGridCollide[i]->GetPhysicsBody()->PhysicsBodyOnGridCollision( vBodyOnGridCollide[i], vBodyOnGridCollide[i]->GetPhysicsBody() );
+            //Delete the temporary structure while being here
+            SAFE_DELETE( vBodyOnGridCollide[i] );
+        }
+        //Clean up the temporary structure
+        vBodyOnGridCollide.clear();
+    }
+}
+
 CPhysicsBody* CPhysicsManager::CreatePhysicsBody(const char * in_szName)
 {
 
@@ -237,3 +307,4 @@ void CPhysicsManager::DestroyAllBody()
 	}
 	m_vPhysicsBody.clear();
 }
+

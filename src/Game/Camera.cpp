@@ -11,7 +11,7 @@ CCamera::CCamera()
 	m_vCurrPos.Set(0,0);
 	m_fCurrZoom = 1.0f;	// 1X
 }
-
+ 
 void CCamera::Goto( Vector2 in_vNewPos, float in_fDelayToDest )
 {
 	m_MovementData.vOPos = m_vCurrPos;
