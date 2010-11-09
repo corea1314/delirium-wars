@@ -2,12 +2,14 @@
 
 #include "PhysicsBody.h"
 #include "../Game/Field.h"
+#include "../Game/Engine.h"
 
-CPhysicsManager::CPhysicsManager( float in_fTimeResolution , int in_mMaximumSubStep)
+CPhysicsManager::CPhysicsManager(CEngineProxy* in_pEngineProxy, float in_fTimeResolution , int in_mMaximumSubStep)
 :m_fTimeResolution(in_fTimeResolution),
 m_nMaxSubStep(in_mMaximumSubStep),
 m_fTimeAccumulator(0.0f),
-m_pGrid(NULL)
+m_pGrid(NULL),
+m_pEngineProxy(m_pEngineProxy)
 {
 
 }
@@ -87,7 +89,7 @@ void CPhysicsManager::ApplyPhysics( float in_fDeltaTime, float in_fInterpolation
 	for( i = 0; i < m_vActivePhysicsBody.size(); ++i)
 	{
 		CPhysicsBody* pBody = m_vPhysicsBody[i];
-		if( pBody->IsPhysicsEnable() )
+		if( pBody->IsSimulationEnable() )
 		{
 			Vector2 v2OldPosition( pBody->GetPhysicsPosition() );
 			//Simplest integration computation. We can refine this later...
@@ -137,35 +139,7 @@ void CPhysicsManager::HandleCollisionBodyOnBody()
 
 							bool bFirstLeft = m_vActivePhysicsBody[i]->GetPhysicsPosition().x < m_vActivePhysicsBody[j]->GetPhysicsPosition().x;
 							bool bFirstHigher = m_vActivePhysicsBody[i]->GetPhysicsPosition().y < m_vActivePhysicsBody[j]->GetPhysicsPosition().y;
-							/*
-							if( bFirstLeft )
-							{
-								if( bFirstHigher ) //left/higher
-								{
 
-
-
-								}else //left-lower
-								{
-
-								}
-							}
-							else
-							{
-								if( bFirstHigher )//right-lower
-								{
-
-								}else//right-higher
-								{
-
-								}
-
-							}*/
-
-							//Compute the normal. It goes away from the first body for now.
-							//will do later
-							//pNewResult->SetContactPoint();
-							//pNewResult->SetNormal();
 							pNewResult->SetListenerPhysicsBody( m_vActivePhysicsBody[i] );
 							pNewResult->SetForeignPhysicsBody( m_vActivePhysicsBody[i] );
 							vBodyOnBody.push_back( pNewResult );
@@ -223,7 +197,6 @@ void CPhysicsManager::HandleCollisionBodyOnGrid()
                 Vector2 v2GridLower( m_pGrid->GetPosition() );
                 Vector2 v2GridHigher( m_pGrid->GetPosition() + m_pGrid->GetGridWorldSize() );
 
-                //redo that!!!1111oneone
                 //Does the grid ans the body overlap? If yes, we gotta see wassup.
                 if( (v2BodyHigher.x >= v2GridLower.x && v2BodyLower.x <= v2GridHigher.x) || (v2GridHigher.x >= v2BodyLower.x && v2GridLower.x <= v2BodyHigher.x) )
                 {
@@ -250,6 +223,13 @@ void CPhysicsManager::HandleCollisionBodyOnGrid()
                        }
 
                        //Todo:: fill the collision result structure
+                       CCollisionBodyOnGridResult* pNewCollisionResult = new CCollisionBodyOnGridResult();
+                       vBodyOnGridCollide.push_back( pNewCollisionResult );
+                       pNewCollisionResult->SetPhysicsBody( m_vActivePhysicsBody[i] );
+                       pNewCollisionResult->SetFromX(unLeft);
+                       pNewCollisionResult->SetToX(unRight);
+                       pNewCollisionResult->SetFromY(unDown);
+                       pNewCollisionResult->SetToY(unUp);
                     }
                 }      
             }

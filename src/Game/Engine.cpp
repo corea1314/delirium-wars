@@ -3,6 +3,7 @@
 #include "Field.h"
 #include "Clock.h"
 #include "Camera.h"
+#include "../Physics/PhysicsManager.h"
 #include "../DebugDraw/DebugDraw.h"
 
 #include "../Lair/Lair.h"
@@ -26,6 +27,8 @@ CEngine::CEngine()
 	m_pCamera = new CCamera;
 	m_pCamera->Connect(this);
 
+    m_pPhysMan = new CPhysicsManager(this);
+
 	// Create debug draw interface
 	m_pDebugDraw = new CDebugDraw( 1024, 1024, 2.0f );
 }
@@ -43,6 +46,8 @@ CEngine::~CEngine()
 
 	m_pClock->Disconnect(this);
 	SAFE_DELETE(m_pClock);
+
+    SAFE_DELETE( m_pPhysMan );
 
 	Lair::Release();
 }

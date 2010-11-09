@@ -6,8 +6,9 @@
 
 class CField;
 class CPhysicsBody;
+class CEngineProxy;
 //This is mean to be the physics engine. It will implement the main update loop and will broadcast physics signal so the syncher an collision listener can operate.
-class CPhysicsManager : public has_slots<>
+class CPhysicsManager
 {
 	private :
 		float m_fTimeResolution;
@@ -15,6 +16,8 @@ class CPhysicsManager : public has_slots<>
 		float m_fTimeAccumulator;
 
         CField* m_pGrid;
+
+        CEngineProxy* m_pEngineProxy;
 
 		//We choose vector because it is easier to iterate over it and pushing new elements is very fast
 		std::vector<CPhysicsBody*> m_vPhysicsBody;
@@ -27,7 +30,7 @@ class CPhysicsManager : public has_slots<>
         void HandleCollisionBodyOnGrid();
 
 	public :
-		CPhysicsManager( float in_fTimeResolution = 0.1666 , int in_mMaximumSubStep = 0 );
+		CPhysicsManager( CEngineProxy* in_pEngineProxy, float in_fTimeResolution = 0.1666 , int in_mMaximumSubStep = 0 );
 		~CPhysicsManager();
 
 		void SetMaximumSubStep( int in_nMaxSubStep ) { m_nMaxSubStep = in_nMaxSubStep = 10; }
