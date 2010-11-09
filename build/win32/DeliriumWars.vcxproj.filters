@@ -13,15 +13,6 @@
     <Filter Include="source\Game\Pods">
       <UniqueIdentifier>{a5213ea6-6f8a-4a8c-9023-8d1bec1d2a1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\objLoader">
-      <UniqueIdentifier>{75356bf3-53d6-49fd-9618-9ddb82cac08c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\glee">
-      <UniqueIdentifier>{bab0774c-75a6-43b6-bf34-8d25ecec12f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\minIni">
-      <UniqueIdentifier>{a9877101-149e-4e5a-8243-0d3b76385080}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Sprite">
       <UniqueIdentifier>{60f8b984-b7e4-4699-b43f-44571dc63497}</UniqueIdentifier>
     </Filter>
@@ -42,6 +33,21 @@
     </Filter>
     <Filter Include="source\Lair\Texture">
       <UniqueIdentifier>{2be9703e-171a-4aa5-a00e-90fc547c0c96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Sound">
+      <UniqueIdentifier>{c7b89da6-7022-4cd8-a844-023a32a8a2e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk">
+      <UniqueIdentifier>{9dd4a6c2-9135-4980-937b-0296a8f9d092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\glee">
+      <UniqueIdentifier>{bab0774c-75a6-43b6-bf34-8d25ecec12f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\minIni">
+      <UniqueIdentifier>{a9877101-149e-4e5a-8243-0d3b76385080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\objLoader">
+      <UniqueIdentifier>{75356bf3-53d6-49fd-9618-9ddb82cac08c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -102,15 +108,6 @@
     <ClCompile Include="..\..\src\Game\Camera.cpp">
       <Filter>source\Game</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\objLoader\Obj.cpp">
-      <Filter>source\objLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\glee\GLee.c">
-      <Filter>source\glee</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\minIni\minIni.c">
-      <Filter>source\minIni</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp">
       <Filter>source\Sprite</Filter>
     </ClCompile>
@@ -137,6 +134,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Lair.cpp">
       <Filter>source\Lair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Sound\Sound.cpp">
+      <Filter>source\Lair\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\glee\GLee.c">
+      <Filter>sdk\glee</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\minIni\minIni.c">
+      <Filter>sdk\minIni</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\objLoader\obj.cpp">
+      <Filter>sdk\objLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,18 +224,6 @@
     <ClInclude Include="..\..\src\macros.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\objLoader\Obj.h">
-      <Filter>source\objLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\glee\GLee.h">
-      <Filter>source\glee</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\minIni\minGlue.h">
-      <Filter>source\minIni</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\minIni\minIni.h">
-      <Filter>source\minIni</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Sprite\Sprite.h">
       <Filter>source\Sprite</Filter>
     </ClInclude>
@@ -254,10 +251,25 @@
     <ClInclude Include="..\..\src\Lair\Lair.h">
       <Filter>source\Lair</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Sound\Sound.h">
+      <Filter>source\Lair\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\glee\GLee.h">
+      <Filter>sdk\glee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\minIni\minGlue.h">
+      <Filter>sdk\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\minIni\minIni.h">
+      <Filter>sdk\minIni</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\objLoader\obj.h">
+      <Filter>sdk\objLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />
-    <Library Include="..\..\src\freeglut-2.4.0\ReleaseStatic\freeglut_static.lib" />
+    <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
+    <Library Include="..\..\sdk\freeglut-2.4.0\ReleaseStatic\freeglut_static.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todo.txt" />
