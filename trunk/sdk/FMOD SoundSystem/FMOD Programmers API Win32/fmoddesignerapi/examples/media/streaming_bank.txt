@@ -1,0 +1,1 @@
+interactive_music_6channel.ogg, mindistance=1, maxdistance=10000, defvol=255, defpan=128, defpri=128, varfreq=0, varvol=0, varpan=0, fsound_2d

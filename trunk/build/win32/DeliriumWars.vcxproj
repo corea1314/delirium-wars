@@ -45,6 +45,8 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\obj\debug\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DeliriumWars_debug</TargetName>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Work\Delirium Wars\sdk;..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\inc;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -80,6 +82,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>fmodex_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -121,6 +124,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>fmodex_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -128,6 +132,9 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\sdk\glee\GLee.c" />
+    <ClCompile Include="..\..\sdk\minIni\minIni.c" />
+    <ClCompile Include="..\..\sdk\objLoader\obj.cpp" />
     <ClCompile Include="..\..\src\app.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -155,11 +162,11 @@
       <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ProgramDataBaseFileName>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\..\src\glee\GLee.c" />
     <ClCompile Include="..\..\src\Lair\Image\Image.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\picoPNG\picoPNG.cpp" />
     <ClCompile Include="..\..\src\Lair\Lair.cpp" />
     <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
+    <ClCompile Include="..\..\src\Lair\Sound\Sound.cpp" />
     <ClCompile Include="..\..\src\Lair\Texture\Texture.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix2x2.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix3x3.cpp" />
@@ -169,14 +176,16 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\..\src\objLoader\Obj.cpp" />
-    <ClCompile Include="..\..\src\minIni\minIni.c" />
     <ClCompile Include="..\..\src\Sprite\Sequence.cpp" />
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\sdk\glee\GLee.h" />
+    <ClInclude Include="..\..\sdk\minIni\minGlue.h" />
+    <ClInclude Include="..\..\sdk\minIni\minIni.h" />
+    <ClInclude Include="..\..\sdk\objLoader\obj.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\Game\Box2.h" />
@@ -193,11 +202,11 @@
     <ClInclude Include="..\..\src\Game\SigSlot.h" />
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
-    <ClInclude Include="..\..\src\glee\GLee.h" />
     <ClInclude Include="..\..\src\Lair\Image\Image.h" />
     <ClInclude Include="..\..\src\Lair\Image\picoPNG\picoPNG.h" />
     <ClInclude Include="..\..\src\Lair\Lair.h" />
     <ClInclude Include="..\..\src\Lair\Log\Log.h" />
+    <ClInclude Include="..\..\src\Lair\Sound\Sound.h" />
     <ClInclude Include="..\..\src\Lair\Texture\Texture.h" />
     <ClInclude Include="..\..\src\macros.h" />
     <ClInclude Include="..\..\src\Math\Matrix2x2.h" />
@@ -208,17 +217,14 @@
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\menu.h" />
-    <ClInclude Include="..\..\src\objLoader\Obj.h" />
-    <ClInclude Include="..\..\src\minIni\minGlue.h" />
-    <ClInclude Include="..\..\src\minIni\minIni.h" />
     <ClInclude Include="..\..\src\Sprite\Sequence.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Sprite\Sprite.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\src\freeglut-2.4.0\Release\freeglut.lib" />
-    <Library Include="..\..\src\freeglut-2.4.0\ReleaseStatic\freeglut_static.lib" />
+    <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
+    <Library Include="..\..\sdk\freeglut-2.4.0\ReleaseStatic\freeglut_static.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\src\Sprite\sample.spr" />
