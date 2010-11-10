@@ -219,10 +219,25 @@ void glut_OnExit()
 	 menu_Destroy();
 }
 
+void gl_Init( void )
+{
+	glClearColor(0.0f,0.0f,0.0f,1.0f);
+	glShadeModel(GL_SMOOTH);
+
+	glEnable (GL_LINE_SMOOTH);
+	glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);
+
+	glEnable (GL_POINT_SMOOTH);
+	glHint (GL_POINT_SMOOTH_HINT, GL_NICEST);
+
+	glEnable(GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
 int main( int argc, char** argv )
 {
      glutInit(&argc, argv);
-	 glutInitDisplayMode   ( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH  );
+	 glutInitDisplayMode   ( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL  );
 
      glutInitWindowSize    ( 1280 , 800 );
      glutInitWindowPosition( 25 , 25 );
