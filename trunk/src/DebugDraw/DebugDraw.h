@@ -9,8 +9,6 @@ public:
 	class Color 
 	{
 	public:
-		unsigned long c;
-		Color & operator = (const unsigned long & other ) { c = other; return *this; } 
 		
 		enum E
 		{
@@ -19,8 +17,11 @@ public:
 			eCYAN	= 0xFFFFFF00
 		};
 
-		static Color Random();
-	
+		unsigned long c;
+		Color & operator = (const unsigned long & other ) { c = other; return *this; } 
+		Color & operator = (const Color::E & other ) { c = other; return *this; } 
+		
+		static Color Random();	
 	};
 
 	class Vertex
@@ -42,19 +43,23 @@ public:
 	CDebugDraw( unsigned int	in_nCountLineVB, unsigned int in_nCountFillVB, float in_fLineWidth );
 	virtual ~CDebugDraw();
 
-	void SetColor(const Color& color);
+	void SetColor(const Color& color) { m_cCurrentColor = color; }
+	void SetColor(const Color::E & color ) { m_cCurrentColor = color; }
+	void SetDepth( float in_fDepth ) { m_fCurrDepth = in_fDepth; }
 
 	// Lines
 	void DrawCircle(const Vector2& pos, float radius);
 	void DrawEllipse(const Vector2& pos, float w, float h);
+	void DrawEllipse(const Vector2& pos, float w, float h, float a );
+	void DrawTriangle( const Vector2& pos, float w, float h, float a );
 
 	void DrawLine(const Vector2& posa, const Vector2& posb);
-	void DrawLines( const Vector2* pos, unsigned int count );
+	void DrawLines( Vector2* pos, unsigned int count );
 
-	void DrawRectangle(const Vector2& pos, float width, float height);
+	void DrawRectangle(const Vector2& pos, float width, float height, float angle );
 
-	void DrawPoly(const Vector2& pos, Vector2 poly[], float count );
-	void DrawPoly(const Vector2& pos, Vector2 poly[], float count, float angle );
+	void DrawPoly(const Vector2& pos, Vector2 poly[], unsigned int count );
+	void DrawPoly(const Vector2& pos, Vector2 poly[], unsigned int count, float angle );
 	
 	// Fill
 	void FillCircle(const Vector2& pos, float radius);
@@ -65,8 +70,8 @@ public:
 	void FillTriangle(const Vector2& pos, float width, float height);
 	void FillTriangle(const Vector2& pos, float width, float height, float angle);
 		
-	void FillPoly(const Vector2& pos, Vector2 poly[], float count );
-	void FillPoly(const Vector2& pos, Vector2 poly[], float count, float angle );
+	void FillPoly(const Vector2& pos, Vector2 poly[], unsigned int count );
+	void FillPoly(const Vector2& pos, Vector2 poly[], unsigned int count, float angle );
 
 	// Rendering
 	void Flush();
@@ -77,6 +82,7 @@ public:
 
 private:
 	void FlushCheck( unsigned int in_nCount );	// check the number to add is going to bust the vb
+	void AddContourLinesFromPoints( Vector2* pts, unsigned int count );
 	
 private:
 	Vertex*	m_pLineVB;	// vertex buffer used for line drawing
@@ -84,12 +90,15 @@ private:
 
 	Color	m_cCurrentColor;
 	Vertex*	m_pCurrVertex;
-
+	float	m_fCurrDepth;
 
 	const unsigned int	m_nCountLineVB;
 //	const unsigned int	m_nCountFillVB;
 
-	float			m_fLineWidth;
+	float	m_fLineWidth;
+
+	const unsigned int m_nWorkVectorCount;
+	Vector2*	m_pWorkVector;
 };
 
 
