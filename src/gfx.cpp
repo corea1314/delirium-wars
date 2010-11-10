@@ -9,23 +9,6 @@ Color COLORS::Random()
 	return c;
 }
 
-
-Vertex* ExtrudeSet( Vertex* buffer, int count, float height )
-{
-	Vertex* extrusion = new Vertex[2+count*2];
-
-	int i,k;
-	for(i=0,k=0;i<count;i++,k+=2)
-	{
-		extrusion[k] = extrusion[k+1] = buffer[k];
-		extrusion[k+1].z = extrusion[k+1].z + height;
-	}
-	extrusion[k] = extrusion[k+1] = buffer[0];
-	extrusion[k+1].z = extrusion[k+1].z + height;
-	
-	return extrusion;
-}
-
 void gl_SetColor( Color c )
 {
 	glColor4ubv( (unsigned char*)&c );
@@ -51,21 +34,6 @@ void gl_RenderLines( Vertex* buffer, int start, int count, float lwidth )
 	glLineWidth(1.0f);
 }
 
-void gl_Init( void )
-{
-	glClearColor(0.0f,0.0f,0.0f,1.0f);
-	glShadeModel(GL_SMOOTH);
-
-	glEnable (GL_LINE_SMOOTH);
-	glHint (GL_LINE_SMOOTH_HINT, GL_NICEST);
-	
-	glEnable (GL_POINT_SMOOTH);
-	glHint (GL_POINT_SMOOTH_HINT, GL_NICEST);
-
-	glEnable(GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
 void gl_RenderText( int x, int y, char* text, ... )
 {
 	static char buffer[1024];
@@ -73,9 +41,9 @@ void gl_RenderText( int x, int y, char* text, ... )
 
 	pos[0] = (float)x;
 	pos[1] = (float)y;
-	
+
 	glRasterPos2fv( pos );
-	
+
 	va_list marker;
 	va_start( marker, text );
 	vsprintf( buffer, text, marker );
