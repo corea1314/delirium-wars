@@ -55,6 +55,9 @@
     <Filter Include="bin">
       <UniqueIdentifier>{518332b1-b129-4388-b375-0cb4d8987fc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Game\Tester">
+      <UniqueIdentifier>{2a44049a-99ba-4cfb-9387-9483314c363f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -155,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp">
       <Filter>source\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Game\Tester\Tester.cpp">
+      <Filter>source\Game\Tester</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h">
       <Filter>source\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Game\Tester\Tester.h">
+      <Filter>source\Game\Tester</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

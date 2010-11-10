@@ -156,6 +156,7 @@
     <ClCompile Include="..\..\src\Game\Pods\PodCmdPost.cpp" />
     <ClCompile Include="..\..\src\Game\Pods\PopPump.cpp" />
     <ClCompile Include="..\..\src\Game\Pump.cpp" />
+    <ClCompile Include="..\..\src\Game\Tester\Tester.cpp" />
     <ClCompile Include="..\..\src\Game\Timer.cpp" />
     <ClCompile Include="..\..\src\gfx.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -202,6 +203,7 @@
     <ClInclude Include="..\..\src\Game\Pods\PodPump.h" />
     <ClInclude Include="..\..\src\Game\Pump.h" />
     <ClInclude Include="..\..\src\Game\SigSlot.h" />
+    <ClInclude Include="..\..\src\Game\Tester\Tester.h" />
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
     <ClInclude Include="..\..\src\Lair\Image\Image.h" />
