@@ -3,7 +3,9 @@
 #include "Field.h"
 #include "Clock.h"
 #include "Camera.h"
+#include "Tester/Tester.h"
 #include "../Physics/PhysicsManager.h"
+
 #include "../DebugDraw/DebugDraw.h"
 
 #include "../Lair/Lair.h"
@@ -30,12 +32,19 @@ CEngine::CEngine()
     m_pPhysMan = new CPhysicsManager(this);
 
 	// Create debug draw interface
-	m_pDebugDraw = new CDebugDraw( 1024, 1024, 2.0f );
+	m_pDebugDraw = new CDebugDraw( 1024, 1024, 3.0f );
+
+	// Create tester entity
+	m_pTester = new CTester;
+	m_pTester->Connect( this );
 }
 
 
 CEngine::~CEngine()
 {
+	SAFE_DELETE(m_pTester);
+	m_pTester->Disconnect( this );
+
 	SAFE_DELETE(m_pDebugDraw);
 
 	m_pCamera->Disconnect(this);
