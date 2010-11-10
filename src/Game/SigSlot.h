@@ -2523,7 +2523,56 @@
 	private:	\
 	void name( arg0 val0, arg1 val1, arg2 val2, arg3 val3 ) { m_sig##name.emit(val0,val1,val2,val3); }
 
+#define NEW_PROTECTED_SIGNAL0( name )			\
+	private:						\
+	signal0<> m_sig##name;			\
+	public:							\
+	template<class desttype>	\
+	void Connect_##name(desttype* pclass, void (desttype::*pmemfun)()) { m_sig##name.connect( pclass, pmemfun ); }	\
+	void Disconnect_##name(has_slots<>* pclass) { m_sig##name.disconnect( pclass ); }	\
+	protected:	\
+	void name() { m_sig##name.emit(); }
 
+#define NEW_PROTECTED_SIGNAL1( name, arg0 )	\
+	private:						\
+	signal1<arg0> m_sig##name;		\
+	public:							\
+	template<class desttype>	\
+	void Connect_##name(desttype* pclass, void (desttype::*pmemfun)(arg0)) { m_sig##name.connect( pclass, pmemfun ); }	\
+	void Disconnect_##name(has_slots<>* pclass) { m_sig##name.disconnect( pclass ); }	\
+	protected:	\
+	void name( arg0 val0 ) { m_sig##name.emit( val0 ); }
+
+#define NEW_PROTECTED_SIGNAL2( name, arg0, arg1 )	\
+	private:						\
+	signal2<arg0,arg1> m_sig##name;		\
+	public:							\
+	template<class desttype>	\
+	void Connect_##name(desttype* pclass, void (desttype::*pmemfun)(arg0,arg1)) { m_sig##name.connect( pclass, pmemfun ); }	\
+	void Disconnect_##name(has_slots<>* pclass) { m_sig##name.disconnect( pclass ); }	\
+	protected:	\
+	void name( arg0 val0, arg1 val1 ) { m_sig##name.emit(val0,val1); }
+
+
+#define NEW_PROTECTED_SIGNAL3( name, arg0, arg1, arg2 )	\
+	private:						\
+	signal3<arg0,arg1,arg2> m_sig##name;		\
+	public:							\
+	template<class desttype>	\
+	void Connect_##name(desttype* pclass, void (desttype::*pmemfun)(arg0,arg1,arg2)) { m_sig##name.connect( pclass, pmemfun ); }	\
+	void Disconnect_##name(has_slots<>* pclass) { m_sig##name.disconnect( pclass ); }	\
+	protected:	\
+	void name( arg0 val0, arg1 val1, arg2 val2 ) { m_sig##name.emit(val0,val1,val2); }
+
+#define NEW_PROTECTED_SIGNAL4( name, arg0, arg1, arg2, arg3 )	\
+	private:						\
+	signal4<arg0,arg1,arg2,arg3> m_sig##name;		\
+	public:							\
+	template<class desttype>	\
+	void Connect_##name(desttype* pclass, void (desttype::*pmemfun)(arg0,arg1,arg2,arg3)) { m_sig##name.connect( pclass, pmemfun ); }	\
+	void Disconnect_##name(has_slots<>* pclass) { m_sig##name.disconnect( pclass ); }	\
+	protected:	\
+	void name( arg0 val0, arg1 val1, arg2 val2, arg3 val3 ) { m_sig##name.emit(val0,val1,val2,val3); }
 
 #endif // SIGSLOT_H__
 
