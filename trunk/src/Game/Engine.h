@@ -8,6 +8,7 @@ class CClock;
 class CCamera;
 class CPhysicsManager;
 class CDebugDraw;
+class CTester;
 
 
 //Objects should use the proxy when trying to connect with it
@@ -28,7 +29,7 @@ class CEngineProxy
 
     NEW_SIGNAL1( LoadFile, const char* ); // filename
 
-    NEW_PRIVATE_SIGNAL1( RenderDebug, CDebugDraw* );
+    NEW_PROTECTED_SIGNAL1( RenderDebug, CDebugDraw* );
 };
 
 class CEngine : public CEngineProxy
@@ -42,13 +43,15 @@ public:
 	CField*			GetField() const { return m_pField; }
     CPhysicsManager* GetPhysicsMan() const { return m_pPhysMan; }
 	void RenderDebugDraw();
-	
+
 private:
 	CField*		m_pField;
 	CClock*		m_pClock;
 	CCamera*	m_pCamera;
     CPhysicsManager* m_pPhysMan;
 	CDebugDraw*	m_pDebugDraw;
+	
+	CTester*	m_pTester;		// quick entity to test some signal and game logic (todo: maybe a vector of those and have ppl derive from the base class)
 
 	//todo: add entity factories here
 };
