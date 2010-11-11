@@ -6,13 +6,14 @@
 #include <fmod.hpp>
 #include <fmod_errors.h>
 
+#include <map>
 
 class Sound
 {
 public:
 	bool Load( const std::string& in_szFilename, FMOD::System* in_pFmodSys );
 
-	void Play( bool in_bLoop = false );
+	void Play( bool in_bLoop = false, bool in_bNewChannel = false );
 	void Stop();
 	void Pause( bool in_bPause = true );
 	bool IsPaused();
@@ -38,6 +39,8 @@ public:
 
 private:
 	FMOD::System* m_pFmodSystem;
+
+	std::map< std::string, Sound* > m_mapSound;
 };
 
 #endif//_SOUND_H
