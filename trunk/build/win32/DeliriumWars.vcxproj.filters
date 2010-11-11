@@ -58,6 +58,9 @@
     <Filter Include="source\Game\Tester">
       <UniqueIdentifier>{2a44049a-99ba-4cfb-9387-9483314c363f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\Image\raw">
+      <UniqueIdentifier>{a29148b6-5f3f-4372-a5ee-294d65d51298}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -161,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Tester\Tester.cpp">
       <Filter>source\Game\Tester</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Image\raw\raw.cpp">
+      <Filter>source\Lair\Image\raw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Game\Tester\Tester.h">
       <Filter>source\Game\Tester</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Image\raw\raw.h">
+      <Filter>source\Lair\Image\raw</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
