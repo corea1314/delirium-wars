@@ -27,6 +27,8 @@ class CEngineProxy
     NEW_SIGNAL3( Gamepad2, unsigned int, unsigned int, float* );	// button state, axis count, axis values
     NEW_SIGNAL3( Gamepad3, unsigned int, unsigned int, float* );	// button state, axis count, axis values
 
+	NEW_SIGNAL1( Keyboard, unsigned char );	// key
+
     NEW_SIGNAL1( LoadFile, const char* ); // filename
 
     NEW_PROTECTED_SIGNAL1( RenderDebug, CDebugDraw* );
