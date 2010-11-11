@@ -81,6 +81,8 @@ void App::OnWheelDown()
 
 void App::OnKeyboard( unsigned char key )
 {
+	GetEngine()->Keyboard( key );
+
 	switch(key)
 	{
 	case 127:	// delete
