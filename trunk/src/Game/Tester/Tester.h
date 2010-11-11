@@ -13,16 +13,16 @@ public:
 	CTester();
 
 	void Update( float in_fDeltaTime );
-
 	void RenderDebug( CDebugDraw* );
+	void Keyboard( unsigned char in_cKey );	
 
 	virtual void Connect( CEngine* );
 	virtual void Disconnect( CEngine* );
 
 private:
-	Vector2	m_vPos;
-	CEngine* m_pEngine;
-	float	m_fAngle;
+	Vector2		m_vPos;
+	CEngine*	m_pEngine;
+	float		m_fAngle;
 };
 
 
