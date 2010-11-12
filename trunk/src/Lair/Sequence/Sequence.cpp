@@ -1,14 +1,28 @@
 #include "Sequence.h"
 
-#include "../Lair/Lair.h"
+#include "../Lair.h"
 
 #include <minIni/minIni.h>
 
+#include <algorithm>
 #include <string>
 
-Frame::Frame()
+Frame::Frame() : m_nDuration(0), m_nFrameTime(0), m_fAngle(0), m_pTexture(0)
 {
+	m_pVB[0].depth = 0.0f;
+	m_pVB[1].depth = 0.0f;
+	m_pVB[2].depth = 0.0f;
+	m_pVB[3].depth = 0.0f;
 
+	m_pVB[0].color = 0xFFFFFFFF;
+	m_pVB[1].color = 0xFFFFFFFF;
+	m_pVB[2].color = 0xFFFFFFFF;
+	m_pVB[3].color = 0xFFFFFFFF;
+
+	m_pVB[0].texcoord.Set(0,1);
+	m_pVB[1].texcoord.Set(0,0);
+	m_pVB[2].texcoord.Set(1,1);
+	m_pVB[3].texcoord.Set(1,0);
 }
 
 Frame::~Frame()
@@ -31,8 +45,20 @@ bool Frame::Unload()
 	return true;
 }
 
+void Frame::BuildVB()	//if internal params of a frame change, we need to rebuild the reference VB
+{
+	m_pVB[0].pos = ( m_vExtent[0] - m_vOffset ).GetRotate( m_fAngle );
+	m_pVB[1].pos = ( m_vExtent[1] - m_vOffset ).GetRotate( m_fAngle );
+	m_pVB[2].pos = ( m_vExtent[2] - m_vOffset ).GetRotate( m_fAngle );
+	m_pVB[3].pos = ( m_vExtent[3] - m_vOffset ).GetRotate( m_fAngle );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
+Sequence::Sequence() : m_nDuration(0)
+{
+
+}
 
 
 Sequence::~Sequence()
@@ -55,7 +81,10 @@ bool Sequence::Load( const std::string& in_szFilename )
 		szValue = iniSequence.gets( "Frames", szKey );
 		++i;
 
-	} while( ParseFrameScript( szValue ) );
+	} while( ParseFrameScript( in_szFilename, szKey, szValue ) );
+
+	if( m_vecFrame.size() > 0 )
+		return true;
 
 	return false;
 }
@@ -70,7 +99,7 @@ bool Sequence::Unload()
 	return true;
 }
 
-bool Sequence::ParseFrameScript( std::string& in_szFrameScript )
+bool Sequence::ParseFrameScript( const std::string& in_szFilename, char* in_szKey, std::string& in_szFrameScript )
 {
 //	<string:image> <int:duration(milliseconds)> <number:offset_x(pixel)> <number:offset_y(pixel)> <number:angle(degrees)>  <number:scale_X> <number:scale_y> 
 
@@ -87,20 +116,43 @@ bool Sequence::ParseFrameScript( std::string& in_szFrameScript )
 		
 		if( pFrame->Load(szFilename) )
 		{
-			pFrame->SetAngle(fAngle);
+			m_nDuration += nDuration;
+			pFrame->SetAngle( DEG_TO_RAD(fAngle) );
 			pFrame->SetDuration(nDuration);
+			pFrame->SetFrameTime(m_nDuration);
 			pFrame->SetOffset(vOffset);
 
 			Vector2 vSize( pFrame->GetTexture()->GetWidth()*vScale.x, pFrame->GetTexture()->GetHeight()*vScale.y );
 			pFrame->SetSize(vSize);
 
+			pFrame->BuildVB();
+
 			m_vecFrame.push_back(pFrame);
 			return true;
 		}
 		// something went wrong at this point, delete the allocated frame
+		Lair::GetLogMan()->Log( "Sequence", "Error parsing frame script file: %s key: %s script: %s)", in_szFilename.c_str(), in_szKey, in_szFrameScript.c_str() );
 		delete pFrame;
 	}
 	return false;
+}
+
+Frame* Sequence::GetFrame( unsigned long in_nTime )
+{
+	FrameVectorIterator itFrame = m_vecFrame.begin();
+
+	while( itFrame != m_vecFrame.end() )
+	{
+		if( in_nTime < (*itFrame)->GetFrameTime() )
+			break;
+		++itFrame;
+	}
+
+	if( itFrame != m_vecFrame.end() )
+		return *itFrame;
+
+	Lair::GetLogMan()->Log( "Sequence", "Error computing frame index." );
+	return m_vecFrame[0];	// return first frame in case of error
 }
 
 

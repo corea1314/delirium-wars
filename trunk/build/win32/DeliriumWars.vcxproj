@@ -169,6 +169,7 @@
     <ClCompile Include="..\..\src\Lair\Image\raw\raw.cpp" />
     <ClCompile Include="..\..\src\Lair\Lair.cpp" />
     <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
+    <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp" />
     <ClCompile Include="..\..\src\Lair\Sound\Sound.cpp" />
     <ClCompile Include="..\..\src\Lair\Texture\Texture.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix2x2.cpp" />
@@ -179,7 +180,6 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\..\src\Sprite\Sequence.cpp" />
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
@@ -212,6 +212,7 @@
     <ClInclude Include="..\..\src\Lair\Image\raw\raw.h" />
     <ClInclude Include="..\..\src\Lair\Lair.h" />
     <ClInclude Include="..\..\src\Lair\Log\Log.h" />
+    <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h" />
     <ClInclude Include="..\..\src\Lair\Sound\Sound.h" />
     <ClInclude Include="..\..\src\Lair\Texture\Texture.h" />
     <ClInclude Include="..\..\src\macros.h" />
@@ -223,7 +224,6 @@
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\menu.h" />
-    <ClInclude Include="..\..\src\Sprite\Sequence.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\src\Sprite\Sprite.h" />

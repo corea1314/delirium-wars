@@ -61,6 +61,9 @@
     <Filter Include="source\Lair\Image\raw">
       <UniqueIdentifier>{a29148b6-5f3f-4372-a5ee-294d65d51298}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\Sequence">
+      <UniqueIdentifier>{31921e4e-563e-414e-bf53-774f95556ddc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -123,9 +126,6 @@
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp">
       <Filter>source\Sprite</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Sprite\Sequence.cpp">
-      <Filter>source\Sprite</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp">
       <Filter>source\Physics</Filter>
     </ClCompile>
@@ -167,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Image\raw\raw.cpp">
       <Filter>source\Lair\Image\raw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp">
+      <Filter>source\Lair\Sequence</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,9 +251,6 @@
     <ClInclude Include="..\..\src\Sprite\Sprite.h">
       <Filter>source\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Sprite\Sequence.h">
-      <Filter>source\Sprite</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h">
       <Filter>source\Physics</Filter>
     </ClInclude>
@@ -295,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Image\raw\raw.h">
       <Filter>source\Lair\Image\raw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h">
+      <Filter>source\Lair\Sequence</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
