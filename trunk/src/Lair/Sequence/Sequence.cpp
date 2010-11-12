@@ -143,7 +143,7 @@ Frame* Sequence::GetFrame( unsigned long in_nTime )
 
 	while( itFrame != m_vecFrame.end() )
 	{
-		if( in_nTime < (*itFrame)->GetFrameTime() )
+		if( in_nTime <= (*itFrame)->GetFrameTime() )
 			break;
 		++itFrame;
 	}
