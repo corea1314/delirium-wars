@@ -12,8 +12,8 @@ public:
 	Texture();
 	virtual ~Texture();
 
-	void Bind();
-	void Unbind();
+	void Bind() const;
+	void Unbind() const;
 
 	bool LoadFromImage( Image* );
 	

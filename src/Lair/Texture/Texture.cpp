@@ -15,12 +15,12 @@ Texture::~Texture()
 	glDeleteTextures( 1, &m_nId );
 }
 
-void Texture::Bind()
+void Texture::Bind() const
 {
 	glBindTexture( GL_TEXTURE_2D, m_nId );
 }
 
-void Texture::Unbind()
+void Texture::Unbind() const
 {
 	glBindTexture( GL_TEXTURE_2D, 0 );
 }
