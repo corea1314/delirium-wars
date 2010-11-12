@@ -8,8 +8,6 @@
 #include "Game/Camera.h"
 #include "Game/Field.h"
 
-#include "Sprite/Sequence.h"
-
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
 
@@ -35,10 +33,6 @@ App::App()
 void App::Init()
 {
 	m_pEngine = new CEngine;
-
-	Sequence	seq;
-
-	seq.Load( "sample.spr" );
 }
 
 void App::Exit()
@@ -135,7 +129,10 @@ void App::Render()
 	// todo: remove this test rendering
 //	m_Grid.Render();
 
+	glEnable( GL_TEXTURE_2D );
 	m_pEngine->Render();
+
+	glDisable( GL_TEXTURE_2D );
 	m_pEngine->RenderDebugDraw();
 	
 	glMatrixMode(GL_PROJECTION);
