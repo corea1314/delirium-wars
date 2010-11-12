@@ -125,7 +125,23 @@ bool Sequence::ParseFrameScript( const std::string& in_szFilename, char* in_szKe
 			Vector2 vSize( pFrame->GetTexture()->GetWidth()*vScale.x, pFrame->GetTexture()->GetHeight()*vScale.y );
 			pFrame->SetSize(vSize);
 
-			pFrame->BuildVB();
+			Vector2 vExtent[4];
+			vExtent[0] = Vector2(0,0);
+			vExtent[1] = Vector2(0,vSize.y);
+			vExtent[2] = Vector2(vSize.x,0);
+			vExtent[3] = Vector2(vSize.x,vSize.y);
+
+			vOffset.x *= vScale.x;
+			vOffset.y *= vScale.y;
+
+			Frame::Vertex* pVertex = (Frame::Vertex*)pFrame->GetVB();
+
+			pVertex[0].pos = ( vExtent[0] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
+			pVertex[1].pos = ( vExtent[1] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
+			pVertex[2].pos = ( vExtent[2] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
+			pVertex[3].pos = ( vExtent[3] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
+
+			// pFrame->BuildVB();
 
 			m_vecFrame.push_back(pFrame);
 			return true;
