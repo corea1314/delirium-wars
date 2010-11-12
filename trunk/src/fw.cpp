@@ -221,6 +221,8 @@ void glut_OnExit()
 
 void gl_Init( void )
 {
+	GLeeInit();
+	
 	glClearColor(0.0f,0.0f,0.0f,1.0f);
 	glShadeModel(GL_SMOOTH);
 
