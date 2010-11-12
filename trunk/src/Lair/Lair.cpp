@@ -15,10 +15,12 @@ Lair::Lair()
 	NEW(ImageMan);
 	NEW(TextureMan);
 	NEW(SoundMan);
+	NEW(SequenceMan);
 }
 
 Lair::~Lair()
 {
+	DELETE(SequenceMan);
 	DELETE(SoundMan);
 	DELETE(TextureMan);
 	DELETE(ImageMan);
