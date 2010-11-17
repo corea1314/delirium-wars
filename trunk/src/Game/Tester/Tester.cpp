@@ -43,6 +43,8 @@ void CTester::RenderDebug( CDebugDraw* in_pRD )
 	in_pRD->SetColor( CDebugDraw::Color::eCYAN );
 	in_pRD->DrawEllipse( m_vPos, 64, 32, m_fAngle/2 );
 
+	in_pRD->Text( m_vPos.x, m_vPos.y-64, "Beware of the evil eye." );
+
 }
 
 void CTester::Keyboard( unsigned char in_cKey )
