@@ -42,8 +42,8 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
-	SAFE_DELETE(m_pTester);
 	m_pTester->Disconnect( this );
+	SAFE_DELETE(m_pTester);	
 
 	SAFE_DELETE(m_pDebugDraw);
 
