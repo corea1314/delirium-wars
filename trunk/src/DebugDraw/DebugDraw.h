@@ -3,6 +3,46 @@
 
 #include "../Math/Vector2.h"
 
+class Texture;
+
+class CDebugFont
+{
+public:
+	CDebugFont( const char* in_szFontTextureName ) // Default Font Texture is used if NULL is passed
+	{
+		m_nFontListId = 0;
+		m_pFontTexture = 0;
+		m_nGlyphWidth = 0;
+		m_nGlyphHeight = 0;
+
+		BuildFont(in_szFontTextureName);
+	}
+
+	virtual ~CDebugFont();
+	//	void DrawText( Vector2 in_vPos, const char* in_szText );
+	//	void DrawText( Vector2 in_vPos, Vector2 in_vScale, float in_cTextColor[4], const char* in_szText );
+	void Text( Vector2 in_vPos, const char* in_szText )
+	{
+		static float s_fColor[4] = {1.0f,1.0f,1.0f,1.0f};
+		Text( in_vPos, Vector2(1.0f,1.0f), s_fColor, in_szText );
+	}
+
+	void Text( Vector2 in_vPos, Vector2 in_vScale, float in_cTextColor[4], const char* in_szText );
+
+	inline unsigned int GetGlyphWidth()		{ return m_nGlyphWidth;		}
+	inline unsigned int GetGlyphHeight()	{ return m_nGlyphHeight;	}
+
+private:
+	void BuildFont( const char* in_szFontTextureName );
+
+	unsigned int	m_nFontListId;		// fixme GL Display list
+	Texture*		m_pFontTexture;
+
+	unsigned int	m_nGlyphWidth;
+	unsigned int	m_nGlyphHeight;
+};
+
+
 class CDebugDraw
 {
 public:
@@ -20,6 +60,9 @@ public:
 		unsigned long c;
 		Color & operator = (const unsigned long & other ) { c = other; return *this; } 
 		Color & operator = (const Color::E & other ) { c = other; return *this; } 
+
+		Color( unsigned long _c = 0xFFFFFFFFUL ) : c(_c) {}
+		Color( unsigned int _c ) : c(_c) {}
 		
 		static Color Random();	
 	};
@@ -73,6 +116,8 @@ public:
 	void FillPoly(const Vector2& pos, Vector2 poly[], unsigned int count );
 	void FillPoly(const Vector2& pos, Vector2 poly[], unsigned int count, float angle );
 
+	void Text( int x, int y, char* text, ... );
+
 	// Rendering
 	void Flush();
 	void BeginFrame();
@@ -99,8 +144,9 @@ private:
 
 	const unsigned int m_nWorkVectorCount;
 	Vector2*	m_pWorkVector;
-};
 
+	CDebugFont*	m_pFont;
+};
 
 
 #endif//_DEBUG_DRAW_H
