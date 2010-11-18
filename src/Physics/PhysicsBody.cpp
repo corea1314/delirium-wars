@@ -12,6 +12,7 @@ m_v2ImpulseAccumulator(Vector2(0.0f,0.0f)),
 m_v2Gravity(Vector2(0.0f,0.0f)),
 m_v2Velocity(Vector2(0.0f,0.0f)),
 m_v2PhysicsPosition(Vector2(0.0f,0.0f)),
+m_v2LastPhysicsPosition(Vector2(0.0f,0.0f)),
 m_v2InterpolatedPosition(Vector2(0.0f,0.0f)),
 m_fMass(1.0f),
 m_fInverseMass(1.0f),
@@ -38,30 +39,4 @@ void CPhysicsBody::SetMass( float in_fMass)
 		m_fMass = in_fMass;
 		m_fInverseMass = 1 / in_fMass;
 	}
-/*
-    //Draw debug
-    if(  IsActive() )
-    {
-        Vector2 v2Lower = m_v2PhysicsPosition - m_v2HalfShape;
-        Vector2 v2Higher = m_v2PhysicsPosition + m_v2HalfShape;
-
-        //When everything is on, it is with
-        Vector3 v3Color(0.5f,0.5f,0.5f);
-
-        if( !IsCollisionEnable() )
-        {
-            v3Color.x = 1.0f;
-        }
-
-        if( !IsSimulationEnable() )
-        {
-            v3Color.y = 1.0f;
-        }
-
-        if( !IsCollideWithGrid )
-        {
-            v3Color.z = 1.0f;
-        }
-    }*/
 }
-

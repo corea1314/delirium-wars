@@ -11,22 +11,41 @@ class CPhysicsBody;
 
 class CCollisionBodyOnBodyResult 
 {
-	CPhysicsBody* m_pListenerBody;
+	CPhysicsBody* m_pCallingBody;
 	CPhysicsBody* m_pForeignBody;
+    Vector2 m_v2Normal;
+    float m_fSeparationDistance;
 
 	public :
 
 		CCollisionBodyOnBodyResult()
-			:m_pListenerBody(NULL),
-			m_pForeignBody(NULL)
+			:m_pCallingBody(NULL),
+			m_pForeignBody(NULL),
+            m_v2Normal(Vector2(0.0f,0.0f)),
+            m_fSeparationDistance(0.0f)
 		{}
 		~CCollisionBodyOnBodyResult(){}
 
-		void SetListenerPhysicsBody( CPhysicsBody* in_pListenerPhysicsBody) { m_pListenerBody = in_pListenerPhysicsBody; }
-		CPhysicsBody* GetListenerPhysicsBody() const { return m_pListenerBody; }
+		void SetCallingPhysicsBody( CPhysicsBody* in_pCallingPhysicsBody) { m_pCallingBody = in_pCallingPhysicsBody; }
+		CPhysicsBody* GetCallingPhysicsBody() const { return m_pCallingBody; }
 
 		void SetForeignPhysicsBody( CPhysicsBody* in_pForeignPhysicsBody) { m_pForeignBody = in_pForeignPhysicsBody; }
 		CPhysicsBody* GetForeignPhysicsBody() const{ return m_pForeignBody; }
+
+        void SetNormal( const Vector2& in_v2Normal ){ m_v2Normal = in_v2Normal; }
+        Vector2 GetNormal() const { return m_v2Normal; }
+
+        void SetSeparationDistance( float in_fDistance ) { m_fSeparationDistance = in_fDistance; }
+        float GetSeparationDistance() { return m_fSeparationDistance; }
+
+        //Swap the information of the foreign and the callingbody
+        void SwapBodyInformation()
+        {
+            CPhysicsBody* pTmp = m_pCallingBody;
+            m_pCallingBody = m_pForeignBody;
+            m_pForeignBody = pTmp;
+            m_v2Normal = -m_v2Normal;
+        }
 };
 
 class CCollisionBodyOnGridResult
@@ -89,7 +108,8 @@ private :
 	Vector2 m_v2Gravity;
 	Vector2 m_v2Velocity;
 	Vector2 m_v2PhysicsPosition;
-	//Use this to sync your visual. Will be much smoother.
+    Vector2 m_v2LastPhysicsPosition;
+    //Use this to sync your visual. Will be much smoother.
 	Vector2 m_v2InterpolatedPosition;
 
 	float m_fMass;
@@ -119,8 +139,8 @@ public :
 	//Have OnFirstCollision and OnLastCollision at some point would be great. We need the physics manager to cache collision in order to do that
 	//You can specify if you want to listen to a specific body via the collision listener
 	//User can filter on his own if he wants to listen a specific pair of bodies
-	NEW_SIGNAL2( PhysicsBodyOnBodyCollision, CCollisionBodyOnBodyResult*, CPhysicsBody* );
-	NEW_SIGNAL2( PhysicsBodyOnGridCollision, CCollisionBodyOnGridResult*, CPhysicsBody* );
+	NEW_SIGNAL1( PhysicsBodyOnBodyCollision, CCollisionBodyOnBodyResult*);
+	NEW_SIGNAL1( PhysicsBodyOnGridCollision, CCollisionBodyOnGridResult*);
 
 	//Post substep stuff
 	NEW_SIGNAL1( PhysicsBodyOnPostSync, CPhysicsBody*);
@@ -173,6 +193,9 @@ public :
 	void SetPhysicsPosition( const Vector2 & in_v2WorldPhysicsPosition ) { m_v2PhysicsPosition = in_v2WorldPhysicsPosition; }
 	void TranslatePhysicsPosition( const Vector2 & in_v2PhysicsTranslation ) { m_v2PhysicsPosition += in_v2PhysicsTranslation; }
 	Vector2 GetPhysicsPosition() const { return m_v2PhysicsPosition; }
+
+    Vector2 GetLastPhysicsPosition() const { return m_v2LastPhysicsPosition; }
+    void SetLastPhysicsPosition(Vector2 val) { m_v2LastPhysicsPosition = val; }
 
 	void SetInterpolatedPosition( const Vector2 & in_v2InterpolatedPosition ) { m_v2InterpolatedPosition = in_v2InterpolatedPosition; }
 	Vector2 GetInterpolatedPosition() const { return m_v2InterpolatedPosition; }

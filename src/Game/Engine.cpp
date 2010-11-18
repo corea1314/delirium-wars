@@ -29,7 +29,8 @@ CEngine::CEngine()
 	m_pCamera = new CCamera;
 	m_pCamera->Connect(this);
 
-    m_pPhysMan = new CPhysicsManager(this);
+    m_pPhysMan = new CPhysicsManager();
+    m_pPhysMan->Connect( this );
 
 	// Create debug draw interface
 	m_pDebugDraw = new CDebugDraw( 1024, 1024, 3.0f );
@@ -37,6 +38,8 @@ CEngine::CEngine()
 	// Create tester entity
 	m_pTester = new CTester;
 	m_pTester->Connect( this );
+
+    m_pTester->BuildPhysicsScene();
 }
 
 

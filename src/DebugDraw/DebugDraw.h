@@ -58,11 +58,13 @@ public:
 		};
 
 		unsigned long c;
+        Color():c(eWHITE) {}
+        Color( unsigned long _c ) : c(_c) {}
+        Color( unsigned int _c ) : c(_c) {}
+
 		Color & operator = (const unsigned long & other ) { c = other; return *this; } 
 		Color & operator = (const Color::E & other ) { c = other; return *this; } 
 
-		Color( unsigned long _c = 0xFFFFFFFFUL ) : c(_c) {}
-		Color( unsigned int _c ) : c(_c) {}
 		
 		static Color Random();	
 	};
