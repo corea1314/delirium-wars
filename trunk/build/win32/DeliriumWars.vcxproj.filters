@@ -64,6 +64,9 @@
     <Filter Include="source\Lair\Sequence">
       <UniqueIdentifier>{31921e4e-563e-414e-bf53-774f95556ddc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Game\Tile">
+      <UniqueIdentifier>{2535d850-c2ba-4f74-a129-e8d3079c8ff5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -170,6 +173,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp">
       <Filter>source\Lair\Sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Game\Tile\Tile.cpp">
+      <Filter>source\Game\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h">
       <Filter>source\Lair\Sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Game\Tile\Tile.h">
+      <Filter>source\Game\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
