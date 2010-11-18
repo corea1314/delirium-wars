@@ -305,10 +305,10 @@ void CDebugFont::BuildFont( const char* in_szFontTextureName )
 		glNewList( m_nFontListId + i, GL_COMPILE );
 
 		glBegin( GL_TRIANGLE_STRIP );
-		glTexCoord2f( uvMax.x, uvMin.y ); glVertex3f( 16.0f, 16.0f, 0.0f  ); 
-		glTexCoord2f( uvMax.x, uvMax.y ); glVertex3f( 16.0f,  0.0f, 0.0f  ); 
-		glTexCoord2f( uvMin.x, uvMin.y ); glVertex3f(  0.0f, 16.0f, 0.0f  ); 
-		glTexCoord2f( uvMin.x, uvMax.y ); glVertex3f(  0.0f,  0.0f, 0.0f  ); 
+		glTexCoord2f( uvMax.x, uvMax.y ); glVertex3f( 16.0f, 16.0f, 0.0f  ); 
+		glTexCoord2f( uvMax.x, uvMin.y ); glVertex3f( 16.0f,  0.0f, 0.0f  ); 
+		glTexCoord2f( uvMin.x, uvMax.y ); glVertex3f(  0.0f, 16.0f, 0.0f  ); 
+		glTexCoord2f( uvMin.x, uvMin.y ); glVertex3f(  0.0f,  0.0f, 0.0f  ); 
 		glEnd();
 
 		glTranslatef( FONT_CHAR_WIDTH, 0.0f, 0.0f );
