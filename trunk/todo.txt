@@ -26,6 +26,7 @@ ENGINE
 - Have some sort of cheezy physics/collision detection engine
 ** Make sure pods and ground collides
 ** Make sure we can shoot pods (ballistics)
+** Internal refactoring: body signal need to be transfer to physics manager so we do not have "big loops" several times per update.
 
 - Better handle multiple inputs for multiplayer
 ** If playing on same computer

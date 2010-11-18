@@ -3,40 +3,46 @@
 #include "PhysicsBody.h"
 #include "../Game/Field.h"
 #include "../Game/Engine.h"
+#include "../DebugDraw/DebugDraw.h"
+#include <vector>
 
-CPhysicsManager::CPhysicsManager(CEngineProxy* in_pEngineProxy, float in_fTimeResolution , int in_mMaximumSubStep)
+CPhysicsManager::CPhysicsManager(float in_fTimeResolution , int in_mMaximumSubStep)
 :m_fTimeResolution(in_fTimeResolution),
 m_nMaxSubStep(in_mMaximumSubStep),
 m_fTimeAccumulator(0.0f),
 m_pGrid(NULL),
-m_pEngineProxy(m_pEngineProxy)
+m_pEngineProxy(m_pEngineProxy),
+m_unNbCollision(0)
 {
-
 }
 CPhysicsManager::~CPhysicsManager()
 {
-
+    void DestroyAllBody();
 }
 
-int CPhysicsManager::Update( float in_fDeltaTime )
+void CPhysicsManager::Update( float in_fDeltaTime )
 {
 	int nSubstepCounter = 0;
 	m_fTimeAccumulator += in_fDeltaTime;
 
-	float fTimeLeft = fmodf(m_fTimeAccumulator,in_fDeltaTime);
-	float fFraction = fTimeLeft / in_fDeltaTime;
+	float fTimeLeft = fmodf(m_fTimeAccumulator,m_fTimeResolution);
+	float fFraction = fTimeLeft / m_fTimeResolution;
 	//Do not want to use modf and convert from float to int, so I iterate using m_fTimeAccumulator
 
-	while( m_fTimeAccumulator > GetTimeResolution() && nSubstepCounter <= GetMaximumSubStep() )
-	{
-		PhysicsSubStep( in_fDeltaTime, in_fDeltaTime );
-		m_fTimeAccumulator -= in_fDeltaTime;
-		nSubstepCounter++;
-	}
-
+    if( m_fTimeAccumulator > GetTimeResolution() )
+    {
+	    while( m_fTimeAccumulator > GetTimeResolution() && nSubstepCounter != GetMaximumSubStep() )
+	    {
+		    PhysicsSubStep( m_fTimeResolution, fFraction );
+		    m_fTimeAccumulator -= m_fTimeResolution;
+		    nSubstepCounter++;
+	    }
+    }else
+    {
+        ComputeInterpolationAndSync(fFraction);
+    }
 	//Force time accumulator to the time left so in fact, we do get late in the simulation if update is taking too long)
 	m_fTimeAccumulator = fTimeLeft;
-	return nSubstepCounter;
 }
 
 void CPhysicsManager::PhysicsSubStep( float in_fDeltaTime, float in_fInterpolationRatio)
@@ -91,19 +97,20 @@ void CPhysicsManager::ApplyPhysics( float in_fDeltaTime, float in_fInterpolation
 		CPhysicsBody* pBody = m_vPhysicsBody[i];
 		if( pBody->IsSimulationEnable() )
 		{
-			Vector2 v2OldPosition( pBody->GetPhysicsPosition() );
-			//Simplest integration computation. We can refine this later...
-			Vector2 v2impulseToApply( pBody->GetForce() * in_fDeltaTime + pBody->GetImpulse() );
-			Vector2 v2DeltaVelocity( pBody->GetInverseMass() * v2impulseToApply + pBody->GetGravity() * in_fDeltaTime );
-			pBody->SetVelocity( v2DeltaVelocity + m_vPhysicsBody[i]->GetVelocity() );
-			Vector2 v2DeltaPosition(v2DeltaVelocity * in_fDeltaTime);
-			pBody->TranslatePhysicsPosition( v2DeltaPosition );
+            Vector2 v2OldPosition( pBody->GetPhysicsPosition() );
+            //Simplest integration computation. We can refine this later...
+            Vector2 v2impulseToApply( (pBody->GetForce() + pBody->GetGravity() * pBody->GetMass()) * in_fDeltaTime + pBody->GetImpulse()  );
+            Vector2 v2DeltaVelocity( v2impulseToApply * pBody->GetInverseMass() );
+            pBody->SetVelocity( v2DeltaVelocity + m_vPhysicsBody[i]->GetVelocity() );
+            //x(new) = x(old) + v * dt + 1/2 * F * dt^2
+            Vector2 v2DeltaPosition( (pBody->GetVelocity() + 0.5f * v2DeltaVelocity ) * in_fDeltaTime);
+            pBody->SetLastPhysicsPosition( pBody->GetPhysicsPosition() );
+            pBody->TranslatePhysicsPosition( v2DeltaPosition );
+            //Compute interpolation
+            pBody->SetInterpolatedPosition( v2OldPosition + in_fInterpolationRatio * v2DeltaPosition );
 
-			//Compute interpolation
-			pBody->SetInterpolatedPosition( v2OldPosition + in_fInterpolationRatio * v2DeltaPosition );
-
-			//Reset force and impulse accumulator
-			pBody->ResetAccumulator();
+            //Reset force and impulse accumulator
+            pBody->ResetAccumulator();
 		}
 	}
 }
@@ -123,25 +130,66 @@ void CPhysicsManager::HandleCollisionBodyOnBody()
 			{
 				if( m_vActivePhysicsBody[j]->IsCollisionEnable() && ((m_vActivePhysicsBody[i]->GetMyMask() & m_vActivePhysicsBody[j]->GetCollideWithMask()) != 0) && ((m_vActivePhysicsBody[j]->GetMyMask() & m_vActivePhysicsBody[i]->GetCollideWithMask()) != 0))
 				{
+                    CPhysicsBody* pCallingBody = m_vActivePhysicsBody[i];
+                    CPhysicsBody* pForeignBody = m_vActivePhysicsBody[j];
 					//Try colliding body i and j with aab
-					Vector2 v2FirstBodyLower( m_vActivePhysicsBody[i]->GetPhysicsPosition() - m_vActivePhysicsBody[i]->GetHalfShape() );
-					Vector2 v2FirstBodyHigher( m_vActivePhysicsBody[i]->GetPhysicsPosition() + m_vActivePhysicsBody[i]->GetHalfShape() );
-					Vector2 v2SecondBodyLower( m_vActivePhysicsBody[j]->GetPhysicsPosition() - m_vActivePhysicsBody[j]->GetHalfShape() );
-					Vector2 v2SecondBodyHigher( m_vActivePhysicsBody[j]->GetPhysicsPosition() + m_vActivePhysicsBody[j]->GetHalfShape() );
+					Vector2 v2CallingBodyLower( pCallingBody->GetPhysicsPosition() - pCallingBody->GetHalfShape() );
+					Vector2 v2CallingBodyHigher( pCallingBody->GetPhysicsPosition() + pCallingBody->GetHalfShape() );
+					Vector2 v2ForeignBodyLower( pForeignBody->GetPhysicsPosition() - pForeignBody->GetHalfShape() );
+					Vector2 v2ForeignBodyHigher( pForeignBody->GetPhysicsPosition() + pForeignBody->GetHalfShape() );
 					//Assume most of the time bodies will not collide
-					if( (v2FirstBodyHigher.x >= v2SecondBodyLower.x && v2FirstBodyLower.x <= v2SecondBodyHigher.x) || (v2SecondBodyHigher.x >= v2FirstBodyLower.x && v2SecondBodyLower.x <= v2FirstBodyHigher.x) )
+					if( (v2CallingBodyHigher.x > v2ForeignBodyLower.x && v2CallingBodyLower.x < v2ForeignBodyHigher.x) || (v2ForeignBodyHigher.x > v2CallingBodyLower.x && v2ForeignBodyLower.x < v2CallingBodyHigher.x) )
 					{
-						if( (v2FirstBodyHigher.y >= v2SecondBodyLower.y && v2FirstBodyLower.y <= v2SecondBodyHigher.y) || (v2SecondBodyHigher.y >= v2FirstBodyLower.y && v2SecondBodyLower.y <= v2FirstBodyHigher.y) )
+						if( (v2CallingBodyHigher.y > v2ForeignBodyLower.y && v2CallingBodyLower.y < v2ForeignBodyHigher.y) || (v2ForeignBodyHigher.y > v2CallingBodyLower.y && v2ForeignBodyLower.y < v2CallingBodyHigher.y) )
 						{
 							//We collide! Cheezus!
 							//todo: have dynamically extendable pool of collision results and a cache to have collision lifetime.
 							CCollisionBodyOnBodyResult* pNewResult = new CCollisionBodyOnBodyResult();
 
-							bool bFirstLeft = m_vActivePhysicsBody[i]->GetPhysicsPosition().x < m_vActivePhysicsBody[j]->GetPhysicsPosition().x;
-							bool bFirstHigher = m_vActivePhysicsBody[i]->GetPhysicsPosition().y < m_vActivePhysicsBody[j]->GetPhysicsPosition().y;
+                            Vector2 v2SeparationVector;
+							bool bCallingLeft = pCallingBody->GetPhysicsPosition().x < pForeignBody->GetPhysicsPosition().x;
+							bool bCallingHigher = pCallingBody->GetPhysicsPosition().y > pForeignBody->GetPhysicsPosition().y;
+                            //Todo: Might need to be more precise here. Take account of the last position to have a more precise separation vector
+                            //Separation goes away from calling body.
+                            if( bCallingLeft )
+                            {
+                               v2SeparationVector.x = v2CallingBodyHigher.x- v2ForeignBodyLower.x;
+                            }else
+                            {
+                               v2SeparationVector.x = v2CallingBodyLower.x - v2ForeignBodyHigher.x;
+                            }
 
-							pNewResult->SetListenerPhysicsBody( m_vActivePhysicsBody[i] );
-							pNewResult->SetForeignPhysicsBody( m_vActivePhysicsBody[i] );
+                            if( bCallingHigher )
+                            {
+                                v2SeparationVector.y = v2CallingBodyLower.y - v2ForeignBodyHigher.y;
+                            }else
+                            {
+                                v2SeparationVector.y = v2CallingBodyHigher.y - v2ForeignBodyLower.y;
+                            }
+
+                            if( v2SeparationVector.x != 0.0f || v2SeparationVector.y != 0.0f )
+                            {
+                                //Take the shortest distance for now... assume no tunneling :-/
+                                if( abs(v2SeparationVector.x) < abs(v2SeparationVector.y) )
+                                {
+                                    v2SeparationVector.y = 0;
+                                }else
+                                {
+                                    v2SeparationVector.x = 0;
+                                }
+                            }
+
+                            if( v2SeparationVector.x != 0.0f && v2SeparationVector.y != 0.0f )
+                            {
+                                assert("CPhysicsManager::HandleCollisionBodyOnBody - Separation vector is null!");
+                            }
+
+                            double dDistance =  Vector2::Normalize(v2SeparationVector);
+
+							pNewResult->SetCallingPhysicsBody( pCallingBody );
+							pNewResult->SetForeignPhysicsBody( pForeignBody );
+                            pNewResult->SetNormal( v2SeparationVector );
+                            pNewResult->SetSeparationDistance( static_cast<float>(dDistance) );
 							vBodyOnBody.push_back( pNewResult );
 						}
 					}
@@ -151,19 +199,15 @@ void CPhysicsManager::HandleCollisionBodyOnBody()
 		}
 
 	}
+    m_unNbCollision = vBodyOnBody.size();
 
 	//All collision are handled. now call the callbacks
 	//OnCollision
 	for( i = 0; i < vBodyOnBody.size(); ++i)
 	{
-		vBodyOnBody[i]->GetListenerPhysicsBody()->PhysicsBodyOnBodyCollision( vBodyOnBody[i], vBodyOnBody[i]->GetListenerPhysicsBody() );
-
-		//swapping body info
-		CPhysicsBody* pTmp = vBodyOnBody[i]->GetListenerPhysicsBody();
-		vBodyOnBody[i]->SetListenerPhysicsBody( vBodyOnBody[i]->GetForeignPhysicsBody() );
-		vBodyOnBody[i]->SetForeignPhysicsBody( pTmp );
-
-		vBodyOnBody[i]->GetListenerPhysicsBody()->PhysicsBodyOnBodyCollision( vBodyOnBody[i],vBodyOnBody[i]->GetListenerPhysicsBody() );
+		vBodyOnBody[i]->GetCallingPhysicsBody()->PhysicsBodyOnBodyCollision( vBodyOnBody[i] );
+        vBodyOnBody[i]->SwapBodyInformation();
+        vBodyOnBody[i]->GetCallingPhysicsBody()->PhysicsBodyOnBodyCollision( vBodyOnBody[i] );
 
 		//clean up the temporary structure while being here
 		SAFE_DELETE( vBodyOnBody[i] );
@@ -237,7 +281,7 @@ void CPhysicsManager::HandleCollisionBodyOnGrid()
 
         for( i = 0; i < vBodyOnGridCollide.size(); ++i)
         {
-            vBodyOnGridCollide[i]->GetPhysicsBody()->PhysicsBodyOnGridCollision( vBodyOnGridCollide[i], vBodyOnGridCollide[i]->GetPhysicsBody() );
+            vBodyOnGridCollide[i]->GetPhysicsBody()->PhysicsBodyOnGridCollision( vBodyOnGridCollide[i] );
             //Delete the temporary structure while being here
             SAFE_DELETE( vBodyOnGridCollide[i] );
         }
@@ -286,5 +330,78 @@ void CPhysicsManager::DestroyAllBody()
 		SAFE_DELETE( m_vPhysicsBody[i] );
 	}
 	m_vPhysicsBody.clear();
+    m_vActivePhysicsBody.clear();
 }
 
+void CPhysicsManager::ComputeInterpolationAndSync( float in_fInterpolationRatio )
+{
+    unsigned int i;
+    //PreSync
+    for( i = 0; i < m_vActivePhysicsBody.size(); ++i)
+    {
+        m_vActivePhysicsBody[i]->PhysicsBodyOnPreSync(m_vPhysicsBody[i]);
+    }
+
+
+    for( i = 0; i < m_vActivePhysicsBody.size(); ++i)
+    {
+        CPhysicsBody* pBody = m_vActivePhysicsBody[i];
+        if( pBody->IsSimulationEnable() )
+        {
+            //Compute interpolation
+            pBody->SetInterpolatedPosition( pBody->GetLastPhysicsPosition() + in_fInterpolationRatio * ( pBody->GetPhysicsPosition() - pBody->GetLastPhysicsPosition() ) );
+        }
+    }
+
+    //PostSync
+    for( i = 0; i < m_vActivePhysicsBody.size(); ++i)
+    {
+        m_vActivePhysicsBody[i]->PhysicsBodyOnPostSync(m_vPhysicsBody[i]);
+    }
+}
+
+void CPhysicsManager::RenderDebug( CDebugDraw* in_pDebugDrawer )
+{
+    unsigned int i;
+    for( i = 0; i < m_vActivePhysicsBody.size(); ++i )
+    {
+        CPhysicsBody* pPhysicsBody = m_vActivePhysicsBody[i];
+        //When everything is on, it is with
+        Color oColor = CDebugDraw::Color::eGREY;
+
+        if( !pPhysicsBody->IsCollisionEnable() )
+        {
+            oColor -= 0x007F0000UL;
+        }
+
+        if( !pPhysicsBody->IsSimulationEnable() )
+        {
+            oColor -= 0x00007F00UL;
+        }
+
+        if( !pPhysicsBody->IsCollideWithGrid() )
+        {
+            oColor -= 0x0000007FUL;
+        }
+       in_pDebugDrawer->SetColor( oColor );
+       in_pDebugDrawer->DrawRectangle( pPhysicsBody->GetPhysicsPosition(), pPhysicsBody->GetShape().x, pPhysicsBody->GetShape().y, 0.0f );
+    }
+
+    in_pDebugDrawer->Text( -600, 350, "Active: %u",m_vActivePhysicsBody.size());
+    in_pDebugDrawer->Text( -600, 330, "Total: %u",m_vPhysicsBody.size());
+    in_pDebugDrawer->Text( -600, 310, "Collision: %u",m_unNbCollision);
+}
+
+void CPhysicsManager::Connect( CEngineProxy* in_pEngineProxy )
+{
+    m_pEngineProxy = in_pEngineProxy;
+    m_pEngineProxy->Connect_RenderDebug( this, &CPhysicsManager::RenderDebug );
+    m_pEngineProxy->Connect_Update( this, &CPhysicsManager::Update );
+}
+
+void CPhysicsManager::Disconnect()
+{
+    m_pEngineProxy->Disconnect_Update( this );
+    m_pEngineProxy->Disconnect_RenderDebug( this );
+    m_pEngineProxy = NULL;
+}

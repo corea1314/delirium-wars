@@ -7,8 +7,9 @@
 class CField;
 class CPhysicsBody;
 class CEngineProxy;
+class CDebugDraw;
 //This is mean to be the physics engine. It will implement the main update loop and will broadcast physics signal so the syncher an collision listener can operate.
-class CPhysicsManager
+class CPhysicsManager : public has_slots<>
 {
 	private :
 		float m_fTimeResolution;
@@ -19,18 +20,21 @@ class CPhysicsManager
 
         CEngineProxy* m_pEngineProxy;
 
+        //Debug
+        unsigned int m_unNbCollision;
+
 		//We choose vector because it is easier to iterate over it and pushing new elements is very fast
 		std::vector<CPhysicsBody*> m_vPhysicsBody;
 		std::vector<CPhysicsBody*> m_vActivePhysicsBody;
-		//std::vector<CCollisionBodyOnBodyResult*> m_vBodyOnBody;
 
 		void PhysicsSubStep( float in_fDeltaTime , float in_fInterpolationRatio);
 		void ApplyPhysics( float in_fDeltaTime, float in_fInterpolationRatio);
+        void ComputeInterpolationAndSync( float in_fInterpolationRatio );
 		void HandleCollisionBodyOnBody();
         void HandleCollisionBodyOnGrid();
 
 	public :
-		CPhysicsManager( CEngineProxy* in_pEngineProxy, float in_fTimeResolution = 0.1666 , int in_mMaximumSubStep = 0 );
+		CPhysicsManager( float in_fTimeResolution = 0.01666f , int in_mMaximumSubStep = 10 );
 		~CPhysicsManager();
 
 		void SetMaximumSubStep( int in_nMaxSubStep ) { m_nMaxSubStep = in_nMaxSubStep = 10; }
@@ -40,14 +44,17 @@ class CPhysicsManager
 		float GetTimeResolution() const { return m_fTimeResolution; }
 
 		//Return the amount of substep accomplished
-		int Update( float in_fDeltaTime );
+		void Update( float in_fDeltaTime );
+
+        void Connect( CEngineProxy* in_pEngineProxy );
+        void Disconnect(  );
 
 		//Body creation/getter/destruction methods
 		//Create
 		//Object are always in the world but are not activated by default. Call Activate(true) on a body to activate it.
 		CPhysicsBody* CreatePhysicsBody(const char * in_szName);
 		int GetPhysicsBodyCount() const { return m_vPhysicsBody.size(); }
-		//Allowas you to iterate over all bodies
+		//Allows you to iterate over all bodies
 		CPhysicsBody* GetPhysicsBody( int in_nIndex ) const;
 
 		//Destroy
@@ -56,6 +63,8 @@ class CPhysicsManager
 
         CField* GetGrid() const { return m_pGrid; }
         void SetGrid(CField* val) { m_pGrid = val; }
+
+        void RenderDebug( CDebugDraw* in_pDebugDrawer );
 };
 
 
