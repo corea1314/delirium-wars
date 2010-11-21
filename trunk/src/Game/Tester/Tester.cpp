@@ -25,8 +25,8 @@ void CTester::Update( float in_fDeltaTime )
 
 	m_fAngle = t;
 
-	m_vPos.x = cos( m_fAngle )	* 256;
-	m_vPos.y = sin( m_fAngle * 2 ) * 256;
+	m_vPos.x = cos( m_fAngle )	* 256.0f;
+	m_vPos.y = sin( m_fAngle * 2 ) * 256.0f;
 
 	m_pSprite->Update( in_fDeltaTime );
 }
