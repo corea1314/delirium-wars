@@ -7,6 +7,7 @@
 #include "Game/Engine.h"
 #include "Game/Camera.h"
 #include "Game/Field.h"
+#include "Game/Clock.h"
 
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
@@ -26,6 +27,10 @@ App::App()
 	Buttons[0] = 0;
 	Buttons[1] = 0;
 	Buttons[2] = 0;
+
+	fps = 0;
+	fps_average = 0;
+	fps_time = 0.0f;
 }
 
 #include "objLoader/obj.h"
@@ -114,6 +119,15 @@ void App::OnOpenFile( const char* in_szFilename )
 
 void App::Render()
 {
+	++fps;
+	if( fps_time < m_pEngine->GetClock()->GetTotalTime() )
+	{
+		fps_average += fps;
+		fps_average /= 2;
+		fps_time = m_pEngine->GetClock()->GetTotalTime() + 1.0f;
+		fps = 0;
+	}
+
 	Vector2 vPos = GetEngine()->GetCamera()->GetPos();
 	float fZoom = GetEngine()->GetCamera()->GetZoom();
 
@@ -144,7 +158,7 @@ void App::Render()
 	m_pEngine->RenderGUI();
 
 	gl_SetColor(COLORS::eWHITE);
-	gl_RenderText( 8, 8, "Zoom: %0.1fX -- w:%d, %d", m_pEngine->GetCamera()->GetZoom(), w, h );
+	gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", fps, fps_average, m_pEngine->GetCamera()->GetZoom(), w, h );
 }
 
 void App::Update( float dt )
