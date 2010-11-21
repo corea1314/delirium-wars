@@ -4,6 +4,8 @@
 int g_time = 0;
 int g_delta_time = 0;
 
+#define MAX_DELTA_TIME	15
+
 #include "app.h"
 
 #include "Game/Engine.h"
@@ -121,8 +123,6 @@ void glut_OnMotion(int x,int y)
 			//todo: scrolling here using d.x, d.y
 		}
 	}
-
-	glutPostRedisplay();
 }
 
 #if !defined(GLUT_WHEEL_UP)
@@ -155,8 +155,6 @@ void glut_OnMouse(int b,int s,int x,int y)
 	default:
 		break;
 	}
-
-	glutPostRedisplay();
 }
 
 void glut_OnKeyboard(unsigned char key, int posX, int posY )
@@ -204,12 +202,6 @@ void glut_OnJoystickEx( unsigned int gamepad, unsigned int buttons, int axe_coun
 
 void glut_OnIdle()
 {
-	g_delta_time =  glutGet(GLUT_ELAPSED_TIME) - g_time;
-	g_time =  glutGet(GLUT_ELAPSED_TIME);
-
-	g_App.Update( g_delta_time / 1000.0f );
-	
-	glutPostRedisplay();
 }
 
 void glut_OnExit()
@@ -236,20 +228,40 @@ void gl_Init( void )
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void glut_OnTimer( int k )
+{
+	g_delta_time =  glutGet(GLUT_ELAPSED_TIME) - g_time;
+	g_time =  glutGet(GLUT_ELAPSED_TIME);
+
+	/*
+	char szTitle[32];
+	sprintf( szTitle, "%d", g_delta_time );
+	glutSetWindowTitle( szTitle );
+	*/
+	int delta_time = g_delta_time;
+	while( delta_time > MAX_DELTA_TIME )
+	{
+		g_App.Update( MAX_DELTA_TIME / 1000.0f );
+		delta_time -= MAX_DELTA_TIME;
+	}
+	g_App.Update( delta_time / 1000.0f );
+
+	glutTimerFunc( MAX_DELTA_TIME, glut_OnTimer, 0 );
+	glutPostRedisplay();
+}
+
 int main( int argc, char** argv )
 {
      glutInit(&argc, argv);
 	 glutInitDisplayMode   ( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL  );
 
      glutInitWindowSize    ( 1280 , 800 );
-     glutInitWindowPosition( 25 , 25 );
+     glutInitWindowPosition( 0 , 0 );
      
 	 glutCreateWindow( "Delirium Wars alpha" );
 	 
 	 menu_Create();
 
-	 g_App.Init();
-     
 	 glutDisplayFunc(glut_OnDisplay);
      glutReshapeFunc(glut_OnReshape);
 	 glutMouseFunc(glut_OnMouse);
@@ -257,11 +269,17 @@ int main( int argc, char** argv )
 	 glutKeyboardFunc(glut_OnKeyboard);
 	 glutSpecialFunc(glut_OnSpecialKey);
 	 glutJoystickExFunc( glut_OnJoystickEx, 0 );
-	 glutIdleFunc( glut_OnIdle );	 
+	 glutIdleFunc( glut_OnIdle );
 
      gl_Init();
 
 	 atexit(glut_OnExit);
+
+	 glutTimerFunc( MAX_DELTA_TIME, glut_OnTimer, 0 );
+
+	 g_delta_time = 0;
+	 g_time =  glutGet(GLUT_ELAPSED_TIME);
+	 g_App.Init();
 
 	 glutMainLoop();
 
