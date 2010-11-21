@@ -55,6 +55,10 @@ public:
 	// todo: better handle window change event variables from framework
 	int w;
 	int h;
+
+	int fps;
+	int fps_average;
+	float fps_time;
 		
 	CEngine* GetEngine() const { return m_pEngine; }
 
