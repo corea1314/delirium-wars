@@ -43,10 +43,16 @@ public:
 	inline Vector2	operator*(_tvec2 n)	const			{ return Vector2(x*n, y*n);			}
 	inline Vector2	operator/(_tvec2 n)	const			{ return Vector2(x/n, y/n);			}
 	
-	inline Vector2&	operator+=(const Vector2& v)		{ x+=v.x; y+=v.y; return *this;	}
-	inline Vector2&	operator-=(const Vector2& v)		{ x-=v.x; y-=v.y; return *this;	}
+	inline Vector2	operator*(Vector2& v)	const		{ return Vector2(x*v.x, y*v.y);		}
+	inline Vector2	operator/(Vector2& v)	const		{ return Vector2(x/v.x, y/v.y);		}
+	
+	inline Vector2&	operator+=(const Vector2& v)		{ x+=v.x; y+=v.y; return *this;		}
+	inline Vector2&	operator-=(const Vector2& v)		{ x-=v.x; y-=v.y; return *this;		}
 	inline Vector2&	operator*=(_tvec2 n)				{ x*=n; y*=n;  return *this;		}
 	inline Vector2&	operator/=(_tvec2 n)				{ x/=n; y/=n;  return *this;		}
+
+	inline Vector2&	operator*=( Vector2& v)				{ x*=v.x; y*=v.y;  return *this;	}
+	inline Vector2&	operator/=( Vector2& v)				{ x/=v.x; y/=v.y;  return *this;	}
 	
 	inline _tvec2&	operator[]( const int i )			{ assert(i<2); return *(&x + i);	}
 	inline _tvec2	operator[]( const int i ) const		{ assert(i<2); return *(&x + i);	}
