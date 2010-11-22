@@ -45,14 +45,6 @@ bool Frame::Unload()
 	return true;
 }
 
-void Frame::BuildVB()	//if internal params of a frame change, we need to rebuild the reference VB
-{
-	m_pVB[0].pos = ( m_vExtent[0] - m_vOffset ).GetRotate( m_fAngle );
-	m_pVB[1].pos = ( m_vExtent[1] - m_vOffset ).GetRotate( m_fAngle );
-	m_pVB[2].pos = ( m_vExtent[2] - m_vOffset ).GetRotate( m_fAngle );
-	m_pVB[3].pos = ( m_vExtent[3] - m_vOffset ).GetRotate( m_fAngle );
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 Sequence::Sequence() : m_nDuration(0)
