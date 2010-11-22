@@ -73,8 +73,6 @@ public:
 
 	const Vertex*	GetVB() const { return m_pVB; }
 
-	void BuildVB();
-
 private:
 	unsigned long	m_nDuration;
 	unsigned long	m_nFrameTime;
