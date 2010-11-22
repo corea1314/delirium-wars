@@ -7,27 +7,25 @@
 
 #include "../Math/Vector2.h"
 
-class Frame;
-class Sequence;
+#include "../Lair/Sequence/Sequence.h"
 
 class Sprite
 {
 private:
-	class Transform
-	{
-	public:
-		// perform in those order
-		Vector2		vScale;	
-		float		fRotate;
-		Vector2		vTranslate;		
-	};
-	
 	Sequence*	m_pCurrSequence;
 	Frame*		m_pCurrFrame;
 	bool		m_bIsPlaying;
 	bool		m_bIsLooping;
 
 	float	m_fAnimTime;
+		
+	Frame::Vertex	m_pVB[4];
+
+	Vector2		m_vPos;
+	float		m_fAngle;
+	Vector2		m_vScale;
+
+	void ApplyTransform();
 
 public:
 	Sprite();
@@ -39,11 +37,10 @@ public:
 
 	void Render();
 
+	void Set( float x, float y, float a = 0.0f, float sx = 1.0f, float sy = 1.0f );
+
 	//todo: connect to rendering signal
 };
-
-
-
 
 
 #endif//_SPRITE_H
