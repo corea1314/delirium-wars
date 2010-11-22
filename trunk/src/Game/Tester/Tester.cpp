@@ -28,6 +28,7 @@ void CTester::Update( float in_fDeltaTime )
 	m_vPos.x = cos( m_fAngle )	* 256.0f;
 	m_vPos.y = sin( m_fAngle * 2 ) * 256.0f;
 
+	m_pSprite->SetTransform( m_vPos.x, m_vPos.y );
 	m_pSprite->Update( in_fDeltaTime );
 }
 
@@ -96,7 +97,7 @@ void CTester::BuildPhysicsScene()
 void CTester::CreatePhysicsFallingBody()
 {
     srand ( m_pEngine->GetClock()->GetTotalTime() );
-    float fHorizontalSpeed = 20.0f * static_cast<float>((rand() % 10) - 5);
+    float fHorizontalSpeed = 20.0f * static_cast<float>((rand() % 20) - 10);
     float fVerticalSpeed =  100.0f * static_cast<float>((rand() % 4) + 4);
     //Floor
     CPhysicsBody* pBody = m_pEngine->GetPhysicsMan()->CreatePhysicsBody("Falling body");
