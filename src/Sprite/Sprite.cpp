@@ -3,11 +3,11 @@
 #include "../Lair/Lair.h"
 #include "../Lair/Sequence/Sequence.h"
 
-#include "glee/GLee.h"
+
 
 Sprite::Sprite() : m_pCurrSequence(0), m_pCurrFrame(0), m_bIsPlaying(false), m_bIsLooping(false), m_fAnimTime(0)
 {
-	SetTransform( 0.0f, 0.0f );
+	Set( 0.0f, 0.0f );
 }
 
 void Sprite::Set( float x, float y, float a, float sx, float sy )
@@ -57,22 +57,7 @@ void Sprite::Render()
 {
 	if( m_pCurrFrame )
 	{		
-		ApplyTransform();
-
-		m_pCurrFrame->GetTexture()->Bind();
-
-		//todo: push this vb down a bigger vb
-		#define VB_FORMAT	GL_T2F_C4UB_V3F
-		glInterleavedArrays( VB_FORMAT, sizeof(Frame::Vertex), m_pVB );
-		glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
+		m_pCurrFrame->Transform( m_vPos, m_fAngle, m_vScale );
+		m_pCurrFrame->Render();
 	}
-}
-
-void Sprite::ApplyTransform()
-{
-	memcpy( m_pVB, m_pCurrFrame->GetVB(), sizeof(Frame::Vertex)*4 );
-	m_pVB[0].pos*=m_vScale; Vector2::Rotate( m_pVB[0].pos, m_fAngle); m_pVB[0].pos += m_vPos;
-	m_pVB[1].pos*=m_vScale; Vector2::Rotate( m_pVB[1].pos, m_fAngle); m_pVB[1].pos += m_vPos;
-	m_pVB[2].pos*=m_vScale; Vector2::Rotate( m_pVB[2].pos, m_fAngle); m_pVB[2].pos += m_vPos;
-	m_pVB[3].pos*=m_vScale; Vector2::Rotate( m_pVB[3].pos, m_fAngle); m_pVB[3].pos += m_vPos;
 }
