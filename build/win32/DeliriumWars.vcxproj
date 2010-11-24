@@ -170,7 +170,9 @@
     <ClCompile Include="..\..\src\Lair\Image\raw\raw.cpp" />
     <ClCompile Include="..\..\src\Lair\Lair.cpp" />
     <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
+    <ClCompile Include="..\..\src\Lair\RenderTarget\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp" />
+    <ClCompile Include="..\..\src\Lair\Shader\ShaderGLSL.cpp" />
     <ClCompile Include="..\..\src\Lair\Sound\Sound.cpp" />
     <ClCompile Include="..\..\src\Lair\Texture\Texture.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix2x2.cpp" />
@@ -214,7 +216,9 @@
     <ClInclude Include="..\..\src\Lair\Image\raw\raw.h" />
     <ClInclude Include="..\..\src\Lair\Lair.h" />
     <ClInclude Include="..\..\src\Lair\Log\Log.h" />
+    <ClInclude Include="..\..\src\Lair\RenderTarget\RenderTarget.h" />
     <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h" />
+    <ClInclude Include="..\..\src\Lair\Shader\ShaderGLSL.h" />
     <ClInclude Include="..\..\src\Lair\Sound\Sound.h" />
     <ClInclude Include="..\..\src\Lair\Texture\Texture.h" />
     <ClInclude Include="..\..\src\macros.h" />
