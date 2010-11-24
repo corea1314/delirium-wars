@@ -21,11 +21,10 @@ private:
 		
 	Frame::Vertex	m_pVB[4];
 
+	// World transform
 	Vector2		m_vPos;
 	float		m_fAngle;
 	Vector2		m_vScale;
-
-	void ApplyTransform();
 
 public:
 	Sprite();

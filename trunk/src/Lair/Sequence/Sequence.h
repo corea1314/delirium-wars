@@ -15,38 +15,18 @@ public:
 	Frame();
 	virtual ~Frame();
 
-	bool Load( const std::string& in_szFilename );
+	bool Load( const std::string& in_szFilename, unsigned long in_nDuration, unsigned long in_nFrameTime, const Vector2& in_vOffset, float in_fAngle, const Vector2& in_vScale );
 	bool Unload();
 
 	// all of those are in pixel space
-	Vector2 GetSize() const		{ return m_vSize;	}
-	Vector2 GetOffset() const	{ return m_vOffset;	}
-	float	GetAngle() const	{ return m_fAngle;	}
 	unsigned long GetDuration() const { return m_nDuration; }	// returns duration of frame (in ms)
 	unsigned long GetFrameTime() const { return m_nFrameTime; }	// returns time of frame (in ms)
-
-	void SetSize( Vector2& in_vSize ) 
-	{ 
-		m_vSize = in_vSize; 
-		m_vExtent[0] = Vector2(0,0);
-		m_vExtent[1] = Vector2(0,m_vSize.y);
-		m_vExtent[2] = Vector2(m_vSize.x,0);
-		m_vExtent[3] = Vector2(m_vSize.x,m_vSize.y);
-	}
-	void SetOffset( Vector2& in_vOffset ) { m_vOffset = in_vOffset;	}
-	void SetAngle( float in_fAngle ) { m_fAngle = in_fAngle; }
-	void SetDuration( unsigned long in_nDuration ) { m_nDuration = in_nDuration; }	// returns duration of frame (in ms)
-	void SetFrameTime( unsigned long in_nFrameTime ) { m_nFrameTime = in_nFrameTime; }	// returns time of frame (in ms)
-
+		
 	const Texture* GetTexture() const { return m_pTexture; }
 	
-	bool operator < ( const Frame& rhs )  { return GetFrameTime() < rhs.GetFrameTime(); }
-	bool operator < ( const Frame& rhs ) const { return GetFrameTime() < rhs.GetFrameTime(); }
-
 	class Color 
 	{
 	public:
-
 		enum E
 		{
 			eBLACK	= 0xFF000000, eWHITE	= 0xFFFFFFFF, eGREY	= 0xFF7F7F7F, eRED	= 0xFF0000FF, eGREEN	= 0xFF00FF00,
@@ -71,17 +51,14 @@ public:
 		float depth;
 	};
 
-	const Vertex*	GetVB() const { return m_pVB; }
+	void Render();
+	void Transform( const Vector2& in_vTranslate, float in_fRotate, const Vector2& in_vScale );
 
 private:
 	unsigned long	m_nDuration;
 	unsigned long	m_nFrameTime;
 
-	Vector2		m_vOffset;
-	float		m_fAngle;
-	Vector2		m_vSize;
-	Vector2		m_vExtent[4];
-
+	Vector2		m_vVertex[4];
 	Texture*	m_pTexture;
 	
 	Vertex	m_pVB[4];

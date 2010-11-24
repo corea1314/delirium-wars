@@ -2,12 +2,14 @@
 
 #include "../Lair.h"
 
+#include "glee/GLee.h"
+
 #include <minIni/minIni.h>
 
 #include <algorithm>
 #include <string>
 
-Frame::Frame() : m_nDuration(0), m_nFrameTime(0), m_fAngle(0), m_pTexture(0)
+Frame::Frame() : m_nDuration(0), m_nFrameTime(0), m_pTexture(0)
 {
 	m_pVB[0].depth = 0.0f;
 	m_pVB[1].depth = 0.0f;
@@ -30,11 +32,30 @@ Frame::~Frame()
 	Unload();
 }
 
-bool Frame::Load( const std::string& in_szFilename )
+bool Frame::Load( const std::string& in_szFilename, unsigned long in_nDuration, unsigned long in_nFrameTime, const Vector2& in_vOffset, float in_fAngle, const Vector2& in_vScale )
 {
 	m_pTexture = Lair::GetTextureMan()->Get( in_szFilename );
+
+	m_nDuration = in_nDuration;
+	m_nFrameTime = in_nFrameTime;
 	
 	// todo: validate that the texture was loaded properly
+	Vector2 vSize( m_pTexture->GetWidth()*in_vScale.x, m_pTexture->GetHeight()*in_vScale.y );
+
+	Vector2 vExtent[4];
+	vExtent[0] = Vector2(0,0);
+	vExtent[1] = Vector2(0,vSize.y);
+	vExtent[2] = Vector2(vSize.x,0);
+	vExtent[3] = Vector2(vSize.x,vSize.y);
+
+	Vector2 vOffset;
+	vOffset.x = in_vOffset.x * in_vScale.x;
+	vOffset.y = in_vOffset.y * in_vScale.y;
+
+	m_vVertex[0] = ( vExtent[0] - vOffset ).GetRotate( DEG_TO_RAD(in_fAngle) );
+	m_vVertex[1] = ( vExtent[1] - vOffset ).GetRotate( DEG_TO_RAD(in_fAngle) );
+	m_vVertex[2] = ( vExtent[2] - vOffset ).GetRotate( DEG_TO_RAD(in_fAngle) );
+	m_vVertex[3] = ( vExtent[3] - vOffset ).GetRotate( DEG_TO_RAD(in_fAngle) );
 
 	return true;
 }
@@ -43,6 +64,28 @@ bool Frame::Unload()
 {
 	//todo: release texture here
 	return true;
+}
+
+void Frame::Transform( const Vector2& in_vTranslate, float in_fRotate, const Vector2& in_vScale )
+{
+	for( int i=0; i<4; i++ )
+	{
+		m_pVB[i].pos.x = m_vVertex[i].x * in_vScale.x; 
+		m_pVB[i].pos.y = m_vVertex[i].y * in_vScale.y; 
+		Vector2::Rotate( m_pVB[i].pos, in_fRotate); 
+		m_pVB[i].pos += in_vTranslate;
+	}	
+}
+
+
+void Frame::Render()
+{	
+	m_pTexture->Bind();
+
+	//todo: push this vb down a bigger vb
+#define VB_FORMAT	GL_T2F_C4UB_V3F
+	glInterleavedArrays( VB_FORMAT, sizeof(Vertex), m_pVB );
+	glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -105,36 +148,11 @@ bool Sequence::ParseFrameScript( const std::string& in_szFilename, char* in_szKe
 	if( sscanf( in_szFrameScript.c_str(), "%s %d %f %f %f %f %f", szFilename, &nDuration, &vOffset.x, &vOffset.y, &fAngle, &vScale.x, &vScale.y ) == 7 )
 	{		
 		Frame* pFrame = new Frame;
+
+		m_nDuration += nDuration;
 		
-		if( pFrame->Load(szFilename) )
+		if( pFrame->Load(szFilename, nDuration, m_nDuration, vOffset, fAngle, vScale ) )
 		{
-			m_nDuration += nDuration;
-			pFrame->SetAngle( DEG_TO_RAD(fAngle) );
-			pFrame->SetDuration(nDuration);
-			pFrame->SetFrameTime(m_nDuration);
-			pFrame->SetOffset(vOffset);
-
-			Vector2 vSize( pFrame->GetTexture()->GetWidth()*vScale.x, pFrame->GetTexture()->GetHeight()*vScale.y );
-			pFrame->SetSize(vSize);
-
-			Vector2 vExtent[4];
-			vExtent[0] = Vector2(0,0);
-			vExtent[1] = Vector2(0,vSize.y);
-			vExtent[2] = Vector2(vSize.x,0);
-			vExtent[3] = Vector2(vSize.x,vSize.y);
-
-			vOffset.x *= vScale.x;
-			vOffset.y *= vScale.y;
-
-			Frame::Vertex* pVertex = (Frame::Vertex*)pFrame->GetVB();
-
-			pVertex[0].pos = ( vExtent[0] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
-			pVertex[1].pos = ( vExtent[1] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
-			pVertex[2].pos = ( vExtent[2] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
-			pVertex[3].pos = ( vExtent[3] - vOffset ).GetRotate( DEG_TO_RAD(fAngle) );
-
-			// pFrame->BuildVB();
-
 			m_vecFrame.push_back(pFrame);
 			return true;
 		}
