@@ -16,6 +16,7 @@ public:
 	void Unbind() const;
 
 	bool LoadFromImage( Image* );
+	bool LoadFromParam(  unsigned int in_nWidth, unsigned int in_nHeight, unsigned int in_nBytePerPixel );
 	
 	class WrapCoord	{ public: enum Enum { U, V }; };
 	class WrapMode	{ public: enum Enum { Mirror, Clamp, Repeat }; };
@@ -28,6 +29,8 @@ public:
 
 	unsigned long GetWidth() const { return m_nWidth; }
 	unsigned long GetHeight() const { return m_nHeight; }
+
+	unsigned int GetId() { return m_nId; }
 			
 private:
 	unsigned int m_nId;

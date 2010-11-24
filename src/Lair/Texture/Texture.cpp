@@ -86,6 +86,30 @@ bool Texture::LoadFromImage( Image* in_pImage )
 	return false;
 }
 
+bool Texture::LoadFromParam( unsigned int in_nWidth, unsigned int in_nHeight, unsigned int in_nBytePerPixel )
+{
+	glBindTexture( GL_TEXTURE_2D, m_nId );
+	glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+
+	switch( in_nBytePerPixel )
+	{
+	case 3:	glTexImage2D( GL_TEXTURE_2D, 0, 3, in_nWidth, in_nHeight, 0, GL_RGB,  GL_UNSIGNED_BYTE, 0 ); break;
+	case 4:	glTexImage2D( GL_TEXTURE_2D, 0, 4, in_nWidth, in_nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0 ); break;
+	default:
+		return false;	//not supported
+	}
+
+	SetFilterMin( FilterMin::Linear );
+	SetFilterMag( FilterMag::Linear );
+
+	glBindTexture( GL_TEXTURE_2D, 0 );
+
+	m_nWidth = in_nWidth;
+	m_nHeight = in_nHeight;
+
+	return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 Texture* TextureMan::Get( const std::string& in_szFilename )
