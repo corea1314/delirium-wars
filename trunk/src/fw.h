@@ -21,4 +21,7 @@
 #include "Math/Vector3.h"
 #include "macros.h"
 
+#define SCREEN_SIZE_X	1280
+#define SCREEN_SIZE_Y	 720
+
 #endif//_FW_H

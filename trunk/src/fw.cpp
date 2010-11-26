@@ -23,7 +23,7 @@ void Screen_2_App( int x, int y, Vector2& v )
 	// Construct matrices used in curver rendering and grab them to undo the transformations
 	glPushMatrix();
 		glLoadIdentity();
-		gluOrtho2D( -g_App.w/2*fZoom, g_App.w/2*fZoom, -g_App.h/2*fZoom,  g_App.h/2*fZoom );
+		gluOrtho2D( -1024/2*fZoom, 1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
@@ -53,7 +53,7 @@ void App_2_Screen( const Vector2& v, int& x, int& y )
 	// Construct matrices used in curver rendering and grab them to undo the transformations
 	glPushMatrix();
 		glLoadIdentity();
-		gluOrtho2D( -g_App.w/2*fZoom, g_App.w/2*fZoom, -g_App.h/2*fZoom,  g_App.h/2*fZoom );
+		gluOrtho2D( -1024/2*fZoom,1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
@@ -73,9 +73,6 @@ void App_2_Screen( const Vector2& v, int& x, int& y )
 
 void glut_OnDisplay( void )
 {
-	glClear( GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT );
-	glLoadIdentity();
-
 	g_App.Render();
 	
 	glutSwapBuffers();
@@ -225,7 +222,9 @@ void gl_Init( void )
 	glHint (GL_POINT_SMOOTH_HINT, GL_NICEST);
 
 	glEnable(GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+
+	glEnable( GL_ALPHA_TEST );
 }
 
 void glut_OnTimer( int k )
@@ -255,7 +254,7 @@ int main( int argc, char** argv )
      glutInit(&argc, argv);
 	 glutInitDisplayMode   ( GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL  );
 
-     glutInitWindowSize    ( 1280 , 800 );
+     glutInitWindowSize    ( SCREEN_SIZE_X , SCREEN_SIZE_Y );
      glutInitWindowPosition( 0 , 0 );
      
 	 glutCreateWindow( "Delirium Wars alpha" );
