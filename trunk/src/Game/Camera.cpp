@@ -73,12 +73,12 @@ void CCamera::Update( float in_fDeltaTime )
 void CCamera::Connect( CEngine* in_pEngine )
 {
 	m_pEngine = in_pEngine;
-	m_pEngine->Connect_Update( this, &CCamera::Update );
+	m_pEngine->Connect_OnUpdate( this, &CCamera::Update );
 }
 
 void CCamera::Disconnect( CEngine* in_pEngine )
 {
 	assert( m_pEngine == in_pEngine );
-	in_pEngine->Disconnect_Update( this );
+	in_pEngine->Disconnect_OnUpdate( this );
 	m_pEngine = 0;
 }
