@@ -9,7 +9,8 @@ class CCamera;
 class CPhysicsManager;
 class CDebugDraw;
 class CTester;
-
+class RenderTarget;
+class Texture;
 
 //Objects should use the proxy when trying to connect with it
 class CEngineProxy
@@ -17,21 +18,22 @@ class CEngineProxy
     public :
         CEngineProxy(){}
         ~CEngineProxy(){}
+		
+    NEW_SIGNAL3( OnGamepad0, unsigned int, unsigned int, float* );	// button state, axis count, axis values
+    NEW_SIGNAL3( OnGamepad1, unsigned int, unsigned int, float* );	// button state, axis count, axis values
+    NEW_SIGNAL3( OnGamepad2, unsigned int, unsigned int, float* );	// button state, axis count, axis values
+    NEW_SIGNAL3( OnGamepad3, unsigned int, unsigned int, float* );	// button state, axis count, axis values
 
-    NEW_SIGNAL1( Update, float );	// delta time
-    NEW_SIGNAL0( Render );
-    NEW_SIGNAL0( RenderGUI );
+	NEW_SIGNAL1( OnKeyboard, unsigned char );	// key
 
-    NEW_SIGNAL3( Gamepad0, unsigned int, unsigned int, float* );	// button state, axis count, axis values
-    NEW_SIGNAL3( Gamepad1, unsigned int, unsigned int, float* );	// button state, axis count, axis values
-    NEW_SIGNAL3( Gamepad2, unsigned int, unsigned int, float* );	// button state, axis count, axis values
-    NEW_SIGNAL3( Gamepad3, unsigned int, unsigned int, float* );	// button state, axis count, axis values
-
-	NEW_SIGNAL1( Keyboard, unsigned char );	// key
-
-    NEW_SIGNAL1( LoadFile, const char* ); // filename
-
-    NEW_PROTECTED_SIGNAL1( RenderDebug, CDebugDraw* );
+    NEW_SIGNAL1( OnLoadFile, const char* ); // filename
+	 
+	NEW_PROTECTED_SIGNAL1( OnUpdate, float );	// delta time
+	NEW_PROTECTED_SIGNAL0( OnRenderFrontLayer );
+	NEW_PROTECTED_SIGNAL0( OnRenderBackLayer );
+	NEW_PROTECTED_SIGNAL0( OnRenderDiffusionLayer );
+	NEW_PROTECTED_SIGNAL0( OnRenderGUI );
+    NEW_PROTECTED_SIGNAL1( OnRenderDebug, CDebugDraw* );
 };
 
 class CEngine : public CEngineProxy
@@ -44,7 +46,11 @@ public:
 	CCamera*		GetCamera() const { return m_pCamera; }
 	CField*			GetField() const { return m_pField; }
     CPhysicsManager* GetPhysicsMan() const { return m_pPhysMan; }
+	
 	void RenderDebugDraw();
+	void Render();
+	void RenderGUI();
+	void Update( float in_fDeltaTime );
 
 private:
 	CField*		m_pField;
@@ -52,6 +58,13 @@ private:
 	CCamera*	m_pCamera;
     CPhysicsManager* m_pPhysMan;
 	CDebugDraw*	m_pDebugDraw;
+	
+	RenderTarget*	m_pRT;
+	Texture*		m_pRTT[4];
+
+	unsigned int	m_nCurrentDiffusion;
+
+	enum E { eRTT_Diffusion0, eRTT_Diffusion1, eRTT_FrontLayer, eRTT_BackLayer, eRTT_Max };
 	
 	CTester*	m_pTester;		// quick entity to test some signal and game logic (todo: maybe a vector of those and have ppl derive from the base class)
 
