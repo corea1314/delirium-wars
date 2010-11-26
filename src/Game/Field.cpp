@@ -79,16 +79,16 @@ void CField::RebuildGrid()
 
 void CField::Connect( CEngine* in_pEngine )
 {
-	in_pEngine->Connect_Update( this, &CField::Update );
-	in_pEngine->Connect_Render( this, &CField::Render );
-	in_pEngine->Connect_LoadFile( this, &CField::LoadFile );
+	in_pEngine->Connect_OnUpdate( this, &CField::Update );
+	in_pEngine->Connect_OnRenderBackLayer( this, &CField::Render );
+	in_pEngine->Connect_OnLoadFile( this, &CField::LoadFile );
 }
 
 void CField::Disconnect( CEngine* in_pEngine )
 {
-	in_pEngine->Disconnect_Update( this );
-	in_pEngine->Disconnect_Render( this );
-	in_pEngine->Disconnect_LoadFile( this );
+	in_pEngine->Disconnect_OnUpdate( this );
+	in_pEngine->Disconnect_OnRenderBackLayer( this );
+	in_pEngine->Disconnect_OnLoadFile( this );
 }
 
 bool CField::WorldPositionToIndex( const Vector2 & in_v2WorldPosition, unsigned int & out_IndexX, unsigned int & out_IndexY) const
