@@ -1,0 +1,21 @@
+[Blend]
+Source = Src_Alpha
+Dest = One_Minus_Src_Alpha
+
+
+[Frames]
+# sprite_id,	filename,		delay,	x,   y,		angle,	sx, sy
+frame0 =		sprite_glow.png		33		128   128		 0		 1.0 1.0 
+
+[comments]
+frame1 =		sprite_glow.png		33		128   128		0		-0.1 1.0 
+frame2 =		sprite_glow.png		33		128   128		0		-0.2 1.0 
+frame3 =		sprite_glow.png		33		128   128		0		-0.3 1.0 
+frame4 =		sprite_glow.png		33		128   128		0		-0.4 1.0 
+frame5 =		sprite_glow.png		33		128   128		0		-0.5 1.0 
+frame6 =		sprite_glow.png		33		128   128		0		-0.6 1.0 
+frame7 =		sprite_glow.png		33		128   128		0		-0.7 1.0 
+frame8 =		sprite_glow.png		33		128   128		0		-0.8 1.0 
+frame9 =		sprite_glow.png		33		128   128		0		-0.9 1.0 
+frame9 =		sprite_glow.png		33		128   128		0		-1.0 1.0 
+
