@@ -17,10 +17,13 @@ public:
 	CTester();
     ~CTester();
 
-	void Update( float in_fDeltaTime );
-	void Render();
-	void RenderDebug( CDebugDraw* );
-	void Keyboard( unsigned char in_cKey );
+	virtual void Update( float in_fDeltaTime );
+	virtual void RenderFrontLayer();
+	virtual void RenderBackLayer();
+	virtual void RenderDiffusionLayer();
+	virtual void RenderDebug( CDebugDraw* );
+		
+	virtual void Keyboard( unsigned char in_cKey );
 
     void BodyOnBodyCollision(CCollisionBodyOnBodyResult* in_pCollisionResult );
 
@@ -30,11 +33,12 @@ public:
     void BuildPhysicsScene();
     void CreatePhysicsFallingBody();
 
-private:
+protected:
 	Vector2		m_vPos;
 	CEngine*	m_pEngine;
 	float		m_fAngle;
 	Sprite*		m_pSprite;
+	Sprite*		m_pSpriteDiffusion;
 };
 
 

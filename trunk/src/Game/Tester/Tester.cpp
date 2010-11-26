@@ -11,31 +11,44 @@
 CTester::CTester()
 {
 	m_pSprite = new Sprite;
+	m_pSpriteDiffusion = new Sprite;
 
 }
 
 CTester::~CTester()
 {
     SAFE_DELETE(m_pSprite);
+	SAFE_DELETE(m_pSpriteDiffusion);
 }
 
 void CTester::Update( float in_fDeltaTime )
 {
 	float t = m_pEngine->GetClock()->GetTotalTime();
 
-	m_fAngle = t;
+	m_fAngle = t / 2;
 
 	m_vPos.x = cos( m_fAngle )	* 256.0f;
 	m_vPos.y = sin( m_fAngle * 2 ) * 256.0f;
-
-	
+		
 	m_pSprite->Update( in_fDeltaTime );
+	m_pSpriteDiffusion->Update( in_fDeltaTime );
 }
 
-void CTester::Render()
+void CTester::RenderFrontLayer()
 {
 	m_pSprite->Set( m_vPos.x, m_vPos.y );
 	m_pSprite->Render();
+}
+
+void CTester::RenderBackLayer()
+{
+	
+}
+
+void CTester::RenderDiffusionLayer()
+{
+	m_pSpriteDiffusion->Set( m_vPos.x, m_vPos.y );
+	m_pSpriteDiffusion->Render();
 }
 
 void CTester::RenderDebug( CDebugDraw* in_pRD )
@@ -61,7 +74,10 @@ void CTester::Keyboard( unsigned char in_cKey )
 	{
 	case '1':	Lair::GetSoundMan()->Get("test.wav")->Play( false, true );	break;
 	case '2':	Lair::GetSoundMan()->Get("test2.wav")->Play( true );		break;
-	case '3':	m_pSprite->Play( "sample.spr" );	break;
+	case '3':	
+		m_pSprite->Play( "sample.spr" );	
+		m_pSpriteDiffusion->Play( "sprite_glow.spr" );	
+		break;
     case '4':	CreatePhysicsFallingBody();	break;
 	}
 }
@@ -69,19 +85,23 @@ void CTester::Keyboard( unsigned char in_cKey )
 void CTester::Connect( CEngine* in_pEngine )
 {
 	m_pEngine = in_pEngine;
-	m_pEngine->Connect_Update( this, &CTester::Update );
-	m_pEngine->Connect_Render( this, &CTester::Render );
-	m_pEngine->Connect_RenderDebug( this, &CTester::RenderDebug );
-	m_pEngine->Connect_Keyboard( this, &CTester::Keyboard );
+	m_pEngine->Connect_OnUpdate( this, &CTester::Update );
+	m_pEngine->Connect_OnRenderBackLayer( this, &CTester::RenderBackLayer );
+	m_pEngine->Connect_OnRenderFrontLayer( this, &CTester::RenderFrontLayer );
+	m_pEngine->Connect_OnRenderDiffusionLayer( this, &CTester::RenderDiffusionLayer );
+	m_pEngine->Connect_OnRenderDebug( this, &CTester::RenderDebug );
+	m_pEngine->Connect_OnKeyboard( this, &CTester::Keyboard );
 }
 
 void CTester::Disconnect( CEngine* in_pEngine )
 {
 	assert( m_pEngine == in_pEngine );
-	in_pEngine->Disconnect_Update( this );
-	in_pEngine->Disconnect_Render( this );
-	in_pEngine->Disconnect_RenderDebug( this );
-	in_pEngine->Disconnect_Keyboard( this );
+	in_pEngine->Disconnect_OnUpdate( this );
+	in_pEngine->Disconnect_OnRenderBackLayer( this );
+	in_pEngine->Disconnect_OnRenderFrontLayer( this );
+	in_pEngine->Disconnect_OnRenderDiffusionLayer( this );
+	in_pEngine->Disconnect_OnRenderDebug( this );
+	in_pEngine->Disconnect_OnKeyboard( this );
 	m_pEngine = 0;
 }
 
