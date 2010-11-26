@@ -80,7 +80,7 @@ void App::OnWheelDown()
 
 void App::OnKeyboard( unsigned char key )
 {
-	GetEngine()->Keyboard( key );
+	GetEngine()->OnKeyboard( key );
 
 	switch(key)
 	{
@@ -105,16 +105,16 @@ void App::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count,
 {
 	switch( gamepad )
 	{
-	case 0:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
-	case 1:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
-	case 2:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
-	case 3:		GetEngine()->Gamepad0( buttons, axis_count, axis_values );	break;
+	case 0:		GetEngine()->OnGamepad0( buttons, axis_count, axis_values );	break;
+	case 1:		GetEngine()->OnGamepad1( buttons, axis_count, axis_values );	break;
+	case 2:		GetEngine()->OnGamepad2( buttons, axis_count, axis_values );	break;
+	case 3:		GetEngine()->OnGamepad3( buttons, axis_count, axis_values );	break;
 	}
 }
 
 void App::OnOpenFile( const char* in_szFilename )
 {
-	m_pEngine->LoadFile( in_szFilename );
+	m_pEngine->OnLoadFile( in_szFilename );
 }
 
 void App::Render()
@@ -128,35 +128,12 @@ void App::Render()
 		fps = 0;
 	}
 
-	Vector2 vPos = GetEngine()->GetCamera()->GetPos();
-	float fZoom = GetEngine()->GetCamera()->GetZoom();
-
-	glMatrixMode( GL_PROJECTION );
-	glPushMatrix();
-	glLoadIdentity();
-	gluOrtho2D( -g_App.w/2*fZoom, g_App.w/2*fZoom, -g_App.h/2*fZoom,  g_App.h/2*fZoom );
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glTranslatef( -vPos.x, -vPos.y, 0.0f );
-	
-	// todo: remove this test rendering
-//	m_Grid.Render();
-
-	glEnable( GL_TEXTURE_2D );
-	m_pEngine->Render();
-
-	glDisable( GL_TEXTURE_2D );
-	m_pEngine->RenderDebugDraw();
-	
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-
-	glMatrixMode( GL_MODELVIEW);
-	glLoadIdentity();
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
 		
+	m_pEngine->Render();
 	m_pEngine->RenderGUI();
-
+	
+	glDisable( GL_TEXTURE_2D );
 	gl_SetColor(COLORS::eWHITE);
 	gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", fps, fps_average, m_pEngine->GetCamera()->GetZoom(), w, h );
 }
