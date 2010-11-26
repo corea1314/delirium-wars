@@ -16,14 +16,14 @@ CClock::~CClock()
 
 void CClock::Connect( CEngine* in_pEngine )
 {
-	in_pEngine->Connect_Update( this, &CClock::Update );
-	in_pEngine->Connect_Render( this, &CClock::Render );
+	in_pEngine->Connect_OnUpdate( this, &CClock::Update );
+	in_pEngine->Connect_OnRenderGUI( this, &CClock::Render );
 }
 
 void CClock::Disconnect( CEngine* in_pEngine )
 {
-	in_pEngine->Disconnect_Update( this );
-	in_pEngine->Disconnect_Render( this );
+	in_pEngine->Disconnect_OnUpdate( this );
+	in_pEngine->Disconnect_OnRenderGUI( this );
 }
 
 void CClock::Update( float in_fDeltaTime )
