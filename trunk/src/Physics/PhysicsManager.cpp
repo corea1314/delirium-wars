@@ -395,13 +395,13 @@ void CPhysicsManager::RenderDebug( CDebugDraw* in_pDebugDrawer )
 void CPhysicsManager::Connect( CEngineProxy* in_pEngineProxy )
 {
     m_pEngineProxy = in_pEngineProxy;
-    m_pEngineProxy->Connect_RenderDebug( this, &CPhysicsManager::RenderDebug );
-    m_pEngineProxy->Connect_Update( this, &CPhysicsManager::Update );
+    m_pEngineProxy->Connect_OnRenderDebug( this, &CPhysicsManager::RenderDebug );
+    m_pEngineProxy->Connect_OnUpdate( this, &CPhysicsManager::Update );
 }
 
 void CPhysicsManager::Disconnect()
 {
-    m_pEngineProxy->Disconnect_Update( this );
-    m_pEngineProxy->Disconnect_RenderDebug( this );
+    m_pEngineProxy->Disconnect_OnUpdate( this );
+    m_pEngineProxy->Disconnect_OnRenderDebug( this );
     m_pEngineProxy = NULL;
 }
