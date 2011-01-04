@@ -13,7 +13,7 @@ public:
 	bool Load( const std::string& in_szFilename );
 	unsigned long GetWidth() const { return m_nWidth; }
 	unsigned long GetHeight() const { return m_nHeight; }
-	unsigned long GetBytePerPixel() { return 4; }	// hardcoded to 32 bits, sorry, picoPNG limitation
+	unsigned long GetBytesPerPixel() { return 4; }	// hardcoded to 32 bits, sorry, picoPNG limitation
 
 	unsigned char* GetPixelBuffer() { return (unsigned char*)&(m_vecPixel[0]); }
 
