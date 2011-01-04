@@ -73,6 +73,12 @@
     <Filter Include="source\Lair\RenderTarget">
       <UniqueIdentifier>{97b5bbe8-7c3c-4563-a0c2-043d67f71321}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\Atlas">
+      <UniqueIdentifier>{9c8f3cc3-d9da-48ad-b327-85bd5fd7a7b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Atlas\Packing">
+      <UniqueIdentifier>{f405d666-7218-47f8-81a9-67280f9fc211}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -188,6 +194,24 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\RenderTarget\RenderTarget.cpp">
       <Filter>source\Lair\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.cpp">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.cpp">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Atlas\Packing\Rect.cpp">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Atlas\Packing\ShelfBinPack.cpp">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.cpp">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Atlas\Atlas.cpp">
+      <Filter>source\Lair\Atlas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +349,24 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\RenderTarget\RenderTarget.h">
       <Filter>source\Lair\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.h">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.h">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Atlas\Packing\Rect.h">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Atlas\Packing\ShelfBinPack.h">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.h">
+      <Filter>source\Lair\Atlas\Packing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h">
+      <Filter>source\Lair\Atlas</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
