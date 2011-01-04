@@ -151,63 +151,6 @@ if (_p_p)					\
 	(sizeof(p_array) / sizeof(p_array[0]))
 #endif
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Profiling Tools
-
-/*****
- *	PROFILER_DEC
- *		Declare Commun variables needed for profiling
- *
- *	PROFILER_INIT
- *		Initiate Frequency
- *
- *	PROFILER_BEFORE
- *		Call before the code to test
- *
- *	PROFILER_AFTER
- *		Call after the code to test with a string for trace and true or false to force a cariage return
- *
- *
- *	ex. 
- *	void Foo1()
- *	{
- *		short toto=0;
- *		PROFILER_DEC
- *		PROFILER_INIT
- *	 
- *	 	PROFILER_BEFORE
- *	 	//code to benchmark
- *	 	//...
- *	 	PROFILER_AFTER("The code execute in : ", 1);
- *	}
- *
- * Note : Numbers shown are scale in nb ofTime freq wich is on all Pentium-based 0.8 us wich is 1250 times more accurate then timeGetTime
- */
-//#ifdef _PROFILE
-//	#define PROFILER_DEC															\
-//		__int64 freq;																\
-//		__int64 timePrev;															\
-//		__int64 time;																\
-//		char    buf[64];															\
-//		char	m_string[1024];
-//	#define PROFILER_INIT															\
-//		::QueryPerformanceFrequency((LARGE_INTEGER*)&freq);							\
-//		m_string[0]='\0';buf[0]='\0';
-//	#define PROFILER_BEFORE															\
-//		::QueryPerformanceCounter((LARGE_INTEGER*)&time);							\
-//		timePrev= time;
-//	#define PROFILER_AFTER(string, returnLine)										\
-//		::QueryPerformanceCounter((LARGE_INTEGER*)&time);							\
-//		sprintf(buf, "%s%f%s", string, (float)((int)(time-timePrev))*1000.0f/(float)freq, returnLine? "\r\n":"");\
-//		BTRACE2(CHANNEL_USER, "%s%s", m_string, buf);
-//#else
-//	#define PROFILER_DEC						;
-//	#define PROFILER_INIT						;
-//	#define PROFILER_BEFORE						;
-//	#define PROFILER_AFTER(string, returnLine)	;
-//#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 // Maths
 
