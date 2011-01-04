@@ -64,7 +64,7 @@ bool Texture::LoadFromImage( Image* in_pImage )
 		glBindTexture( GL_TEXTURE_2D, m_nId );
 		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
 	
-		switch( in_pImage->GetBytePerPixel() )
+		switch( in_pImage->GetBytesPerPixel() )
 		{
 			case 3:	glTexImage2D( GL_TEXTURE_2D, 0, 3, in_pImage->GetWidth(), in_pImage->GetHeight(), 0, GL_RGB,  GL_UNSIGNED_BYTE, in_pImage->GetPixelBuffer() ); break;
 			case 4:	glTexImage2D( GL_TEXTURE_2D, 0, 4, in_pImage->GetWidth(), in_pImage->GetHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, in_pImage->GetPixelBuffer() ); break;
@@ -101,7 +101,7 @@ bool Texture::LoadFromParam( unsigned int in_nWidth, unsigned int in_nHeight, un
 
 	SetFilterMin( FilterMin::Linear );
 	SetFilterMag( FilterMag::Linear );
-
+		
 	glBindTexture( GL_TEXTURE_2D, 0 );
 
 	m_nWidth = in_nWidth;
