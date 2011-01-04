@@ -3,24 +3,12 @@
 
 //todo: rename this class properly
 
-#include "../Image.h"
+class Image;
 
-#include <vector>
-
-class picoPNG : public Image
+class ImageLoaderPNG
 {
 public:
-	bool Load( const std::string& in_szFilename );
-	unsigned long GetWidth() const { return m_nWidth; }
-	unsigned long GetHeight() const { return m_nHeight; }
-	unsigned long GetBytesPerPixel() { return 4; }	// hardcoded to 32 bits, sorry, picoPNG limitation
-
-	unsigned char* GetPixelBuffer() { return (unsigned char*)&(m_vecPixel[0]); }
-
-private:
-	unsigned long m_nWidth;
-	unsigned long m_nHeight;
-	std::vector<unsigned char> m_vecPixel;	//todo: sad sad implementation of picopng forces this vector
+	static bool Load( Image** out_pImage, const std::string& in_szFilename );
 };
 
 #endif//_PICOPNG_H

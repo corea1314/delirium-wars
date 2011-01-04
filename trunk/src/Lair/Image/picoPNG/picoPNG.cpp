@@ -1,6 +1,6 @@
 #include <vector>
-
 #include "picoPNG.h"
+#include "../Image.h"
 
 int decodePNG(std::vector<unsigned char>& out_image_32bit, unsigned long& image_width, unsigned long& image_height, const unsigned char* in_png, unsigned long in_size)
 {
@@ -536,16 +536,22 @@ void loadFile(std::vector<unsigned char>& buffer, const std::string& filename) /
   else buffer.clear();
 }
 
-bool picoPNG::Load( const std::string& in_szFilename )
+bool ImageLoaderPNG::Load( Image** out_pImage, const std::string& in_szFilename )
 {
-	std::vector<unsigned char> buffer;
-	loadFile(buffer, in_szFilename);
+	std::vector<unsigned char> out_buffer;
+	std::vector<unsigned char> in_buffer;
 
-	int error = decodePNG( m_vecPixel, m_nWidth, m_nHeight, buffer.empty() ? 0 : &buffer[0], (unsigned long)buffer.size());
+	loadFile(in_buffer, in_szFilename);
+
+	unsigned long nWidth, nHeight;
+
+	int error = decodePNG( out_buffer, nWidth, nHeight, in_buffer.empty() ? 0 : &in_buffer[0], (unsigned long)in_buffer.size());
 
 	//if there's an error, display it
 	if(error != 0)
 		return false;
+
+	*out_pImage = new Image( nWidth, nHeight, 4, &out_buffer[0] );
 
 	return true;
 };
