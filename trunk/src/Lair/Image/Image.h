@@ -8,18 +8,28 @@
 class Image
 {
 public:
-	Image() {}
-	Image( unsigned long in_nWidth, unsigned long in_nHeight, unsigned long in_nBytePerPixel ) {}
+	Image( unsigned long in_nWidth, unsigned long in_nHeight, unsigned long in_nBytesPerPixel, unsigned char* in_pPixelBuffer = 0 );
+	virtual ~Image();
 	
-	virtual bool Load( const std::string& in_szFilename );
-	virtual unsigned long GetWidth() const;
-	virtual unsigned long GetHeight() const;
-	virtual unsigned long GetBytesPerPixel();
-	virtual unsigned char* GetPixelBuffer();
+	bool Load( const std::string& in_szFilename );
+	unsigned long GetWidth() const { return m_nWidth; }
+	unsigned long GetHeight() const { return m_nHeight; }
+	unsigned long GetBytesPerPixel() const { return m_nBytesPerPixel; }
+	unsigned char* GetPixelBuffer() const { return m_pPixelBuffer; }
+
+	void GetCropRect( int& in_nMinX, int& in_nMinY, int& in_nMaxX, int& in_nMaxY );
 
 	static bool Clip( int& dx, int& dy, int dw, int dh, int& sx, int& sy, int& sw, int& sh );
 	static bool Blit( Image* in_pDst, int in_nDstX, int in_nDstY, 
 					  Image* in_pSrc, int in_nSrcX, int in_nSrcY, int in_SrcW, int in_nSrcH );
+	static Image* Crop( Image* in_pImage );
+	static bool IsColorKey( unsigned char* in_pPixel, unsigned long in_nBytesPerPixel );
+
+private:
+	unsigned long	m_nWidth;
+	unsigned long	m_nHeight;
+	unsigned long	m_nBytesPerPixel;	// 3:BGR, 4:ABGR
+	unsigned char*	m_pPixelBuffer;
 };
 
 class ImageMan
