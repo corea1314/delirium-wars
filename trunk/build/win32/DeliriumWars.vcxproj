@@ -173,7 +173,6 @@
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\Image.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\picoPNG\picoPNG.cpp" />
-    <ClCompile Include="..\..\src\Lair\Image\raw\raw.cpp" />
     <ClCompile Include="..\..\src\Lair\Lair.cpp" />
     <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
     <ClCompile Include="..\..\src\Lair\RenderTarget\RenderTarget.cpp" />
@@ -225,7 +224,6 @@
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Image\Image.h" />
     <ClInclude Include="..\..\src\Lair\Image\picoPNG\picoPNG.h" />
-    <ClInclude Include="..\..\src\Lair\Image\raw\raw.h" />
     <ClInclude Include="..\..\src\Lair\Lair.h" />
     <ClInclude Include="..\..\src\Lair\Log\Log.h" />
     <ClInclude Include="..\..\src\Lair\RenderTarget\RenderTarget.h" />

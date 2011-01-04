@@ -58,9 +58,6 @@
     <Filter Include="source\Game\Tester">
       <UniqueIdentifier>{2a44049a-99ba-4cfb-9387-9483314c363f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Lair\Image\raw">
-      <UniqueIdentifier>{a29148b6-5f3f-4372-a5ee-294d65d51298}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Lair\Sequence">
       <UniqueIdentifier>{31921e4e-563e-414e-bf53-774f95556ddc}</UniqueIdentifier>
     </Filter>
@@ -179,9 +176,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Tester\Tester.cpp">
       <Filter>source\Game\Tester</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Image\raw\raw.cpp">
-      <Filter>source\Lair\Image\raw</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp">
       <Filter>source\Lair\Sequence</Filter>
@@ -334,9 +328,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Game\Tester\Tester.h">
       <Filter>source\Game\Tester</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Image\raw\raw.h">
-      <Filter>source\Lair\Image\raw</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h">
       <Filter>source\Lair\Sequence</Filter>
