@@ -8,7 +8,7 @@
 Atlas::Pack::Pack( unsigned long w, unsigned long h )
 {
 	bin = new Bin(w,h);
-	img = new Image();
+	img = new Image(w,h,4);	//fixme
 }
 
 Atlas::Pack::~Pack()
