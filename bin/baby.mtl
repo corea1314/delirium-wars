@@ -1,0 +1,46 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 03.11.2010 10:29:44
+
+newmtl frecsian_eyes_baby
+	Ns 10.000000
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 1.000000 1.000000 1.000000
+	map_Ka \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\Frescian_eyes_baby.tga
+	map_Kd \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\Frescian_eyes_baby.tga
+	map_d \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\Frescian_eyes_baby.tga
+
+newmtl frescian_white_mouth_happy
+	Ns 9.999999
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 0.992157 0.992157 0.992157
+	Kd 0.992157 0.992157 0.992157
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.496078 0.496078 0.496078
+	map_Ka \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\Frescian_mouth_happy.tga
+	map_Kd \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\Frescian_mouth_happy.tga
+	map_d \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\Frescian_mouth_happy.tga
+
+newmtl Standard_13
+	Ns 10.000000
+	Ni 1.500000
+	d 1.000000
+	Tr 0.000000
+	Tf 1.000000 1.000000 1.000000 
+	illum 2
+	Ka 1.000000 1.000000 1.000000
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.000000 0.000000 0.000000
+	Ke 0.500000 0.500000 0.500000
+	map_Ka \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\frescian_baby.tga
+	map_Kd \\PANIX\Data\Technology\ife\Graphic\Biobot\MAX and Maps\character\frescians\frescian_baby.tga
