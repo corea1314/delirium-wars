@@ -122,7 +122,7 @@ Image* Image::Crop( Image* in_pImage )
 {
 	int minx,miny,maxx,maxy;
 	
-	Image::GetCropRect( in_pImage, minx, miny, maxx, maxy );
+	in_pImage->GetCropRect( minx, miny, maxx, maxy );
 
 	int sx = maxx-minx+1, 
 		sy = maxy-miny+1;
