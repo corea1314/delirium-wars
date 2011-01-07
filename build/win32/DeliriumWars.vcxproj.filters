@@ -76,6 +76,12 @@
     <Filter Include="source\Lair\Atlas\Packing">
       <UniqueIdentifier>{f405d666-7218-47f8-81a9-67280f9fc211}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Sprite2">
+      <UniqueIdentifier>{47e4a61d-1d26-42a9-b9c9-616a043f374b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bin\shaders">
+      <UniqueIdentifier>{fa35e4cc-057b-4db2-9a71-61c731b17224}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -206,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Atlas\Atlas.cpp">
       <Filter>source\Lair\Atlas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Sprite2\Sprite2.cpp">
+      <Filter>source\Sprite2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -359,6 +368,9 @@
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h">
       <Filter>source\Lair\Atlas</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Sprite2\Sprite2.h">
+      <Filter>source\Sprite2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
@@ -374,6 +386,15 @@
     </None>
     <None Include="..\..\bin\system.log">
       <Filter>bin</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\spriter.fs">
+      <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\spriter.gs">
+      <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\spriter.vs">
+      <Filter>bin\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

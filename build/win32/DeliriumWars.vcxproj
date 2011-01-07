@@ -188,6 +188,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\..\src\Sprite2\Sprite2.cpp" />
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
+    <ClInclude Include="..\..\src\Sprite2\Sprite2.h" />
     <ClInclude Include="..\..\src\Sprite\Sprite.h" />
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +253,9 @@
   <ItemGroup>
     <None Include="..\..\bin\sample.spr" />
     <None Include="..\..\bin\sample.xml" />
+    <None Include="..\..\bin\shaders\spriter.fs" />
+    <None Include="..\..\bin\shaders\spriter.gs" />
+    <None Include="..\..\bin\shaders\spriter.vs" />
     <None Include="..\..\bin\system.log" />
     <None Include="..\..\todo.txt" />
   </ItemGroup>
