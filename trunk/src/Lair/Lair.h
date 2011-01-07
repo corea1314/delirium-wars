@@ -12,6 +12,7 @@ private:																	\
 #include "Texture/Texture.h"
 #include "Sound/Sound.h"
 #include "Sequence/Sequence.h"
+#include "Shader/ShaderGLSL.h"
 
 class Lair
 {	
