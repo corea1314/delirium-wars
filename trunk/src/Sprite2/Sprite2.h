@@ -17,51 +17,27 @@ public:
 	public:
 		Vector2 pos;		// world space position
 		float	depth;		// world space depth
+		
+		Vector2 size;		// world space size (width,height)
+		
+		Vector2 offset;		// world space offset about pos
 		float	angle;		// normalized angle
 
-		Vector2 size;		// world space size (width,height)
-		Vector2 offset;		// world space offset about pos
-
 		Vector2 uv_min;		// texture coordinates
+		
 		Vector2 uv_max;
 				
-		Vector2	vel;		// normalized velocity
-		float	avel;		// normalized angular velocity
+//		Vector2	vel;		// normalized velocity
+//		float	avel;		// normalized angular velocity
 		
 		unsigned int	color;	// modulation color
 	};
 
 	std::vector<SpriteData>	m_vecSpriteDataBuffer;
 
-	void Init( unsigned long in_nReservedSpriteCount = 8192 )
-	{
-		m_vecSpriteDataBuffer.reserve( in_nReservedSpriteCount );
-	}
+	void Init( unsigned long in_nReservedSpriteCount = 8192 );
 
-	void Render()
-	{
-		// bind shader
-		m_pShader->Bind();
-
-		// bind texture (need to be atlas)
-		
-		// bind attributes
-		glVertexPointer(4, GL_FLOAT, sizeof(SpriteData), &m_vecSpriteDataBuffer[0].pos );			// pos, depth, angle
-		glColorPointer(4, GL_UNSIGNED_BYTE, sizeof(SpriteData), &m_vecSpriteDataBuffer[0].color );	// color
-
-		glActiveTexture( GL_TEXTURE0 );
-		glTexCoordPointer(4, GL_FLOAT, sizeof(SpriteData), &m_vecSpriteDataBuffer[0].size );		// size and offset
-		glActiveTexture( GL_TEXTURE1 );
-		glTexCoordPointer(4, GL_FLOAT, sizeof(SpriteData), &m_vecSpriteDataBuffer[0].uv_min );		// texture coordinates
-		glActiveTexture( GL_TEXTURE2 );
-		glTexCoordPointer(3, GL_FLOAT, sizeof(SpriteData), &m_vecSpriteDataBuffer[0].vel );			// vel, avel
-
-		// draw
-		glDrawArrays( GL_POINTS, 0, m_vecSpriteDataBuffer.size() );
-
-		m_pShader->Unbind();
-		
-	}
+	void Render();
 
 	ShaderGLSL*	m_pShader;
 };
