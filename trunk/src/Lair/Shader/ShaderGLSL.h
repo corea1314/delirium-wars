@@ -20,6 +20,7 @@ protected:
 
 	bool ValidateShader( unsigned int in_iShader, const char* in_szFilename);
 	bool ValidateProgram(unsigned int in_iProgram, const char* in_szFilename );
+	bool LinkStatus(unsigned int in_iProgram, const char* in_szFilename );
 
 private:
 	unsigned int	m_iVertShader;
