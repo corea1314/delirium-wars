@@ -56,9 +56,9 @@ void ShaderGLSL::Bind()
 	glUniform1i( m_iUniformSampler[2], 2 );
 	glUniform1i( m_iUniformSampler[3], 3 );
 
-	float fTotalTime = 0.0f;
-	glUniform1f( m_iUniformDeltaTime, 0.015f );
-	glUniform1f( m_iUniformTotalTime, fTotalTime ); //fixme use system timer
+//	float fTotalTime = 0.0f;
+//	glUniform1f( m_iUniformDeltaTime, Lair::Get );
+//	glUniform1f( m_iUniformTotalTime, fTotalTime ); //fixme use system timer
 }
 
 void ShaderGLSL::Unbind() 
@@ -71,7 +71,7 @@ bool ShaderGLSL::CreateShader( unsigned int & in_iShader, unsigned int in_eShade
 	char *s = 0;
 	if( (s = GetBufferFromFile(in_szFilename)) == 0 )
 	{
-		Lair::GetLogMan()->Log( "ShaderGLSL", "ShaderGLSL - Could not load shader named \"%s\"", in_szFilename );
+		Lair::GetLogMan()->Log( "ShaderGLSL", "Could not load shader named \"%s\"", in_szFilename );
 		SAFE_DELETE_ARRAY(s);
 		return false;
 	}
@@ -99,13 +99,15 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		Destroy();
 		return false;
 	}
+	Lair::GetLogMan()->Log( "ShaderGLSL", "Load vertex shader named \"%s\"", in_szFilename );
 	
 	sprintf_s( szFilename, "%s.fs", in_szFilename );
 	if( !CreateShader( m_iFragShader, GL_FRAGMENT_SHADER, szFilename ) )
 	{
 		Destroy();
 		return false;
-	}	
+	}
+	Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded fragment shader named \"%s\"", in_szFilename );
 	
 	sprintf_s( szFilename, "%s.gs", in_szFilename );
 	CreateShader( m_iGeomShader, GL_GEOMETRY_SHADER_EXT, szFilename );	//might not be present
@@ -121,9 +123,17 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		glProgramParameteriEXT(m_iProgram,GL_GEOMETRY_INPUT_TYPE_EXT,in_eInPrimType);
 		glProgramParameteriEXT(m_iProgram,GL_GEOMETRY_OUTPUT_TYPE_EXT,in_eOutPrimType);
 		glProgramParameteriEXT(m_iProgram,GL_GEOMETRY_VERTICES_OUT_EXT, in_nMaxOutVertices );
+
+		Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded geometry shader named \"%s\"", in_szFilename );
 	}
 	
 	glLinkProgram(m_iProgram);
+	if( LinkStatus(m_iProgram, in_szFilename ) == false )
+	{
+		Destroy();
+		return false;
+	}
+
 	glValidateProgram(m_iProgram);
 
 	if( ValidateProgram(m_iProgram, in_szFilename ) == false )
@@ -132,14 +142,16 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		return false;
 	}
 
-	m_iUniformSampler[0] = glGetUniformLocationARB( m_iProgram, "textureMap0" );
-	m_iUniformSampler[1] = glGetUniformLocationARB( m_iProgram, "textureMap1" );
-	m_iUniformSampler[2] = glGetUniformLocationARB( m_iProgram, "textureMap2" );
-	m_iUniformSampler[3] = glGetUniformLocationARB( m_iProgram, "textureMap3" );
+	Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded program named \"%s\"", in_szFilename );
 
-	m_iUniformDeltaTime = glGetUniformLocationARB( m_iProgram, "uDeltaTime" );
-	m_iUniformTotalTime = glGetUniformLocationARB( m_iProgram, "uTotalTime" );
-	
+	m_iUniformSampler[0] = glGetUniformLocationARB( m_iProgram, "uTextureMap0" );
+	m_iUniformSampler[1] = glGetUniformLocationARB( m_iProgram, "uTextureMap1" );
+	m_iUniformSampler[2] = glGetUniformLocationARB( m_iProgram, "uTextureMap2" );
+	m_iUniformSampler[3] = glGetUniformLocationARB( m_iProgram, "uTextureMap3" );
+
+//	m_iUniformDeltaTime = glGetUniformLocationARB( m_iProgram, "uDeltaTime" );
+//	m_iUniformTotalTime = glGetUniformLocationARB( m_iProgram, "uTotalTime" );
+		
 	return true;
 }
 
@@ -179,17 +191,41 @@ bool ShaderGLSL::ValidateShader( unsigned int in_iShader, const char* in_szShade
 	return true;
 }
 
+bool ShaderGLSL::LinkStatus(unsigned int in_iProgram, const char* in_szFilename )
+{
+	int nInfologLength = 0;
+	int nCharsWritten  = 0;
+	char * szInfoLog;
+
+	int nValidateStatus;
+	glGetProgramiv( in_iProgram, GL_VALIDATE_STATUS, &nValidateStatus );
+
+	if( nValidateStatus == 0 )
+	{
+		glGetProgramiv( in_iProgram, GL_INFO_LOG_LENGTH, &nInfologLength );
+
+		if (nInfologLength > 1)
+		{
+			szInfoLog = new char[nInfologLength];
+			glGetProgramInfoLog( in_iProgram, nInfologLength, &nCharsWritten, szInfoLog );
+			Lair::GetLogMan()->Log( "ShaderGLSL", "LinkStatus(%s) - Error(s) detected:\n%", in_szFilename, szInfoLog);
+			delete[] szInfoLog;
+			return false;
+		}
+	}
+	return true;
+}
+
 bool ShaderGLSL::ValidateProgram(unsigned int in_iProgram, const char* in_szFilename )
 {
 	int nInfologLength = 0;
 	int nCharsWritten  = 0;
 	char * szInfoLog;
 
-	int nLinkResult;
+	int nValidateStatus;
+	glGetProgramiv( in_iProgram, GL_VALIDATE_STATUS, &nValidateStatus );
 
-	glGetProgramiv( in_iProgram, GL_LINK_STATUS, &nLinkResult );
-
-	if( nLinkResult == 0 )
+	if( nValidateStatus == 0 )
 	{
 		glGetProgramiv( in_iProgram, GL_INFO_LOG_LENGTH, &nInfologLength );
 
