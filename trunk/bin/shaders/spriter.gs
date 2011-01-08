@@ -4,62 +4,72 @@
 #version 120
 #extension GL_EXT_geometry_shader4 : enable
 
-pos		-> gl_Vertex.xy
-depth	-> gl_Vertex.z
-angle	-> gl_Vertex.w
+/*
+		Vector2 pos;		// world space position
+		float	depth;		// world space depth
 
-size	-> g_MultiTexCoord0.xy
-offset	-> g_MultiTexCoord0.zw
+		Vector2 size;		// world space size (width,height)
 
-uv_min	-> g_MultiTexCoord1.xy
-uv_max	-> g_MultiTexCoord1.zw
+		Vector2 offset;		// world space offset about pos
+		float	angle;		// normalized angle
+
+		Vector2 uv_min;		// texture coordinates
+
+		Vector2 uv_max;
+*/
+
+//#define pos	gl_Vertex.xy
+#define depth	gl_PositionIn[0].z
+
+#define size	gl_TexCoordIn[0][0].xy
+
+#define offset	gl_TexCoordIn[0][1].xy
+#define angle	gl_TexCoordIn[0][1].z
+
+#define uv_min	gl_TexCoordIn[0][2].xy
+#define uv_max	gl_TexCoordIn[0][3].xy
 		
-vel		-> g_MultiTexCoord2.xy
-avel	-> g_MultiTexCoord2.z
+//#define vel	gl_TexCoordIn[0][2].xy
+//#define avel	gl_TexCoordIn[0][2].z
 		
-color	-> gl_Color
+#define color	gl_FrontColorIn[0]
+
+void RotateVector( out vec2 vo, in float x, in float y, in float cosa, in float sina )
+{
+	vo.x = x * cosa - y * sina;
+	vo.y = x * sina + y * cosa;
+}
+
+//todo: optimize here since we know we are rotation extent of a box, we can flip coordinates and sign instead of computing all 4
 
 void main( void )
 {
-	vec4 pos;
-	pos.xyz = g_Vertex.xyz;
-	pos.w = 1;
-	
-	float angle	= gl_Vertex.w;
+	float cosa = cos(angle);
+	float sina = sin(angle);
 
-	vec2 size	= g_MultiTexCoord0.xy;
-	vec2 offset	= g_MultiTexCoord0.zw;
+	vec4 pos = vec4( gl_PositionIn[0].x, gl_PositionIn[0].y, gl_PositionIn[0].z, 1 );
+	vec2 extent;
 
-	vec2 uv_min	= g_MultiTexCoord1.xy;
-	vec2 uv_max	= g_MultiTexCoord1.zw;
-		
-	vec2 vel = g_MultiTexCoord2.xy;
-	float avel = g_MultiTexCoord2.z;
-	
 	// output same color for all vertices	
-	gl_FrontColor  = gl_FrontColorIn[ 0 ]; // vec4 = color = gl_Color
+	gl_FrontColor  = color;
 
-	gl_Position    = gl_PositionIn  [ 0 ];
-	gl_TexCoord[0] = vec4(uv_min.x,uv_min.y,1,1);
-	gl_Position.x += -size_x;
-	gl_Position.y += -size_y;
+	RotateVector( extent, -size.x, -size.y, cosa, sina );
+	gl_Position = gl_ModelViewProjectionMatrix * ( pos + vec4( extent.x, extent.y, 0, 0 ) );
+	gl_TexCoord[0].xy = uv_min;
 	EmitVertex();
 
-	gl_Position    = gl_PositionIn  [ i ];
-	gl_Position.x += -size_x;
-	gl_Position.y +=  size_y;
-	gl_TexCoord[0] = vec4(uv_min.x,uv_max.y,1,1);;
+	RotateVector( extent, -size.x,  size.y, cosa, sina );
+	gl_Position = gl_ModelViewProjectionMatrix * ( pos + vec4( extent.x, extent.y, 0, 0 ) );
+	gl_TexCoord[0].xy = vec2( uv_min.x, uv_max.y );
 	EmitVertex();
 
-	gl_Position    = gl_PositionIn  [ i ];
-	gl_Position.x +=  size_x;
-	gl_Position.y += -size_y;
-	gl_TexCoord[0] = vec4(uv_max.x,uv_min.y,1,1);;
+	RotateVector( extent,  size.x, -size.y, cosa, sina );
+	gl_Position = gl_ModelViewProjectionMatrix * ( pos + vec4( extent.x, extent.y, 0, 0 ) );
+	gl_TexCoord[0].xy = vec2( uv_max.x, uv_min.y );
 	EmitVertex();
 
-	gl_Position    = gl_PositionIn  [ i ];
-	gl_Position.x += size_x;
-	gl_Position.y += size_y;
-	gl_TexCoord[0] = vec4(uv_max.x,uv_max.y,1,1);;
+	RotateVector( extent,  size.x,  size.y, cosa, sina );
+	gl_Position = gl_ModelViewProjectionMatrix * ( pos + vec4( extent.x, extent.y, 0, 0 ) );
+	gl_TexCoord[0].xy = uv_max;
 	EmitVertex();
 }
