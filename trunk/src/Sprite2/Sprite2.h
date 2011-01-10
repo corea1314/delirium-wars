@@ -36,10 +36,15 @@ public:
 	std::vector<SpriteData>	m_vecSpriteDataBuffer;
 
 	void Init( unsigned long in_nReservedSpriteCount = 8192 );
+	void Exit();
 
 	void Render();
+	void RenderWithVBO();
+	void RenderWithVA();
 
 	ShaderGLSL*	m_pShader;
+
+	unsigned int m_nVBO;
 };
 
 /*
