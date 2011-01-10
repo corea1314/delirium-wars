@@ -13,6 +13,8 @@
 
 #include "../macros.h"
 
+#include "../Sprite2/Sprite2.h"
+
 #define RENDER_TARGET_SIZE_X	1024
 #define RENDER_TARGET_SIZE_Y	1024
 
@@ -20,6 +22,10 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 {
 	// Create lair
 	Lair::Create();
+
+	m_pSR = new SpriteRenderer;
+	m_pSR->Init();
+
 
 	// Create the clock
 	m_pClock = new CClock;
@@ -52,6 +58,14 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 	m_pRTT[eRTT_Diffusion1] = m_pRT->SetTextureTarget( eRTT_Diffusion1, GL_TEXTURE_2D, GL_RGBA );	// diffusion 1
 	m_pRTT[eRTT_BackLayer]	= m_pRT->SetTextureTarget( eRTT_BackLayer, GL_TEXTURE_2D, GL_RGBA );	// back layer
 	m_pRTT[eRTT_FrontLayer] = m_pRT->SetTextureTarget( eRTT_FrontLayer, GL_TEXTURE_2D, GL_RGBA );	// front layer
+
+	m_pRT->Bind();
+	glClearColor(0,0,0,1);
+		m_pRT->SetActiveTextureTarget( eRTT_Diffusion0 );
+		glClear( GL_COLOR_BUFFER_BIT );
+		m_pRT->SetActiveTextureTarget( eRTT_Diffusion1 );
+		glClear( GL_COLOR_BUFFER_BIT );
+	m_pRT->Unbind();
 }
 
 
@@ -76,6 +90,8 @@ CEngine::~CEngine()
 
     SAFE_DELETE( m_pPhysMan );
 
+	delete m_pSR;
+
 	Lair::Release();
 }
 
@@ -98,12 +114,9 @@ void CEngine::Render()
 	glLoadIdentity();
 	glTranslatef( -vPos.x, -vPos.y, 0.0f );
 
-	// todo: remove this test rendering
-	//	m_Grid.Render();
-
 	glEnable( GL_TEXTURE_2D );
 
-	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
+	glClearColor( 1.0f, 1.0f, 1.0f, 0.0f );
 
 	// Here we build all the frame layers
 	m_pRT->Bind();
@@ -111,13 +124,15 @@ void CEngine::Render()
 		m_pRT->SetActiveTextureTarget( eRTT_FrontLayer );
 		glClear( GL_COLOR_BUFFER_BIT );
 		OnRenderFrontLayer();
-
 		
 		m_pRT->SetActiveTextureTarget( eRTT_BackLayer );
 		glClear( GL_COLOR_BUFFER_BIT );
 		RenderDebugDraw();
 		OnRenderBackLayer();
 
+		m_pSR->Render();
+
+		/*
 		m_nCurrentDiffusion = (++m_nCurrentDiffusion)%2;
 
 		m_pRT->SetActiveTextureTarget( m_nCurrentDiffusion );	// here we need to cycle
@@ -132,18 +147,19 @@ void CEngine::Render()
 		glLoadIdentity();
 
 
-#define p	0.0f
-#define f	0.5f
-		glColor4f(f,f,f,1.0f);	
+#define p	0.0f //1.0f / 1024.0f
+#define f	1.0f
+		glColor4f(f,f,f,1);	
+
 		m_pRTT[(m_nCurrentDiffusion+1)%2]->Bind();
 		glBegin( GL_QUADS );
-		glTexCoord2f(0,0+p);	glVertex2f(0,0);	//add effect here
-		glTexCoord2f(1,0+p);	glVertex2f(1,0);
-		glTexCoord2f(1,1+p);	glVertex2f(1,1);
-		glTexCoord2f(0,1+p);	glVertex2f(0,1);
+		glTexCoord2f(0,0+p);	glVertex2f(0,0+p);	//add effect here
+		glTexCoord2f(1,0+p);	glVertex2f(1,0+p);
+		glTexCoord2f(1,1+p);	glVertex2f(1,1+p);
+		glTexCoord2f(0,1+p);	glVertex2f(0,1+p);
 		glEnd();
 
-		/*
+		
 		glColor4f(1,1,1,1);
 		glMatrixMode( GL_PROJECTION );
 		glPushMatrix();
@@ -153,11 +169,12 @@ void CEngine::Render()
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		glTranslatef( -vPos.x, -vPos.y, 0.0f );
+		
+		//
 		*/
-		//	
 				
 	m_pRT->Unbind();
-	
+		
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 
@@ -178,12 +195,13 @@ void CEngine::RenderGUI()
 	glEnable( GL_TEXTURE_2D );
 
 	glColor4f(1,1,1,1);
+	glClearColor( 0.2f, 0.2f, 0.2f, 0.0f );
 
 	m_pRTT[eRTT_BackLayer]->Bind();
 	RENDER_QUAD();
 	
-	m_pRTT[m_nCurrentDiffusion]->Bind();
-	RENDER_QUAD();
+//	m_pRTT[m_nCurrentDiffusion]->Bind();
+//	RENDER_QUAD();
 
 	m_pRTT[eRTT_FrontLayer]->Bind();
 	RENDER_QUAD();

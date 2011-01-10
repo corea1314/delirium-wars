@@ -12,6 +12,8 @@ class CTester;
 class RenderTarget;
 class Texture;
 
+class SpriteRenderer;
+
 //Objects should use the proxy when trying to connect with it
 class CEngineProxy
 {
@@ -61,6 +63,8 @@ private:
 	
 	RenderTarget*	m_pRT;
 	Texture*		m_pRTT[4];
+
+	SpriteRenderer*	m_pSR;
 
 	unsigned int	m_nCurrentDiffusion;
 
