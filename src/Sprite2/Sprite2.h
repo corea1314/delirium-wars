@@ -12,7 +12,7 @@ class ShaderGLSL;
 class SpriteRenderer
 {
 public:
-	class SpriteData
+	class SpriteData	//DO NOT MOVE MEMBERS AROUND
 	{
 	public:
 		Vector2 pos;		// world space position
@@ -35,6 +35,20 @@ public:
 
 	std::vector<SpriteData>	m_vecSpriteDataBuffer;
 
+	class Frame
+	{
+	public:
+		unsigned int id;
+		Vector2 uv_min;		// texture coordinates
+		Vector2 uv_max;
+
+		Vector2 size;		// texture coordinates
+		Vector2 offset;
+	};
+
+public:
+	Frame* RegisterFrame( const char* in_szFilename, Vector2 in_vOffset );
+	
 	void Init( unsigned long in_nReservedSpriteCount = 8192 );
 	void Exit();
 
@@ -42,6 +56,7 @@ public:
 	void RenderWithVBO();
 	void RenderWithVA();
 
+private:
 	ShaderGLSL*	m_pShader;
 
 	unsigned int m_nVBO;
