@@ -64,8 +64,6 @@ private:
 	RenderTarget*	m_pRT;
 	Texture*		m_pRTT[4];
 
-	SpriteRenderer*	m_pSR;
-
 	unsigned int	m_nCurrentDiffusion;
 
 	enum E { eRTT_Diffusion0, eRTT_Diffusion1, eRTT_FrontLayer, eRTT_BackLayer, eRTT_Max };

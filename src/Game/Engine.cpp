@@ -13,8 +13,6 @@
 
 #include "../macros.h"
 
-#include "../Sprite2/Sprite2.h"
-
 #define RENDER_TARGET_SIZE_X	1024
 #define RENDER_TARGET_SIZE_Y	1024
 
@@ -22,10 +20,6 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 {
 	// Create lair
 	Lair::Create();
-
-	m_pSR = new SpriteRenderer;
-	m_pSR->Init();
-
 
 	// Create the clock
 	m_pClock = new CClock;
@@ -90,8 +84,6 @@ CEngine::~CEngine()
 
     SAFE_DELETE( m_pPhysMan );
 
-	delete m_pSR;
-
 	Lair::Release();
 }
 
@@ -130,7 +122,7 @@ void CEngine::Render()
 		RenderDebugDraw();
 		OnRenderBackLayer();
 
-		m_pSR->Render();
+		Lair::GetSpriteMan()->Render();
 
 		/*
 		m_nCurrentDiffusion = (++m_nCurrentDiffusion)%2;
