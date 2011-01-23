@@ -14,6 +14,8 @@
 
 using namespace std;
 
+#define GUILLOTINE_DISABLE_ROTATION
+
 GuillotineBinPack::GuillotineBinPack()
 :binWidth(0),
 binHeight(0)
@@ -79,6 +81,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, std::vector<Rect> &
 					i = freeRectangles.size(); // Force a jump out of the outer loop as well - we got an instant fit.
 					break;
 				}
+#ifndef GUILLOTINE_DISABLE_ROTATION
 				// If flipping this rectangle is a perfect match, pick that then.
 				else if (rects[j].height == freeRectangles[i].width && rects[j].width == freeRectangles[i].height)
 				{
@@ -89,6 +92,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, std::vector<Rect> &
 					i = freeRectangles.size(); // Force a jump out of the outer loop as well - we got an instant fit.
 					break;
 				}
+#endif
 				// Try if we can fit the rectangle upright.
 				else if (rects[j].width <= freeRectangles[i].width && rects[j].height <= freeRectangles[i].height)
 				{
@@ -101,6 +105,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, std::vector<Rect> &
 						bestScore = score;
 					}
 				}
+#ifndef GUILLOTINE_DISABLE_ROTATION
 				// If not, then perhaps flipping sideways will make it fit?
 				else if (rects[j].height <= freeRectangles[i].width && rects[j].width <= freeRectangles[i].height)
 				{
@@ -113,6 +118,7 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, std::vector<Rect> &
 						bestScore = score;
 					}
 				}
+#endif
 			}
 		}
 
@@ -152,15 +158,21 @@ void GuillotineBinPack::Insert(std::vector<RectSize> &rects, std::vector<Rect> &
 /// @return True if r fits inside freeRect (possibly rotated).
 bool Fits(const RectSize &r, const Rect &freeRect)
 {
-	return (r.width <= freeRect.width && r.height <= freeRect.height) ||
-		(r.height <= freeRect.width && r.width <= freeRect.height);
+	return (r.width <= freeRect.width && r.height <= freeRect.height) 
+#ifndef GUILLOTINE_DISABLE_ROTATION
+		|| (r.height <= freeRect.width && r.width <= freeRect.height)
+#endif
+		;
 }
 
 /// @return True if r fits perfectly inside freeRect, i.e. the leftover area is 0.
 bool FitsPerfectly(const RectSize &r, const Rect &freeRect)
 {
-	return (r.width == freeRect.width && r.height == freeRect.height) ||
-		(r.height == freeRect.width && r.width == freeRect.height);
+	return (r.width == freeRect.width && r.height == freeRect.height) 
+#ifndef GUILLOTINE_DISABLE_ROTATION		
+		|| (r.height == freeRect.width && r.width == freeRect.height)
+#endif
+		;
 }
 
 /*
@@ -446,6 +458,7 @@ Rect GuillotineBinPack::FindPositionForNewNode(int width, int height, FreeRectCh
 			assert(disjointRects.Disjoint(bestNode));
 			break;
 		}
+#ifndef GUILLOTINE_DISABLE_ROTATION
 		// If this is a perfect fit sideways, choose it.
 		else if (height == freeRectangles[i].width && width == freeRectangles[i].height)
 		{
@@ -458,6 +471,7 @@ Rect GuillotineBinPack::FindPositionForNewNode(int width, int height, FreeRectCh
 			assert(disjointRects.Disjoint(bestNode));
 			break;
 		}
+#endif
 		// Does the rectangle fit upright?
 		else if (width <= freeRectangles[i].width && height <= freeRectangles[i].height)
 		{
@@ -474,6 +488,7 @@ Rect GuillotineBinPack::FindPositionForNewNode(int width, int height, FreeRectCh
 				assert(disjointRects.Disjoint(bestNode));
 			}
 		}
+#ifndef GUILLOTINE_DISABLE_ROTATION
 		// Does the rectangle fit sideways?
 		else if (height <= freeRectangles[i].width && width <= freeRectangles[i].height)
 		{
@@ -490,6 +505,7 @@ Rect GuillotineBinPack::FindPositionForNewNode(int width, int height, FreeRectCh
 				assert(disjointRects.Disjoint(bestNode));
 			}
 		}
+#endif
 	}
 	return bestNode;
 }
