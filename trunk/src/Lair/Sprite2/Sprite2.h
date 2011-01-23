@@ -9,7 +9,7 @@
 
 class ShaderGLSL;
 
-class SpriteRenderer
+class SpriteMan
 {
 public:
 	class SpriteData	//DO NOT MOVE MEMBERS AROUND
