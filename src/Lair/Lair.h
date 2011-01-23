@@ -13,6 +13,7 @@ private:																	\
 #include "Sound/Sound.h"
 #include "Sequence/Sequence.h"
 #include "Shader/ShaderGLSL.h"
+#include "System/System.h"
 
 class Lair
 {	
@@ -28,13 +29,13 @@ public:
 	DEFINE(TextureMan);
 	DEFINE(SoundMan);
 	DEFINE(SequenceMan);
+	DEFINE(SysMan);
 	
 private:
 	static Lair* Get() { return ms_pInstance; }
 
 private:
 	static Lair*	ms_pInstance;
-
 };
 
 #endif//_LAIR_H
