@@ -14,6 +14,7 @@ private:																	\
 #include "Sequence/Sequence.h"
 #include "Shader/ShaderGLSL.h"
 #include "System/System.h"
+#include "Sprite2/Sprite2.h"
 
 class Lair
 {	
@@ -30,6 +31,7 @@ public:
 	DEFINE(SoundMan);
 	DEFINE(SequenceMan);
 	DEFINE(SysMan);
+	DEFINE(SpriteMan);
 	
 private:
 	static Lair* Get() { return ms_pInstance; }
