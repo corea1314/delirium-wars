@@ -17,10 +17,12 @@ Lair::Lair()
 	__NEW(TextureMan);
 	__NEW(SoundMan);
 	__NEW(SequenceMan);
+	__NEW(SpriteMan);
 }
 
 Lair::~Lair()
 {
+	__DELETE(SpriteMan);
 	__DELETE(SequenceMan);
 	__DELETE(SoundMan);
 	__DELETE(TextureMan);
