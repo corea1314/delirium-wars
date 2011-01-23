@@ -119,20 +119,24 @@ Texture* TextureMan::Get( const std::string& in_szFilename )
 	if( it != m_mapTexture.end() )
 	{
 		// found it, return it
-		Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from map (%s)", in_szFilename.c_str() );
+		Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from map (%s).", in_szFilename.c_str() );
 		return it->second;
 	}
 	else
 	{
 		// not found, load it, return it
+		unsigned long nTime = Lair::GetSysMan()->GetTime();
+
 		Texture* pTexture = new Texture;
 		if( pTexture->LoadFromImage( Lair::GetImageMan()->Get( in_szFilename ) ) )
 		{
+			nTime = Lair::GetSysMan()->GetTime() - nTime;
+
 			m_mapTexture.insert( std::make_pair(in_szFilename,pTexture) );
-			Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from image named %s", in_szFilename.c_str() );
+			Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from image named %s in %d ms.", in_szFilename.c_str(), nTime );
 			return pTexture;
 		}
-		Lair::GetLogMan()->Log( "TextureMan", "Could not load texture from image named %s", in_szFilename.c_str() );
+		Lair::GetLogMan()->Log( "TextureMan", "Could not load texture from image named %s.", in_szFilename.c_str() );
 
 		delete pTexture;
 	}
