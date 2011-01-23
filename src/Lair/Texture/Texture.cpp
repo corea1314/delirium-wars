@@ -119,7 +119,7 @@ Texture* TextureMan::Get( const std::string& in_szFilename )
 	if( it != m_mapTexture.end() )
 	{
 		// found it, return it
-		Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from map (%s).", in_szFilename.c_str() );
+//		Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from map (%s).", in_szFilename.c_str() );
 		return it->second;
 	}
 	else
