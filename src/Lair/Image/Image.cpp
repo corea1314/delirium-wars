@@ -1,6 +1,6 @@
 #include "Image.h"
 
-#include "picoPNG/picoPNG.h"
+#include "LodePNG/LoaderPNG.h"
 
 #include "../Lair.h"
 
@@ -29,18 +29,23 @@ Image::~Image()
 }
 
 
+
 // ImageMan ===================================================================
 
 Image* ImageMan::Get( const std::string& in_szFilename )
 {
-	Image* pImage;;
+	Image* pImage;
+
+	unsigned long nTime = Lair::GetSysMan()->GetTime();
 
 	if( ImageLoaderPNG::Load( &pImage, in_szFilename ) )	//todo: for now it is only supporting the png image format
 	{	
-		Lair::GetLogMan()->Log( "ImageMan", "Loaded image named %s", in_szFilename.c_str() );
+		nTime = Lair::GetSysMan()->GetTime() - nTime;
+		
+		Lair::GetLogMan()->Log( "ImageMan", "Loaded image named %s in %d ms.", in_szFilename.c_str(), nTime );
 		return pImage;
 	}
-	Lair::GetLogMan()->Log( "ImageMan", "Could not load image named %s", in_szFilename.c_str() );
+	Lair::GetLogMan()->Log( "ImageMan", "Could not load image named %s.", in_szFilename.c_str() );
 
 	delete pImage;
 		
