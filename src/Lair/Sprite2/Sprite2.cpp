@@ -2,7 +2,7 @@
 
 #include "../Lair/Lair.h"
 
-void SpriteRenderer::Init( unsigned long in_nReservedSpriteCount )
+void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 {
 	m_vecSpriteDataBuffer.reserve( in_nReservedSpriteCount );
 
@@ -47,12 +47,12 @@ void SpriteRenderer::Init( unsigned long in_nReservedSpriteCount )
 
 }
 
-void SpriteRenderer::Exit()
+void SpriteMan::Exit()
 {
 	glDeleteBuffers( 1, &m_nVBO );
 }
 
-void SpriteRenderer::Render()
+void SpriteMan::Render()
 {
 	// bind shader
 	m_pShader->Bind();
@@ -71,7 +71,7 @@ void SpriteRenderer::Render()
 
 }
 
-void SpriteRenderer::RenderWithVBO()
+void SpriteMan::RenderWithVBO()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_nVBO);
 
@@ -133,7 +133,7 @@ void SpriteRenderer::RenderWithVBO()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void SpriteRenderer::RenderWithVA()
+void SpriteMan::RenderWithVA()
 {
 	glEnableClientState( GL_VERTEX_ARRAY );
 	glVertexPointer(3, GL_FLOAT, sizeof(SpriteData), &m_vecSpriteDataBuffer[0].pos.x );			// pos, depth, angle
