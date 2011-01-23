@@ -60,7 +60,7 @@ SoundMan::SoundMan()
 
 	if (nVersion < FMOD_VERSION)
 	{
-		Lair::GetLogMan()->Log( "SoundMan",  "Error!  You are using an old version of FMOD %08x.  This program requires %08x\n", nVersion, FMOD_VERSION);
+		Lair::GetLogMan()->Log( "SoundMan", "Error! You are using an old version of FMOD %08x. This program requires %08x.", nVersion, FMOD_VERSION);
 		return;
 	}
 
@@ -82,7 +82,7 @@ Sound* SoundMan::Get( const std::string& in_szFilename )
 	if( it != m_mapSound.end() )
 	{
 		// found it, return it
-		Lair::GetLogMan()->Log( "SoundMan", "Loaded sound from map (%s)", in_szFilename.c_str() );
+		Lair::GetLogMan()->Log( "SoundMan", "Loaded sound from map (%s).", in_szFilename.c_str() );
 		return it->second;
 	}
 	else
@@ -92,10 +92,10 @@ Sound* SoundMan::Get( const std::string& in_szFilename )
 		if( pSound->Load( in_szFilename, m_pFmodSystem ) )
 		{
 			m_mapSound.insert( std::make_pair(in_szFilename,pSound) );
-			Lair::GetLogMan()->Log( "SoundMan", "Loaded sound from file named %s", in_szFilename.c_str() );
+			Lair::GetLogMan()->Log( "SoundMan", "Loaded sound from file named %s.", in_szFilename.c_str() );
 			return pSound;
 		}
-		Lair::GetLogMan()->Log( "SoundMan", "Could not load sound from file named %s", in_szFilename.c_str() );
+		Lair::GetLogMan()->Log( "SoundMan", "Could not load sound from file named %s.", in_szFilename.c_str() );
 
 		delete pSound;
 	}
@@ -106,6 +106,6 @@ void SoundMan::ErrorCheck( FMOD_RESULT in_FmodResult )
 {
 	if (in_FmodResult != FMOD_OK)
 	{
-		Lair::GetLogMan()->Log( "SoundMan",  "FMOD error! (%d) %s\n", in_FmodResult, FMOD_ErrorString(in_FmodResult));
+		Lair::GetLogMan()->Log( "SoundMan",  "FMOD error! (%d) %s.", in_FmodResult, FMOD_ErrorString(in_FmodResult));
 	}
 }
