@@ -82,7 +82,7 @@ Sound* SoundMan::Get( const std::string& in_szFilename )
 	if( it != m_mapSound.end() )
 	{
 		// found it, return it
-		Lair::GetLogMan()->Log( "SoundMan", "Loaded sound from map (%s).", in_szFilename.c_str() );
+//		Lair::GetLogMan()->Log( "SoundMan", "Loaded sound from map (%s).", in_szFilename.c_str() );
 		return it->second;
 	}
 	else
