@@ -71,7 +71,7 @@ bool ShaderGLSL::CreateShader( unsigned int & in_iShader, unsigned int in_eShade
 	char *s = 0;
 	if( (s = GetBufferFromFile(in_szFilename)) == 0 )
 	{
-		Lair::GetLogMan()->Log( "ShaderGLSL", "Could not load shader named \"%s\"", in_szFilename );
+		Lair::GetLogMan()->Log( "ShaderGLSL", "Could not load shader named \"%s\".", in_szFilename );
 		SAFE_DELETE_ARRAY(s);
 		return false;
 	}
@@ -99,7 +99,7 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		Destroy();
 		return false;
 	}
-	Lair::GetLogMan()->Log( "ShaderGLSL", "Load vertex shader named \"%s\"", in_szFilename );
+	Lair::GetLogMan()->Log( "ShaderGLSL", "Load vertex shader named \"%s\".", in_szFilename );
 	
 	sprintf_s( szFilename, "%s.fs", in_szFilename );
 	if( !CreateShader( m_iFragShader, GL_FRAGMENT_SHADER, szFilename ) )
@@ -107,7 +107,7 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		Destroy();
 		return false;
 	}
-	Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded fragment shader named \"%s\"", in_szFilename );
+	Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded fragment shader named \"%s\".", in_szFilename );
 	
 	sprintf_s( szFilename, "%s.gs", in_szFilename );
 	CreateShader( m_iGeomShader, GL_GEOMETRY_SHADER_EXT, szFilename );	//might not be present
@@ -124,7 +124,7 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		glProgramParameteriEXT(m_iProgram,GL_GEOMETRY_OUTPUT_TYPE_EXT,in_eOutPrimType);
 		glProgramParameteriEXT(m_iProgram,GL_GEOMETRY_VERTICES_OUT_EXT, in_nMaxOutVertices );
 
-		Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded geometry shader named \"%s\"", in_szFilename );
+		Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded geometry shader named \"%s\".", in_szFilename );
 	}
 	
 	glLinkProgram(m_iProgram);
@@ -142,7 +142,7 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		return false;
 	}
 
-	Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded program named \"%s\"", in_szFilename );
+	Lair::GetLogMan()->Log( "ShaderGLSL", "Loaded program named \"%s\".", in_szFilename );
 
 	m_iUniformSampler[0] = glGetUniformLocationARB( m_iProgram, "uTextureMap0" );
 	m_iUniformSampler[1] = glGetUniformLocationARB( m_iProgram, "uTextureMap1" );
