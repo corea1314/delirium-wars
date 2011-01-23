@@ -1,6 +1,6 @@
 #include "Sprite2.h"
 
-#include "../Lair/Lair.h"
+#include "../Lair.h"
 
 void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 {

@@ -1,12 +1,13 @@
-#ifndef _SPRITE_H
-#define _SPRITE_H
+#ifndef _SPRITE2_H
+#define _SPRITE2_H
 
 #include <map>
 #include <vector>
 #include <string>
 
-#include "../Math/Vector2.h"
+#include "../../Math/Vector2.h"
 
+class Atlas;
 class ShaderGLSL;
 
 class SpriteMan
@@ -56,52 +57,14 @@ public:
 	void RenderWithVBO();
 	void RenderWithVA();
 
+	SpriteMan() { Init(); }
+	virtual ~SpriteMan() { Exit(); }
+
 private:
 	ShaderGLSL*	m_pShader;
-
 	unsigned int m_nVBO;
+
+	Atlas*	m_pAtlas;
 };
 
-/*
-
-#version 120
-#extension GL_EXT_geometry_shader4 : enable
-
-uniform vec4 color;
-
-uniform float size_x;
-uniform float size_y;
-
-void main( void )
-{
-	gl_FrontColor  = gl_FrontColorIn[0];
-	gl_Position    = gl_PositionIn  [0];
-	gl_TexCoord[0] = vec4(0,0,1,1);
-	gl_Position.x += -size_x;
-	gl_Position.y += -size_y;
-	EmitVertex();
-
-	gl_Position    = gl_PositionIn  [0];
-	gl_Position.x += -size_x;
-	gl_Position.y +=  size_y;
-	gl_TexCoord[0] = vec4(0,1,1,1);;
-	EmitVertex();
-
-	gl_Position    = gl_PositionIn  [0];
-	gl_Position.x +=  size_x;
-	gl_Position.y += -size_y;
-	gl_TexCoord[0] = vec4(1,0,1,1);;
-	EmitVertex();
-
-	gl_Position    = gl_PositionIn  [0];
-	gl_Position.x += size_x;
-	gl_Position.y += size_y;
-	gl_TexCoord[0] = vec4(1,1,1,1);;
-	EmitVertex();
-	
-	EndPrimitive();
-}
-
-*/
-
-#endif//_SPRITE_H
+#endif//_SPRITE2_H
