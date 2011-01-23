@@ -28,9 +28,6 @@
     <Filter Include="source\Lair\Image">
       <UniqueIdentifier>{cd1273c8-6c37-4e2f-a13b-4a52391ccf3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Lair\Image\picoPNG">
-      <UniqueIdentifier>{b70946f3-e3fb-4a5b-bee9-8cfccc4b8aad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Lair\Texture">
       <UniqueIdentifier>{2be9703e-171a-4aa5-a00e-90fc547c0c96}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,15 @@
     </Filter>
     <Filter Include="bin\shaders">
       <UniqueIdentifier>{fa35e4cc-057b-4db2-9a71-61c731b17224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Image\LodePNG">
+      <UniqueIdentifier>{8e84b2cf-6952-40ae-9da8-e484595b52ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\System">
+      <UniqueIdentifier>{da8c40d5-c4ef-46bd-8940-f959c7a000d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Command">
+      <UniqueIdentifier>{1bbd9afa-fc04-4d76-938d-66cb2b574bd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,9 +156,6 @@
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp">
       <Filter>source\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Image\picoPNG\picoPNG.cpp">
-      <Filter>source\Lair\Image\picoPNG</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Lair\Image\Image.cpp">
       <Filter>source\Lair\Image</Filter>
     </ClCompile>
@@ -215,6 +218,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Sprite2\Sprite2.cpp">
       <Filter>source\Sprite2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Image\LodePNG\lodepng.cpp">
+      <Filter>source\Lair\Image\LodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Image\LodePNG\LoaderPNG.cpp">
+      <Filter>source\Lair\Image\LodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\System\System.cpp">
+      <Filter>source\Lair\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Command\Command.cpp">
+      <Filter>source\Lair\Command</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,9 +317,6 @@
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h">
       <Filter>source\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Image\picoPNG\picoPNG.h">
-      <Filter>source\Lair\Image\picoPNG</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Lair\Image\Image.h">
       <Filter>source\Lair\Image</Filter>
     </ClInclude>
@@ -370,6 +382,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Sprite2\Sprite2.h">
       <Filter>source\Sprite2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Image\LodePNG\lodepng.h">
+      <Filter>source\Lair\Image\LodePNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Image\LodePNG\LoaderPNG.h">
+      <Filter>source\Lair\Image\LodePNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\System\System.h">
+      <Filter>source\Lair\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Command\Command.h">
+      <Filter>source\Lair\Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
