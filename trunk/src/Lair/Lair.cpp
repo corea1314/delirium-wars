@@ -11,6 +11,8 @@ Lair*	Lair::ms_pInstance = 0;
 
 Lair::Lair()
 {
+	ms_pInstance = this;
+
 	__NEW(LogMan);
 	__NEW(SysMan);
 	__NEW(ImageMan);
