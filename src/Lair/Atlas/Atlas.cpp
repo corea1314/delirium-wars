@@ -50,7 +50,7 @@ Atlas::Index*	Atlas::InsertFromFile( const std::string& in_szFilename )
 		return AddImageToPack( (*m_itCurrPack), rectCoords, pImage );
 	}
 
-	Lair::GetLogMan()->Log( "Atlas", "Could not load image named %s", in_szFilename.c_str() );
+	Lair::GetLogMan()->Log( "Atlas", "Could not load image named %s.", in_szFilename.c_str() );
 	return 0;
 }
 
@@ -77,7 +77,7 @@ Atlas::Index*	Atlas::Insert( const std::string& in_szFilename )
 	if( it != m_mapIndices.end() )
 	{
 		// found it, return it
-		Lair::GetLogMan()->Log( "Atlas", "Loaded index from map (%s)", in_szFilename.c_str() );
+		Lair::GetLogMan()->Log( "Atlas", "Loaded index from map (%s).", in_szFilename.c_str() );
 		return it->second;
 	}
 	else

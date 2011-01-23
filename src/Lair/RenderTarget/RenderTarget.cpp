@@ -158,35 +158,35 @@ bool RenderTarget::IsValid( )
 		isOK = true;
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT." );
 		isOK = false;
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT." );
 		isOK = false;
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT." );
 		isOK = false;
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT." );
 		isOK = false;
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT." );
 		isOK = false;
 		break;
 	case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT." );
 		isOK = false;
 		break;
 	case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_UNSUPPORTED_EXT" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: GL_FRAMEBUFFER_UNSUPPORTED_EXT." );
 		isOK = false;
 		break;
 	default:
-		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: Unknown ERROR" );
+		Lair::GetLogMan()->Log( "RenderTarget", "FBO: CheckFramebufferStatus() ERROR: Unknown ERROR." );
 		isOK = false;
 	}
 	
