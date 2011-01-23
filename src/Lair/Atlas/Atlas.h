@@ -6,6 +6,7 @@
 typedef GuillotineBinPack Bin;	// using guillotine
 
 class Image;
+class Texture;
 
 #include <map>
 #include <vector>
@@ -19,8 +20,11 @@ private:
 		Pack( unsigned long w, unsigned long h );
 		virtual ~Pack();
 
-		Bin*	bin;
-		Image*	img;
+		void ReloadTexture();
+
+		Bin*		bin;
+		Image*		img;
+		Texture*	tex;	// fixme, find a better place
 	};
 
 public:
@@ -35,6 +39,8 @@ public:
 	private:
 		unsigned long	x,y;
 		unsigned long	w,h;
+		unsigned long	cx,cy;
+		unsigned long	cw,ch;
 		Pack*			pack;
 		bool			rotated;	// if the image is rotated
 
@@ -51,12 +57,14 @@ private:
 
 private:
 	Index*	InsertFromFile( const std::string& in_szFilename );
-	Index*	AddImageToPack( Pack*, const Rect&, Image* );
+	Index*	AddImageToPack( Pack*, const Rect&, Image*, int in_nCropOffsetX, int in_nCropOffsetY, Image* in_pCropImage );
 
 public:
 	Atlas( const unsigned long in_nBinWidth, const unsigned long in_nBinHeight ) ;
 
-	Index*	Insert( const std::string& in_szFilename );
+	Index*	Get( const std::string& in_szFilename );
+
+	void ReloadTexture();
 };
 
 #endif//_ATLAS_H
