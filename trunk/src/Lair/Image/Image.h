@@ -17,12 +17,12 @@ public:
 	unsigned long GetBytesPerPixel() const { return m_nBytesPerPixel; }
 	unsigned char* GetPixelBuffer() const { return m_pPixelBuffer; }
 
-	void GetCropRect( int& in_nMinX, int& in_nMinY, int& in_nMaxX, int& in_nMaxY );
+	void GetCropRect( int& out_nMinX, int& out_nMinY, int& out_nMaxX, int& out_nMaxY, int in_nBorder = 0 );
 
 	static bool Clip( int& dx, int& dy, int dw, int dh, int& sx, int& sy, int& sw, int& sh );
 	static bool Blit( Image* in_pDst, int in_nDstX, int in_nDstY, 
 					  Image* in_pSrc, int in_nSrcX, int in_nSrcY, int in_SrcW, int in_nSrcH );
-	static Image* Crop( Image* in_pImage );
+	static Image* Crop( Image* in_pImage, int& out_nMinX, int& out_nMinY, int& out_nMaxX, int& out_nMaxY, int in_nBorder = 0 );
 	static bool IsColorKey( unsigned char* in_pPixel, unsigned long in_nBytesPerPixel );
 
 private:

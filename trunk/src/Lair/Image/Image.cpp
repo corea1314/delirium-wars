@@ -34,7 +34,7 @@ Image::~Image()
 
 Image* ImageMan::Get( const std::string& in_szFilename )
 {
-	Image* pImage;
+	Image* pImage = 0;
 
 	unsigned long nTime = Lair::GetSysMan()->GetTime();
 
@@ -47,7 +47,7 @@ Image* ImageMan::Get( const std::string& in_szFilename )
 	}
 	Lair::GetLogMan()->Log( "ImageMan", "Could not load image named %s.", in_szFilename.c_str() );
 
-	delete pImage;
+	SAFE_DELETE(pImage);
 		
 	return new Image(2,2,4,g_pDummyPixelBuffer); // return a dummy image if it fails
 }
@@ -97,7 +97,7 @@ bool Image::Blit(	Image* in_pDst, int in_nDstX, int in_nDstY,
 	return true;
 }
 
-void Image::GetCropRect( int& in_nMinX, int& in_nMinY, int& in_nMaxX, int& in_nMaxY )
+void Image::GetCropRect( int& in_nMinX, int& in_nMinY, int& in_nMaxX, int& in_nMaxY, int in_nBorder )
 {
 	in_nMinX = GetWidth();
 	in_nMinY = GetHeight();
@@ -123,18 +123,16 @@ void Image::GetCropRect( int& in_nMinX, int& in_nMinY, int& in_nMaxX, int& in_nM
 	}
 }
 
-Image* Image::Crop( Image* in_pImage )
+Image* Image::Crop( Image* in_pImage, int& out_nMinX, int& out_nMinY, int& out_nMaxX, int& out_nMaxY, int in_nBorder )
 {
-	int minx,miny,maxx,maxy;
-	
-	in_pImage->GetCropRect( minx, miny, maxx, maxy );
+	in_pImage->GetCropRect( out_nMinX, out_nMinY, out_nMaxX, out_nMaxY, in_nBorder );
 
-	int sx = maxx-minx+1, 
-		sy = maxy-miny+1;
+	int sx = out_nMaxX-out_nMinX+1, 
+		sy = out_nMaxY-out_nMinY+1;
 
 	Image* pImage = new Image( sx, sy, in_pImage->GetBytesPerPixel() );
 
-	Image::Blit( pImage, 0, 0, in_pImage, minx, miny, sx, sy );
+	Image::Blit( pImage, 0, 0, in_pImage, out_nMinX, out_nMinY, sx, sy );
 
 	return pImage;
 }
@@ -146,5 +144,5 @@ bool Image::IsColorKey( unsigned char* in_pPixel, unsigned long in_nBytesPerPixe
 				in_pPixel[1] == IMAGE_COLOR_KEY_G && 
 				in_pPixel[2] == IMAGE_COLOR_KEY_B;
 	// else if( in_nBytesPerPixel == 4 )
-		return in_pPixel[0] == 0;
+		return in_pPixel[3] == 0;
 }
