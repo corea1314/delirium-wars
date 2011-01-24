@@ -6,8 +6,9 @@
 #include <string>
 
 #include "../../Math/Vector2.h"
+#include "../Atlas/Atlas.h"
 
-class Atlas;
+
 class ShaderGLSL;
 
 class SpriteMan
@@ -65,6 +66,9 @@ private:
 	unsigned int m_nVBO;
 
 	Atlas*	m_pAtlas;
+
+	// test
+	std::vector<Atlas::Index*>	m_vecAtlasIndex;
 };
 
 #endif//_SPRITE2_H
