@@ -8,6 +8,8 @@ typedef GuillotineBinPack Bin;	// using guillotine
 class Image;
 class Texture;
 
+#include "../../Math/Vector2.h"
+
 #include <map>
 #include <vector>
 
@@ -31,18 +33,16 @@ public:
 	class Index
 	{
 	public:
-		inline unsigned long GetX() { return x; }
-		inline unsigned long GetY() { return y; }
-		inline unsigned long GetWidth()		{ return w; }
-		inline unsigned long GetHeight()	{ return h; }
+		const Vector2& GetSize() const { return size;	}
+		const Vector2& GetOffset() const { return offset; }
+		const Vector2& GetMinUV() const { return uv_min; }
+		const Vector2& GetMaxUV() const { return uv_max; }
 
 	private:
-		unsigned long	x,y;
-		unsigned long	w,h;
-		unsigned long	cx,cy;
-		unsigned long	cw,ch;
+		Vector2 size;			// world space size (width,height)
+		Vector2 offset;			// world space offset about pos
+		Vector2 uv_min, uv_max;	// texture coordinates
 		Pack*			pack;
-		bool			rotated;	// if the image is rotated
 
 		friend class Atlas;
 	};
@@ -57,13 +57,14 @@ private:
 
 private:
 	Index*	InsertFromFile( const std::string& in_szFilename );
-	Index*	AddImageToPack( Pack*, const Rect&, Image*, int in_nCropOffsetX, int in_nCropOffsetY, Image* in_pCropImage );
+	Index*	AddImageToPack( Pack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nOffsetX, int in_nOffsetY );
 
 public:
 	Atlas( const unsigned long in_nBinWidth, const unsigned long in_nBinHeight ) ;
 
 	Index*	Get( const std::string& in_szFilename );
 
+	void BindTexture( unsigned int in_nPackIndex );
 	void ReloadTexture();
 };
 

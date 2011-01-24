@@ -10,6 +10,8 @@ Atlas::Pack::Pack( unsigned long w, unsigned long h )
 	bin = new Bin(w,h);
 	img = new Image(w,h,4);	//fixme
 	tex = new Texture;
+	tex->SetFilterMin( Texture::FilterMin::Nearest );
+	tex->SetFilterMag( Texture::FilterMag::Nearest );
 }
 
 Atlas::Pack::~Pack()
@@ -27,7 +29,7 @@ void Atlas::Pack::ReloadTexture()
 // ATLAS ======================================================================
 
 Atlas::Atlas( const unsigned long in_nBinWidth, const unsigned long in_nBinHeight ) 
-	: m_nBinWidth(in_nBinWidth), m_nBinHeight(in_nBinHeight) 
+	: m_nBinWidth(in_nBinWidth), m_nBinHeight(in_nBinHeight)
 {	
 }
 
@@ -59,29 +61,45 @@ Atlas::Index*	Atlas::InsertFromFile( const std::string& in_szFilename )
 
 		} while ( rectCoords.height == 0 );	// if height is 0 then we could not fit it in bin so try next one
 		
-		return AddImageToPack( (*m_itCurrPack), rectCoords, pImage, nMinX, nMinY, pCropImage );
+		Atlas::Index* pIndex = AddImageToPack( (*m_itCurrPack), rectCoords, pCropImage, nMinX, nMinY );
+
+		delete pCropImage;	// flush cropped image
+
+		return pIndex;
 	}
 	
 	Lair::GetLogMan()->Log( "Atlas", "Could not load image named %s.", in_szFilename.c_str() );
 	return 0;
 }
 
-Atlas::Index*	Atlas::AddImageToPack( Atlas::Pack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nCropOffsetX, int in_nCropOffsetY, Image* in_pCropImage )
+Atlas::Index*	Atlas::AddImageToPack( Atlas::Pack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nOffsetX, int in_nOffsetY )
 {
 	Index* pIndex = new Index;
 
-	pIndex->pack = in_pPack;
-	pIndex->x = in_rectCoords.x;
-	pIndex->y = in_rectCoords.y;
-	pIndex->w = in_rectCoords.width;
-	pIndex->h = in_rectCoords.height;
-	pIndex->cx = in_nCropOffsetX;
-	pIndex->cy = in_nCropOffsetY;
-	pIndex->cw = in_pCropImage->GetWidth();
-	pIndex->ch = in_pCropImage->GetHeight();
-	pIndex->rotated = (in_rectCoords.width != in_pImage->GetWidth());
+	pIndex->size.x = (float)in_pImage->GetWidth();
+	pIndex->size.y = (float)in_pImage->GetHeight();
+	pIndex->offset.x = (float)in_nOffsetX;
+	pIndex->offset.y = (float)in_nOffsetY;
 
-	Image::Blit( in_pPack->img, pIndex->x, pIndex->y, in_pCropImage, 0,0, in_pCropImage->GetWidth(), in_pCropImage->GetHeight() );
+	pIndex->uv_min.x = (in_rectCoords.x + 0.5f) / (float)m_nBinWidth;		// might need to add centroid offset here
+	pIndex->uv_min.y = (in_rectCoords.y + 0.5f) / (float)m_nBinHeight;
+
+	pIndex->uv_max.x = (in_rectCoords.x+in_rectCoords.width - 0.5f) / (float)m_nBinWidth;
+	pIndex->uv_max.y = (in_rectCoords.y+in_rectCoords.height - 0.5f) / (float)m_nBinHeight;
+
+	// fixme, need to do this because the image of the atlas is inverted
+	float temp;
+	SWAP( pIndex->uv_max.y, pIndex->uv_min.y, temp );
+
+	if( in_rectCoords.width != in_pImage->GetWidth() )
+	{
+		// swap uv coordinates as the rect was rotated
+		assert(0); //fixme, disabled because blit rotated doesnt exists yet
+	}
+	
+	pIndex->pack = in_pPack;
+
+	Image::Blit( in_pPack->img, in_rectCoords.x, in_rectCoords.y, in_pImage, 0,0, in_pImage->GetWidth(), in_pImage->GetHeight() );
 
 	return pIndex;
 }
@@ -111,6 +129,12 @@ Atlas::Index*	Atlas::Get( const std::string& in_szFilename )
 		Lair::GetLogMan()->Log( "Atlas", "Could insert image named %s in atlas.", in_szFilename.c_str() );
 	}
 	return 0;
+
+}
+
+void Atlas::BindTexture( unsigned int in_nPackIndex )
+{
+	m_vecPacks[in_nPackIndex]->tex->Bind();
 
 }
 
