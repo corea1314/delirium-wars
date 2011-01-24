@@ -55,9 +55,6 @@
     <Filter Include="source\Game\Tester">
       <UniqueIdentifier>{2a44049a-99ba-4cfb-9387-9483314c363f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Lair\Sequence">
-      <UniqueIdentifier>{31921e4e-563e-414e-bf53-774f95556ddc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Game\Tile">
       <UniqueIdentifier>{2535d850-c2ba-4f74-a129-e8d3079c8ff5}</UniqueIdentifier>
     </Filter>
@@ -73,9 +70,6 @@
     <Filter Include="source\Lair\Atlas\Packing">
       <UniqueIdentifier>{f405d666-7218-47f8-81a9-67280f9fc211}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Sprite2">
-      <UniqueIdentifier>{47e4a61d-1d26-42a9-b9c9-616a043f374b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="bin\shaders">
       <UniqueIdentifier>{fa35e4cc-057b-4db2-9a71-61c731b17224}</UniqueIdentifier>
     </Filter>
@@ -87,6 +81,12 @@
     </Filter>
     <Filter Include="source\Lair\Command">
       <UniqueIdentifier>{1bbd9afa-fc04-4d76-938d-66cb2b574bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Sequence">
+      <UniqueIdentifier>{31921e4e-563e-414e-bf53-774f95556ddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Sprite2">
+      <UniqueIdentifier>{7ae83b20-1ce9-4e9c-9a54-a2667a00d9d8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -216,9 +216,6 @@
     <ClCompile Include="..\..\src\Lair\Atlas\Atlas.cpp">
       <Filter>source\Lair\Atlas</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Sprite2\Sprite2.cpp">
-      <Filter>source\Sprite2</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Lair\Image\LodePNG\lodepng.cpp">
       <Filter>source\Lair\Image\LodePNG</Filter>
     </ClCompile>
@@ -230,6 +227,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Command\Command.cpp">
       <Filter>source\Lair\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Sprite2\Sprite2.cpp">
+      <Filter>source\Lair\Sprite2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -380,9 +380,6 @@
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h">
       <Filter>source\Lair\Atlas</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Sprite2\Sprite2.h">
-      <Filter>source\Sprite2</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Lair\Image\LodePNG\lodepng.h">
       <Filter>source\Lair\Image\LodePNG</Filter>
     </ClInclude>
@@ -394,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Command\Command.h">
       <Filter>source\Lair\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Sprite2\Sprite2.h">
+      <Filter>source\Lair\Sprite2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
