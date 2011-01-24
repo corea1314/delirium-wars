@@ -13,10 +13,10 @@ void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 	SpriteData spr[] = 
 	{
 		// Vector2 pos, float depth, Vector2 size, Vector2 offset, float angle, Vector2 uv_min, Vector2 uv_max
-		{ Vector2( 0, 0), 0, Vector2(32,32), Vector2(0,0),  PI/2, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
-		{ Vector2(64, 0), 0, Vector2(32,32), Vector2(0,0), -PI/3, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
-		{ Vector2( 0,64), 0, Vector2(32,32), Vector2(0,0),  PI/8, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
-		{ Vector2(64,64), 0, Vector2(32,32), Vector2(0,0), -PI/7, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
+		{ Vector2( 0, 0), 0, Vector2(32,32), Vector2(0,0), (float) PI/2, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
+		{ Vector2(64, 0), 0, Vector2(32,32), Vector2(0,0), (float)-PI/3, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
+		{ Vector2( 0,64), 0, Vector2(32,32), Vector2(0,0), (float) PI/8, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
+		{ Vector2(64,64), 0, Vector2(32,32), Vector2(0,0), (float)-PI/7, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF },
 	};
 
 //	m_vecSpriteDataBuffer.push_back( spr[0] );
@@ -25,7 +25,7 @@ void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 	for( int i=-64;i<64; i++ )
 	for( int j=-64;j<64; j++ )
 	{
-		SpriteData spr[] = { { Vector2( i*64, j*64), 0, Vector2(32,32), Vector2(0,0),  rand()%6, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF }};
+		SpriteData spr[] = { { Vector2( i*64, j*64), 0, Vector2(32,32), Vector2(0,0),  0.0f/*rand()%6*/, Vector2(0,0), Vector2(1,1), 0xFFFFFFFF }};
 		m_vecSpriteDataBuffer.push_back( spr[0] );
 	}
 
@@ -45,27 +45,87 @@ void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 	glBufferData(GL_ARRAY_BUFFER, m_vecSpriteDataBuffer.size()*sizeof(SpriteData), &m_vecSpriteDataBuffer[0].pos.x, GL_STREAM_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0 );
 
+	// Atlas
+	m_pAtlas = new Atlas(1024,1024);
+
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Climb.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Climb.1-3.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Climb.2.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/ClimbFire.pistol.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/ClimbFire.pistol.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Crouch.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Crouch.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Crouch.2.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Crouch.3.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Death.knockback.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Death.lying.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Idle.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Idle.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/IdleFire.pistol.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/IdleFire.pistol.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/IdleFire.rifle.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/IdleFire.sub.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Jetpack.Ascend.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Jetpack.Fall 0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Jetpack.Fall 1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/JetpackFire.pistol.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/JetpackFire.pistol.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/JetpackThrow.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/JetpackThrow.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/JetpackThrow.2.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/JetpackThrow.3.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Run.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Run.2.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Run.3.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Run.4.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Run.5.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Run.6.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Throw.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Throw.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Throw.2.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Throw.3.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.0.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.1.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.2.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.3.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.4.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.5.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.6.png") );
+	m_vecAtlasIndex.push_back( m_pAtlas->Get( "atlas/Walk.7.png") );
+
+	// Apply index to sprite data
+	for(unsigned int i=0;i<m_vecSpriteDataBuffer.size(); i++)
+	{
+		Atlas::Index* pIndex = m_vecAtlasIndex[i%m_vecAtlasIndex.size()];
+		m_vecSpriteDataBuffer[i].size = pIndex->GetSize();
+		m_vecSpriteDataBuffer[i].uv_min = pIndex->GetMinUV();
+		m_vecSpriteDataBuffer[i].uv_max = pIndex->GetMaxUV();		
+	}
+
+	m_pAtlas->ReloadTexture();
 }
 
 void SpriteMan::Exit()
 {
 	glDeleteBuffers( 1, &m_nVBO );
+
+	SAFE_DELETE(m_pShader);
+	SAFE_DELETE(m_pAtlas);
 }
 
 void SpriteMan::Render()
 {
 	// bind shader
 	m_pShader->Bind();
-
-	Lair::GetTextureMan()->Get("sprite.png")->Bind();
-
-	// bind texture (need to be atlas)
+	
+	// bind texture (from to be atlas)
+	m_pAtlas->BindTexture(0);
 		
 	// bind attributes
 
 	// render
-	RenderWithVBO();
-//	RenderWithVA();
+//	RenderWithVBO();
+	RenderWithVA();
 
 	m_pShader->Unbind();
 
