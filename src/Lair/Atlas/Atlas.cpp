@@ -119,14 +119,19 @@ Atlas::Index*	Atlas::Get( const std::string& in_szFilename )
 		// not found, load it, return it
 		Index* pIndex;
 
+		unsigned long nTime = Lair::GetSysMan()->GetTime();
+
 		if( pIndex = InsertFromFile( in_szFilename ) )
 		{
 			m_mapIndices.insert( std::make_pair(in_szFilename,pIndex) );
-			Lair::GetLogMan()->Log( "Atlas", "Inserted image named %s into atlas.", in_szFilename.c_str() );
+
+			nTime = Lair::GetSysMan()->GetTime() - nTime;
+
+			Lair::GetLogMan()->Log( "Atlas", "Inserted image named %s into atlas in %d ms.", in_szFilename.c_str(), nTime );
 			return pIndex;
 		}
 		
-		Lair::GetLogMan()->Log( "Atlas", "Could insert image named %s in atlas.", in_szFilename.c_str() );
+		Lair::GetLogMan()->Log( "Atlas", "Could not insert image named %s in atlas.", in_szFilename.c_str() );
 	}
 	return 0;
 
