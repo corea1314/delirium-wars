@@ -8,11 +8,12 @@
 #include "../../Physics/PhysicsBody.h"
 #include "../../Sprite/Sprite.h"
 
+#include "../../Lair/Atlas/Atlas.h"
+
 CTester::CTester()
 {
 	m_pSprite = new Sprite;
-	m_pSpriteDiffusion = new Sprite;
-
+	m_pSpriteDiffusion = new Sprite;	
 }
 
 CTester::~CTester()
@@ -28,7 +29,10 @@ void CTester::Update( float in_fDeltaTime )
 	m_fAngle = t / 2;
 
 	m_vPos.x = cos( m_fAngle )	* 256.0f;
-	m_vPos.y = sin( m_fAngle * 2 ) * 256.0f;
+	m_vPos.y = 0.0f;// sin( m_fAngle * 2 ) * 256.0f;
+	
+	m_pSprite->Set( m_vPos.x, m_vPos.y );
+	m_pSpriteDiffusion->Set( m_vPos.x, m_vPos.y );
 		
 	m_pSprite->Update( in_fDeltaTime );
 	m_pSpriteDiffusion->Update( in_fDeltaTime );
@@ -36,7 +40,6 @@ void CTester::Update( float in_fDeltaTime )
 
 void CTester::RenderFrontLayer()
 {
-	m_pSprite->Set( m_vPos.x, m_vPos.y );
 	m_pSprite->Render();
 }
 
@@ -47,12 +50,12 @@ void CTester::RenderBackLayer()
 
 void CTester::RenderDiffusionLayer()
 {
-	m_pSpriteDiffusion->Set( m_vPos.x, m_vPos.y );
 	m_pSpriteDiffusion->Render();
 }
 
 void CTester::RenderDebug( CDebugDraw* in_pRD )
 {
+	/*
 	in_pRD->SetColor( CDebugDraw::Color::eGREEN );
 	in_pRD->DrawCircle( m_vPos, 32 );
 
@@ -66,6 +69,7 @@ void CTester::RenderDebug( CDebugDraw* in_pRD )
 	in_pRD->DrawEllipse( m_vPos, 64, 32, m_fAngle/2 );
 
 	in_pRD->Text( static_cast<int>(m_vPos.x), static_cast<int>(m_vPos.y)-64, "Beware of the evil eye." );
+	*/
 }
 
 void CTester::Keyboard( unsigned char in_cKey )

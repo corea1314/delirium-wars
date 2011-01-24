@@ -10,6 +10,7 @@ class Sprite;
 class CPhysicsManager;
 class CPhysicsBody;
 class CCollisionBodyOnBodyResult;
+class Atlas;
 
 class CTester : public CEntity
 {
@@ -39,6 +40,7 @@ protected:
 	float		m_fAngle;
 	Sprite*		m_pSprite;
 	Sprite*		m_pSpriteDiffusion;
+
 };
 
 
