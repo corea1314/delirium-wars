@@ -1,10 +1,5 @@
-[Blend]
-Source = Src_Alpha
-Dest = One_Minus_Src_Alpha
-
-
 [Frames111]
-# sprite_id,	filename,		delay,	x,   y,		angle,	sx, sy
+# sprite_id,	filename,		delay,	x,   y,		angle,		sx, sy
 frame0 =		sprite.png		33		128   128		 0		1.0 1.0 
 frame1 =		sprite.png		33		128   128		10		1.1 1.1 
 frame2 =		sprite.png		33		128   128		20		1.2 1.2 
@@ -17,7 +12,7 @@ frame8 =		sprite.png		33		128   128		80		1.8 1.8
 frame9 =		sprite.png		33		128   128		90		1.9 1.9 
 
 [Frames]
-# sprite_id,	filename,		delay,	x,   y,		angle,	sx, sy
+# sprite_id,	filename,		delay,	x,   y,		angle,		sx, sy
 frame0 =		sprite.png		33		128   128		 0		 0.0 1.0 
 frame1 =		sprite.png		33		128   128		0		-0.1 1.0 
 frame2 =		sprite.png		33		128   128		0		-0.2 1.0 
@@ -28,7 +23,7 @@ frame6 =		sprite.png		33		128   128		0		-0.6 1.0
 frame7 =		sprite.png		33		128   128		0		-0.7 1.0 
 frame8 =		sprite.png		33		128   128		0		-0.8 1.0 
 frame9 =		sprite.png		33		128   128		0		-0.9 1.0 
-frame9 =		sprite.png		33		128   128		0		-1.0 1.0 
+frame10 =		sprite.png		33		128   128		0		-1.0 1.0 
 
 
 [Event]
@@ -37,8 +32,8 @@ frame1 = event1
 
 [Event0]
 Type=Sound
-Param=Play "boom.wav"
+Script=Play "boom.wav"
 
 [Event1]
 Type=User
-Param=Bobby Joe Bob
+Script=Shoot Weapon 1
