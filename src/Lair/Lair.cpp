@@ -18,6 +18,7 @@ Lair::Lair()
 	__NEW(ImageMan);
 	__NEW(TextureMan);
 	__NEW(SoundMan);
+	__NEW(AtlasMan);
 	__NEW(SequenceMan);
 	__NEW(SpriteMan);
 }
@@ -26,6 +27,7 @@ Lair::~Lair()
 {
 	__DELETE(SpriteMan);
 	__DELETE(SequenceMan);
+	__DELETE(AtlasMan);
 	__DELETE(SoundMan);
 	__DELETE(TextureMan);
 	__DELETE(ImageMan);
