@@ -13,7 +13,10 @@
 CTester::CTester()
 {
 	m_pSprite = new Sprite;
-	m_pSpriteDiffusion = new Sprite;	
+	m_pSpriteDiffusion = new Sprite;
+
+	Lair::GetTextureMan()->Get("test1024.png");
+	Lair::GetTextureMan()->Get("test2048.png");
 }
 
 CTester::~CTester()
@@ -40,7 +43,6 @@ void CTester::Update( float in_fDeltaTime )
 
 void CTester::RenderFrontLayer()
 {
-	m_pSprite->Render();
 }
 
 void CTester::RenderBackLayer()
@@ -50,7 +52,6 @@ void CTester::RenderBackLayer()
 
 void CTester::RenderDiffusionLayer()
 {
-	m_pSpriteDiffusion->Render();
 }
 
 void CTester::RenderDebug( CDebugDraw* in_pRD )
