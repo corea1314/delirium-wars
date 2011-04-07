@@ -37,20 +37,20 @@ public:
 
 	std::vector<SpriteData>	m_vecSpriteDataBuffer;
 
-	class Frame
+	typedef AtlasIndex Frame;
+
+	class Sprite
 	{
 	public:
-		unsigned int id;
-		Vector2 uv_min;		// texture coordinates
-		Vector2 uv_max;
-
-		Vector2 size;		// texture coordinates
-		Vector2 offset;
+		unsigned long m_nIndex;
+//		unsigned long m_nGroup;	//
 	};
 
 public:
-	Frame* RegisterFrame( const char* in_szFilename, Vector2 in_vOffset );
-	
+	Frame* GetFrame( const char* in_szFilename );
+
+	Sprite* GetSprite();
+		
 	void Init( unsigned long in_nReservedSpriteCount = 8192 );
 	void Exit();
 
@@ -64,11 +64,9 @@ public:
 private:
 	ShaderGLSL*	m_pShader;
 	unsigned int m_nVBO;
-
-	Atlas*	m_pAtlas;
-
+		
 	// test
-	std::vector<Atlas::Index*>	m_vecAtlasIndex;
+	std::vector<AtlasIndex*>	m_vecAtlasIndex;
 };
 
 #endif//_SPRITE2_H
