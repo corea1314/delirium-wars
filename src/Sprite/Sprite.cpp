@@ -10,6 +10,11 @@ Sprite::Sprite() : m_pCurrSequence(0), m_pCurrFrame(0), m_bIsPlaying(false), m_b
 	Set( 0.0f, 0.0f );
 }
 
+Sprite::~Sprite()
+{
+
+}
+
 void Sprite::Set( float x, float y, float a, float sx, float sy )
 {
 	m_vScale.x = sx;
@@ -50,14 +55,5 @@ void Sprite::Update( float in_fDeltaTime )
 			}
 		}
 		m_pCurrFrame = m_pCurrSequence->GetFrame( (unsigned long)(m_fAnimTime*1000) );
-	}
-}
-
-void Sprite::Render()
-{
-	if( m_pCurrFrame )
-	{		
-		m_pCurrFrame->Transform( m_vPos, m_fAngle, m_vScale );
-		m_pCurrFrame->Render();
 	}
 }
