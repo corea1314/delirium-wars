@@ -2,10 +2,62 @@
 
 #include "../Lair.h"
 
+#include "Packing/GuillotineBinPack.h"
+
+typedef GuillotineBinPack Bin;	// using guillotine
+
+/*
+class Image;
+class Texture;
+
+#include "../../Math/Vector2.h"
+
+#include <map>
+#include <vector>
+*/
+
+class AtlasPack
+{
+public:
+	AtlasPack( unsigned long w, unsigned long h );
+	virtual ~AtlasPack();
+
+	void ReloadTexture();
+
+	Bin*		bin;
+	Image*		img;
+	Texture*	tex;	// fixme, find a better place
+};
+
+
+class Atlas
+{
+private:
+	const unsigned long m_nBinWidth;	// maximal width of the bins
+	const unsigned long m_nBinHeight;	// maximal height of the bins
+
+	std::vector<AtlasPack*>	m_vecPacks;		// vector of all the allocated bins
+	std::vector<AtlasPack*>::iterator	m_itCurrPack;
+	std::map<std::string,AtlasIndex*>	m_mapIndices;	// map of all the individual index (leading to its bin, img and coordinates)
+
+private:
+	AtlasIndex*	InsertFromFile( const std::string& in_szFilename );
+	AtlasIndex*	AddImageToPack( AtlasPack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nOffsetX, int in_nOffsetY );
+
+public:
+	Atlas( const unsigned long in_nBinWidth, const unsigned long in_nBinHeight ) ;
+
+	AtlasIndex*	Get( const std::string& in_szFilename );
+
+	void BindTexture( unsigned int in_nPackIndex );
+	void ReloadTexture();
+};
+
+
 
 // PACK =======================================================================
 
-Atlas::Pack::Pack( unsigned long w, unsigned long h )
+AtlasPack::AtlasPack( unsigned long w, unsigned long h )
 {
 	bin = new Bin(w,h);
 	img = new Image(w,h,4);	//fixme
@@ -14,14 +66,14 @@ Atlas::Pack::Pack( unsigned long w, unsigned long h )
 	tex->SetFilterMag( Texture::FilterMag::Nearest );
 }
 
-Atlas::Pack::~Pack()
+AtlasPack::~AtlasPack()
 {
 	delete bin;
 	delete img;
 	delete tex;
 }
 
-void Atlas::Pack::ReloadTexture()
+void AtlasPack::ReloadTexture()
 {
 	tex->LoadFromImage( img );
 }
@@ -33,7 +85,7 @@ Atlas::Atlas( const unsigned long in_nBinWidth, const unsigned long in_nBinHeigh
 {	
 }
 
-Atlas::Index*	Atlas::InsertFromFile( const std::string& in_szFilename )
+AtlasIndex*	Atlas::InsertFromFile( const std::string& in_szFilename )
 {
 	Image* pImage;
 
@@ -50,7 +102,7 @@ Atlas::Index*	Atlas::InsertFromFile( const std::string& in_szFilename )
 			if( m_itCurrPack == m_vecPacks.end() )
 			{
 				// add new pack
-				m_vecPacks.push_back( new Pack(m_nBinWidth, m_nBinHeight) );
+				m_vecPacks.push_back( new AtlasPack(m_nBinWidth, m_nBinHeight) );
 				
 				m_itCurrPack = m_vecPacks.end()-1;
 				
@@ -61,7 +113,7 @@ Atlas::Index*	Atlas::InsertFromFile( const std::string& in_szFilename )
 
 		} while ( rectCoords.height == 0 );	// if height is 0 then we could not fit it in bin so try next one
 		
-		Atlas::Index* pIndex = AddImageToPack( (*m_itCurrPack), rectCoords, pCropImage, nMinX, nMinY );
+		AtlasIndex* pIndex = AddImageToPack( (*m_itCurrPack), rectCoords, pCropImage, nMinX, nMinY );
 
 		delete pCropImage;	// flush cropped image
 
@@ -72,9 +124,9 @@ Atlas::Index*	Atlas::InsertFromFile( const std::string& in_szFilename )
 	return 0;
 }
 
-Atlas::Index*	Atlas::AddImageToPack( Atlas::Pack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nOffsetX, int in_nOffsetY )
+AtlasIndex*	Atlas::AddImageToPack( AtlasPack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nOffsetX, int in_nOffsetY )
 {
-	Index* pIndex = new Index;
+	AtlasIndex* pIndex = new AtlasIndex;
 
 	pIndex->size.x = (float)in_pImage->GetWidth();
 	pIndex->size.y = (float)in_pImage->GetHeight();
@@ -104,9 +156,9 @@ Atlas::Index*	Atlas::AddImageToPack( Atlas::Pack* in_pPack, const Rect& in_rectC
 	return pIndex;
 }
 
-Atlas::Index*	Atlas::Get( const std::string& in_szFilename )
+AtlasIndex*	Atlas::Get( const std::string& in_szFilename )
 {
-	std::map< std::string, Index* >::iterator it = m_mapIndices.find( in_szFilename );
+	std::map< std::string, AtlasIndex* >::iterator it = m_mapIndices.find( in_szFilename );
 
 	if( it != m_mapIndices.end() )
 	{
@@ -117,7 +169,7 @@ Atlas::Index*	Atlas::Get( const std::string& in_szFilename )
 	else
 	{
 		// not found, load it, return it
-		Index* pIndex;
+		AtlasIndex* pIndex;
 
 		unsigned long nTime = Lair::GetSysMan()->GetTime();
 
@@ -145,8 +197,36 @@ void Atlas::BindTexture( unsigned int in_nPackIndex )
 
 void Atlas::ReloadTexture()
 {
-	for( std::vector<Pack*>::iterator it = m_vecPacks.begin(); it != m_vecPacks.end(); it++ )
+	for( std::vector<AtlasPack*>::iterator it = m_vecPacks.begin(); it != m_vecPacks.end(); it++ )
 	{
 		(*it)->ReloadTexture();
 	}
+}
+
+
+// ATLASMAN ===================================================================
+
+AtlasMan::AtlasMan() 
+{ 
+	m_pAtlas = new Atlas(1024,1024); 
+}
+
+AtlasMan::~AtlasMan()
+{
+	delete m_pAtlas;
+}
+
+AtlasIndex* AtlasMan::Get( const std::string& in_szFilename )
+{
+	return m_pAtlas->Get( in_szFilename );
+}
+
+void AtlasMan::Bind()
+{
+	m_pAtlas->BindTexture(0);
+}
+
+void AtlasMan::Reload()
+{
+	m_pAtlas->ReloadTexture();
 }
