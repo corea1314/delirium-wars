@@ -125,10 +125,13 @@ Texture* TextureMan::Get( const std::string& in_szFilename )
 	else
 	{
 		// not found, load it, return it
+
+		Image* pImage = Lair::GetImageMan()->Get( in_szFilename );	//acquire image first
+
 		unsigned long nTime = Lair::GetSysMan()->GetTime();
 
 		Texture* pTexture = new Texture;
-		if( pTexture->LoadFromImage( Lair::GetImageMan()->Get( in_szFilename ) ) )
+		if( pTexture->LoadFromImage( pImage ) )
 		{
 			nTime = Lair::GetSysMan()->GetTime() - nTime;
 
