@@ -45,7 +45,7 @@ class CEntityFactory
 	{
 		T::Precache();
 
-		m_vecFree.ReservedStream0(in_nCount);
+		m_vecFree.reserve(in_nCount);
 
 		for( int i=0; i<in_nCount; i++ )
 		{
