@@ -223,10 +223,10 @@ void CDebugDraw::Text( int x, int y, char* text, ... )
 	
 	va_list marker;
 	va_start( marker, text );
-	vsprintf( buffer, text, marker );
+	vsprintf_s( buffer, text, marker );
 	va_end(marker);
 
-	m_pFont->Text( Vector2(x,y), buffer );
+	m_pFont->Text( Vector2((float)x,(float)y), buffer );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
