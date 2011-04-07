@@ -15,6 +15,7 @@ private:																	\
 #include "Shader/ShaderGLSL.h"
 #include "System/System.h"
 #include "Sprite2/Sprite2.h"
+#include "Atlas/Atlas.h"
 
 class Lair
 {	
@@ -31,6 +32,7 @@ public:
 	DEFINE(SoundMan);
 	DEFINE(SequenceMan);
 	DEFINE(SysMan);
+	DEFINE(AtlasMan);
 	DEFINE(SpriteMan);
 	
 private:
