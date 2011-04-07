@@ -88,6 +88,21 @@
     <Filter Include="source\Lair\Sprite2">
       <UniqueIdentifier>{7ae83b20-1ce9-4e9c-9a54-a2667a00d9d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\Console">
+      <UniqueIdentifier>{b0b573aa-3dff-4359-bd15-9f15db73c37c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Object">
+      <UniqueIdentifier>{25c42ea9-9ec3-4142-af79-da3bcc9c2554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Database">
+      <UniqueIdentifier>{0d12328b-2c77-4ea8-83a4-b91a527cf1fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Analog">
+      <UniqueIdentifier>{a213fc88-e334-4695-91f3-2aaa76b37c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\tinyxml">
+      <UniqueIdentifier>{7e106d14-b242-4398-a8ac-d8f0f7330e08}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -230,6 +245,30 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Sprite2\Sprite2.cpp">
       <Filter>source\Lair\Sprite2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Console\Console.cpp">
+      <Filter>source\Lair\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Analog\Analog.cpp">
+      <Filter>source\Lair\Analog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\tinyxml\tinystr.cpp">
+      <Filter>sdk\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\tinyxml\tinyxml.cpp">
+      <Filter>sdk\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\tinyxml\tinyxmlerror.cpp">
+      <Filter>sdk\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\tinyxml\tinyxmlparser.cpp">
+      <Filter>sdk\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Object\Object.cpp">
+      <Filter>source\Lair\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Database\Database.cpp">
+      <Filter>source\Lair\Database</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +433,24 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Sprite2\Sprite2.h">
       <Filter>source\Lair\Sprite2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Console\Console.h">
+      <Filter>source\Lair\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Database\Database.h">
+      <Filter>source\Lair\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Analog\Analog.h">
+      <Filter>source\Lair\Analog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\tinyxml\tinystr.h">
+      <Filter>sdk\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h">
+      <Filter>sdk\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Object\Object.h">
+      <Filter>source\Lair\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

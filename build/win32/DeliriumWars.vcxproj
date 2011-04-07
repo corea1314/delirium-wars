@@ -135,6 +135,10 @@
     <ClCompile Include="..\..\sdk\glee\GLee.c" />
     <ClCompile Include="..\..\sdk\minIni\minIni.c" />
     <ClCompile Include="..\..\sdk\objLoader\obj.cpp" />
+    <ClCompile Include="..\..\sdk\tinyxml\tinystr.cpp" />
+    <ClCompile Include="..\..\sdk\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="..\..\sdk\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\sdk\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="..\..\src\app.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -165,6 +169,7 @@
       <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ProgramDataBaseFileName>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Analog\Analog.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Atlas.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.cpp" />
@@ -172,11 +177,14 @@
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\ShelfBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Command\Command.cpp" />
+    <ClCompile Include="..\..\src\Lair\Console\Console.cpp" />
+    <ClCompile Include="..\..\src\Lair\Database\Database.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\Image.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\LodePNG\LoaderPNG.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\LodePNG\lodepng.cpp" />
     <ClCompile Include="..\..\src\Lair\Lair.cpp" />
     <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
+    <ClCompile Include="..\..\src\Lair\Object\Object.cpp" />
     <ClCompile Include="..\..\src\Lair\RenderTarget\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp" />
     <ClCompile Include="..\..\src\Lair\Shader\ShaderGLSL.cpp" />
@@ -201,6 +209,8 @@
     <ClInclude Include="..\..\sdk\minIni\minGlue.h" />
     <ClInclude Include="..\..\sdk\minIni\minIni.h" />
     <ClInclude Include="..\..\sdk\objLoader\obj.h" />
+    <ClInclude Include="..\..\sdk\tinyxml\tinystr.h" />
+    <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
     <ClInclude Include="..\..\src\fw.h" />
@@ -220,6 +230,7 @@
     <ClInclude Include="..\..\src\Game\Tile\Tile.h" />
     <ClInclude Include="..\..\src\Game\Timer.h" />
     <ClInclude Include="..\..\src\gfx.h" />
+    <ClInclude Include="..\..\src\Lair\Analog\Analog.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.h" />
@@ -227,11 +238,14 @@
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\ShelfBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Command\Command.h" />
+    <ClInclude Include="..\..\src\Lair\Console\Console.h" />
+    <ClInclude Include="..\..\src\Lair\Database\Database.h" />
     <ClInclude Include="..\..\src\Lair\Image\Image.h" />
     <ClInclude Include="..\..\src\Lair\Image\LodePNG\LoaderPNG.h" />
     <ClInclude Include="..\..\src\Lair\Image\LodePNG\lodepng.h" />
     <ClInclude Include="..\..\src\Lair\Lair.h" />
     <ClInclude Include="..\..\src\Lair\Log\Log.h" />
+    <ClInclude Include="..\..\src\Lair\Object\Object.h" />
     <ClInclude Include="..\..\src\Lair\RenderTarget\RenderTarget.h" />
     <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h" />
     <ClInclude Include="..\..\src\Lair\Shader\ShaderGLSL.h" />
