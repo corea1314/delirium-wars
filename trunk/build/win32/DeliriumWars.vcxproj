@@ -45,7 +45,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\obj\debug\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DeliriumWars_debug</TargetName>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk;..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\inc;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk;..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\inc;C:\Work\Delirium Wars\sdk\Box2D_v2.1.2\Box2D;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -132,6 +132,41 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2BroadPhase.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2CollideCircle.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2CollidePolygon.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Collision.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Distance.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2DynamicTree.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2TimeOfImpact.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2CircleShape.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2PolygonShape.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2BlockAllocator.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Math.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Settings.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2StackAllocator.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Body.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2ContactManager.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Fixture.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Island.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2World.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2WorldCallbacks.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2CircleContact.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2Contact.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2ContactSolver.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonContact.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2TOISolver.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2DistanceJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2FrictionJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2GearJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2Joint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2LineJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2MouseJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PrismaticJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PulleyJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2RevoluteJoint.cpp" />
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
     <ClCompile Include="..\..\sdk\glee\GLee.c" />
     <ClCompile Include="..\..\sdk\minIni\minIni.c" />
     <ClCompile Include="..\..\sdk\objLoader\obj.cpp" />
@@ -185,6 +220,7 @@
     <ClCompile Include="..\..\src\Lair\Lair.cpp" />
     <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
     <ClCompile Include="..\..\src\Lair\Object\Object.cpp" />
+    <ClCompile Include="..\..\src\Lair\Physics\Physics.cpp" />
     <ClCompile Include="..\..\src\Lair\RenderTarget\RenderTarget.cpp" />
     <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp" />
     <ClCompile Include="..\..\src\Lair\Shader\ShaderGLSL.cpp" />
@@ -205,6 +241,42 @@
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Box2D.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2BroadPhase.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Collision.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Distance.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2DynamicTree.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2TimeOfImpact.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2CircleShape.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2PolygonShape.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2Shape.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2BlockAllocator.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Math.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Settings.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2StackAllocator.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Body.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2ContactManager.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Fixture.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Island.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2TimeStep.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2World.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2WorldCallbacks.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2CircleContact.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2Contact.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2ContactSolver.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonContact.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2TOISolver.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2DistanceJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2FrictionJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2GearJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2Joint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2LineJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2MouseJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PrismaticJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PulleyJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2RevoluteJoint.h" />
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2WeldJoint.h" />
     <ClInclude Include="..\..\sdk\glee\GLee.h" />
     <ClInclude Include="..\..\sdk\minIni\minGlue.h" />
     <ClInclude Include="..\..\sdk\minIni\minIni.h" />
@@ -246,6 +318,7 @@
     <ClInclude Include="..\..\src\Lair\Lair.h" />
     <ClInclude Include="..\..\src\Lair\Log\Log.h" />
     <ClInclude Include="..\..\src\Lair\Object\Object.h" />
+    <ClInclude Include="..\..\src\Lair\Physics\Physics.h" />
     <ClInclude Include="..\..\src\Lair\RenderTarget\RenderTarget.h" />
     <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h" />
     <ClInclude Include="..\..\src\Lair\Shader\ShaderGLSL.h" />

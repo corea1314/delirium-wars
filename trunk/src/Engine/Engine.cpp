@@ -16,6 +16,23 @@
 #define RENDER_TARGET_SIZE_X	1024
 #define RENDER_TARGET_SIZE_Y	1024
 
+#include "../Lair/Object/Object.h"
+class Base : public Object
+{
+public:
+	Base()
+	{
+		Register("Test", (ObjectMethod)&Base::Test );
+	}
+	virtual void Test() { Lair::GetLogMan()->Log("test", "Test Base"); }
+};
+
+class Derived : public Base
+{
+public:
+	virtual void Test() { Lair::GetLogMan()->Log("test", "Test Derived"); }
+};
+
 CEngine::CEngine() : m_nCurrentDiffusion(0)
 {
 	// Create lair
@@ -60,8 +77,12 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 		m_pRT->SetActiveTextureTarget( eRTT_Diffusion1 );
 		glClear( GL_COLOR_BUFFER_BIT );
 	m_pRT->Unbind();
-}
 
+	Base* pBase = new Derived;
+	
+	pBase->Call("Test");
+	pBase->Call("Test2");	
+}
 
 CEngine::~CEngine()
 {

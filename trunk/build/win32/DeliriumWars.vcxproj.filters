@@ -103,6 +103,30 @@
     <Filter Include="sdk\tinyxml">
       <UniqueIdentifier>{7e106d14-b242-4398-a8ac-d8f0f7330e08}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sdk\Box2d">
+      <UniqueIdentifier>{3efc7eab-6da7-4437-af90-f347bb6bfb6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\Box2d\Dynamic">
+      <UniqueIdentifier>{aa21177e-5df8-4d66-9829-c64aff2bda3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\Box2d\Dynamic\Joints">
+      <UniqueIdentifier>{543556a2-addc-4dce-a533-8859669c3274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\Box2d\Dynamic\Contacts">
+      <UniqueIdentifier>{28162ad0-9922-42ee-b780-acfc18cec277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\Box2d\Collision">
+      <UniqueIdentifier>{5d96fd11-a3ca-4041-8866-9da5ad9ec890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\Box2d\Common">
+      <UniqueIdentifier>{1a8d5e00-260b-4b05-bdb9-31710dc45faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\Box2d\Collision\Shapes">
+      <UniqueIdentifier>{3cc68c70-df42-41a5-9604-541ba4ee3181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Physics">
+      <UniqueIdentifier>{00f75914-5bad-41df-a7d2-bb5a2deb9c21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -269,6 +293,114 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Database\Database.cpp">
       <Filter>source\Lair\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Body.cpp">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2ContactManager.cpp">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Fixture.cpp">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Island.cpp">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2World.cpp">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2WorldCallbacks.cpp">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2DistanceJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2FrictionJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2GearJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2Joint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2LineJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2MouseJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PrismaticJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PulleyJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2RevoluteJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2WeldJoint.cpp">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2CircleContact.cpp">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2Contact.cpp">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2ContactSolver.cpp">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.cpp">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonContact.cpp">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2TOISolver.cpp">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2BlockAllocator.cpp">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Math.cpp">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Settings.cpp">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2StackAllocator.cpp">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2BroadPhase.cpp">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2CollideCircle.cpp">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2CollidePolygon.cpp">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Collision.cpp">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Distance.cpp">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2DynamicTree.cpp">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2TimeOfImpact.cpp">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2CircleShape.cpp">
+      <Filter>sdk\Box2d\Collision\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2PolygonShape.cpp">
+      <Filter>sdk\Box2d\Collision\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Physics\Physics.cpp">
+      <Filter>source\Lair\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +583,117 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Object\Object.h">
       <Filter>source\Lair\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Box2D.h">
+      <Filter>sdk\Box2d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Body.h">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2ContactManager.h">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Fixture.h">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Island.h">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2TimeStep.h">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2World.h">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2WorldCallbacks.h">
+      <Filter>sdk\Box2d\Dynamic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2DistanceJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2FrictionJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2GearJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2Joint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2LineJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2MouseJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PrismaticJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2PulleyJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2RevoluteJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2WeldJoint.h">
+      <Filter>sdk\Box2d\Dynamic\Joints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2CircleContact.h">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2Contact.h">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2ContactSolver.h">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonAndCircleContact.h">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2PolygonContact.h">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Contacts\b2TOISolver.h">
+      <Filter>sdk\Box2d\Dynamic\Contacts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2BlockAllocator.h">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Math.h">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2Settings.h">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Common\b2StackAllocator.h">
+      <Filter>sdk\Box2d\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2BroadPhase.h">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Collision.h">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2Distance.h">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2DynamicTree.h">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\b2TimeOfImpact.h">
+      <Filter>sdk\Box2d\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2CircleShape.h">
+      <Filter>sdk\Box2d\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2PolygonShape.h">
+      <Filter>sdk\Box2d\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2Shape.h">
+      <Filter>sdk\Box2d\Collision\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Physics\Physics.h">
+      <Filter>source\Lair\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
