@@ -20,7 +20,7 @@ public:
 template <class T>
 class CEntityFactory
 {
-	bool Create( T** out_pEntity ) 
+	bool Create( CEntity** out_pEntity ) 
 	{
 		if( m_vecFree.size() != 0 )
 		{
@@ -30,7 +30,7 @@ class CEntityFactory
 		(*out_pEntity) = 0;
 		return false;
 	}
-	bool Destroy( T** in_pEntity )
+	bool Destroy( CEntity** in_pEntity )
 	{
 		if( *in_pEntity != 0 )
 		{
@@ -49,7 +49,7 @@ class CEntityFactory
 
 		for( int i=0; i<in_nCount; i++ )
 		{
-			m_vecFree.push_back( new T );
+			m_vecFree.push_back( T::New() );
 		}
 	}
 
