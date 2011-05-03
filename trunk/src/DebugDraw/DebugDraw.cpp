@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../Lair/Lair.h"
+#include "Lair/Lair.h"
 
 #define MAX_WORK_VECTOR_COUNT 32
 

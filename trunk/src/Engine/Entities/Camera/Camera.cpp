@@ -1,7 +1,7 @@
 #include "Camera.h"
 
-#include "Engine.h"
-#include "Clock.h"
+#include "Engine/Engine.h"
+#include "Engine/Entities/Clock/Clock.h"
 
 
 CCamera::CCamera()

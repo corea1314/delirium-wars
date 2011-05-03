@@ -8,8 +8,8 @@ int g_delta_time = 0;
 
 #include "app.h"
 
-#include "Game/Engine.h"
-#include "Game/Camera.h"
+#include "Engine/Engine.h"
+#include "Engine/Entities/Camera/Camera.h"
 
 void Screen_2_App( int x, int y, Vector2& v )
 {

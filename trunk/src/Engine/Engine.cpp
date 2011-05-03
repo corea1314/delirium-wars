@@ -1,37 +1,20 @@
 #include "Engine.h"
 
-#include "Field.h"
-#include "Clock.h"
-#include "Camera.h"
-#include "Tester/Tester.h"
-#include "../Physics/PhysicsManager.h"
-#include "../Lair/RenderTarget/RenderTarget.h"
+#include "../Game/Field.h"
+#include "Engine/Entities/Clock/Clock.h"
+#include "Engine/Entities/Camera/Camera.h"
+#include "../Game/Tester/Tester.h"
+#include "Physics/PhysicsManager.h"
+#include "Lair/RenderTarget/RenderTarget.h"
 
-#include "../DebugDraw/DebugDraw.h"
+#include "DebugDraw/DebugDraw.h"
 
-#include "../Lair/Lair.h"
+#include "Lair/Lair.h"
 
-#include "../macros.h"
+#include "macros.h"
 
 #define RENDER_TARGET_SIZE_X	1024
 #define RENDER_TARGET_SIZE_Y	1024
-
-#include "../Lair/Object/Object.h"
-class Base : public Object
-{
-public:
-	Base()
-	{
-		Register("Test", (ObjectMethod)&Base::Test );
-	}
-	virtual void Test() { Lair::GetLogMan()->Log("test", "Test Base"); }
-};
-
-class Derived : public Base
-{
-public:
-	virtual void Test() { Lair::GetLogMan()->Log("test", "Test Derived"); }
-};
 
 CEngine::CEngine() : m_nCurrentDiffusion(0)
 {
@@ -77,11 +60,6 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 		m_pRT->SetActiveTextureTarget( eRTT_Diffusion1 );
 		glClear( GL_COLOR_BUFFER_BIT );
 	m_pRT->Unbind();
-
-	Base* pBase = new Derived;
-	
-	pBase->Call("Test");
-	pBase->Call("Test2");	
 }
 
 CEngine::~CEngine()

@@ -14,6 +14,8 @@ class Texture;
 
 class SpriteRenderer;
 
+class b2World;
+
 //Objects should use the proxy when trying to connect with it
 class CEngineProxy
 {
@@ -48,6 +50,8 @@ public:
 	CCamera*		GetCamera() const { return m_pCamera; }
 	CField*			GetField() const { return m_pField; }
     CPhysicsManager* GetPhysicsMan() const { return m_pPhysMan; }
+
+	b2World*	GetWorld();
 	
 	void RenderDebugDraw();
 	void Render();

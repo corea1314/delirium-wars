@@ -1,8 +1,8 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-#include "Entity.h"
-#include "../Math/Vector2.h"
+#include "Engine/Entity.h"
+#include "Math/Vector2.h"
 
 class CEngine;
 
