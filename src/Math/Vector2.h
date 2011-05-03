@@ -1,7 +1,7 @@
 #ifndef _VECTOR2_H
 #define _VECTOR2_H
 
-#include "../macros.h"
+#include "macros.h"
 #include <math.h>
 #include <float.h>
 #include <assert.h>

@@ -3,7 +3,7 @@
 
 #include "lodepng.h"
 
-#include "../../Lair.h"
+#include "Lair/Lair.h"
 
 bool ImageLoaderPNG::Load( Image** out_pImage, const std::string& in_szFilename )
 {

@@ -1,7 +1,7 @@
 #ifndef _TESTER_H
 #define _TESTER_H
 
-#include "../Entity.h"
+#include "../../Engine/Entity.h"
 #include "../../Math/Vector2.h"
 
 class CEngine;

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../../Math/Vector2.h"
+#include "Math/Vector2.h"
 
 class Texture;
 

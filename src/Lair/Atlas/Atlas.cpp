@@ -1,6 +1,6 @@
 #include "Atlas.h"
 
-#include "../Lair.h"
+#include "Lair/Lair.h"
 
 #include "Packing/GuillotineBinPack.h"
 
@@ -10,7 +10,7 @@ typedef GuillotineBinPack Bin;	// using guillotine
 class Image;
 class Texture;
 
-#include "../../Math/Vector2.h"
+#include "Math/Vector2.h"
 
 #include <map>
 #include <vector>

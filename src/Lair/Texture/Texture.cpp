@@ -3,7 +3,7 @@
 
 #include "../../fw.h"	//todo: include opengl properly
 
-#include "../Lair.h"
+#include "Lair/Lair.h"
 
 Texture::Texture() : m_nWidth(0),m_nHeight(0)
 {

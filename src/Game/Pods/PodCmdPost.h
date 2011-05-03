@@ -1,7 +1,7 @@
 #ifndef _POD_CMDPOST_H
 #define _POD_CMDPOST_H
 
-#include "../Entity.h"
+#include "Engine/Entity.h"
 #include "../Pump.h"
 
 class CPodCommandPost : public CEntity
