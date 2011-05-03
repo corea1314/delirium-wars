@@ -4,19 +4,15 @@
 
 #include "app.h"
 
-#include "Game/Engine.h"
-#include "Game/Camera.h"
+#include "Engine/Engine.h"
+#include "Engine/Entities/Camera/Camera.h"
 #include "Game/Field.h"
-#include "Game/Clock.h"
+#include "Engine/Entities/Clock/Clock.h"
 
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
 
 App g_App;
-
-#include "objLoader/obj.h"
-
-void DrawModelUsingFixedFuncPipeline( ModelOBJ* in_pModel, bool in_bEnableModelTexture );
 
 App::App()
 {

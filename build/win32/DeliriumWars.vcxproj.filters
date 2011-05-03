@@ -91,12 +91,6 @@
     <Filter Include="source\Lair\Console">
       <UniqueIdentifier>{b0b573aa-3dff-4359-bd15-9f15db73c37c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Lair\Object">
-      <UniqueIdentifier>{25c42ea9-9ec3-4142-af79-da3bcc9c2554}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\Lair\Database">
-      <UniqueIdentifier>{0d12328b-2c77-4ea8-83a4-b91a527cf1fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Lair\Analog">
       <UniqueIdentifier>{a213fc88-e334-4695-91f3-2aaa76b37c36}</UniqueIdentifier>
     </Filter>
@@ -124,8 +118,26 @@
     <Filter Include="sdk\Box2d\Collision\Shapes">
       <UniqueIdentifier>{3cc68c70-df42-41a5-9604-541ba4ee3181}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Lair\Physics">
-      <UniqueIdentifier>{00f75914-5bad-41df-a7d2-bb5a2deb9c21}</UniqueIdentifier>
+    <Filter Include="source\Engine">
+      <UniqueIdentifier>{9dfbe1ba-18dd-429a-9f37-cc5cd20fe24f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Database">
+      <UniqueIdentifier>{5047cada-5197-4823-b2f3-b6cf3acfeff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Entities">
+      <UniqueIdentifier>{76e18bf6-cdb9-42ff-a8e0-3b255b680fec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Entities\Camera">
+      <UniqueIdentifier>{041d86c3-62c0-455d-b1d6-9a36746e618c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Entities\Clock">
+      <UniqueIdentifier>{c0861686-d309-4754-9069-01a6a7144697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Physics">
+      <UniqueIdentifier>{54d10950-84fc-44f1-ab92-1d0acf1d8ec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Entities\Player">
+      <UniqueIdentifier>{ce65f4cd-75ed-45fa-a19d-670b3b495973}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -153,16 +165,10 @@
     <ClCompile Include="..\..\src\Math\Matrix3x3.cpp">
       <Filter>source\Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Game\Entity.cpp">
-      <Filter>source\Game</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Game\Field.cpp">
       <Filter>source\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Pump.cpp">
-      <Filter>source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Timer.cpp">
       <Filter>source\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Deposit.cpp">
@@ -176,15 +182,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Pods\PopPump.cpp">
       <Filter>source\Game\Pods</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Engine.cpp">
-      <Filter>source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Clock.cpp">
-      <Filter>source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Camera.cpp">
-      <Filter>source\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Sprite\Sprite.cpp">
       <Filter>source\Sprite</Filter>
@@ -287,12 +284,6 @@
     </ClCompile>
     <ClCompile Include="..\..\sdk\tinyxml\tinyxmlparser.cpp">
       <Filter>sdk\tinyxml</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Object\Object.cpp">
-      <Filter>source\Lair\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Database\Database.cpp">
-      <Filter>source\Lair\Database</Filter>
     </ClCompile>
     <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\b2Body.cpp">
       <Filter>sdk\Box2d\Dynamic</Filter>
@@ -399,8 +390,35 @@
     <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2PolygonShape.cpp">
       <Filter>sdk\Box2d\Collision\Shapes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Physics\Physics.cpp">
-      <Filter>source\Lair\Physics</Filter>
+    <ClCompile Include="..\..\src\Engine\Engine.cpp">
+      <Filter>source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Entity.cpp">
+      <Filter>source\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Entities\Camera\Camera.cpp">
+      <Filter>source\Engine\Entities\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Entities\Clock\Clock.cpp">
+      <Filter>source\Engine\Entities\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Entities\Clock\Timer.cpp">
+      <Filter>source\Engine\Entities\Clock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Database\Database.cpp">
+      <Filter>source\Engine\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Physics\Physics.cpp">
+      <Filter>source\Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Physics\Builder.cpp">
+      <Filter>source\Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Physics\EntityPhysics.cpp">
+      <Filter>source\Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Entities\Player\Player.cpp">
+      <Filter>source\Engine\Entities\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -425,13 +443,7 @@
     <ClInclude Include="..\..\src\Math\Vector3.h">
       <Filter>source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Game\Entity.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Game\Box2.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Timer.h">
       <Filter>source\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Game\Deposit.h">
@@ -463,18 +475,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Game\Pods\PodPump.h">
       <Filter>source\Game\Pods</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Engine.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\SigSlot.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Clock.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Camera.h">
-      <Filter>source\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\macros.h">
       <Filter>source</Filter>
@@ -569,9 +569,6 @@
     <ClInclude Include="..\..\src\Lair\Console\Console.h">
       <Filter>source\Lair\Console</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Database\Database.h">
-      <Filter>source\Lair\Database</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Lair\Analog\Analog.h">
       <Filter>source\Lair\Analog</Filter>
     </ClInclude>
@@ -580,9 +577,6 @@
     </ClInclude>
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h">
       <Filter>sdk\tinyxml</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Object\Object.h">
-      <Filter>source\Lair\Object</Filter>
     </ClInclude>
     <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Box2D.h">
       <Filter>sdk\Box2d</Filter>
@@ -692,8 +686,38 @@
     <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Collision\Shapes\b2Shape.h">
       <Filter>sdk\Box2d\Collision\Shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Physics\Physics.h">
-      <Filter>source\Lair\Physics</Filter>
+    <ClInclude Include="..\..\src\Engine\Engine.h">
+      <Filter>source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Entity.h">
+      <Filter>source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\SigSlot.h">
+      <Filter>source\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Entities\Camera\Camera.h">
+      <Filter>source\Engine\Entities\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Entities\Clock\Timer.h">
+      <Filter>source\Engine\Entities\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Entities\Clock\Clock.h">
+      <Filter>source\Engine\Entities\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Database\Database.h">
+      <Filter>source\Engine\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Physics\Physics.h">
+      <Filter>source\Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Physics\Builder.h">
+      <Filter>source\Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Physics\EntityPhysics.h">
+      <Filter>source\Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Entities\Player\Player.h">
+      <Filter>source\Engine\Entities\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

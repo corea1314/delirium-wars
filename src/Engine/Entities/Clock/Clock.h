@@ -1,7 +1,7 @@
 #ifndef _CLOCK_H
 #define _CLOCK_H
 
-#include "Entity.h"
+#include "Engine/Entity.h"
 
 // the clock is holding the master time line.
 // it cannot be paused, stopped, etc. only updated.

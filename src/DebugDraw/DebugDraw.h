@@ -1,7 +1,7 @@
 #ifndef _DEBUG_DRAW_H
 #define _DEBUG_DRAW_H
 
-#include "../Math/Vector2.h"
+#include "Math/Vector2.h"
 
 class Texture;
 
