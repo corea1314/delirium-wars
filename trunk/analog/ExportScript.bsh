@@ -1,0 +1,476 @@
+
+public class MapPoint
+{
+	public ReadablePointInstance instance;
+	public int layerId;
+	public String layerName;
+	
+	public MapPoint( ReadablePointInstance instance, int layerId, String layerName )
+	{
+		this.instance = instance;
+		this.layerId = layerId;
+		this.layerName = layerName;
+	}	
+}
+
+public class MapRect
+{
+	public ReadableRectangleInstance instance;
+	public int layerId;
+	public String layerName;
+	
+	public MapRect( ReadableRectangleInstance instance, int layerId, String layerName )
+	{
+		this.instance = instance;
+		this.layerId = layerId;
+		this.layerName = layerName;
+	}	
+}
+
+public class MapPoly
+{
+	public ReadablePolyInstance instance;
+	public int layerId;
+	public String layerName;
+	
+	public MapPoly( ReadablePolyInstance instance, int layerId, String layerName )
+	{
+		this.instance = instance;
+		this.layerId = layerId;
+		this.layerName = layerName;
+	}	
+}
+
+public class MapInstances
+{
+	public static List listPoint = new ArrayList();
+	public static List listRect = new ArrayList();
+	public static List listPoly = new ArrayList();
+	
+	public static void clear()
+	{
+		listPoint.clear();
+		listRect.clear();
+		listPoly.clear();
+	}
+	
+	public static boolean add( MapPoint p ) { listPoint.add(p); }	
+	public static boolean add( MapRect r ) 	{ listRect.add(r); }	
+	public static boolean add( MapPoly p ) 	{ listPoly.add(p); }
+	
+	public static ReadablePointInstance getExportSettings()
+	{
+		for( mp : listPoint )
+		{
+			ReadablePropertySet properties = mp.instance.getReadableProperties();		
+			ReadableProperty p = properties.get("!classname");
+			if ( p != null && p.value().equals("ExportSettings") )
+			{
+				return mp.instance;
+			}
+		}
+		
+		return null;
+	}
+}
+
+public class ExportUtil
+{
+	public static PrintWriter mapWriter;
+	public static OutputStream mapOut;
+	public static File outputDir;
+	public static String fileName;
+	
+	public static int mapWidth;
+	public static int mapHeight;
+	
+	public static void open( String fileExtension )
+	{
+		File outputFile = new File(outputDir, fileName + "." + fileExtension);
+		outputFile.getParentFile().mkdirs();
+		mapOut = new FileOutputStream(outputFile);
+		OutputStreamWriter utf8writer = new OutputStreamWriter(mapOut, Charset.forName("UTF-8"));
+		
+		mapWriter = new PrintWriter(utf8writer);
+		
+		ExportUtil.write("<?xml version='1.0' encoding='utf-8'?>");
+		ExportUtil.write();
+	}
+	
+	public static void write( String s ) 
+	{
+		mapWriter.println(s);
+	}
+	
+	public static void write() 
+	{
+		mapWriter.println();
+	}
+	
+	public static void close()
+	{
+		ExportUtil.write();				
+		mapWriter.close();
+		mapOut.close();
+	}
+	
+	// Returns the classname of the instance
+	public static String getClassname( ReadableInstance i )
+	{
+		ReadablePropertySet properties = i.getReadableProperties();		
+		ReadableProperty p = properties.get("!classname");
+		if (p != null)
+		{
+			return p.value();
+		}		
+		return "!";
+	}
+		
+	// Returns the name of the instance
+	public static String getName( ReadableInstance i )
+	{
+		ReadablePropertySet properties = i.getReadableProperties();		
+		ReadableProperty p = properties.get("name");
+		if (p != null)
+		{
+			return p.value();
+		}		
+		return "!";
+	}
+	
+	// The map editor has the origin at the upper left corner, but in-game we have the origin lower-left
+	// Therefore we flip the coord on export and all is good.
+	public static float getY(ReadablePointInstance inst)
+	{
+		return mapHeight - inst.getY();
+	}
+		
+	// The map editor has the origin at the upper left corner, but in-game we have the origin lower-left
+	// Therefore we flip the coord on export and all is good.
+	public static float getY(ReadablePolyInstance inst, int p )
+	{
+		return mapHeight - inst.getY(p);
+	}
+	
+	// As above but for rectangles (where we have to provide the lower-left corner rather than the top left)
+	public static float getY(ReadableRectangleInstance inst)
+	{
+		return mapHeight - inst.getY() - inst.getHeight();
+	}
+	
+	// The x coord is unchanged, but we provide a similar accessor to keep things consistant
+	// (and in case we want to change it later)
+	public static float getX(ReadablePointInstance inst)		{ return inst.getX();	}
+	public static float getX(ReadableRectangleInstance inst)	{ return inst.getX();	}
+	public static float getX(ReadablePolyInstance inst, int p) { return inst.getX(p);	}	
+}
+
+public class ExportWriter
+{		
+	public static void write()
+	{
+		ExportUtil.open( "map.xml" );
+				
+		ExportUtil.write("<map version=\"1\" width=\""+ExportUtil.mapWidth+"\" height=\""+ExportUtil.mapHeight+"\" >");
+		
+		for( point : MapInstances.listPoint )
+			write( point );
+		
+		for( rect : MapInstances.listRect )
+			write( rect );
+		
+		for( poly : MapInstances.listPoly )
+			write( poly );
+		
+		ExportUtil.write("</map>");
+		
+		ExportUtil.close();
+	}
+	
+	public static void write(MapPoint point)
+	{
+		ReadablePropertySet sp = point.instance.getReadableProperties();
+		
+		if( sp.getAllProperties().length > 0 || sp.getLocalProperties().length > 0 )
+		{
+			ExportUtil.write("\t<point x=\"" + ExportUtil.getX(point.instance) + 
+									"\" y=\"" + ExportUtil.getY(point.instance) + "\" z=\"" + point.layerId + "\">");
+			writeProperties( point.instance );
+			ExportUtil.write("\t</point>");
+		}
+		else
+		{
+			ExportUtil.write("\t<point x=\"" + ExportUtil.getX(point.instance) + 
+										"\" y=\"" + ExportUtil.getY(point.instance)  + "\" z=\"" + point.layerId + "\"/>");
+		}
+	}
+	
+	public static void write( MapRect rect )
+	{
+		ReadablePropertySet sp = rect.instance.getReadableProperties();
+		
+		if( sp.getAllProperties().length > 0 || sp.getLocalProperties().length > 0 )
+		{
+			ExportUtil.write("\t<rect x=\"" + ExportUtil.getX(rect.instance) + "\" y=\"" + ExportUtil.getY(rect.instance) + 
+								"\" z=\"" + rect.layerId + 
+								"\" w=\"" + rect.instance.getWidth() + "\" h=\"" + rect.instance.getHeight() + 								
+								"\">");
+			writeProperties( rect.instance );
+			ExportUtil.write("\t</rect>");
+		}
+		else
+		{
+			ExportUtil.write("\t<rect x=\"" + ExportUtil.getX(rect.instance) + 
+								"\" y=\"" + ExportUtil.getY(rect.instance) + 
+								"\" z=\"" + rect.layerId + 
+								"\" w=\"" + rect.instance.getWidth() + "\" h=\"" + rect.instance.getHeight() + 
+								"\"/>");
+		}
+	}
+	
+	public static void write( MapPoly poly )
+	{
+		ReadablePropertySet sp = poly.instance.getReadableProperties();
+	
+		ExportUtil.write("\t<poly z=\"" + poly.layerId + "\">");
+		
+		for( p = 0; p < poly.instance.numPoints(); p++ )
+		{
+			ExportUtil.write("\t\t<point x=\"" + ExportUtil.getX(poly.instance,p) + 
+										"\" y=\"" + ExportUtil.getY(poly.instance,p) + "\"/>");
+		}
+		
+		writeProperties( poly.instance );
+		ExportUtil.write("\t</poly>");
+	}
+		
+	public static void writeProperties( ReadableInstance i )
+	{
+		ReadablePropertySet sp = i.getReadableProperties();
+		
+		for( p : sp.getAllProperties() )
+		{
+			ExportUtil.write("\t\t<property name=\"" + p.name() + "\" value=\"" + sp.get(p.name()).value() + "\"/>");
+		}
+	}
+}
+
+public class ExportBoxWriter
+{
+	public static List listBody;
+	public static List listShapeRect;
+	public static List listShapePoly;
+	
+	public static void classify()
+	{ 
+		for( point : MapInstances.listPoint )
+		{			
+			if( ExportUtil.getClassname( point.instance ).equals("b2_body") )
+			{
+				listBody.add( point );
+			}
+		}
+		
+		for( poly : MapInstances.listPoly )
+		{
+			if( ExportUtil.getClassname( poly.instance ).equals("b2_shape_poly") )
+			{
+				listShapePoly.add( poly );
+			}
+		}
+		
+		for( rect : MapInstances.listRect )
+		{
+			if( ExportUtil.getClassname( rect.instance ).equals("b2_shape_rect") )
+			{
+				listShapeRect.add( rect );
+			}
+		}				
+	}
+	
+	public static boolean processShapes( String nameBody )
+	{
+		for ( MapRect r : listShapeRect ) 
+		{
+			if( getBody(r.instance).equals(nameBody) )
+			{
+				ExportWriter.write( r );
+			}
+		}
+		
+		for ( MapPoly p : listShapePoly ) 
+		{
+			if( getBody(p.instance).equals(nameBody) )
+			{
+				ExportWriter.write( p );
+			}
+		}
+			
+		return true;
+	}
+	
+	public static boolean writeBody( MapPoint point )
+	{
+		ReadablePropertySet sp = point.instance.getReadableProperties();
+		
+		ExportUtil.write("\t<body x=\"" + ExportUtil.getX(point.instance) + 
+								"\" y=\"" + ExportUtil.getY(point.instance) + "\" z=\"" + point.layerId + "\">");
+			
+			processShapes( ExportUtil.getName(point.instance) );
+		
+			ExportWriter.writeProperties( point.instance );
+
+		ExportUtil.write("\t</body>");
+			
+		return true;
+	}
+	
+	public static void write()
+	{
+		ExportUtil.open( "body.xml" );
+		
+		listBody = new ArrayList();
+		listShapeRect = new ArrayList();
+		listShapePoly = new ArrayList();
+		
+		classify();
+		
+		for ( MapPoint b : listBody ) 
+			writeBody( b );
+			
+		listBody = null;
+		listShapeRect = null;
+		listShapePoly = null;
+		
+		ExportUtil.close();
+	}
+	
+	public static String getBody( ReadableInstance i )
+	{
+		ReadablePropertySet properties = i.getReadableProperties();		
+		ReadableProperty p = properties.get("body");
+		if (p != null)
+		{
+			return p.value();
+		}		
+		return "!";
+	}
+}
+
+public class CustomExporter extends ExportScript
+{
+	private int currLayerId;
+	private String currLayerName;
+	
+	private MapInstances mapInstances;
+	
+	public void startExport(File outputDir)
+	{
+		println("Exporting map(s) to " + outputDir );
+	}
+	
+	public void finishExport()
+	{
+		println("Done!");
+	}
+		
+	public boolean validateProperty( ReadableInstance i, String name )
+	{		
+		ReadablePropertySet properties = i.getReadableProperties();		
+		ReadableProperty p = properties.get(name);
+		if (p == null)
+		{
+			println("No '" + name + "' in properties, ignoring instance at (" + i.getX() + "," + i.getY() + ").");
+			return false;
+		}		
+		return true;
+	}
+	
+	public boolean validateInstance( ReadableInstance i )
+	{
+		ReadablePropertySet properties = i.getReadableProperties();		
+				
+		ReadableProperty propClassname = properties.get("!classname");
+				
+		if( propClassname == null )
+		{
+			println("No '!classname' in properties, ignoring instance at (" + i.getX() + "," + i.getY() + ").");
+			return false; // instance without classname is not permitted
+		}	
+		
+		return true; // at this point everything seems fine
+	}
+	
+	public void startMap(String name, File outputDir, int width, int height)
+	{		
+		ExportUtil.fileName = name;
+		ExportUtil.outputDir = outputDir;
+		ExportUtil.mapWidth = width;
+		ExportUtil.mapHeight = height;		
+		
+		println( "Processing map named " + name );
+				
+		MapInstances.clear();
+	}
+	
+	public void finishMap()
+	{
+		// At this point we added all map instances to our structure.
+		// We should read the export object to figure out what kind of map data we need to export than
+		// create an exporter be write the file.
+						
+		exportSettings = MapInstances.getExportSettings();
+		
+		if( exportSettings != null )
+		{			
+			if( exportSettings.getReadableProperties().get("writer").value().equals("box2d") )
+			{
+				println( "box2d writer selected" );
+				ExportBoxWriter.write();
+			}
+			else
+			{
+				println( "Default writer selected" );
+				ExportWriter.write();
+			}
+		}
+		else
+		{
+			println( "No ExportSettings found while processing map " + fileName + ". Skipping..." );
+		}		
+	}
+	
+	public void startLayer(String layerName) 
+	{
+		currLayerName = layerName;
+	}
+	
+	public void finishLayer() 
+	{
+		++currLayerId;
+	}
+		
+	public void export(ReadablePointInstance point)
+	{
+		if( validateInstance(point) == false )
+			return;
+				
+		MapInstances.add( new MapPoint( point, currLayerId, currLayerName ) );
+	}
+	
+	public void export(ReadableRectangleInstance rect)
+	{
+		if( validateInstance(rect) == false )
+			return;
+			
+		MapInstances.add( new MapRect( rect, currLayerId, currLayerName ) );
+	}
+		
+	public void export(ReadablePolyInstance poly)
+	{
+		if( validateInstance(poly) == false )
+			return;
+			
+		MapInstances.add( new MapPoly( poly, currLayerId, currLayerName ) );
+	}
+}
