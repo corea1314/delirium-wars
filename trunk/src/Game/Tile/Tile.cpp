@@ -1,7 +1,7 @@
 
 #include "Tile.h"
 
-#include "../../Lair/Lair.h"
+#include "Lair/Lair.h"
 
 CTileLevel::CTileLevel( unsigned int in_nTileWidth, unsigned int in_nTileHeight ) 
 	: m_nTileWidth(in_nTileWidth), m_nTileHeight(in_nTileHeight)

@@ -1,14 +1,16 @@
 #include "Tester.h"
 
-#include "../Engine.h"
-#include "../Clock.h"
-#include "../../Lair/Lair.h"
-#include "../../DebugDraw/DebugDraw.h"
-#include "../../Physics/PhysicsManager.h"
-#include "../../Physics/PhysicsBody.h"
-#include "../../Sprite/Sprite.h"
+#include "Engine/Engine.h"
+#include "Engine/Entities/Clock/Clock.h"
+#include "Lair/Lair.h"
+#include "DebugDraw/DebugDraw.h"
+#include "Physics/PhysicsManager.h"
+#include "Physics/PhysicsBody.h"
+#include "Sprite/Sprite.h"
 
-#include "../../Lair/Atlas/Atlas.h"
+#include "Lair/Atlas/Atlas.h"
+
+#include "Engine/Physics/Builder.h"
 
 CTester::CTester()
 {
@@ -17,6 +19,8 @@ CTester::CTester()
 
 	Lair::GetTextureMan()->Get("test1024.png");
 	Lair::GetTextureMan()->Get("test2048.png");
+
+	CBodyBuilder b("TestBody.body.xml");
 }
 
 CTester::~CTester()

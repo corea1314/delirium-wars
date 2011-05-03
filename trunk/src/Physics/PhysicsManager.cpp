@@ -1,9 +1,9 @@
 #include "PhysicsManager.h"
 
 #include "PhysicsBody.h"
-#include "../Game/Field.h"
-#include "../Game/Engine.h"
-#include "../DebugDraw/DebugDraw.h"
+#include "Game/Field.h"
+#include "Engine/Engine.h"
+#include "DebugDraw/DebugDraw.h"
 #include <vector>
 
 CPhysicsManager::CPhysicsManager(float in_fTimeResolution , int in_mMaximumSubStep)

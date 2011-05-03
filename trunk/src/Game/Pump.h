@@ -1,9 +1,9 @@
 #ifndef _PUMP_H
 #define _PUMP_H
 
-#include "Entity.h"
+#include "Engine/Entity.h"
 
-#include "../Math/Vector2.h"
+#include "Math/Vector2.h"
 
 class CDeposit;
 class CTimer;

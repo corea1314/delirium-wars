@@ -2,7 +2,7 @@
 
 #include "LodePNG/LoaderPNG.h"
 
-#include "../Lair.h"
+#include "Lair/Lair.h"
 
 // Image ======================================================================
 

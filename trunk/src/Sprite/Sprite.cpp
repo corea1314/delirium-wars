@@ -1,7 +1,7 @@
 #include "Sprite.h"
 
-#include "../Lair/Lair.h"
-#include "../Lair/Sequence/Sequence.h"
+#include "Lair/Lair.h"
+#include "Lair/Sequence/Sequence.h"
 
 
 

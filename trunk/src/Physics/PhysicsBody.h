@@ -1,9 +1,9 @@
 #ifndef _PHYSICS_BODY_H__
 #define _PHYSICS_BODY_H__
 
-#include "../Math/Vector2.h"
+#include "Math/Vector2.h"
 #include <string>
-#include "../Game/SigSlot.h"
+#include "Engine/SigSlot.h"
 
 typedef int CollisionMask;
 

@@ -1,6 +1,6 @@
 #include "Sequence.h"
 
-#include "../Lair.h"
+#include "Lair/Lair.h"
 
 #include "glee/GLee.h"
 

@@ -5,9 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "../Math/Vector2.h"
-
-#include "../Lair/Sequence/Sequence.h"
+#include "Math/Vector2.h"
+#include "Lair/Sequence/Sequence.h"
 
 class Sprite
 {

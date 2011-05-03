@@ -2,9 +2,9 @@
 
 #include "glee/GLee.h"
 
-#include "../../macros.h"
+#include "macros.h"
 
-#include "../../Lair/Lair.h"
+#include "Lair/Lair.h"
 
 #include <stdio.h>
 

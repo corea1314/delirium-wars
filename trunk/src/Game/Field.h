@@ -1,7 +1,7 @@
 #ifndef _FIELD_H
 #define _FIELD_H
 
-#include "SigSlot.h"
+#include "Engine/SigSlot.h"
 #include "../gfx.h"
 
 #define FIELD_SIZE_X	1024

@@ -1,7 +1,7 @@
 
 #include "RenderTarget.h"
 
-#include "../../Lair/Lair.h"
+#include "Lair/Lair.h"
 
 #include "glee/GLee.h"
 

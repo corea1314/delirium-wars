@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "../../Math/Vector2.h"
-#include "../Atlas/Atlas.h"
+#include "Math/Vector2.h"
+#include "Lair/Atlas/Atlas.h"
 
 
 class ShaderGLSL;

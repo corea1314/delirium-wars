@@ -1,7 +1,7 @@
 
 #include "Sound.h"
 
-#include "../Lair.h"
+#include "Lair/Lair.h"
 
 bool Sound::Load( const std::string& in_szFilename, FMOD::System* in_pFmodSystem )
 {
