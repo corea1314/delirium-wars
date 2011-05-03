@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<map version="1" width="512" height="128" >
+	<point x="16.0" y="32.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="32.0" y="32.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="48.0" y="32.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="64.0" y="32.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="80.0" y="32.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="16.0" y="16.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="32.0" y="16.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="48.0" y="16.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="64.0" y="16.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="80.0" y="16.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="0.0" y="0.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="16.0" y="0.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="32.0" y="0.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="48.0" y="0.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="48.0" y="0.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="64.0" y="0.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="80.0" y="0.0" z="0">
+		<property name="!classname" value="worldspawn"/>
+	</point>
+	<point x="208.0" y="96.0" z="0">
+		<property name="fixedRotation" value="false"/>
+		<property name="angularDamping" value="0.01"/>
+		<property name="!classname" value="b2_body"/>
+		<property name="allowSleep" value="true"/>
+		<property name="name" value="test_body"/>
+		<property name="active" value="true"/>
+		<property name="awake" value="true"/>
+		<property name="type" value="static"/>
+		<property name="linearDamping" value="0"/>
+		<property name="bullet" value="false"/>
+	</point>
+	<point x="32.0" y="96.0" z="0">
+		<property name="!classname" value="b2_world"/>
+		<property name="doSleep" value="true"/>
+		<property name="name" value="world"/>
+		<property name="gravity" value="0 -10"/>
+	</point>
+	<point x="-16.0" y="160.0" z="0">
+		<property name="!classname" value="ExportSettings"/>
+		<property name="writer" value="default"/>
+	</point>
+	<rect x="176.0" y="80.0" z="0" w="112.0" h="16.0">
+		<property name="body" value="test_body"/>
+		<property name="angularDamping" value="0"/>
+		<property name="density" value="1"/>
+		<property name="!classname" value="b2_shape_rect"/>
+		<property name="isSensor" value="false"/>
+		<property name="friction" value="1"/>
+		<property name="linearDamping" value="0"/>
+		<property name="restitution" value="0"/>
+	</rect>
+	<poly z="0">
+		<point x="240.0" y="64.0"/>
+		<point x="272.0" y="32.0"/>
+		<point x="320.0" y="48.0"/>
+		<point x="336.0" y="64.0"/>
+		<property name="" value="0"/>
+		<property name="body" value="world"/>
+		<property name="density" value="1"/>
+		<property name="!classname" value="b2_shape_poly"/>
+		<property name="isSensor" value="false"/>
+		<property name="friction" value="1"/>
+		<property name="restitution" value="0"/>
+	</poly>
+</map>
+

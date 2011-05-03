@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<MapProject version="1">
+	<Exporter scriptFile="\ExportScript.bsh" outputDir="C:\Work\Delirium Wars\bin" />
+	<Map file="Player" />
+	<Map file="TestMap" />
+	<ElementPalette>
+		<ElementGroup name="Default">
+			<PointElement name="ExportSettings" imageFile="" offsetX="-10" offsetY="-10" colourR="255" colourG="0" colourB="128" >
+				<PropertySet>
+					<Property name="!classname" canOverride="false" value="ExportSettings" />
+					<Property name="writer" canOverride="true" value="default" />
+				</PropertySet>
+			</PointElement>
+		</ElementGroup>
+		<ElementGroup name="Walls">
+			<PointElement name="SW Corner" imageFile="\Tiles\.Layer 1.png" offsetX="0" offsetY="-16" colourR="0" colourG="0" colourB="0" >
+				<PropertySet>
+					<Property name="!classname" canOverride="false" value="worldspawn" />
+				</PropertySet>
+			</PointElement>
+			<PointElement name="Center" imageFile="\Tiles\.Layer 9.png" offsetX="0" offsetY="-16" colourR="192" colourG="192" colourB="192" >
+				<PropertySet>
+					<Property name="!classname" canOverride="false" value="worldspawn" />
+				</PropertySet>
+			</PointElement>
+			<PointElement name="South" imageFile="\Tiles\.Layer 2.png" offsetX="0" offsetY="-16" colourR="0" colourG="0" colourB="0" >
+				<PropertySet>
+					<Property name="!classname" canOverride="false" value="worldspawn" />
+				</PropertySet>
+			</PointElement>
+		</ElementGroup>
+		<ElementGroup name="box2d">
+			<PointElement name="b2_body" imageFile="" offsetX="-10" offsetY="-10" colourR="255" colourG="128" colourB="0" >
+				<PropertySet>
+					<Property name="fixedRotation" canOverride="true" value="false" />
+					<Property name="angularDamping" canOverride="true" value="0.01" />
+					<Property name="!classname" canOverride="false" value="b2_body" />
+					<Property name="allowSleep" canOverride="true" value="true" />
+					<Property name="name" canOverride="true" value="!unset" />
+					<Property name="active" canOverride="true" value="true" />
+					<Property name="awake" canOverride="true" value="true" />
+					<Property name="linearDamping" canOverride="true" value="0" />
+					<Property name="type" canOverride="true" value="static" />
+					<Property name="bullet" canOverride="true" value="false" />
+				</PropertySet>
+			</PointElement>
+			<PolyElement name="b2_distance_joint" isOpen="false" isSolid="true" outlineR="255" outlineG="128" outlineB="0" fillR="192" fillG="192" fillB="192" alpha="1.0"  >
+				<PropertySet>
+					<Property name="body2" canOverride="true" value="!unset" />
+					<Property name="!classname" canOverride="false" value="b2_distance_joint" />
+					<Property name="dampingRatio" canOverride="true" value="0.5f" />
+					<Property name="frequencyHz" canOverride="true" value="4.0" />
+					<Property name="body1" canOverride="true" value="!unset" />
+				</PropertySet>
+			</PolyElement>
+			<PointElement name="b2_world" imageFile="" offsetX="-10" offsetY="-10" colourR="255" colourG="128" colourB="0" >
+				<PropertySet>
+					<Property name="!classname" canOverride="false" value="b2_world" />
+					<Property name="doSleep" canOverride="true" value="true" />
+					<Property name="name" canOverride="false" value="world" />
+					<Property name="gravity" canOverride="true" value="0 -10" />
+				</PropertySet>
+			</PointElement>
+			<RectangleElement name="b2_shape_rect" isSolid="true" outlineR="255" outlineG="128" outlineB="0" fillR="192" fillG="192" fillB="192" alpha="0.8"  >
+				<PropertySet>
+					<Property name="body" canOverride="true" value="world" />
+					<Property name="angularDamping" canOverride="true" value="0" />
+					<Property name="!classname" canOverride="false" value="b2_shape_rect" />
+					<Property name="density" canOverride="true" value="1" />
+					<Property name="isSensor" canOverride="true" value="false" />
+					<Property name="friction" canOverride="true" value="1" />
+					<Property name="linearDamping" canOverride="true" value="0" />
+					<Property name="restitution" canOverride="true" value="0" />
+				</PropertySet>
+			</RectangleElement>
+			<PointElement name="b2_revolute_joint" imageFile="" offsetX="-10" offsetY="-10" colourR="255" colourG="128" colourB="0" >
+				<PropertySet>
+					<Property name="body2" canOverride="true" value="!unset" />
+					<Property name="!classname" canOverride="false" value="b2_revolute_joint" />
+					<Property name="lowerAngle" canOverride="true" value="-90" />
+					<Property name="enableLimit" canOverride="true" value="false" />
+					<Property name="body1" canOverride="true" value="world" />
+					<Property name="upperAngle" canOverride="true" value="90" />
+				</PropertySet>
+			</PointElement>
+			<PolyElement name="b2_shape_poly" isOpen="false" isSolid="true" outlineR="255" outlineG="128" outlineB="0" fillR="192" fillG="192" fillB="192" alpha="0.8"  >
+				<PropertySet>
+					<Property name="" canOverride="true" value="0" />
+					<Property name="body" canOverride="true" value="world" />
+					<Property name="!classname" canOverride="false" value="b2_shape_poly" />
+					<Property name="density" canOverride="true" value="1" />
+					<Property name="isSensor" canOverride="true" value="false" />
+					<Property name="friction" canOverride="true" value="1" />
+					<Property name="restitution" canOverride="true" value="0" />
+				</PropertySet>
+			</PolyElement>
+		</ElementGroup>
+	</ElementPalette>
+</MapProject>
+

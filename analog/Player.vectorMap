@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Map version="1" width="64" height="64">
+	<Layer name="Default" showGrid="false" isSnapped="true" snapX="8" snapY="8" >
+		<PointInstance elementName="ExportSettings" x="-32.0" y="-32.0" >
+				<PropertySet>
+					<Property name="writer" canOverride="true" value="box2d" />
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="b2_body" x="0.0" y="64.0" >
+				<PropertySet>
+					<Property name="name" canOverride="true" value="arrow" />
+				</PropertySet>
+		</PointInstance>
+		<RectangleInstance elementName="b2_shape_rect" x="-32" y="0" width="64" height="64" >
+				<PropertySet>
+					<Property name="body" canOverride="true" value="arrow" />
+				</PropertySet>
+		</RectangleInstance>
+		<PolyInstance elementName="b2_shape_poly" >
+			<Point x="0.0" y="-48.0" />
+			<Point x="64.0" y="8.0" />
+			<Point x="32.0" y="32.0" />
+			<Point x="0.0" y="8.0" />
+				<PropertySet>
+					<Property name="body" canOverride="true" value="arrow" />
+				</PropertySet>
+		</PolyInstance>
+		<PolyInstance elementName="b2_shape_poly" >
+			<Point x="0.0" y="8.0" />
+			<Point x="-32.0" y="32.0" />
+			<Point x="-64.0" y="8.0" />
+			<Point x="0.0" y="-48.0" />
+				<PropertySet>
+					<Property name="body" canOverride="true" value="arrow" />
+				</PropertySet>
+		</PolyInstance>
+	</Layer>
+</Map>
+

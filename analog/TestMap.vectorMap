@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Map version="1" width="512" height="128">
+	<Layer name="Default" showGrid="false" isSnapped="true" snapX="16" snapY="16" >
+		<PointInstance elementName="Center" x="16.0" y="96.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="32.0" y="96.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="48.0" y="96.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="64.0" y="96.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="80.0" y="96.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="16.0" y="112.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="32.0" y="112.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="48.0" y="112.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="64.0" y="112.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="Center" x="80.0" y="112.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="SW Corner" x="0.0" y="128.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="South" x="16.0" y="128.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="South" x="32.0" y="128.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="South" x="48.0" y="128.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="South" x="48.0" y="128.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="South" x="64.0" y="128.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="South" x="80.0" y="128.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="b2_body" x="208.0" y="32.0" >
+				<PropertySet>
+					<Property name="name" canOverride="true" value="test_body" />
+				</PropertySet>
+		</PointInstance>
+		<RectangleInstance elementName="b2_shape_rect" x="176" y="32" width="112" height="16" >
+				<PropertySet>
+					<Property name="body" canOverride="true" value="test_body" />
+				</PropertySet>
+		</RectangleInstance>
+		<PolyInstance elementName="b2_shape_poly" >
+			<Point x="240.0" y="64.0" />
+			<Point x="272.0" y="96.0" />
+			<Point x="320.0" y="80.0" />
+			<Point x="336.0" y="64.0" />
+				<PropertySet>
+					<Property name="body" canOverride="true" value="world" />
+				</PropertySet>
+		</PolyInstance>
+		<PointInstance elementName="b2_world" x="32.0" y="32.0" >
+				<PropertySet>
+				</PropertySet>
+		</PointInstance>
+		<PointInstance elementName="ExportSettings" x="-16.0" y="-32.0" >
+				<PropertySet>
+					<Property name="writer" canOverride="true" value="default" />
+				</PropertySet>
+		</PointInstance>
+	</Layer>
+</Map>
+
