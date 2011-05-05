@@ -14,6 +14,8 @@ class Atlas;
 
 class CTester : public CEntity
 {
+	DECLARE_CLASS_TYPE(CTester, CEntity, CEntity);
+
 public:
 	CTester();
     ~CTester();
@@ -36,7 +38,6 @@ public:
 
 protected:
 	Vector2		m_vPos;
-	CEngine*	m_pEngine;
 	float		m_fAngle;
 	Sprite*		m_pSprite;
 	Sprite*		m_pSpriteDiffusion;

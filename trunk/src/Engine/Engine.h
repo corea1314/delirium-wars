@@ -8,13 +8,13 @@ class CClock;
 class CCamera;
 class CPhysicsManager;
 class CDebugDraw;
+class CWorld;
 class CTester;
+
 class RenderTarget;
 class Texture;
-
 class SpriteRenderer;
 
-class b2World;
 
 //Objects should use the proxy when trying to connect with it
 class CEngineProxy
@@ -50,8 +50,7 @@ public:
 	CCamera*		GetCamera() const { return m_pCamera; }
 	CField*			GetField() const { return m_pField; }
     CPhysicsManager* GetPhysicsMan() const { return m_pPhysMan; }
-
-	b2World*	GetWorld();
+	CWorld*			GetWorld() const { return m_pWorld; }
 	
 	void RenderDebugDraw();
 	void Render();
@@ -64,6 +63,7 @@ private:
 	CCamera*	m_pCamera;
     CPhysicsManager* m_pPhysMan;
 	CDebugDraw*	m_pDebugDraw;
+	CWorld*		m_pWorld;
 	
 	RenderTarget*	m_pRT;
 	Texture*		m_pRTT[4];

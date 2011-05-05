@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+IMPLEMENT_CLASS_TYPE(CClock)
+
 CClock::CClock() : m_fDeltaTime(0.0f), m_fTotalTime(0.0f)
 {
 }

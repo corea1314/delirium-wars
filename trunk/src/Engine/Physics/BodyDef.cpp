@@ -1,14 +1,20 @@
-#include "Builder.h"
+#include "BodyDef.h"
 
 #include "Lair/Lair.h"
 
-CBodyBuilder::CBodyBuilder( const std::string& in_szFilename ) : m_bValid(false)
+#include <tinyxml/tinyxml.h>
+
+BodyDefinition::BodyDefinition() : m_bValid(false)
+{
+}
+
+bool BodyDefinition::Load( const std::string& in_szFilename )
 {
 	TiXmlDocument doc(in_szFilename);
 
 	if( doc.LoadFile() )
 	{
-		m_FixtureDef.reserve(4);	//fixme
+		m_FixtureDef.reserve(8);	//fixme
 
 		// for( TiXmlElement* pElement = doc.FirstChildElement("body"); pElement != NULL; pElement = pElement->NextSiblingElement("body") )
 		TiXmlElement* pElement = doc.FirstChildElement("body");
@@ -23,29 +29,12 @@ CBodyBuilder::CBodyBuilder( const std::string& in_szFilename ) : m_bValid(false)
 			Lair::GetLogMan()->Log( "Box2d", "XML parse error in %s: %s (Line %d)", doc.Value(), doc.ErrorDesc(), doc.ErrorRow() );
 		}
 	}
-}
-
-b2Body* CBodyBuilder::Create( b2World* in_pWorld, const b2Vec2& in_vPos, bool m_bActive )
-{
-	b2Body* pBody = 0;
-
-	if( m_bValid )
-	{
-		m_BodyDef.position = in_vPos;
-		m_BodyDef.active = m_bActive;
-		pBody = in_pWorld->CreateBody(&m_BodyDef);
-		for( std::vector<b2FixtureDef>::iterator it; it != m_FixtureDef.end(); it++ )
-		{
-			pBody->CreateFixture( &(*it) );
-		}
-	}
-
-	return pBody;
+	return m_bValid;
 }
 
 // ============================================================================
 
-void CBodyBuilder::ProcessBody( TiXmlElement* in_pxmlBody )
+void BodyDefinition::ProcessBody( TiXmlElement* in_pxmlBody )
 {
 	std::string szName, szValue;
 
@@ -119,7 +108,7 @@ void CBodyBuilder::ProcessBody( TiXmlElement* in_pxmlBody )
 	}
 }
 
-void CBodyBuilder::ProcessShapeRect( TiXmlElement* in_pxmlShape )
+void BodyDefinition::ProcessShapeRect( TiXmlElement* in_pxmlShape )
 {
 	b2FixtureDef def;
 	b2PolygonShape* shape = new b2PolygonShape;
@@ -141,7 +130,7 @@ void CBodyBuilder::ProcessShapeRect( TiXmlElement* in_pxmlShape )
 	m_FixtureDef.push_back(def);
 }
 
-void CBodyBuilder::ProcessShapePoly( TiXmlElement* in_pxmlShape )
+void BodyDefinition::ProcessShapePoly( TiXmlElement* in_pxmlShape )
 {
 	b2FixtureDef def;
 	b2PolygonShape* shape = new b2PolygonShape;
@@ -160,7 +149,7 @@ void CBodyBuilder::ProcessShapePoly( TiXmlElement* in_pxmlShape )
 	m_FixtureDef.push_back(def);
 }
 
-void CBodyBuilder::GetShapeProperties( TiXmlElement* in_pxmlShape, b2FixtureDef& out_b2FixtureDef )
+void BodyDefinition::GetShapeProperties( TiXmlElement* in_pxmlShape, b2FixtureDef& out_b2FixtureDef )
 {
 	std::string szName, szValue;
 
@@ -188,4 +177,38 @@ void CBodyBuilder::GetShapeProperties( TiXmlElement* in_pxmlShape, b2FixtureDef&
 				out_b2FixtureDef.isSensor = false;
 		}		
 	}
+}
+
+
+// ============================================================================
+
+BodyDefinition* BodyDefinitionMan::Get( const std::string& in_szFilename )
+{
+	std::map< std::string, BodyDefinition* >::iterator it = m_mapBodyDef.find( in_szFilename );
+
+	if( it != m_mapBodyDef.end() )
+	{
+		// found it, return it
+		//		Lair::GetLogMan()->Log( "BodyDefMan", "Loaded texture from map (%s).", in_szFilename.c_str() );
+		return it->second;
+	}
+	else
+	{
+		// not found, load it, return it
+		unsigned long nTime = Lair::GetSysMan()->GetTime();
+
+		BodyDefinition* pBodyDef = new BodyDefinition;
+		if( pBodyDef->Load( in_szFilename ) )
+		{
+			nTime = Lair::GetSysMan()->GetTime() - nTime;
+
+			m_mapBodyDef.insert( std::make_pair(in_szFilename,pBodyDef) );
+			Lair::GetLogMan()->Log( "BodyDefMan", "Loaded Box2d body definition from file named %s in %d ms.", in_szFilename.c_str(), nTime );
+			return pBodyDef;
+		}
+		Lair::GetLogMan()->Log( "BodyDefMan", "Could not load Box2d body definition from file named %s.", in_szFilename.c_str() );
+
+		delete pBodyDef;
+	}
+	return 0;
 }

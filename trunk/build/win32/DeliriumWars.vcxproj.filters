@@ -139,6 +139,9 @@
     <Filter Include="source\Engine\Entities\Player">
       <UniqueIdentifier>{ce65f4cd-75ed-45fa-a19d-670b3b495973}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Engine\Entities\World">
+      <UniqueIdentifier>{947b1209-60fb-419a-bb89-bc5cde7f5365}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -408,17 +411,17 @@
     <ClCompile Include="..\..\src\Engine\Database\Database.cpp">
       <Filter>source\Engine\Database</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Engine\Physics\Physics.cpp">
-      <Filter>source\Engine\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Engine\Physics\Builder.cpp">
-      <Filter>source\Engine\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Engine\Physics\EntityPhysics.cpp">
       <Filter>source\Engine\Physics</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Engine\Entities\Player\Player.cpp">
       <Filter>source\Engine\Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Physics\BodyDef.cpp">
+      <Filter>source\Engine\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Physics\World.cpp">
+      <Filter>source\Engine\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -707,17 +710,17 @@
     <ClInclude Include="..\..\src\Engine\Database\Database.h">
       <Filter>source\Engine\Database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Engine\Physics\Physics.h">
-      <Filter>source\Engine\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Engine\Physics\Builder.h">
-      <Filter>source\Engine\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Engine\Physics\EntityPhysics.h">
       <Filter>source\Engine\Physics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Engine\Entities\Player\Player.h">
       <Filter>source\Engine\Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Physics\BodyDef.h">
+      <Filter>source\Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Physics\World.h">
+      <Filter>source\Engine\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

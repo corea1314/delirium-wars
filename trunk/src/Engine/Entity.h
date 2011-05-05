@@ -4,6 +4,9 @@
 #include "SigSlot.h"
 
 #include <vector>
+#include <assert.h>
+
+#include <Engine/ClassType.h>
 
 class CEngine;
 
@@ -12,9 +15,26 @@ class CEngine;
 
 class CEntity : public has_slots<>
 {
+	DECLARE_CLASS_TYPE_ROOT(CEntity);
+
 public:
-	virtual void Connect( CEngine* ) = 0;		// connects object to game engine
-	virtual void Disconnect( CEngine* ) = 0;	// disconnects object from game engine
+	// connects object to game engine
+	virtual void Connect( CEngine* in_pEngine ) 
+	{ 
+		m_pEngine = in_pEngine; 
+	}
+	
+	// disconnects object from game engine
+	virtual void Disconnect( CEngine* in_pEngine ) 
+	{ 
+		assert(m_pEngine==in_pEngine); m_pEngine = 0; 
+	}
+
+protected:
+	CEngine*	GetEngine() const { return m_pEngine; }
+
+private:
+	CEngine* m_pEngine;
 };
 
 template <class T>

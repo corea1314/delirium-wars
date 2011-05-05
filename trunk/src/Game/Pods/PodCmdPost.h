@@ -6,6 +6,8 @@
 
 class CPodCommandPost : public CEntity
 {
+	DECLARE_CLASS_TYPE(CPodCommandPost, CEntity, CEntity);
+
 private:
 	float		m_fCurrentDepositCollected;
 	CPump		m_Pump;

@@ -8,7 +8,8 @@ class CPump;
 
 class CPod : public CEntity
 {
-public:
+	DECLARE_CLASS_TYPE(CPod, CEntity, CEntity);
+public:	
 };
 
 

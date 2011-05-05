@@ -2,13 +2,12 @@
 
 #include "Engine/Physics/EntityPhysics.h"
 
-class CBodyBuilder;
-
 class CPlayer : public CEntityPhysics
 {
-public:
-	static void Cache();
-	static void Uncache();
+	DECLARE_CLASS_TYPE(CPlayer, CEntityPhysics, CEntity);
 
-	static	CBodyBuilder* ms_pBodyBuilder;
+public:
+	virtual void OnContactAdd() {}
+	virtual void OnContactPersist() {}
+	virtual void OnContactRemove() {}
 };

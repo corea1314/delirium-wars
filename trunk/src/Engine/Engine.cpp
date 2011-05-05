@@ -3,6 +3,7 @@
 #include "../Game/Field.h"
 #include "Engine/Entities/Clock/Clock.h"
 #include "Engine/Entities/Camera/Camera.h"
+#include "Engine/Physics/World.h"
 #include "../Game/Tester/Tester.h"
 #include "Physics/PhysicsManager.h"
 #include "Lair/RenderTarget/RenderTarget.h"
@@ -35,6 +36,10 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 
     m_pPhysMan = new CPhysicsManager();
     m_pPhysMan->Connect( this );
+
+	// Create the world
+	m_pWorld = new CWorld;
+	m_pWorld->Connect( this );
 
 	// Create debug draw interface
 	m_pDebugDraw = new CDebugDraw( 1024, 1024, 3.0f );
@@ -71,6 +76,9 @@ CEngine::~CEngine()
 	SAFE_DELETE(m_pTester);	
 
 	SAFE_DELETE(m_pDebugDraw);
+
+	m_pWorld->Disconnect(this);
+	SAFE_DELETE(m_pWorld);
 
 	m_pCamera->Disconnect(this);
 	SAFE_DELETE(m_pCamera);

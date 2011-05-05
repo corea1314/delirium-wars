@@ -9,6 +9,8 @@ class CPump;
 
 class CDeposit : public CEntity
 {
+	DECLARE_CLASS_TYPE(CDeposit, CEntity, CEntity);
+
 private:
 	// set of connected pump rod
 	std::set<CPump*>	m_psetPumpRod;
