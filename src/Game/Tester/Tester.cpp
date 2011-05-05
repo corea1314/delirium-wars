@@ -7,10 +7,9 @@
 #include "Physics/PhysicsManager.h"
 #include "Physics/PhysicsBody.h"
 #include "Sprite/Sprite.h"
-
 #include "Lair/Atlas/Atlas.h"
 
-#include "Engine/Physics/Builder.h"
+IMPLEMENT_CLASS_TYPE(CTester)
 
 CTester::CTester()
 {
@@ -19,8 +18,6 @@ CTester::CTester()
 
 	Lair::GetTextureMan()->Get("test1024.png");
 	Lair::GetTextureMan()->Get("test2048.png");
-
-	CBodyBuilder b("TestBody.body.xml");
 }
 
 CTester::~CTester()
@@ -31,7 +28,7 @@ CTester::~CTester()
 
 void CTester::Update( float in_fDeltaTime )
 {
-	float t = m_pEngine->GetClock()->GetTotalTime();
+	float t = GetEngine()->GetClock()->GetTotalTime();
 
 	m_fAngle = t / 2;
 
@@ -93,31 +90,30 @@ void CTester::Keyboard( unsigned char in_cKey )
 
 void CTester::Connect( CEngine* in_pEngine )
 {
-	m_pEngine = in_pEngine;
-	m_pEngine->Connect_OnUpdate( this, &CTester::Update );
-	m_pEngine->Connect_OnRenderBackLayer( this, &CTester::RenderBackLayer );
-	m_pEngine->Connect_OnRenderFrontLayer( this, &CTester::RenderFrontLayer );
-	m_pEngine->Connect_OnRenderDiffusionLayer( this, &CTester::RenderDiffusionLayer );
-	m_pEngine->Connect_OnRenderDebug( this, &CTester::RenderDebug );
-	m_pEngine->Connect_OnKeyboard( this, &CTester::Keyboard );
+	CEntity::Connect(in_pEngine);
+	GetEngine()->Connect_OnUpdate( this, &CTester::Update );
+	GetEngine()->Connect_OnRenderBackLayer( this, &CTester::RenderBackLayer );
+	GetEngine()->Connect_OnRenderFrontLayer( this, &CTester::RenderFrontLayer );
+	GetEngine()->Connect_OnRenderDiffusionLayer( this, &CTester::RenderDiffusionLayer );
+	GetEngine()->Connect_OnRenderDebug( this, &CTester::RenderDebug );
+	GetEngine()->Connect_OnKeyboard( this, &CTester::Keyboard );
 }
 
 void CTester::Disconnect( CEngine* in_pEngine )
 {
-	assert( m_pEngine == in_pEngine );
 	in_pEngine->Disconnect_OnUpdate( this );
 	in_pEngine->Disconnect_OnRenderBackLayer( this );
 	in_pEngine->Disconnect_OnRenderFrontLayer( this );
 	in_pEngine->Disconnect_OnRenderDiffusionLayer( this );
 	in_pEngine->Disconnect_OnRenderDebug( this );
 	in_pEngine->Disconnect_OnKeyboard( this );
-	m_pEngine = 0;
+	CEntity::Disconnect(in_pEngine);
 }
 
 void CTester::BuildPhysicsScene()
 {
     //Floor
-    CPhysicsBody* pBody = m_pEngine->GetPhysicsMan()->CreatePhysicsBody("Floor");
+    CPhysicsBody* pBody = GetEngine()->GetPhysicsMan()->CreatePhysicsBody("Floor");
     pBody->SetPhysicsPosition( Vector2(0.0,-300.0f) );
     pBody->SetShape( Vector2(1500.0f,300.0f) );
     pBody->SetInfiniteMass();
@@ -126,11 +122,11 @@ void CTester::BuildPhysicsScene()
 
 void CTester::CreatePhysicsFallingBody()
 {
-    srand ( m_pEngine->GetClock()->GetTotalTime() );
+    srand ( GetEngine()->GetClock()->GetTotalTime() );
     float fHorizontalSpeed = 20.0f * static_cast<float>((rand() % 20) - 10);
     float fVerticalSpeed =  100.0f * static_cast<float>((rand() % 4) + 4);
     //Floor
-    CPhysicsBody* pBody = m_pEngine->GetPhysicsMan()->CreatePhysicsBody("Falling body");
+    CPhysicsBody* pBody = GetEngine()->GetPhysicsMan()->CreatePhysicsBody("Falling body");
     pBody->SetPhysicsPosition( Vector2(0.0,300.0f) );
     pBody->SetShape( Vector2(60.0f,60.0f) );
     pBody->SetMass( 1.0f );

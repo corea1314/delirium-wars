@@ -8,6 +8,8 @@ class CEngine;
 
 class CCamera : public CEntity
 {
+	DECLARE_CLASS_TYPE(CCamera, CEntity, CEntity);
+
 public:
 	CCamera();
 
@@ -50,7 +52,6 @@ private:
 
 	} m_ZoomData;
 
-	CEngine* m_pEngine;	
 };
 
 

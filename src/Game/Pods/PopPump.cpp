@@ -1,5 +1,6 @@
 #include "PodPump.h"
 
+IMPLEMENT_CLASS_TYPE(CPodPump)
 
 float CPodPump::TryCollecting()
 {

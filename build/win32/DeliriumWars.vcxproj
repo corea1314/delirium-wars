@@ -186,9 +186,9 @@
     <ClCompile Include="..\..\src\Engine\Entities\Clock\Timer.cpp" />
     <ClCompile Include="..\..\src\Engine\Entities\Player\Player.cpp" />
     <ClCompile Include="..\..\src\Engine\Entity.cpp" />
-    <ClCompile Include="..\..\src\Engine\Physics\Builder.cpp" />
+    <ClCompile Include="..\..\src\Engine\Physics\BodyDef.cpp" />
     <ClCompile Include="..\..\src\Engine\Physics\EntityPhysics.cpp" />
-    <ClCompile Include="..\..\src\Engine\Physics\Physics.cpp" />
+    <ClCompile Include="..\..\src\Engine\Physics\World.cpp" />
     <ClCompile Include="..\..\src\fw.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ObjectFileName>
@@ -294,9 +294,9 @@
     <ClInclude Include="..\..\src\Engine\Entities\Clock\Timer.h" />
     <ClInclude Include="..\..\src\Engine\Entities\Player\Player.h" />
     <ClInclude Include="..\..\src\Engine\Entity.h" />
-    <ClInclude Include="..\..\src\Engine\Physics\Builder.h" />
+    <ClInclude Include="..\..\src\Engine\Physics\BodyDef.h" />
     <ClInclude Include="..\..\src\Engine\Physics\EntityPhysics.h" />
-    <ClInclude Include="..\..\src\Engine\Physics\Physics.h" />
+    <ClInclude Include="..\..\src\Engine\Physics\World.h" />
     <ClInclude Include="..\..\src\Engine\SigSlot.h" />
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\Game\Box2.h" />

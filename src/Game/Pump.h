@@ -10,6 +10,8 @@ class CTimer;
 
 class CPump : public CEntity
 {
+	DECLARE_CLASS_TYPE(CPump, CEntity, CEntity);
+
 private:
 	CDeposit*	m_pDeposit;		// Rod can only pump one deposit
 
@@ -27,20 +29,13 @@ private:
 
 private:
 	bool PumpDepthReached();
-
 	void Dig( const CTimer& in_Timer );
-
 	void OnStateDeploying( const CTimer& in_Timer );
-
 	void OnStatePumping( const CTimer& in_Timer );
 
-
 public:
-
 	float TryCollecting();
-
 	void Deploy( CDeposit* in_pDeposit );
-
 	void OnUpdate( const CTimer& in_Timer );
 
 	virtual void Connect( CEngine* );

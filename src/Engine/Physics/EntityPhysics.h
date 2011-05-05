@@ -7,6 +7,8 @@ class b2Body;
 
 class CEntityPhysics : public CEntity
 {
+	DECLARE_CLASS_TYPE(CEntityPhysics, CEntity, CEntity);
+
 public:
 	CEntityPhysics();
 	virtual ~CEntityPhysics();
@@ -19,7 +21,7 @@ public:
 	virtual void OnContactAdd() {}
 	virtual void OnContactPersist() {}
 	virtual void OnContactRemove() {}
-	
+		
 private:
 	b2Body*		m_pBody;
 	CEngine*	m_pEngine;

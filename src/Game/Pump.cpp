@@ -2,6 +2,7 @@
 #include "Deposit.h"
 #include "Engine/Entities/Clock/Timer.h"
 
+IMPLEMENT_CLASS_TYPE(CPump)
 
 bool CPump::PumpDepthReached()
 {

@@ -7,6 +7,8 @@
 
 class CPodPump : public CEntity
 {
+	DECLARE_CLASS_TYPE(CPodPump, CEntity, CEntity);
+
 private:
 	float	m_fCurrentDepositCollected;
 	CPump	m_Pump;
@@ -17,7 +19,6 @@ public:
 
 	virtual void Connect( CEngine* );
 	virtual void Disconnect( CEngine* );
-
 };
 
 

@@ -13,6 +13,8 @@ class CTimer;
 
 class CClock : public CEntity
 {
+	DECLARE_CLASS_TYPE(CClock, CEntity, CEntity);
+
 public:
 	CClock();
 	virtual ~CClock();

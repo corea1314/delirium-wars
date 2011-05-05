@@ -1,51 +1,33 @@
-#ifndef _PHYSICS_H
-#define _PHYSICS_H
-
-#include <Box2D/Box2D.h>
+#ifndef _WORLD_H
+#define _WORLD_H
 
 #include <vector>
+
+#include <Box2D/Box2D.h>
+#include <Engine/Physics/EntityPhysics.h>
 
 // 8 pixels is 2 meters
 #define PixelToPhysics( a ) ((a)/8)
 
-class World
+class CEntityPhysics;
+class BodyDefinitionMan;
+
+class CWorld : public CEntityPhysics
 {
+	DECLARE_CLASS_TYPE(CWorld, CEntityPhysics, CEntity);
+
 public:
-	World() : m_fHz(60.0f), m_nVelocityIterations(8), m_nPositionIterations(3), m_bEnableWarmStarting(true), m_bEnableContinuous(true)
-	{
+	CWorld();
+	void Connect( CEngine* );		// connects object to game engine
+	void Disconnect( CEngine* );	// disconnects object from game engine
 
-	}
+	b2Body* CreateBody( CEntityPhysics* in_pEntity, const std::string& in_szBodyDefinitionFilename, const b2Vec2& in_vPos, bool m_bActive );
+	void DestroyBody( b2Body** in_ppBody );
 
-	void Init( const b2Vec2& in_v2Gravity, bool in_bAllowSleep )
-	{
-		m_pWorld = new b2World( in_v2Gravity, in_bAllowSleep );
-
-		m_pContactListener = new ContactListener(m_pWorld);
-		m_pContactFilter = new ContactFilter(m_pWorld);
-		m_pDestructionListener = new DestructionListener(m_pWorld);
-			
-		m_pWorld->SetContactListener( m_pContactListener );
-		m_pWorld->SetContactFilter( m_pContactFilter );
-		m_pWorld->SetDestructionListener( m_pDestructionListener );
-	}
-
-	void Exit()
-	{
-		delete m_pWorld; m_pWorld = 0;
-		delete m_pContactListener; m_pContactListener = 0;
-		delete m_pContactFilter; m_pContactFilter = 0;
-		delete m_pDestructionListener; m_pDestructionListener = 0;
-	}
-
-	void Update()
-	{
-		float32 timeStep = m_fHz > 0.0f ? 1.0f / m_fHz : float32(0.0f);
-				
-		m_pWorld->SetWarmStarting(m_bEnableWarmStarting);
-		m_pWorld->SetContinuousPhysics(m_bEnableContinuous);
-
-		m_pWorld->Step(timeStep, m_nVelocityIterations, m_nPositionIterations);
-	}
+private:
+	void Init( const b2Vec2& in_v2Gravity, bool in_bAllowSleep );
+	void Exit();
+	void Update( float in_fDeltaTime );
 
 	b2World*	GetWorld() { return m_pWorld; }
 
@@ -111,7 +93,7 @@ private:
 	public:
 		DestructionListener( b2World* in_pWorld ) : m_pWorld(in_pWorld) {}
 		void SayGoodbye(b2Fixture* fixture) { B2_NOT_USED(fixture); }
-		void SayGoodbye(b2Joint* joint);
+		void SayGoodbye(b2Joint* joint)  { B2_NOT_USED(joint); }
 
 	private:
 		b2World*	m_pWorld;
@@ -196,7 +178,6 @@ private:
 		float32 ProcessFixtureClosest(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
 		{
 			// keep current result
-
 			return fraction;
 		}
 
@@ -242,6 +223,7 @@ private:
 	ContactListener*		m_pContactListener;
 	ContactFilter*			m_pContactFilter;
 	DestructionListener*	m_pDestructionListener;
+	BodyDefinitionMan*		m_pBodyDefMan;
 
 	float m_fHz;
 	int m_nVelocityIterations;
@@ -250,5 +232,5 @@ private:
 	bool m_bEnableContinuous;
 };
 
-#endif//_PHYSICS_H
+#endif//_WORLD_H
 

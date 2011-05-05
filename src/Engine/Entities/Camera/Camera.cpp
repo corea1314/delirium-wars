@@ -3,6 +3,7 @@
 #include "Engine/Engine.h"
 #include "Engine/Entities/Clock/Clock.h"
 
+IMPLEMENT_CLASS_TYPE(CCamera)
 
 CCamera::CCamera()
 {
@@ -16,7 +17,7 @@ void CCamera::Goto( Vector2 in_vNewPos, float in_fDelayToDest )
 {
 	m_MovementData.vOPos = m_vCurrPos;
 	m_MovementData.vDPos = in_vNewPos;
-	m_MovementData.fOTime = m_pEngine->GetClock()->GetTotalTime();
+	m_MovementData.fOTime = GetEngine()->GetClock()->GetTotalTime();
 	m_MovementData.fDuration = in_fDelayToDest;
 	m_MovementData.fDTime = m_MovementData.fOTime + m_MovementData.fDuration;
 	m_MovementData.bMoving = true;
@@ -26,7 +27,7 @@ void CCamera::ZoomTo( float in_fNewZoom, float in_fDelayToDest )
 {
 	m_ZoomData.fOZoom = m_fCurrZoom;
 	m_ZoomData.fDZoom = in_fNewZoom;
-	m_ZoomData.fOTime = m_pEngine->GetClock()->GetTotalTime();
+	m_ZoomData.fOTime = GetEngine()->GetClock()->GetTotalTime();
 	m_ZoomData.fDuration = in_fDelayToDest;
 	m_ZoomData.fDTime = m_ZoomData.fOTime + m_ZoomData.fDuration;
 	m_ZoomData.bZooming = true;
@@ -36,7 +37,7 @@ void CCamera::Update( float in_fDeltaTime )
 {
 	if( m_MovementData.bMoving )
 	{
-		float tNow = m_pEngine->GetClock()->GetTotalTime();
+		float tNow = GetEngine()->GetClock()->GetTotalTime();
 		if( tNow > m_MovementData.fDTime )
 		{
 			// reached destination
@@ -54,7 +55,7 @@ void CCamera::Update( float in_fDeltaTime )
 
 	if( m_ZoomData.bZooming )
 	{
-		float tNow = m_pEngine->GetClock()->GetTotalTime();
+		float tNow = GetEngine()->GetClock()->GetTotalTime();
 		if( tNow > m_ZoomData.fDTime )
 		{
 			// reached zoom level
@@ -72,13 +73,12 @@ void CCamera::Update( float in_fDeltaTime )
 
 void CCamera::Connect( CEngine* in_pEngine )
 {
-	m_pEngine = in_pEngine;
-	m_pEngine->Connect_OnUpdate( this, &CCamera::Update );
+	CEntity::Connect( in_pEngine );
+	GetEngine()->Connect_OnUpdate( this, &CCamera::Update );
 }
 
 void CCamera::Disconnect( CEngine* in_pEngine )
 {
-	assert( m_pEngine == in_pEngine );
 	in_pEngine->Disconnect_OnUpdate( this );
-	m_pEngine = 0;
+	CEntity::Disconnect( in_pEngine );
 }
