@@ -5,6 +5,7 @@
 
 #include <Box2D/Box2D.h>
 #include <Engine/Physics/EntityPhysics.h>
+#include <DebugDraw/DebugDraw.h>
 
 // 8 pixels is 2 meters
 #define PixelToPhysics( a ) ((a)/8)
@@ -28,11 +29,11 @@ private:
 	void Init( const b2Vec2& in_v2Gravity, bool in_bAllowSleep );
 	void Exit();
 	void Update( float in_fDeltaTime );
+	void RenderDebug( CDebugDraw* );
 
 	b2World*	GetWorld() { return m_pWorld; }
 
 private:
-
 	class ContactListener : public b2ContactListener
 	{
 	public:
@@ -217,6 +218,25 @@ private:
 		std::vector<RaycastResult>	m_vecResult;
 	};
 			
+	class DebugDraw : public b2DebugDraw
+	{
+	public:
+		void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
+		void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
+		void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color);
+		void DrawSolidCircle(const b2Vec2& center, float32 radius, const b2Vec2& axis, const b2Color& color);
+		void DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color);
+		void DrawTransform(const b2Transform& xf);
+		void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color);
+		void DrawString(int x, int y, const char* string, ...); 
+		void DrawAABB(b2AABB* aabb, const b2Color& color);
+
+		void SetDebugDraw( CDebugDraw* in_pDebugDraw ) { m_pDebugDraw = in_pDebugDraw; }
+
+	private:
+		CDebugDraw* m_pDebugDraw;
+		Vector2 v[b2_maxPolygonVertices];
+	};
 
 private:
 	b2World*				m_pWorld;
@@ -224,6 +244,7 @@ private:
 	ContactFilter*			m_pContactFilter;
 	DestructionListener*	m_pDestructionListener;
 	BodyDefinitionMan*		m_pBodyDefMan;
+	DebugDraw*				m_pDebugDraw;
 
 	float m_fHz;
 	int m_nVelocityIterations;
