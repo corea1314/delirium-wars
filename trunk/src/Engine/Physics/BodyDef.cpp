@@ -4,7 +4,7 @@
 
 #include <tinyxml/tinyxml.h>
 
-BodyDefinition::BodyDefinition() : m_bValid(false)
+BodyDefinition::BodyDefinition()
 {
 }
 
@@ -21,6 +21,7 @@ bool BodyDefinition::Load( const std::string& in_szFilename )
 		{
 			ProcessBody( pElement );
 		}
+		return true;
 	}
 	else
 	{
@@ -29,7 +30,7 @@ bool BodyDefinition::Load( const std::string& in_szFilename )
 			Lair::GetLogMan()->Log( "Box2d", "XML parse error in %s: %s (Line %d)", doc.Value(), doc.ErrorDesc(), doc.ErrorRow() );
 		}
 	}
-	return m_bValid;
+	return false;
 }
 
 // ============================================================================
