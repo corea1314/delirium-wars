@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+	<body x="0.0" y="0.0" z="0">
+	<rect x="-32.0" y="0.0" z="0" w="64.0" h="64.0">
+		<property name="body" value="arrow"/>
+		<property name="angularDamping" value="0"/>
+		<property name="density" value="1"/>
+		<property name="!classname" value="b2_shape_rect"/>
+		<property name="isSensor" value="false"/>
+		<property name="friction" value="1"/>
+		<property name="linearDamping" value="0"/>
+		<property name="restitution" value="0"/>
+	</rect>
+	<poly z="0">
+		<point x="0.0" y="112.0"/>
+		<point x="64.0" y="56.0"/>
+		<point x="32.0" y="32.0"/>
+		<point x="0.0" y="56.0"/>
+		<property name="" value="0"/>
+		<property name="body" value="arrow"/>
+		<property name="density" value="1"/>
+		<property name="!classname" value="b2_shape_poly"/>
+		<property name="isSensor" value="false"/>
+		<property name="friction" value="1"/>
+		<property name="restitution" value="0"/>
+	</poly>
+	<poly z="0">
+		<point x="0.0" y="56.0"/>
+		<point x="-32.0" y="32.0"/>
+		<point x="-64.0" y="56.0"/>
+		<point x="0.0" y="112.0"/>
+		<property name="" value="0"/>
+		<property name="body" value="arrow"/>
+		<property name="density" value="1"/>
+		<property name="!classname" value="b2_shape_poly"/>
+		<property name="isSensor" value="false"/>
+		<property name="friction" value="1"/>
+		<property name="restitution" value="0"/>
+	</poly>
+		<property name="fixedRotation" value="false"/>
+		<property name="angularDamping" value="0.01"/>
+		<property name="!classname" value="b2_body"/>
+		<property name="allowSleep" value="true"/>
+		<property name="name" value="arrow"/>
+		<property name="active" value="true"/>
+		<property name="awake" value="true"/>
+		<property name="type" value="static"/>
+		<property name="linearDamping" value="0"/>
+		<property name="bullet" value="false"/>
+	</body>
+
