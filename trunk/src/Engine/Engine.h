@@ -15,6 +15,7 @@ class RenderTarget;
 class Texture;
 class SpriteRenderer;
 
+class CPlayer;
 
 //Objects should use the proxy when trying to connect with it
 class CEngineProxy
@@ -64,6 +65,8 @@ private:
     CPhysicsManager* m_pPhysMan;
 	CDebugDraw*	m_pDebugDraw;
 	CWorld*		m_pWorld;
+
+	CPlayer*		m_pPlayer;
 	
 	RenderTarget*	m_pRT;
 	Texture*		m_pRTT[4];
