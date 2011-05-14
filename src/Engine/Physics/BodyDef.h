@@ -26,8 +26,6 @@ private:
 
 	b2BodyDef m_BodyDef;
 	std::vector< b2FixtureDef >	m_FixtureDef;
-
-	bool m_bValid;
 };
 
 class BodyDefinitionMan
