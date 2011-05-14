@@ -107,6 +107,7 @@ public:
 	void DrawPoly(const Vector2& pos, Vector2 poly[], unsigned int count, float angle );
 	
 	// Fill
+	/*
 	void FillCircle(const Vector2& pos, float radius);
 	void FillEllipse(const Vector2& pos, float w, float h);
 	
@@ -117,6 +118,7 @@ public:
 		
 	void FillPoly(const Vector2& pos, Vector2 poly[], unsigned int count );
 	void FillPoly(const Vector2& pos, Vector2 poly[], unsigned int count, float angle );
+	*/
 
 	void Text( int x, int y, char* text, ... );
 
