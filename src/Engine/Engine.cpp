@@ -8,6 +8,8 @@
 #include "Physics/PhysicsManager.h"
 #include "Lair/RenderTarget/RenderTarget.h"
 
+#include "Engine/Entities/Player/Player.h"
+
 #include "DebugDraw/DebugDraw.h"
 
 #include "Lair/Lair.h"
@@ -48,6 +50,9 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 	m_pTester = new CTester;
 	m_pTester->Connect( this );
 
+	m_pPlayer = new CPlayer;
+	m_pPlayer->Connect( this );
+
     m_pTester->BuildPhysicsScene();
 
 	m_pRT = new RenderTarget;
@@ -76,6 +81,9 @@ CEngine::~CEngine()
 	SAFE_DELETE(m_pTester);	
 
 	SAFE_DELETE(m_pDebugDraw);
+
+	m_pPlayer->Disconnect( this );
+	SAFE_DELETE(m_pPlayer);
 
 	m_pWorld->Disconnect(this);
 	SAFE_DELETE(m_pWorld);

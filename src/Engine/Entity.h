@@ -31,7 +31,7 @@ public:
 	}
 
 protected:
-	CEngine*	GetEngine() const { return m_pEngine; }
+	CEngine*	GetEngine() { return m_pEngine; }
 
 private:
 	CEngine* m_pEngine;

@@ -2,6 +2,7 @@
 #define _ENTITY_PHYSICS_H
 
 #include "Engine/Entity.h"
+#include <string>
 
 class b2Body;
 
@@ -21,20 +22,14 @@ public:
 	virtual void OnContactAdd() {}
 	virtual void OnContactPersist() {}
 	virtual void OnContactRemove() {}
+
+protected:
+	void CreateBody(const std::string& in_szBodyDefinitionFilename, float x, float y, bool m_bActive);
+	void DestroyBody();
 		
 private:
 	b2Body*		m_pBody;
-	CEngine*	m_pEngine;
 };
-
-// those macros will only work in connect and disconnect
-#define EntityCreateBody( pos, active )	\
-	m_pBody = ms_pBodyBuilder->Create( m_pEngine->GetWorld(), pos, active );	// create body
-
-#define EntityDestroyBody()	\
-	m_pEngine->GetWorld()->DestroyBody(m_pBody);	\
-	m_pBody = 0;
-
 
 #endif//_ENTITY_PHYSICS_H
 
