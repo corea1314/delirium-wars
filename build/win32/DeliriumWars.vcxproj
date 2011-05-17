@@ -45,7 +45,7 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\obj\debug\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DeliriumWars_debug</TargetName>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk;..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\inc;C:\Work\Delirium Wars\sdk\Box2D_v2.1.2\Box2D;C:\Work\Delirium Wars\src;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk;..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\inc;..\..\sdk\Box2D_v2.1.2\Box2D;..\..\src;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
