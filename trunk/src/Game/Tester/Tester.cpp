@@ -16,8 +16,8 @@ CTester::CTester()
 	m_pSprite = new Sprite;
 	m_pSpriteDiffusion = new Sprite;
 
-	Lair::GetTextureMan()->Get("test1024.png");
-	Lair::GetTextureMan()->Get("test2048.png");
+//	Lair::GetTextureMan()->Get("test1024.png");
+//	Lair::GetTextureMan()->Get("test2048.png");
 }
 
 CTester::~CTester()
