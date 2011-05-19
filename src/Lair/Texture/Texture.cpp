@@ -86,6 +86,29 @@ bool Texture::LoadFromImage( Image* in_pImage )
 	return false;
 }
 
+bool Texture::LoadFromImage( Image* in_pImage, unsigned int in_nOffsetX, unsigned int in_nOffsetY )
+{
+	if( in_pImage )
+	{
+		glBindTexture( GL_TEXTURE_2D, m_nId );
+		glPixelStorei (GL_UNPACK_ALIGNMENT, 1);
+	
+		switch( in_pImage->GetBytesPerPixel() )
+		{
+			case 3:	glTexSubImage2D( GL_TEXTURE_2D, 0, in_nOffsetX, in_nOffsetY, in_pImage->GetWidth(), in_pImage->GetHeight(), GL_RGB,  GL_UNSIGNED_BYTE, in_pImage->GetPixelBuffer() ); break;
+			case 4:	glTexSubImage2D( GL_TEXTURE_2D, 0, in_nOffsetX, in_nOffsetY, in_pImage->GetWidth(), in_pImage->GetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, in_pImage->GetPixelBuffer() ); break;
+			default:
+				return false;	//not supported
+		}
+	
+		glBindTexture( GL_TEXTURE_2D, 0 );
+
+		return true;
+	}
+
+	return false;
+}
+
 bool Texture::LoadFromParam( unsigned int in_nWidth, unsigned int in_nHeight, unsigned int in_nBytePerPixel )
 {
 	glBindTexture( GL_TEXTURE_2D, m_nId );
