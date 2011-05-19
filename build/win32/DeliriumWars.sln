@@ -11,8 +11,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freeglut_static", "..\..\sd
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freeglut", "..\..\sdk\freeglut-2.4.0\freeglut.vcxproj", "{CBAE38AD-293F-4A95-96A7-7F2C4F5C19C3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Record", "..\..\..\Record\Record\Record.vcxproj", "{9D6C4DB8-EBCA-4DC7-B632-F18976C0F95A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,10 +29,6 @@ Global
 		{CBAE38AD-293F-4A95-96A7-7F2C4F5C19C3}.Debug|Win32.Build.0 = Debug|Win32
 		{CBAE38AD-293F-4A95-96A7-7F2C4F5C19C3}.Release|Win32.ActiveCfg = Release|Win32
 		{CBAE38AD-293F-4A95-96A7-7F2C4F5C19C3}.Release|Win32.Build.0 = Release|Win32
-		{9D6C4DB8-EBCA-4DC7-B632-F18976C0F95A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{9D6C4DB8-EBCA-4DC7-B632-F18976C0F95A}.Debug|Win32.Build.0 = Debug|Win32
-		{9D6C4DB8-EBCA-4DC7-B632-F18976C0F95A}.Release|Win32.ActiveCfg = Release|Win32
-		{9D6C4DB8-EBCA-4DC7-B632-F18976C0F95A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
