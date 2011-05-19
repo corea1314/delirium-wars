@@ -6,15 +6,6 @@
 
 typedef GuillotineBinPack Bin;	// using guillotine
 
-/*
-class Image;
-class Texture;
-
-#include "Math/Vector2.h"
-
-#include <map>
-#include <vector>
-*/
 
 class AtlasPack
 {
@@ -22,10 +13,7 @@ public:
 	AtlasPack( unsigned long w, unsigned long h );
 	virtual ~AtlasPack();
 
-	void ReloadTexture();
-
 	Bin*		bin;
-	Image*		img;
 	Texture*	tex;	// fixme, find a better place
 };
 
@@ -50,7 +38,6 @@ public:
 	AtlasIndex*	Get( const std::string& in_szFilename );
 
 	void BindTexture( unsigned int in_nPackIndex );
-	void ReloadTexture();
 };
 
 
@@ -60,8 +47,8 @@ public:
 AtlasPack::AtlasPack( unsigned long w, unsigned long h )
 {
 	bin = new Bin(w,h);
-	img = new Image(w,h,4);	//fixme
 	tex = new Texture;
+	tex->LoadFromParam(w,h,4);
 	tex->SetFilterMin( Texture::FilterMin::Nearest );
 	tex->SetFilterMag( Texture::FilterMag::Nearest );
 }
@@ -69,14 +56,9 @@ AtlasPack::AtlasPack( unsigned long w, unsigned long h )
 AtlasPack::~AtlasPack()
 {
 	delete bin;
-	delete img;
 	delete tex;
 }
 
-void AtlasPack::ReloadTexture()
-{
-	tex->LoadFromImage( img );
-}
 
 // ATLAS ======================================================================
 
@@ -151,7 +133,7 @@ AtlasIndex*	Atlas::AddImageToPack( AtlasPack* in_pPack, const Rect& in_rectCoord
 	
 	pIndex->pack = in_pPack;
 
-	Image::Blit( in_pPack->img, in_rectCoords.x, in_rectCoords.y, in_pImage, 0,0, in_pImage->GetWidth(), in_pImage->GetHeight() );
+	in_pPack->tex->LoadFromImage( in_pImage, in_rectCoords.x, in_rectCoords.y );
 
 	return pIndex;
 }
@@ -195,14 +177,6 @@ void Atlas::BindTexture( unsigned int in_nPackIndex )
 
 }
 
-void Atlas::ReloadTexture()
-{
-	for( std::vector<AtlasPack*>::iterator it = m_vecPacks.begin(); it != m_vecPacks.end(); it++ )
-	{
-		(*it)->ReloadTexture();
-	}
-}
-
 
 // ATLASMAN ===================================================================
 
@@ -226,7 +200,3 @@ void AtlasMan::Bind()
 	m_pAtlas->BindTexture(0);
 }
 
-void AtlasMan::Reload()
-{
-	m_pAtlas->ReloadTexture();
-}

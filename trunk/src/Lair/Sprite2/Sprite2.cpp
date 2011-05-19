@@ -22,8 +22,8 @@ void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 //	m_vecSpriteDataBuffer.push_back( spr[0] );
 
 	// 16k
-	for( int i=-64;i<64; i++ )
-	for( int j=-64;j<64; j++ )
+	for( int i=-8;i<8; i++ )
+	for( int j=-8;j<8; j++ )
 	{
 		SpriteData spr[] = { { Vector2( i*64.0f, j*64.0f), 0.0f, Vector2(32.0f,32.0f), Vector2(0.0f,0.0f),  0.0f/*rand()%6*/, Vector2(0.0f,0.0f), Vector2(1.0f,1.0f), 0xFFFFFFFF }};
 		m_vecSpriteDataBuffer.push_back( spr[0] );
@@ -104,8 +104,6 @@ void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 		m_vecSpriteDataBuffer[i].uv_min = pIndex->GetMinUV();
 		m_vecSpriteDataBuffer[i].uv_max = pIndex->GetMaxUV();		
 	}
-
-	Lair::GetAtlasMan()->Reload();
 }
 
 void SpriteMan::Exit()

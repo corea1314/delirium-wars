@@ -33,7 +33,6 @@ public:
 	AtlasIndex* Get( const std::string& in_szFilename );
 
 	void Bind();	//fixme
-	void Reload();
 
 private:
 	Atlas*	m_pAtlas;
