@@ -15,7 +15,8 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
-	bool LoadFromImage( Image* );
+	bool LoadFromImage( Image* in_pImage );
+	bool LoadFromImage( Image* in_pImage, unsigned int in_nOffsetX, unsigned int in_nOffsetY );
 	bool LoadFromParam(  unsigned int in_nWidth, unsigned int in_nHeight, unsigned int in_nBytePerPixel );
 	
 	class WrapCoord	{ public: enum Enum { U, V }; };
