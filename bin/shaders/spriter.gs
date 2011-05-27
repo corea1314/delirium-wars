@@ -29,9 +29,6 @@
 #define uv_min	gl_TexCoordIn[0][2].xy
 #define uv_max	gl_TexCoordIn[0][3].xy
 		
-//#define vel	gl_TexCoordIn[0][2].xy
-//#define avel	gl_TexCoordIn[0][2].z
-		
 #define color	gl_FrontColorIn[0]
 
 void RotateVector( out vec2 vo, in float x, in float y, in float cosa, in float sina )
