@@ -174,7 +174,6 @@
     <ClCompile Include="..\..\sdk\tinyxml\tinyxml.cpp" />
     <ClCompile Include="..\..\sdk\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\sdk\tinyxml\tinyxmlparser.cpp" />
-    <ClCompile Include="..\..\src\Animation\Animation.cpp" />
     <ClCompile Include="..\..\src\app.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -285,7 +284,6 @@
     <ClInclude Include="..\..\sdk\objLoader\obj.h" />
     <ClInclude Include="..\..\sdk\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
-    <ClInclude Include="..\..\src\Animation\Animation.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
     <ClInclude Include="..\..\src\Engine\Database\Database.h" />
@@ -353,6 +351,7 @@
     <None Include="..\..\bin\shaders\spriter.fs" />
     <None Include="..\..\bin\shaders\spriter.gs" />
     <None Include="..\..\bin\shaders\spriter.vs" />
+    <None Include="..\..\bin\sprite_glow.spr" />
     <None Include="..\..\bin\system.log" />
     <None Include="..\..\todo.txt" />
   </ItemGroup>

@@ -9,6 +9,7 @@
 #include "Lair/Atlas/Atlas.h"
 
 
+class Sprite;
 class ShaderGLSL;
 
 class SpriteMan
@@ -35,19 +36,11 @@ public:
 		unsigned int	color;	// modulation color
 	};
 
-	std::vector<SpriteData>	m_vecSpriteDataBuffer;
-
-	typedef AtlasIndex Frame;
-
-	class Sprite
-	{
-	public:
-		unsigned long m_nIndex;
-//		unsigned long m_nGroup;	//
-	};
+	SpriteData*		m_pSpriteDataBuffer;
+	SpriteData*		m_pCurrSpriteData;
 
 public:
-	Frame* GetFrame( const char* in_szFilename );
+//	Frame* GetFrame( const char* in_szFilename );
 
 	Sprite* GetSprite();
 		
@@ -61,12 +54,67 @@ public:
 	SpriteMan() { Init(); }
 	virtual ~SpriteMan() { Exit(); }
 
+	unsigned int GetCurrSpriteCount() const { return (m_pCurrSpriteData - m_pSpriteDataBuffer); }
+
 private:
 	ShaderGLSL*	m_pShader;
 	unsigned int m_nVBO;
-		
-	// test
-	std::vector<AtlasIndex*>	m_vecAtlasIndex;
+	unsigned int m_nMaxSpriteCount;
+
+
+
+	std::vector<AtlasFrame*> m_vecAtlasFrame;
 };
 
-#endif//_SPRITE2_H
+#include "Lair/Sequence/Sequence.h"
+
+class Sprite
+{
+private:
+	Sequence*			m_pCurrSequence;
+	Sequence::Frame*	m_pCurrFrame;
+
+	SpriteMan::SpriteData*	m_pSD;
+
+	bool		m_bIsPlaying;
+	bool		m_bIsLooping;
+
+	float	m_fAnimTime;
+
+	// World transform
+	Vector2		m_vPos;
+	float		m_fAngle;
+	Vector2		m_vScale;
+
+protected:
+	void UpdateFromFrame();
+
+public:
+	Sprite (SpriteMan::SpriteData* in_pSD );
+	virtual ~Sprite();
+
+	void Play( std::string in_szSequenceName, bool in_bLoop=false );
+	void Update( float in_fDeltaTime );
+
+	bool IsPlaying() const;
+
+	void Set( float x, float y, float a = 0.0f, float sx = 1.0f, float sy = 1.0f );
+};
+
+/*
+class Sprite
+{
+public:
+	Sprite( SpriteMan::SpriteData* );
+
+	void SetFrame( const std::string& in_szFrameName );
+	void SetSequence( const std::string& in_szSequenceName );
+
+private:
+	void SetFrame( SpriteMan);
+	void SetSequence();
+
+};
+*/
+
+#endif//_SPRITE_H
