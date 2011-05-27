@@ -1,5 +1,5 @@
-#ifndef _SPRITE_H
-#define _SPRITE_H
+#ifndef _ANIMATION_H
+#define _ANIMATION_H
 
 #include <map>
 #include <vector>
@@ -7,12 +7,15 @@
 
 #include "Math/Vector2.h"
 #include "Lair/Sequence/Sequence.h"
+#include "Lair/Sprite/Sprite.h"
 
-class Sprite
+class SpriteAnimator
 {
 private:
 	Sequence*			m_pCurrSequence;
 	Sequence::Frame*	m_pCurrFrame;
+
+	SpriteMan::Sprite*	m_pSprite;
 
 	bool		m_bIsPlaying;
 	bool		m_bIsLooping;
@@ -25,8 +28,8 @@ private:
 	Vector2		m_vScale;
 
 public:
-	Sprite();
-	virtual ~Sprite();
+	SpriteAnimator();
+	virtual ~SpriteAnimator();
 
 	void Play( std::string in_szSequenceName, bool in_bLoop=false );
 	void Update( float in_fDeltaTime );
@@ -39,4 +42,4 @@ public:
 };
 
 
-#endif//_SPRITE_H
+#endif//_ANIMATION_H
