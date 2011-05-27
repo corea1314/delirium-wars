@@ -8,7 +8,7 @@ class AtlasPack;
 
 #include "Math/Vector2.h"
 
-class AtlasIndex
+class AtlasFrame
 {
 public:
 	const Vector2& GetSize() const { return size;	}
@@ -30,7 +30,7 @@ class AtlasMan
 public:
 	AtlasMan();
 	virtual ~AtlasMan();
-	AtlasIndex* Get( const std::string& in_szFilename );
+	AtlasFrame* Get( const std::string& in_szFilename );
 
 	void Bind();	//fixme
 
