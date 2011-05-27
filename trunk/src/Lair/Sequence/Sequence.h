@@ -7,7 +7,7 @@
 
 #include "Math/Vector2.h"
 
-class AtlasIndex;
+class AtlasFrame;
 
 /*
 Sequence File Spec
@@ -37,7 +37,7 @@ public:
 		Vector2			offset; 
 		float			angle; 
 		Vector2			scale;
-		AtlasIndex*		index;
+		AtlasFrame*		frame;
 	};
 	
 	Frame* GetFrame( unsigned long in_nTime );	// time is in ms

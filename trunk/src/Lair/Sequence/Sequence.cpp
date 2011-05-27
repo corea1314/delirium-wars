@@ -38,6 +38,9 @@ bool Sequence::Load( const std::string& in_szFilename )
 		szValue = iniSequence.gets( "Frames", szKey );
 		++i;
 
+		if( szValue == "" )
+			break;	// cannot find key
+
 	} while( ParseFrameScript( in_szFilename, szKey, szValue ) );
 
 	if( m_vecFrame.size() > 0 )
@@ -62,11 +65,14 @@ bool Sequence::ParseFrameScript( const std::string& in_szFilename, char* in_szKe
 
 	if( sscanf( in_szFrameScript.c_str(), "%s %d %f %f %f %f %f", szFilename, &frame.duration, &frame.offset.x, &frame.offset.y, &frame.angle, &frame.scale.x, &frame.scale.y ) == 7 )
 	{		
-		frame.filename = szFilename;
-		frame.index = Lair::GetAtlasMan()->Get(szFilename);
-
 		m_nDuration += frame.duration;
-		
+
+		frame.filename = szFilename;
+		frame.frame = Lair::GetAtlasMan()->Get(szFilename);
+
+		frame.angle = DEG_TO_RAD(frame.angle);
+		frame.frametime = m_nDuration;
+				
 		m_vecFrame.push_back(frame);
 		return true;
 	}
