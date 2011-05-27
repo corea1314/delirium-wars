@@ -14,7 +14,7 @@ private:																	\
 #include "Sequence/Sequence.h"
 #include "Shader/ShaderGLSL.h"
 #include "System/System.h"
-#include "Sprite2/Sprite2.h"
+#include "Sprite/Sprite.h"
 #include "Atlas/Atlas.h"
 
 class Lair

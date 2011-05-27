@@ -13,9 +13,6 @@
     <Filter Include="source\Game\Pods">
       <UniqueIdentifier>{a5213ea6-6f8a-4a8c-9023-8d1bec1d2a1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Sprite">
-      <UniqueIdentifier>{60f8b984-b7e4-4699-b43f-44571dc63497}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Physics">
       <UniqueIdentifier>{500847b0-dcaf-489d-bab7-9389982e927b}</UniqueIdentifier>
     </Filter>
@@ -85,9 +82,6 @@
     <Filter Include="source\Lair\Sequence">
       <UniqueIdentifier>{31921e4e-563e-414e-bf53-774f95556ddc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Lair\Sprite2">
-      <UniqueIdentifier>{7ae83b20-1ce9-4e9c-9a54-a2667a00d9d8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Lair\Console">
       <UniqueIdentifier>{b0b573aa-3dff-4359-bd15-9f15db73c37c}</UniqueIdentifier>
     </Filter>
@@ -142,6 +136,12 @@
     <Filter Include="source\Engine\Entities\World">
       <UniqueIdentifier>{947b1209-60fb-419a-bb89-bc5cde7f5365}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\Sprite">
+      <UniqueIdentifier>{7ae83b20-1ce9-4e9c-9a54-a2667a00d9d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lair\Animation">
+      <UniqueIdentifier>{26ee1aac-028c-469f-965d-307f85e745f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -185,9 +185,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Game\Pods\PopPump.cpp">
       <Filter>source\Game\Pods</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Sprite\Sprite.cpp">
-      <Filter>source\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp">
       <Filter>source\Physics</Filter>
@@ -266,9 +263,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Command\Command.cpp">
       <Filter>source\Lair\Command</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Sprite2\Sprite2.cpp">
-      <Filter>source\Lair\Sprite2</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Console\Console.cpp">
       <Filter>source\Lair\Console</Filter>
@@ -423,6 +417,12 @@
     <ClCompile Include="..\..\src\Engine\Physics\World.cpp">
       <Filter>source\Engine\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Sprite\Sprite.cpp">
+      <Filter>source\Lair\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Animation\Animation.cpp">
+      <Filter>source\Lair\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -481,9 +481,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\macros.h">
       <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Sprite\Sprite.h">
-      <Filter>source\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h">
       <Filter>source\Physics</Filter>
@@ -565,9 +562,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Command\Command.h">
       <Filter>source\Lair\Command</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Sprite2\Sprite2.h">
-      <Filter>source\Lair\Sprite2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Console\Console.h">
       <Filter>source\Lair\Console</Filter>
@@ -721,6 +715,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Engine\Physics\World.h">
       <Filter>source\Engine\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Sprite\Sprite.h">
+      <Filter>source\Lair\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Animation\Animation.h">
+      <Filter>source\Lair\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

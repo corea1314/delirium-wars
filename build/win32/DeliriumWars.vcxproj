@@ -174,6 +174,7 @@
     <ClCompile Include="..\..\sdk\tinyxml\tinyxml.cpp" />
     <ClCompile Include="..\..\sdk\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\sdk\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\src\Animation\Animation.cpp" />
     <ClCompile Include="..\..\src\app.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -227,7 +228,7 @@
     <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp" />
     <ClCompile Include="..\..\src\Lair\Shader\ShaderGLSL.cpp" />
     <ClCompile Include="..\..\src\Lair\Sound\Sound.cpp" />
-    <ClCompile Include="..\..\src\Lair\Sprite2\Sprite2.cpp" />
+    <ClCompile Include="..\..\src\Lair\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Lair\System\System.cpp" />
     <ClCompile Include="..\..\src\Lair\Texture\Texture.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix2x2.cpp" />
@@ -238,7 +239,6 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\..\src\Sprite\Sprite.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
     <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
   </ItemGroup>
@@ -285,6 +285,7 @@
     <ClInclude Include="..\..\sdk\objLoader\obj.h" />
     <ClInclude Include="..\..\sdk\tinyxml\tinystr.h" />
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
+    <ClInclude Include="..\..\src\Animation\Animation.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
     <ClInclude Include="..\..\src\Engine\Database\Database.h" />
@@ -327,7 +328,7 @@
     <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h" />
     <ClInclude Include="..\..\src\Lair\Shader\ShaderGLSL.h" />
     <ClInclude Include="..\..\src\Lair\Sound\Sound.h" />
-    <ClInclude Include="..\..\src\Lair\Sprite2\Sprite2.h" />
+    <ClInclude Include="..\..\src\Lair\Sprite\Sprite.h" />
     <ClInclude Include="..\..\src\Lair\System\System.h" />
     <ClInclude Include="..\..\src\Lair\Texture\Texture.h" />
     <ClInclude Include="..\..\src\macros.h" />
@@ -341,7 +342,6 @@
     <ClInclude Include="..\..\src\menu.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsBody.h" />
     <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
-    <ClInclude Include="..\..\src\Sprite\Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />

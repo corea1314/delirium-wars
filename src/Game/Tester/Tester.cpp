@@ -6,15 +6,15 @@
 #include "DebugDraw/DebugDraw.h"
 #include "Physics/PhysicsManager.h"
 #include "Physics/PhysicsBody.h"
-#include "Sprite/Sprite.h"
+#include "Animation/Animation.h"
 #include "Lair/Atlas/Atlas.h"
 
 IMPLEMENT_CLASS_TYPE(CTester)
 
 CTester::CTester()
 {
-	m_pSprite = new Sprite;
-	m_pSpriteDiffusion = new Sprite;
+	m_pSprite = new SpriteAnimator;
+	m_pSpriteDiffusion = new SpriteAnimator;
 
 //	Lair::GetTextureMan()->Get("test1024.png");
 //	Lair::GetTextureMan()->Get("test2048.png");

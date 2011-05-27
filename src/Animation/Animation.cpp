@@ -1,21 +1,21 @@
-#include "Sprite.h"
+#include "Animation.h"
 
 #include "Lair/Lair.h"
 #include "Lair/Sequence/Sequence.h"
 
-
-
-Sprite::Sprite() : m_pCurrSequence(0), m_pCurrFrame(0), m_bIsPlaying(false), m_bIsLooping(false), m_fAnimTime(0)
+SpriteAnimator::SpriteAnimator() : m_pCurrSequence(0), m_pCurrFrame(0), m_bIsPlaying(false), m_bIsLooping(false), m_fAnimTime(0)
 {
 	Set( 0.0f, 0.0f );
+
+	m_pSprite = Lair::GetSpriteMan()->GetSprite();
 }
 
-Sprite::~Sprite()
+SpriteAnimator::~SpriteAnimator()
 {
 
 }
 
-void Sprite::Set( float x, float y, float a, float sx, float sy )
+void SpriteAnimator::Set( float x, float y, float a, float sx, float sy )
 {
 	m_vScale.x = sx;
 	m_vScale.y = sy;
@@ -24,7 +24,7 @@ void Sprite::Set( float x, float y, float a, float sx, float sy )
 	m_vPos.y = y;
 }
 
-void Sprite::Play( std::string in_szSequenceName, bool in_bLoop )
+void SpriteAnimator::Play( std::string in_szSequenceName, bool in_bLoop )
 {
 	m_pCurrSequence = Lair::GetSequenceMan()->Get( in_szSequenceName );
 
@@ -36,7 +36,7 @@ void Sprite::Play( std::string in_szSequenceName, bool in_bLoop )
 	}
 }
 
-void Sprite::Update( float in_fDeltaTime )
+void SpriteAnimator::Update( float in_fDeltaTime )
 {
 	if( m_pCurrSequence && m_bIsPlaying )
 	{
