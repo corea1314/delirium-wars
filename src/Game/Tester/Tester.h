@@ -6,7 +6,7 @@
 
 class CEngine;
 class CDebugDraw;
-class SpriteAnimator;
+class Sprite;
 class CPhysicsManager;
 class CPhysicsBody;
 class CCollisionBodyOnBodyResult;
@@ -39,8 +39,8 @@ public:
 protected:
 	Vector2		m_vPos;
 	float		m_fAngle;
-	SpriteAnimator*		m_pSprite;
-	SpriteAnimator*		m_pSpriteDiffusion;
+	Sprite*		m_pSprite;
+	Sprite*		m_pSpriteDiffusion;
 
 };
 

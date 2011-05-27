@@ -139,9 +139,6 @@
     <Filter Include="source\Lair\Sprite">
       <UniqueIdentifier>{7ae83b20-1ce9-4e9c-9a54-a2667a00d9d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Lair\Animation">
-      <UniqueIdentifier>{26ee1aac-028c-469f-965d-307f85e745f2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -419,9 +416,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Sprite\Sprite.cpp">
       <Filter>source\Lair\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Animation\Animation.cpp">
-      <Filter>source\Lair\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -719,9 +713,6 @@
     <ClInclude Include="..\..\src\Lair\Sprite\Sprite.h">
       <Filter>source\Lair\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Animation\Animation.h">
-      <Filter>source\Lair\Animation</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
@@ -746,6 +737,9 @@
     </None>
     <None Include="..\..\bin\shaders\spriter.vs">
       <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\sprite_glow.spr">
+      <Filter>bin</Filter>
     </None>
   </ItemGroup>
 </Project>
