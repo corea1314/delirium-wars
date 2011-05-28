@@ -134,10 +134,12 @@ void CEngine::Render()
 		
 		m_pRT->SetActiveTextureTarget( eRTT_BackLayer );
 		glClear( GL_COLOR_BUFFER_BIT );
-		RenderDebugDraw();
+		
 		OnRenderBackLayer();
 
 		Lair::GetSpriteMan()->Render();
+
+		RenderDebugDraw();
 
 		/*
 		m_nCurrentDiffusion = (++m_nCurrentDiffusion)%2;
