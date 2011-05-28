@@ -4,6 +4,8 @@
 
 #include "Packing/GuillotineBinPack.h"
 
+#define ATLAS_TEXTURE_SIZE	2048
+
 typedef GuillotineBinPack Bin;	// using guillotine
 
 
@@ -30,7 +32,7 @@ private:
 
 private:
 	AtlasFrame*	InsertFromFile( const std::string& in_szFilename );
-	AtlasFrame*	AddImageToPack( AtlasPack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nOffsetX, int in_nOffsetY );
+	AtlasFrame*	AddImageToPack( AtlasPack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nUncroppedWidth, int in_nUncroppedHeight, int in_nOffsetX, int in_nOffsetY );
 
 public:
 	Atlas( const unsigned long in_nBinWidth, const unsigned long in_nBinHeight ) ;
@@ -76,8 +78,15 @@ AtlasFrame*	Atlas::InsertFromFile( const std::string& in_szFilename )
 		Rect rectCoords;
 		m_itCurrPack = m_vecPacks.begin();
 
-		int nMinX, nMinY, nMaxX, nMaxY;
+		int nMinX=0, nMinY=0, nMaxX=0, nMaxY=0;
+
+#define USE_CROPPING //fixme: cropping is broken
+
+#ifdef USE_CROPPING
 		Image* pCropImage = Image::Crop( pImage, nMinX, nMinY, nMaxX, nMaxY );
+#else
+		Image* pCropImage = pImage;
+#endif
 
 		do 
 		{
@@ -95,10 +104,11 @@ AtlasFrame*	Atlas::InsertFromFile( const std::string& in_szFilename )
 
 		} while ( rectCoords.height == 0 );	// if height is 0 then we could not fit it in bin so try next one
 		
-		AtlasFrame* pIndex = AddImageToPack( (*m_itCurrPack), rectCoords, pCropImage, nMinX, nMinY );
-
+		AtlasFrame* pIndex = AddImageToPack( (*m_itCurrPack), rectCoords, pCropImage, pImage->GetWidth(), pImage->GetHeight(), nMinX, pImage->GetHeight()-(nMaxY+1) ); 
+																									// offset Y is calculated taking into accounts that the image is inverted.
+#ifdef USE_CROPPING
 		delete pCropImage;	// flush cropped image
-
+#endif
 		return pIndex;
 	}
 	
@@ -106,16 +116,18 @@ AtlasFrame*	Atlas::InsertFromFile( const std::string& in_szFilename )
 	return 0;
 }
 
-AtlasFrame*	Atlas::AddImageToPack( AtlasPack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nOffsetX, int in_nOffsetY )
+AtlasFrame*	Atlas::AddImageToPack( AtlasPack* in_pPack, const Rect& in_rectCoords, Image* in_pImage, int in_nUncroppedWidth, int in_nUncroppedHeight, int in_nOffsetX, int in_nOffsetY )
 {
 	AtlasFrame* pIndex = new AtlasFrame;
 
+	Vector2 vCenter( in_nUncroppedWidth/2.0f, in_nUncroppedHeight/2.0f);
+
 	pIndex->size.x = (float)in_pImage->GetWidth();
 	pIndex->size.y = (float)in_pImage->GetHeight();
-	pIndex->offset.x = (float)in_nOffsetX;
-	pIndex->offset.y = (float)in_nOffsetY;
+	pIndex->offset.x = (in_rectCoords.width/2.0f)-vCenter.x + in_nOffsetX; 
+	pIndex->offset.y = (in_rectCoords.height/2.0f)-vCenter.y + in_nOffsetY;
 
-	Lair::GetLogMan()->Log( "Atlas", "Image inserted at %d %d (%d, %d).", in_rectCoords.x, in_rectCoords.y, in_rectCoords.width, in_rectCoords.height );
+	Lair::GetLogMan()->Log( "Atlas", "Image inserted at %d, %d size(%d, %d).", in_rectCoords.x, in_rectCoords.y, in_rectCoords.width, in_rectCoords.height );
 
 	pIndex->uv_min.x = (in_rectCoords.x + 0.5f) / (float)m_nBinWidth;		// might need to add centroid offset here
 	pIndex->uv_min.y = (in_rectCoords.y + 0.5f) / (float)m_nBinHeight;
@@ -185,7 +197,7 @@ void Atlas::BindTexture( unsigned int in_nPackIndex )
 
 AtlasMan::AtlasMan() 
 { 
-	m_pAtlas = new Atlas(1024,1024); 
+	m_pAtlas = new Atlas(ATLAS_TEXTURE_SIZE,ATLAS_TEXTURE_SIZE); 
 }
 
 AtlasMan::~AtlasMan()
