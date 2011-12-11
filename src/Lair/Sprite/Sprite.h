@@ -61,8 +61,8 @@ private:
 	unsigned int m_nVBO;
 	unsigned int m_nMaxSpriteCount;
 
-
-
+	
+	void Test();
 	std::vector<AtlasFrame*> m_vecAtlasFrame;
 };
 
@@ -86,6 +86,8 @@ private:
 	float		m_fAngle;
 	Vector2		m_vScale;
 
+	unsigned char*	m_pColor;
+
 protected:
 	void UpdateFromFrame();
 
@@ -93,28 +95,14 @@ public:
 	Sprite (SpriteMan::SpriteData* in_pSD );
 	virtual ~Sprite();
 
-	void Play( std::string in_szSequenceName, bool in_bLoop=false );
+	void Play( const std::string& in_szSequenceName, bool in_bLoop=false );
 	void Update( float in_fDeltaTime );
 
 	bool IsPlaying() const;
 
 	void Set( float x, float y, float a = 0.0f, float sx = 1.0f, float sy = 1.0f );
+	void SetAlpha( float a );
+	void SetColor( float r, float g, float b );
 };
-
-/*
-class Sprite
-{
-public:
-	Sprite( SpriteMan::SpriteData* );
-
-	void SetFrame( const std::string& in_szFrameName );
-	void SetSequence( const std::string& in_szSequenceName );
-
-private:
-	void SetFrame( SpriteMan);
-	void SetSequence();
-
-};
-*/
 
 #endif//_SPRITE_H

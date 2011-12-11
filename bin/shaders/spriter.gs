@@ -44,7 +44,10 @@ void main( void )
 	float cosa = cos(angle);
 	float sina = sin(angle);
 
-	vec4 pos = vec4( gl_PositionIn[0].x, gl_PositionIn[0].y, gl_PositionIn[0].z, 1 );
+	vec2 toff;
+	RotateVector( toff, offset.x, offset.y, cosa, sina );
+
+	vec4 pos = vec4( gl_PositionIn[0].x+toff.x, gl_PositionIn[0].y+toff.y, gl_PositionIn[0].z, 1 );
 	vec2 extent;
 
 	// output same color for all vertices	

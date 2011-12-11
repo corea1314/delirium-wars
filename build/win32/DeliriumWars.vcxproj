@@ -45,8 +45,8 @@
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\obj\debug\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DeliriumWars_debug</TargetName>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk;..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\inc;..\..\sdk\Box2D_v2.1.2\Box2D;..\..\src;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk;..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\inc;..\..\sdk\Box2D_v2.1.2\Box2D;..\..\src;C:\Work\Delirium Wars\sdk\lua\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\sdk\FMOD SoundSystem\FMOD Programmers API Win32\api\lib;C:\Work\Delirium Wars\sdk\lua;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -124,7 +124,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>fmodex_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>fmodex_vc.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -168,6 +168,7 @@
     <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2RevoluteJoint.cpp" />
     <ClCompile Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
     <ClCompile Include="..\..\sdk\glee\GLee.c" />
+    <ClCompile Include="..\..\sdk\luawrapper\LuaContext.cpp" />
     <ClCompile Include="..\..\sdk\minIni\minIni.c" />
     <ClCompile Include="..\..\sdk\objLoader\obj.cpp" />
     <ClCompile Include="..\..\sdk\tinyxml\tinystr.cpp" />
@@ -179,6 +180,8 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\GotoComponent.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\VisualComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Database\Database.cpp" />
     <ClCompile Include="..\..\src\Engine\Engine.cpp" />
     <ClCompile Include="..\..\src\Engine\Entities\Camera\Camera.cpp" />
@@ -279,6 +282,7 @@
     <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2RevoluteJoint.h" />
     <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Dynamics\Joints\b2WeldJoint.h" />
     <ClInclude Include="..\..\sdk\glee\GLee.h" />
+    <ClInclude Include="..\..\sdk\luawrapper\LuaContext.h" />
     <ClInclude Include="..\..\sdk\minIni\minGlue.h" />
     <ClInclude Include="..\..\sdk\minIni\minIni.h" />
     <ClInclude Include="..\..\sdk\objLoader\obj.h" />
@@ -286,6 +290,8 @@
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
+    <ClInclude Include="..\..\src\Engine\Components\GotoComponent.h" />
+    <ClInclude Include="..\..\src\Engine\Components\VisualComponent.h" />
     <ClInclude Include="..\..\src\Engine\Database\Database.h" />
     <ClInclude Include="..\..\src\Engine\Engine.h" />
     <ClInclude Include="..\..\src\Engine\Entities\Camera\Camera.h" />
@@ -315,6 +321,7 @@
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\Rect.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\ShelfBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.h" />
+    <ClInclude Include="..\..\src\Lair\Color\Color.h" />
     <ClInclude Include="..\..\src\Lair\Command\Command.h" />
     <ClInclude Include="..\..\src\Lair\Console\Console.h" />
     <ClInclude Include="..\..\src\Lair\Image\Image.h" />
@@ -348,6 +355,7 @@
   <ItemGroup>
     <None Include="..\..\bin\sample.spr" />
     <None Include="..\..\bin\sample.xml" />
+    <None Include="..\..\bin\scripts\entity.lua" />
     <None Include="..\..\bin\shaders\spriter.fs" />
     <None Include="..\..\bin\shaders\spriter.gs" />
     <None Include="..\..\bin\shaders\spriter.vs" />

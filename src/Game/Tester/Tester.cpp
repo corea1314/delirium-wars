@@ -31,14 +31,18 @@ void CTester::Update( float in_fDeltaTime )
 
 	m_fAngle = t / 2;
 
-	m_vPos.x = cos( m_fAngle )	* 256.0f;
-	m_vPos.y = 0.0f;// sin( m_fAngle * 2 ) * 256.0f;
+	m_vPos.x = 0.0f; //cos( m_fAngle )	* 256.0f;
+	m_vPos.y = 0.0f; //sin( m_fAngle * 2 ) * 256.0f;
 	
 	m_pSprite->Set( m_vPos.x, m_vPos.y );
 	m_pSpriteDiffusion->Set( m_vPos.x, m_vPos.y );
 		
 	m_pSprite->Update( in_fDeltaTime );
 	m_pSpriteDiffusion->Update( in_fDeltaTime );
+
+	float s = 0; //(sin(t)+1)/2;
+
+	m_pSpriteDiffusion->SetColor( s,s,s );
 }
 
 void CTester::RenderFrontLayer()
@@ -56,6 +60,9 @@ void CTester::RenderDiffusionLayer()
 
 void CTester::RenderDebug( CDebugDraw* in_pRD )
 {
+	in_pRD->SetColor( CDebugDraw::Color::eRED );
+	in_pRD->DrawRectangle( Vector2(0,0), 8, 8, 0 );	
+
 	/*
 	in_pRD->SetColor( CDebugDraw::Color::eGREEN );
 	in_pRD->DrawCircle( m_vPos, 32 );

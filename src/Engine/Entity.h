@@ -7,8 +7,11 @@
 #include <assert.h>
 
 #include <Engine/ClassType.h>
+#include <luawrapper/LuaContext.h>
 
 class CEngine;
+class GotoComponent;
+class VisualComponent;
 
 // this class defines a basic entity of the engine.
 // all objects that needs to be processed by the engine needs to be derived from this.
@@ -19,22 +22,61 @@ class CEntity : public has_slots<>
 
 public:
 	// connects object to game engine
-	virtual void Connect( CEngine* in_pEngine ) 
-	{ 
-		m_pEngine = in_pEngine; 
-	}
+	virtual void Connect( CEngine* in_pEngine );
 	
 	// disconnects object from game engine
-	virtual void Disconnect( CEngine* in_pEngine ) 
-	{ 
-		assert(m_pEngine==in_pEngine); m_pEngine = 0; 
-	}
+	virtual void Disconnect( CEngine* in_pEngine ) ;
 
-protected:
+	// get access engine
 	CEngine*	GetEngine() { return m_pEngine; }
 
+	// get access to lua context
+	Lua::LuaContext& GetLuaContext() { return m_LuaContext; } 
+
+protected:
+	// component management
+	virtual void CreateComponents();
+	virtual void DestroyComponents();
+	
+public:
+	// component
+	class Component
+	{
+	public:
+		Component() {}
+		virtual ~Component() {}
+
+		virtual void Connect( CEngine* in_pEngine, CEntity* in_pEntity ) 
+		{	
+			m_pEngine = in_pEngine; 
+			m_pEntity = in_pEntity; 
+		}
+		virtual void Disconnect( CEngine* in_pEngine, CEntity* in_pEntity ) 
+		{ 
+			m_pEngine = NULL; 
+			m_pEntity = NULL; 
+		}
+
+		virtual void Update( float in_fDeltaTime ) {}
+
+		CEntity*	GetEntity() { return m_pEntity; }
+		CEngine*	GetEngine() { return m_pEngine; }
+
+	private:
+		CEntity*	m_pEntity;
+		CEngine*	m_pEngine;
+	};
+
+	friend class Component;
+		
+protected:
+	std::shared_ptr<GotoComponent>		CreateGotoComponent();
+	std::shared_ptr<VisualComponent>	CreateVisualComponent();
+	
 private:
 	CEngine* m_pEngine;
+	Lua::LuaContext	m_LuaContext;
+	std::vector<std::shared_ptr<Component>>	m_vecComponents;
 };
 
 template <class T>
