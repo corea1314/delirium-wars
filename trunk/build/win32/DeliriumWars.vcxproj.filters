@@ -139,6 +139,18 @@
     <Filter Include="source\Lair\Sprite">
       <UniqueIdentifier>{7ae83b20-1ce9-4e9c-9a54-a2667a00d9d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\Color">
+      <UniqueIdentifier>{0f247ef4-194d-4d81-aad0-d43ec09081fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Lua">
+      <UniqueIdentifier>{3fe91fbb-3bf3-4651-9436-9ccd40805835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source\Engine\Components">
+      <UniqueIdentifier>{21c96857-08b3-44ab-8e19-c8eedcd8d2ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bin\scipts">
+      <UniqueIdentifier>{3a55b118-e9d7-4457-9c37-36747b46f5a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -416,6 +428,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Sprite\Sprite.cpp">
       <Filter>source\Lair\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\luawrapper\LuaContext.cpp">
+      <Filter>source\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\GotoComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\VisualComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -713,6 +734,18 @@
     <ClInclude Include="..\..\src\Lair\Sprite\Sprite.h">
       <Filter>source\Lair\Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Color\Color.h">
+      <Filter>source\Lair\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\luawrapper\LuaContext.h">
+      <Filter>source\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\GotoComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\VisualComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
@@ -740,6 +773,9 @@
     </None>
     <None Include="..\..\bin\sprite_glow.spr">
       <Filter>bin</Filter>
+    </None>
+    <None Include="..\..\bin\scripts\entity.lua">
+      <Filter>bin\scipts</Filter>
     </None>
   </ItemGroup>
 </Project>

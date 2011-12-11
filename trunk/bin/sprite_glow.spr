@@ -5,7 +5,7 @@ Dest = One_Minus_Src_Alpha
 
 [Frames]
 # sprite_id,	filename,		delay,	x,   y,		angle,	sx, sy
-frame0 =		sprite_glow.png		33		128   128		 0		 1.0 1.0 
+frame0 =		sprite_glow.png		33		0   0		 0		 1.0 1.0 
 
 [comments]
 frame1 =		sprite_glow.png		33		128   128		0		-0.1 1.0 

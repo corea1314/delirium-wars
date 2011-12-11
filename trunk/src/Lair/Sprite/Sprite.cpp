@@ -18,6 +18,8 @@ void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 	glBindBuffer(GL_ARRAY_BUFFER, m_nVBO);
 	glBufferData(GL_ARRAY_BUFFER, m_nMaxSpriteCount*sizeof(SpriteData), &m_pSpriteDataBuffer[0].pos.x, GL_STREAM_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0 );
+
+	Test();
 }
 
 void SpriteMan::Exit()
@@ -170,6 +172,8 @@ void SpriteMan::RenderWithVA()
 Sprite::Sprite(SpriteMan::SpriteData* in_pSD) : m_pSD(in_pSD), m_pCurrSequence(0), m_pCurrFrame(0), m_bIsPlaying(false), m_bIsLooping(false), m_fAnimTime(0)
 {
 	Set( 0.0f, 0.0f );
+
+	m_pColor = (unsigned char*)&(m_pSD->color);
 }
 
 Sprite::~Sprite()
@@ -185,10 +189,25 @@ void Sprite::Set( float x, float y, float a, float sx, float sy )
 	m_vPos.x = x;
 	m_vPos.y = y;
 
-	m_pSD->pos = m_vPos;	//fixme
+	if( m_pCurrFrame )
+	{
+		UpdateFromFrame();
+	}
 }
 
-void Sprite::Play( std::string in_szSequenceName, bool in_bLoop )
+void Sprite::SetAlpha( float a )
+{
+	m_pColor[3] = a * 255;
+}
+
+void Sprite::SetColor( float r, float g, float b )
+{
+	m_pColor[0] = r * 255;
+	m_pColor[1] = g * 255;
+	m_pColor[2] = b * 255;
+}
+
+void Sprite::Play( const std::string& in_szSequenceName, bool in_bLoop )
 {
 	m_pCurrSequence = Lair::GetSequenceMan()->Get( in_szSequenceName );
 
@@ -223,20 +242,30 @@ void Sprite::Update( float in_fDeltaTime )
 	}
 }
 
+bool Sprite::IsPlaying() const
+{
+	return m_bIsPlaying;
+}
+
 void Sprite::UpdateFromFrame()
 {
+	float fGlobalScaleX = m_vScale.x * m_pCurrFrame->scale.x;
+	float fGlobalScaleY = m_vScale.y * m_pCurrFrame->scale.y;
+
 	m_pSD->pos = m_vPos;
+	m_pSD->offset.x = m_pCurrFrame->offset.x * fGlobalScaleX;
+	m_pSD->offset.y = m_pCurrFrame->offset.y * fGlobalScaleY;
 	m_pSD->angle = m_pCurrFrame->angle;
-	m_pSD->size.x = m_pCurrFrame->frame->GetSize().x * m_pCurrFrame->scale.x;
-	m_pSD->size.y = m_pCurrFrame->frame->GetSize().y * m_pCurrFrame->scale.y;
+	m_pSD->size.x = m_pCurrFrame->frame->GetSize().x/2 * fGlobalScaleX;
+	m_pSD->size.y = m_pCurrFrame->frame->GetSize().y/2 * fGlobalScaleY;
 	m_pSD->uv_min = m_pCurrFrame->frame->GetMinUV();
 	m_pSD->uv_max = m_pCurrFrame->frame->GetMaxUV();
 }
 
 
 
-/*
-
+void SpriteMan::Test()
+{
 	// test
 	SpriteData spr[] = 
 	{
@@ -323,4 +352,4 @@ void Sprite::UpdateFromFrame()
 		m_pSpriteDataBuffer[i].uv_max = pIndex->GetMaxUV();		
 	}
 
-*/
+}
