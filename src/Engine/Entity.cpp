@@ -4,16 +4,37 @@
 
 IMPLEMENT_CLASS_TYPE(CEntity)
 
+#include "Engine/Engine.h"
+
 #include "Components/GotoComponent.h"
 #include "Components/VisualComponent.h"
+#include "Components/TurnComponent.h"
 
 #include <luawrapper/LuaContext.h>
 
 #include <Lair/Lair.h>
 
+#include "DebugDraw/DebugDraw.h"
+
+///////////////////////////////////////////////////////////////////////////////
+// CEntity
+//
+
+CEntity::CEntity()
+: m_fAngle(0.0f)
+{
+}
+
+CEntity::~CEntity()
+{
+
+}
+
 void CEntity::Connect( CEngine* in_pEngine ) 
 { 
 	m_pEngine = in_pEngine; 
+
+	m_pEngine->Connect_OnRenderDebug( this, &CEntity::OnRenderDebug );
 
 	std::ifstream is;
 	is.open ("scripts/entity.lua", std::ifstream::in);
@@ -22,6 +43,7 @@ void CEntity::Connect( CEngine* in_pEngine )
 	try
 	{		
 		m_LuaContext.registerFunction("createGotoComponent", &CEntity::CreateGotoComponent);
+		m_LuaContext.registerFunction("createTurnComponent", &CEntity::CreateTurnComponent);
 		m_LuaContext.registerFunction("createVisualComponent", &CEntity::CreateVisualComponent);
 		m_LuaContext.writeVariable("this", std::shared_ptr<CEntity>(this) );
 			
@@ -78,23 +100,16 @@ void CEntity::Connect( CEngine* in_pEngine )
 
 void CEntity::Disconnect( CEngine* in_pEngine ) 
 { 
+	assert(m_pEngine==in_pEngine); 
+
 	for( std::vector<std::shared_ptr<Component>>::iterator it = m_vecComponents.begin(); it != m_vecComponents.end(); it++ )
 	{
 		(*it)->Disconnect( in_pEngine, this );
 	}
 
-	assert(m_pEngine==in_pEngine); m_pEngine = 0; 
-}
+	m_pEngine->Disconnect_OnRenderDebug( this );
 
-
-void CEntity::CreateComponents()
-{
-
-}
-
-void CEntity::DestroyComponents()
-{
-
+	m_pEngine = 0; 
 }
 
 std::shared_ptr<VisualComponent> CEntity::CreateVisualComponent()
@@ -111,6 +126,47 @@ std::shared_ptr<GotoComponent> CEntity::CreateGotoComponent()
 	return ptr;
 }
 
+std::shared_ptr<TurnComponent> CEntity::CreateTurnComponent()
+{
+	std::shared_ptr<TurnComponent> ptr = std::shared_ptr<TurnComponent>(new TurnComponent);
+	m_vecComponents.push_back(ptr);
+	return ptr;
+}
+
+void CEntity::OnRenderDebug( CDebugDraw* in_pRD )
+{
+	in_pRD->SetColor( CDebugDraw::Color::eRED );
+	in_pRD->DrawRectangle( m_vPos, 8, 8, m_fAngle );	
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Component
+//
+void CEntity::Component::Connect( CEngine* in_pEngine, CEntity* in_pEntity ) 
+{	
+	m_pEngine = in_pEngine; 
+	m_pEntity = in_pEntity; 
+}
+
+void CEntity::Component::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity ) 
+{ 
+	m_pEngine = NULL; 
+	m_pEntity = NULL; 
+}
+
+typedef struct
+{
+	bool	bEnabled;
+	const char*	szName;
+
+}  LuaCallbackInfo;
+
+void CEntity::Component::BindCallback( const char* in_szName, LuaCallbackInfo& in_LuaCB )
+{
+	in_LuaCB.szName = in_szName;
+	in_LuaCB.bEnabled = GetEntity()->GetLuaContext().doesFunctionExist( in_LuaCB.szName );
+}
 
 /*
 

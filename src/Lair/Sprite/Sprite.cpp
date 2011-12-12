@@ -255,7 +255,7 @@ void Sprite::UpdateFromFrame()
 	m_pSD->pos = m_vPos;
 	m_pSD->offset.x = m_pCurrFrame->offset.x * fGlobalScaleX;
 	m_pSD->offset.y = m_pCurrFrame->offset.y * fGlobalScaleY;
-	m_pSD->angle = m_pCurrFrame->angle;
+	m_pSD->angle = m_pCurrFrame->angle + m_fAngle;
 	m_pSD->size.x = m_pCurrFrame->frame->GetSize().x/2 * fGlobalScaleX;
 	m_pSD->size.y = m_pCurrFrame->frame->GetSize().y/2 * fGlobalScaleY;
 	m_pSD->uv_min = m_pCurrFrame->frame->GetMinUV();

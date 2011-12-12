@@ -257,7 +257,7 @@ void CWorld::DebugDraw::DrawTransform(const b2Transform& xf)
 void CWorld::DebugDraw::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
 {
 //	m_pDebugDraw->SetColor( Color(color.r,color.g,color.b) );
-	m_pDebugDraw->DrawRectangle( Vector2(p.x,p.y), size, size, PI/4 );
+	m_pDebugDraw->DrawRectangle( Vector2(p.x,p.y), size, size, (float)PI/4 );
 	/*
 	glPointSize(size);
 	glBegin(GL_POINTS);

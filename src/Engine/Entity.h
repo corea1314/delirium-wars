@@ -8,10 +8,13 @@
 
 #include <Engine/ClassType.h>
 #include <luawrapper/LuaContext.h>
+#include <Math/Vector2.h>
 
 class CEngine;
 class GotoComponent;
+class TurnComponent;
 class VisualComponent;
+class CDebugDraw;
 
 // this class defines a basic entity of the engine.
 // all objects that needs to be processed by the engine needs to be derived from this.
@@ -21,6 +24,9 @@ class CEntity : public has_slots<>
 	DECLARE_CLASS_TYPE_ROOT(CEntity);
 
 public:
+	CEntity();
+	virtual ~CEntity();
+
 	// connects object to game engine
 	virtual void Connect( CEngine* in_pEngine );
 	
@@ -31,36 +37,46 @@ public:
 	CEngine*	GetEngine() { return m_pEngine; }
 
 	// get access to lua context
-	Lua::LuaContext& GetLuaContext() { return m_LuaContext; } 
+	Lua::LuaContext& GetLuaContext() { return m_LuaContext; }
+
+	inline Vector2& GetPos() { return m_vPos; }
+	inline float& GetAngle() { return m_fAngle; }
 
 protected:
-	// component management
-	virtual void CreateComponents();
-	virtual void DestroyComponents();
+	// engine callbacks
+	void OnRenderDebug( CDebugDraw* in_pRD );
 	
 public:
 	// component
-	class Component
+	class Component : public has_slots<>
 	{
 	public:
 		Component() {}
 		virtual ~Component() {}
 
-		virtual void Connect( CEngine* in_pEngine, CEntity* in_pEntity ) 
-		{	
-			m_pEngine = in_pEngine; 
-			m_pEntity = in_pEntity; 
-		}
-		virtual void Disconnect( CEngine* in_pEngine, CEntity* in_pEntity ) 
-		{ 
-			m_pEngine = NULL; 
-			m_pEntity = NULL; 
-		}
+		// engine connection
+		virtual void Connect( CEngine* in_pEngine, CEntity* in_pEntity ) ;
+		virtual void Disconnect( CEngine* in_pEngine, CEntity* in_pEntity ) ;
 
-		virtual void Update( float in_fDeltaTime ) {}
+		// engine callbacks
+		virtual void OnUpdate( float in_fDeltaTime ) {}
 
-		CEntity*	GetEntity() { return m_pEntity; }
-		CEngine*	GetEngine() { return m_pEngine; }
+		// helpers
+		inline CEntity*	GetEntity() { return m_pEntity; }
+		inline CEngine*	GetEngine() { return m_pEngine; }
+
+	protected:
+		typedef struct
+		{
+			bool	bEnabled;
+			const char*	szName;
+
+			inline bool IsEnabled() { return bEnabled; }
+			inline const char*	GetName() { return szName; }
+
+		}  LuaCallbackInfo;
+
+		void BindCallback( const char* in_szName, LuaCallbackInfo& in_LuaCB );
 
 	private:
 		CEntity*	m_pEntity;
@@ -71,9 +87,12 @@ public:
 		
 protected:
 	std::shared_ptr<GotoComponent>		CreateGotoComponent();
+	std::shared_ptr<TurnComponent>		CreateTurnComponent();
 	std::shared_ptr<VisualComponent>	CreateVisualComponent();
 	
 private:
+	Vector2	m_vPos;
+	float	m_fAngle;
 	CEngine* m_pEngine;
 	Lua::LuaContext	m_LuaContext;
 	std::vector<std::shared_ptr<Component>>	m_vecComponents;
