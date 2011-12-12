@@ -128,7 +128,7 @@ void CTester::BuildPhysicsScene()
 
 void CTester::CreatePhysicsFallingBody()
 {
-    srand ( GetEngine()->GetClock()->GetTotalTime() );
+    srand ( (unsigned int)GetEngine()->GetClock()->GetTotalTime() );
     float fHorizontalSpeed = 20.0f * static_cast<float>((rand() % 20) - 10);
     float fVerticalSpeed =  100.0f * static_cast<float>((rand() % 4) + 4);
     //Floor

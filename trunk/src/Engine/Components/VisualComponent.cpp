@@ -5,15 +5,11 @@
 
 #include "VisualComponent.h"
 
+// component interface ////////////////////////////////////////////////////////
+
 void VisualComponent::Play( const char* in_szSequenceName, bool in_bLoop )
-//void VisualComponent::Play( const std::string& in_szSequenceName, bool in_bLoop )
 {
 	m_pSprite->Play( in_szSequenceName, in_bLoop );
-}
-
-void VisualComponent::Update( float in_fDeltaTime )
-{
-	m_pSprite->Update(in_fDeltaTime);
 }
 
 bool VisualComponent::IsPlaying() const
@@ -36,9 +32,13 @@ void VisualComponent::SetColor( float r, float g, float b )
 	m_pSprite->SetColor(r,g,b);
 }
 
+// engine connection //////////////////////////////////////////////////////////
+
 void VisualComponent::Connect( CEngine* in_pEngine, CEntity* in_pEntity ) 
 {	
 	Component::Connect( in_pEngine, in_pEntity );
+
+	in_pEngine->Connect_OnUpdate( this, &VisualComponent::OnUpdate );
 
 	m_pSprite = Lair::GetSpriteMan()->GetSprite();
 
@@ -46,4 +46,22 @@ void VisualComponent::Connect( CEngine* in_pEngine, CEntity* in_pEntity )
 	GetEntity()->GetLuaContext().registerFunction("is_playing", &VisualComponent::IsPlaying);
 	GetEntity()->GetLuaContext().registerFunction("set_alpha", &VisualComponent::SetAlpha);
 	GetEntity()->GetLuaContext().registerFunction("set_color", &VisualComponent::SetColor);
+}
+
+void VisualComponent::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity )
+{
+	in_pEngine->Disconnect_OnUpdate( this );
+
+	// TODO free sprite interface
+
+	Component::Disconnect( in_pEngine, in_pEntity );
+}
+
+// engine callbacks ///////////////////////////////////////////////////////////
+
+void VisualComponent::OnUpdate( float in_fDeltaTime )
+{
+	// TODO add mechanism to check if we linked 'set' methods to sync with entity
+	m_pSprite->Set( GetEntity()->GetPos().x, GetEntity()->GetPos().y, GetEntity()->GetAngle(), 1.0f, 1.0f );
+	m_pSprite->Update(in_fDeltaTime);
 }

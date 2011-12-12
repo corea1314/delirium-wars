@@ -6,57 +6,82 @@
 
 #include "GotoComponent.h"
 
+// component interface ////////////////////////////////////////////////////////
+
 GotoComponent::GotoComponent()
+	: m_bMoving(false)
 {
-	m_MovementData.bMoving = false;
-	m_vCurrPos.Set(0,0);
+	m_bMoving = false;
+}
+
+GotoComponent::~GotoComponent()
+{
+
 }
 
 void GotoComponent::Goto( float in_fNewPosX, float in_fNewPosY, float in_fDelayToDest )
 {
-	m_MovementData.vOPos = m_vCurrPos;
-	m_MovementData.vDPos.x = in_fNewPosX;
-	m_MovementData.vDPos.y = in_fNewPosY;
-	m_MovementData.fOTime = GetEngine()->GetClock()->GetTotalTime();
-	m_MovementData.fDuration = in_fDelayToDest;
-	m_MovementData.fDTime = m_MovementData.fOTime + m_MovementData.fDuration;
-	m_MovementData.bMoving = true;
+	m_vOPos = GetEntity()->GetPos();
+	m_vDPos.x = in_fNewPosX;
+	m_vDPos.y = in_fNewPosY;
+	m_fOTime = GetEngine()->GetClock()->GetTotalTime();
+	m_fDuration = in_fDelayToDest;
+	m_fDTime = m_fOTime + m_fDuration;
+	m_bMoving = true;
 }
 
 void GotoComponent::Abort()
 {
-	m_MovementData.bMoving = false;
+	m_bMoving = false;
 }
 
-void GotoComponent::Update( float in_fDeltaTime )
-{
-	if( m_MovementData.bMoving )
-	{
-		float tNow = GetEngine()->GetClock()->GetTotalTime();
-		if( tNow > m_MovementData.fDTime )
-		{
-			// reached destination
-			m_vCurrPos = m_MovementData.vDPos;
-			m_MovementData.bMoving = false;
-
-			GetEntity()->GetLuaContext().callLuaFunction<void>("OnReachedDestinaion");
-		}
-		else
-		{
-			float fRatio = SMOOTH_STEP( m_MovementData.fOTime, m_MovementData.fDTime, tNow );
-
-			m_vCurrPos.x = LERP( m_MovementData.vOPos.x, m_MovementData.vDPos.x, fRatio );
-			m_vCurrPos.y = LERP( m_MovementData.vOPos.y, m_MovementData.vDPos.y, fRatio );
-
-			GetEntity()->GetLuaContext().callLuaFunction<void>( "OnMoving", fRatio );
-		}
-	}
-}
+// engine connection //////////////////////////////////////////////////////////
 
 void GotoComponent::Connect( CEngine* in_pEngine, CEntity* in_pEntity ) 
 {	
 	Component::Connect( in_pEngine, in_pEntity );
 
-	GetEntity()->GetLuaContext().registerFunction("goto", &GotoComponent::Goto);
-	GetEntity()->GetLuaContext().registerFunction("abort", &GotoComponent::Abort);
+	in_pEngine->Connect_OnUpdate( this, &GotoComponent::OnUpdate );
+
+	GetEntity()->GetLuaContext().registerFunction( "goto", &GotoComponent::Goto );
+	GetEntity()->GetLuaContext().registerFunction( "abort", &GotoComponent::Abort );
+
+	BindCallback( "OnGotoComponent_DestReached", m_cbDestReached );
+	BindCallback( "OnGotoComponent_Moving", m_cbMoving );
+}
+
+void GotoComponent::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity )
+{
+	in_pEngine->Disconnect_OnUpdate( this );
+
+	Component::Disconnect( in_pEngine, in_pEntity );
+}
+
+// engine callbacks ///////////////////////////////////////////////////////////
+
+void GotoComponent::OnUpdate( float in_fDeltaTime )
+{
+	if( m_bMoving )
+	{
+		float tNow = GetEngine()->GetClock()->GetTotalTime();
+		if( tNow > m_fDTime )
+		{
+			// reached destination
+			GetEntity()->GetPos() = m_vDPos;
+			m_bMoving = false;
+
+			if( m_cbDestReached.IsEnabled() )
+				GetEntity()->GetLuaContext().callLuaFunction<void>(m_cbDestReached.GetName());
+		}
+		else
+		{
+			float fRatio = SMOOTH_STEP( m_fOTime, m_fDTime, tNow );
+
+			GetEntity()->GetPos().x = LERP( m_vOPos.x, m_vDPos.x, fRatio );
+			GetEntity()->GetPos().y = LERP( m_vOPos.y, m_vDPos.y, fRatio );
+
+			if( m_cbMoving.IsEnabled() )
+				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbMoving.GetName(), fRatio );
+		}
+	}
 }

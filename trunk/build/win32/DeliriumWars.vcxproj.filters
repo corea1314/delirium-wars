@@ -438,6 +438,9 @@
     <ClCompile Include="..\..\src\Engine\Components\VisualComponent.cpp">
       <Filter>source\Engine\Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\TurnComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -744,6 +747,9 @@
       <Filter>source\Engine\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Engine\Components\VisualComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\TurnComponent.h">
       <Filter>source\Engine\Components</Filter>
     </ClInclude>
   </ItemGroup>
