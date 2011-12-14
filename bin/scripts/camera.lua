@@ -2,8 +2,8 @@
 -- variables: entity logic variables
 -------------------------------------------------------------------------------
 
--- gotoComponent = this:createGotoComponent()
--- turnComponent = this:createTurnComponent()
+gotoComponent = this:createGotoComponent()
+turnComponent = this:createTurnComponent()
 -- inputComponent = this:createInputComponent()
 -- visualComponent = this:createVisualComponent()
 -- engineComponent = this:createEngineComponent()
@@ -55,4 +55,3 @@ end
 -- EngineComponent callbacks
 -------------------------------------------------------------------------------
 -- function OnEngineComponent_Update( deltatime ) end
-

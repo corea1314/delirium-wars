@@ -1,15 +1,13 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-#include "Engine/Entity.h"
 #include "Math/Vector2.h"
+#include "Engine/SigSlot.h"
 
 class CEngine;
 
-class CCamera : public CEntity
+class CCamera : public has_slots<>
 {
-	DECLARE_CLASS_TYPE(CCamera, CEntity, CEntity);
-
 public:
 	CCamera();
 
@@ -23,6 +21,9 @@ public:
 
 	virtual void Connect( CEngine* );
 	virtual void Disconnect( CEngine* );
+
+	// get access engine
+	CEngine*	GetEngine() { return m_pEngine; }
 	
 private:
 	Vector2 m_vCurrPos;
@@ -52,6 +53,7 @@ private:
 
 	} m_ZoomData;
 
+	CEngine* m_pEngine;
 };
 
 

@@ -7,15 +7,6 @@
     <Filter Include="source\Math">
       <UniqueIdentifier>{021a80fd-ae79-4d5b-900a-76d4a6a39289}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\Game">
-      <UniqueIdentifier>{d0587c2c-c40a-49fa-bdbf-94fc6bf80829}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\Game\Pods">
-      <UniqueIdentifier>{a5213ea6-6f8a-4a8c-9023-8d1bec1d2a1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\Physics">
-      <UniqueIdentifier>{500847b0-dcaf-489d-bab7-9389982e927b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Lair">
       <UniqueIdentifier>{4aac959a-3f3c-4cfe-8d95-f088671e6d3f}</UniqueIdentifier>
     </Filter>
@@ -48,12 +39,6 @@
     </Filter>
     <Filter Include="bin">
       <UniqueIdentifier>{518332b1-b129-4388-b375-0cb4d8987fc7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\Game\Tester">
-      <UniqueIdentifier>{2a44049a-99ba-4cfb-9387-9483314c363f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="source\Game\Tile">
-      <UniqueIdentifier>{2535d850-c2ba-4f74-a129-e8d3079c8ff5}</UniqueIdentifier>
     </Filter>
     <Filter Include="source\Lair\Shader">
       <UniqueIdentifier>{f4de6d49-969c-4393-b0fd-df7363c17ca5}</UniqueIdentifier>
@@ -177,30 +162,6 @@
     <ClCompile Include="..\..\src\Math\Matrix3x3.cpp">
       <Filter>source\Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Game\Field.cpp">
-      <Filter>source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Pump.cpp">
-      <Filter>source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Deposit.cpp">
-      <Filter>source\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Pods\Pod.cpp">
-      <Filter>source\Game\Pods</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Pods\PodCmdPost.cpp">
-      <Filter>source\Game\Pods</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Pods\PopPump.cpp">
-      <Filter>source\Game\Pods</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp">
-      <Filter>source\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp">
-      <Filter>source\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Lair\Image\Image.cpp">
       <Filter>source\Lair\Image</Filter>
     </ClCompile>
@@ -228,14 +189,8 @@
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp">
       <Filter>source\DebugDraw</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Game\Tester\Tester.cpp">
-      <Filter>source\Game\Tester</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Lair\Sequence\Sequence.cpp">
       <Filter>source\Lair\Sequence</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Game\Tile\Tile.cpp">
-      <Filter>source\Game\Tile</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Shader\ShaderGLSL.cpp">
       <Filter>source\Lair\Shader</Filter>
@@ -441,6 +396,12 @@
     <ClCompile Include="..\..\src\Engine\Components\TurnComponent.cpp">
       <Filter>source\Engine\Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\InputComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\EngineComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -464,15 +425,6 @@
     <ClInclude Include="..\..\src\Math\Vector3.h">
       <Filter>source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Game\Box2.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Deposit.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Pump.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Math\Matrix4x4.h">
       <Filter>source\Math</Filter>
     </ClInclude>
@@ -485,26 +437,8 @@
     <ClInclude Include="..\..\src\Math\Vector4.h">
       <Filter>source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Game\Field.h">
-      <Filter>source\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Pods\Pod.h">
-      <Filter>source\Game\Pods</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Pods\PodCmdPost.h">
-      <Filter>source\Game\Pods</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Pods\PodPump.h">
-      <Filter>source\Game\Pods</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\macros.h">
       <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Physics\PhysicsBody.h">
-      <Filter>source\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Physics\PhysicsManager.h">
-      <Filter>source\Physics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Image\Image.h">
       <Filter>source\Lair\Image</Filter>
@@ -536,14 +470,8 @@
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h">
       <Filter>source\DebugDraw</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Game\Tester\Tester.h">
-      <Filter>source\Game\Tester</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Lair\Sequence\Sequence.h">
       <Filter>source\Lair\Sequence</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Game\Tile\Tile.h">
-      <Filter>source\Game\Tile</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Shader\ShaderGLSL.h">
       <Filter>source\Lair\Shader</Filter>
@@ -752,6 +680,12 @@
     <ClInclude Include="..\..\src\Engine\Components\TurnComponent.h">
       <Filter>source\Engine\Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\InputComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\EngineComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
@@ -781,6 +715,15 @@
       <Filter>bin</Filter>
     </None>
     <None Include="..\..\bin\scripts\entity.lua">
+      <Filter>bin\scipts</Filter>
+    </None>
+    <None Include="..\..\bin\scripts\camera.lua">
+      <Filter>bin\scipts</Filter>
+    </None>
+    <None Include="..\..\bin\scripts\entrypoint.lua">
+      <Filter>bin\scipts</Filter>
+    </None>
+    <None Include="..\..\bin\scripts\tester.lua">
       <Filter>bin\scipts</Filter>
     </None>
   </ItemGroup>

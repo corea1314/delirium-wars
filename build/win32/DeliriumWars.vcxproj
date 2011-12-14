@@ -180,7 +180,9 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\EngineComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\GotoComponent.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\InputComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\TurnComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\VisualComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Database\Database.cpp" />
@@ -199,14 +201,6 @@
       <ProgramDataBaseFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ProgramDataBaseFileName>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\..\src\Game\Deposit.cpp" />
-    <ClCompile Include="..\..\src\Game\Field.cpp" />
-    <ClCompile Include="..\..\src\Game\Pods\Pod.cpp" />
-    <ClCompile Include="..\..\src\Game\Pods\PodCmdPost.cpp" />
-    <ClCompile Include="..\..\src\Game\Pods\PopPump.cpp" />
-    <ClCompile Include="..\..\src\Game\Pump.cpp" />
-    <ClCompile Include="..\..\src\Game\Tester\Tester.cpp" />
-    <ClCompile Include="..\..\src\Game\Tile\Tile.cpp" />
     <ClCompile Include="..\..\src\gfx.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\debug/</ObjectFileName>
@@ -242,8 +236,6 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <ClCompile Include="..\..\src\Physics\PhysicsBody.cpp" />
-    <ClCompile Include="..\..\src\Physics\PhysicsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Box2D.h" />
@@ -291,7 +283,9 @@
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
+    <ClInclude Include="..\..\src\Engine\Components\EngineComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\GotoComponent.h" />
+    <ClInclude Include="..\..\src\Engine\Components\InputComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\TurnComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\VisualComponent.h" />
     <ClInclude Include="..\..\src\Engine\Database\Database.h" />
@@ -306,15 +300,6 @@
     <ClInclude Include="..\..\src\Engine\Physics\World.h" />
     <ClInclude Include="..\..\src\Engine\SigSlot.h" />
     <ClInclude Include="..\..\src\fw.h" />
-    <ClInclude Include="..\..\src\Game\Box2.h" />
-    <ClInclude Include="..\..\src\Game\Deposit.h" />
-    <ClInclude Include="..\..\src\Game\Field.h" />
-    <ClInclude Include="..\..\src\Game\Pods\Pod.h" />
-    <ClInclude Include="..\..\src\Game\Pods\PodCmdPost.h" />
-    <ClInclude Include="..\..\src\Game\Pods\PodPump.h" />
-    <ClInclude Include="..\..\src\Game\Pump.h" />
-    <ClInclude Include="..\..\src\Game\Tester\Tester.h" />
-    <ClInclude Include="..\..\src\Game\Tile\Tile.h" />
     <ClInclude Include="..\..\src\gfx.h" />
     <ClInclude Include="..\..\src\Lair\Analog\Analog.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h" />
@@ -347,8 +332,6 @@
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
     <ClInclude Include="..\..\src\menu.h" />
-    <ClInclude Include="..\..\src\Physics\PhysicsBody.h" />
-    <ClInclude Include="..\..\src\Physics\PhysicsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
@@ -357,7 +340,10 @@
   <ItemGroup>
     <None Include="..\..\bin\sample.spr" />
     <None Include="..\..\bin\sample.xml" />
+    <None Include="..\..\bin\scripts\camera.lua" />
     <None Include="..\..\bin\scripts\entity.lua" />
+    <None Include="..\..\bin\scripts\entrypoint.lua" />
+    <None Include="..\..\bin\scripts\tester.lua" />
     <None Include="..\..\bin\shaders\spriter.fs" />
     <None Include="..\..\bin\shaders\spriter.gs" />
     <None Include="..\..\bin\shaders\spriter.vs" />

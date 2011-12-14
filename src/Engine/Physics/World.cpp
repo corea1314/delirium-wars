@@ -7,8 +7,6 @@
 #include "Lair/Lair.h"
 #include "Engine/Engine.h"
 
-IMPLEMENT_CLASS_TYPE(CWorld)
-
 CWorld::CWorld() : m_fHz(60.0f), m_nVelocityIterations(8), m_nPositionIterations(3), m_bEnableWarmStarting(true), m_bEnableContinuous(true), 
 	m_pWorld(0), m_pContactListener(0), m_pContactFilter(0), m_pDestructionListener(0), m_pBodyDefMan(0)
 {

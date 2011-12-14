@@ -201,9 +201,8 @@ BodyDefinition* BodyDefinitionMan::Get( const std::string& in_szFilename )
 		BodyDefinition* pBodyDef = new BodyDefinition;
 		if( pBodyDef->Load( in_szFilename ) )
 		{
-			nTime = Lair::GetSysMan()->GetTime() - nTime;
-
 			m_mapBodyDef.insert( std::make_pair(in_szFilename,pBodyDef) );
+			nTime = Lair::GetSysMan()->GetTime() - nTime;
 			Lair::GetLogMan()->Log( "BodyDefMan", "Loaded Box2d body definition from file named %s in %d ms.", in_szFilename.c_str(), nTime );
 			return pBodyDef;
 		}

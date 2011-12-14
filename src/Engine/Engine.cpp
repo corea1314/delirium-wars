@@ -1,11 +1,8 @@
 #include "Engine.h"
 
-#include "../Game/Field.h"
 #include "Engine/Entities/Clock/Clock.h"
 #include "Engine/Entities/Camera/Camera.h"
 #include "Engine/Physics/World.h"
-#include "../Game/Tester/Tester.h"
-#include "Physics/PhysicsManager.h"
 #include "Lair/RenderTarget/RenderTarget.h"
 
 #include "Engine/Entities/Player/Player.h"
@@ -15,6 +12,8 @@
 #include "Lair/Lair.h"
 
 #include "macros.h"
+
+#include "glee/GLee.h"
 
 #define RENDER_TARGET_SIZE_X	1024
 #define RENDER_TARGET_SIZE_Y	1024
@@ -28,32 +27,22 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 	m_pClock = new CClock;
 	m_pClock->Connect(this);
 
-	// Create the field
-	m_pField = new CField;
-	m_pField->Connect(this);
-
 	// Create the camera
 	m_pCamera = new CCamera;
 	m_pCamera->Connect(this);
-
-    m_pPhysMan = new CPhysicsManager();
-    m_pPhysMan->Connect( this );
 
 	// Create the world
 	m_pWorld = new CWorld;
 	m_pWorld->Connect( this );
 
+	m_pEntryPointEntity = GetEntity( "%entry_point%", "scripts/entrypoint.lua" );
+
 	// Create debug draw interface
 	m_pDebugDraw = new CDebugDraw( 1024, 1024, 3.0f );
 
-	// Create tester entity
-	m_pTester = new CTester;
-	m_pTester->Connect( this );
-
+	// Create player
 	m_pPlayer = new CPlayer;
 	m_pPlayer->Connect( this );
-
-    m_pTester->BuildPhysicsScene();
 
 	m_pRT = new RenderTarget;
 	m_pRT->Create( RENDER_TARGET_SIZE_X, RENDER_TARGET_SIZE_Y, true, false );
@@ -77,9 +66,6 @@ CEngine::~CEngine()
 	m_pRT->Destroy();
 	SAFE_DELETE( m_pRT );	
 
-	m_pTester->Disconnect( this );
-	SAFE_DELETE(m_pTester);	
-
 	SAFE_DELETE(m_pDebugDraw);
 
 	m_pPlayer->Disconnect( this );
@@ -91,15 +77,41 @@ CEngine::~CEngine()
 	m_pCamera->Disconnect(this);
 	SAFE_DELETE(m_pCamera);
 
-	m_pField->Disconnect(this);
-	SAFE_DELETE(m_pField);
-
 	m_pClock->Disconnect(this);
 	SAFE_DELETE(m_pClock);
 
-    SAFE_DELETE( m_pPhysMan );
+//	SAFE_DELETE( m_pEntryPointEntity );
 
 	Lair::Release();
+}
+
+CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript )
+{
+	std::map< std::string, CEntity* >::iterator it = m_mapEntity.find( in_szEntityName );
+
+	if( it != m_mapEntity.end() )
+	{
+		// found it, return it
+		//		Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from map (%s).", in_szFilename.c_str() );
+		return it->second;
+	}
+	else
+	{
+		// not found, load it, return it
+
+		CEntity* pEntity = new CEntity();
+
+		if( pEntity->Load(in_szLuaScript) )
+		{
+			pEntity->Connect( this );
+			m_mapEntity.insert( std::make_pair(in_szEntityName,pEntity) );
+
+			Lair::GetLogMan()->Log( "Engine", "Created entity named %s.", in_szEntityName.c_str() );
+			return pEntity;
+		}
+		Lair::GetLogMan()->Log( "Engine", "Could not create new entity named %s.", in_szEntityName.c_str() );
+	}
+	return 0;
 }
 
 void CEngine::Update( float in_fDeltaTime )
@@ -109,13 +121,13 @@ void CEngine::Update( float in_fDeltaTime )
 
 void CEngine::Render()
 {
-	Vector2 vPos =GetCamera()->GetPos();
+	Vector2 vPos = GetCamera()->GetPos();
 	float fZoom = GetCamera()->GetZoom();
 
 	glMatrixMode( GL_PROJECTION );
 	glPushMatrix();
 	glLoadIdentity();
-	gluOrtho2D( -RENDER_TARGET_SIZE_X/2*fZoom, RENDER_TARGET_SIZE_X/2*fZoom, -RENDER_TARGET_SIZE_Y/2*fZoom, RENDER_TARGET_SIZE_Y/2*fZoom );
+	glOrtho( -RENDER_TARGET_SIZE_X/2*fZoom, RENDER_TARGET_SIZE_X/2*fZoom, -RENDER_TARGET_SIZE_Y/2*fZoom, RENDER_TARGET_SIZE_Y/2*fZoom, -1.0f, 1.0f );
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

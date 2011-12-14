@@ -174,7 +174,6 @@ AtlasFrame*	Atlas::Get( const std::string& in_szFilename )
 			m_mapFrames.insert( std::make_pair(in_szFilename,pIndex) );
 
 			nTime = Lair::GetSysMan()->GetTime() - nTime;
-
 			Lair::GetLogMan()->Log( "Atlas", "Inserted image named %s into atlas in %d ms.", in_szFilename.c_str(), nTime );
 			return pIndex;
 		}

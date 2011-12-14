@@ -39,6 +39,8 @@ public:
 	void OnRightClick( int x, int y, const Vector2& v );
 	void OnMiddleClick( int x, int y, const Vector2& v );
 
+	void OnMouseClick( int button, int x, int y, Vector2& v );
+
 	void OnKeyboard( unsigned char key );
 
 	void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );

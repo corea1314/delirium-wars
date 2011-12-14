@@ -13,10 +13,10 @@ frame8 =		TestCardA512x512.png		33		-128    80		0		 1.0 1.0
 frame9 =		TestCardA512x512.png		33		-128    90		0		 1.0 1.0 
 
 
-[Frames]
+[Frames*]
 # sprite_id,	filename,		delay,	x,   y,		angle,		sx, sy
 frame0 =		sprite.png		33		0    0		 0			1.0 1.0 
-#frame1 =		sprite.png		33		0    0		-10			1.0 1.0 
+frame1 =		sprite.png		33		0    0		-10			1.0 1.0 
 frame2 =		sprite.png		33		0    0		-20			1.0 1.0 
 frame3 =		sprite.png		33		0    0		-30			1.0 1.0 
 frame4 =		sprite.png		33		0    0		-40			1.0 1.0 
@@ -26,19 +26,19 @@ frame7 =		sprite.png		33		0    0		-70			1.0 1.0
 frame8 =		sprite.png		33		0    0		-80			1.0 1.0 
 frame9 =		sprite.png		33		0    0		-90			1.0 1.0 
 
-[Frames*]
+[Frames]
 # sprite_id,	filename,		delay,	x,   y,		angle,		sx, sy
-frame0 =		sprite.png		33		128   128		0		 0.0 1.0 
-frame1 =		sprite.png		33		128   128		0		-0.1 1.0 
-frame2 =		sprite.png		33		128   128		0		-0.2 1.0 
-frame3 =		sprite.png		33		128   128		0		-0.3 1.0 
-frame4 =		sprite.png		33		128   128		0		-0.4 1.0 
-frame5 =		sprite.png		33		128   128		0		-0.5 1.0 
-frame6 =		sprite.png		33		128   128		0		-0.6 1.0 
-frame7 =		sprite.png		33		128   128		0		-0.7 1.0 
-frame8 =		sprite.png		33		128   128		0		-0.8 1.0 
-frame9 =		sprite.png		33		128   128		0		-0.9 1.0 
-frame10 =		sprite.png		33		128   128		0		-1.0 1.0 
+frame0 =		sprite.png		33		0   0			0		0.0 0.0 
+frame1 =		sprite.png		33		0   0			0		0.1 0.1 
+frame2 =		sprite.png		33		0   0			0		0.2 0.2 
+frame3 =		sprite.png		33		0   0			0		0.3 0.3 
+frame4 =		sprite.png		33		0   0			0		0.4 0.4 
+frame5 =		sprite.png		33		0   0			0		0.5 0.5 
+frame6 =		sprite.png		33		0   0			0		0.6 0.6 
+frame7 =		sprite.png		33		0   0			0		0.7 0.7 
+frame8 =		sprite.png		33		0   0			0		0.8 0.8 
+frame9 =		sprite.png		33		0   0			0		0.9 0.9 
+frame10 =		sprite.png		33		0   0			0		1.0 1.0 
 
 
 [Event]

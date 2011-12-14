@@ -124,8 +124,9 @@ Sequence* SequenceMan::Get( const std::string& in_szFilename )
 
 		if( pSequence->Load( in_szFilename ) )
 		{
+			m_mapSequence.insert( std::make_pair(in_szFilename, pSequence ) );
+			
 			nTime = Lair::GetSysMan()->GetTime() - nTime;
-
 			Lair::GetLogMan()->Log( "SequenceMan", "Loaded sequence from file named %s in %d ms.", in_szFilename.c_str(), nTime );
 			return pSequence;
 		}

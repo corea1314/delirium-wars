@@ -4,8 +4,6 @@
 
 class CPlayer : public CEntityPhysics
 {
-	DECLARE_CLASS_TYPE(CPlayer, CEntityPhysics, CEntity);
-
 public:
 	virtual void Connect( CEngine* );		// connects object to game engine
 	virtual void Disconnect( CEngine* );	// disconnects object from game engine

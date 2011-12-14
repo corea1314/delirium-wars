@@ -1,7 +1,7 @@
 #ifndef _CLOCK_H
 #define _CLOCK_H
 
-#include "Engine/Entity.h"
+#include "Engine/SigSlot.h"
 
 // the clock is holding the master time line.
 // it cannot be paused, stopped, etc. only updated.
@@ -9,18 +9,17 @@
 // they get updated when the clock is updated.
 // timers can be paused or stopped.
 
+class CEngine;
 class CTimer;
 
-class CClock : public CEntity
+class CClock : public has_slots<>
 {
-	DECLARE_CLASS_TYPE(CClock, CEntity, CEntity);
-
 public:
 	CClock();
 	virtual ~CClock();
 	
 	void Update( float in_fDeltaTime );
-	void Render();
+	void DebugRender();
 
 	inline float GetDeltaTime() const { return m_fDeltaTime; }
 	inline float GetTotalTime() const { return m_fTotalTime; }
@@ -29,7 +28,7 @@ public:
 	virtual void Connect( CEngine* in_pEngine );
 	virtual void Disconnect( CEngine* in_pEngine );
 
-	bool	CreateTimer( CTimer**);
+	bool	CreateTimer( CTimer** );
 	bool	FreeTimer( CTimer** );
 
 private:
