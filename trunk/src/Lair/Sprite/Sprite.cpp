@@ -197,14 +197,14 @@ void Sprite::Set( float x, float y, float a, float sx, float sy )
 
 void Sprite::SetAlpha( float a )
 {
-	m_pColor[3] = a * 255;
+	m_pColor[3] = (unsigned char)(a * 255);
 }
 
 void Sprite::SetColor( float r, float g, float b )
 {
-	m_pColor[0] = r * 255;
-	m_pColor[1] = g * 255;
-	m_pColor[2] = b * 255;
+	m_pColor[0] = (unsigned char)(r * 255);
+	m_pColor[1] = (unsigned char)(g * 255);
+	m_pColor[2] = (unsigned char)(b * 255);
 }
 
 void Sprite::Play( const std::string& in_szSequenceName, bool in_bLoop )
