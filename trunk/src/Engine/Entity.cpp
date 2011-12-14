@@ -9,6 +9,8 @@ IMPLEMENT_CLASS_TYPE(CEntity)
 #include "Components/GotoComponent.h"
 #include "Components/VisualComponent.h"
 #include "Components/TurnComponent.h"
+#include "Components/InputComponent.h"
+#include "Components/EngineComponent.h"
 
 #include <luawrapper/LuaContext.h>
 
@@ -20,82 +22,104 @@ IMPLEMENT_CLASS_TYPE(CEntity)
 // CEntity
 //
 
-CEntity::CEntity()
-: m_fAngle(0.0f)
+CEntity::CEntity() : m_fAngle(0.0f)
 {
+	m_vecComponents.reserve(8);	//FIXME arbitrary number of components
 }
 
 CEntity::~CEntity()
 {
+}
 
+bool CEntity::Load( const std::string& in_szLuaFilename )
+{
+	m_szLuaFilename = in_szLuaFilename;
+
+	unsigned long nTime = Lair::GetSysMan()->GetTime();
+
+	std::ifstream is;
+	is.open( m_szLuaFilename, std::ifstream::in );
+
+	if( is.is_open() == false )
+	{
+		Lair::GetLogMan()->Log( "Lua Exception", "File named %s not found.", m_szLuaFilename.c_str() );
+		return false;
+	}
+
+	try
+	{		
+		m_LuaContext.registerFunction("createGotoComponent",	&CEntity::CreateComponent<GotoComponent> );
+		m_LuaContext.registerFunction("createTurnComponent",	&CEntity::CreateComponent<TurnComponent> );
+		m_LuaContext.registerFunction("createVisualComponent",	&CEntity::CreateComponent<VisualComponent> );
+		m_LuaContext.registerFunction("createInputComponent",	&CEntity::CreateComponent<InputComponent> );
+		m_LuaContext.registerFunction("createEngineComponent",	&CEntity::CreateComponent<EngineComponent> );
+
+		m_LuaContext.writeVariable("this", std::shared_ptr<CEntity>(this) );
+
+		m_LuaContext.executeCode(is);
+	}
+	catch ( Lua::LuaContext::ExecutionErrorException e )
+	{
+		Lair::GetLogMan()->Log( "Lua Exception", "Execution error while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
+		return false;
+	}
+	catch ( Lua::LuaContext::VariableDoesntExistException  e )
+	{
+		Lair::GetLogMan()->Log( "Lua Exception", "Variable not found while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
+		return false;
+	}
+	catch ( Lua::LuaContext::SyntaxErrorException e )
+	{
+		Lair::GetLogMan()->Log( "Lua Exception", "Syntax error found while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
+		return false;
+	}
+	catch ( Lua::LuaContext::WrongTypeException e )
+	{
+		Lair::GetLogMan()->Log( "Lua Binding Exception", "Type error found while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
+		return false;
+	}
+
+	nTime = Lair::GetSysMan()->GetTime() - nTime;
+	Lair::GetLogMan()->Log( "Lua", "Loaded entity script named %s in %d ms.", m_szLuaFilename.c_str(), nTime );
+
+	return true;
 }
 
 void CEntity::Connect( CEngine* in_pEngine ) 
 { 
+	unsigned long nTime = Lair::GetSysMan()->GetTime();
+
 	m_pEngine = in_pEngine; 
 
 	m_pEngine->Connect_OnRenderDebug( this, &CEntity::OnRenderDebug );
 
-	std::ifstream is;
-	is.open ("scripts/entity.lua", std::ifstream::in);
-
-	// todo add component and register them to lua
 	try
 	{		
-		m_LuaContext.registerFunction("createGotoComponent", &CEntity::CreateGotoComponent);
-		m_LuaContext.registerFunction("createTurnComponent", &CEntity::CreateTurnComponent);
-		m_LuaContext.registerFunction("createVisualComponent", &CEntity::CreateVisualComponent);
-		m_LuaContext.writeVariable("this", std::shared_ptr<CEntity>(this) );
-			
-		m_LuaContext.executeCode(is);
-
 		for( std::vector<std::shared_ptr<Component>>::iterator it = m_vecComponents.begin(); it != m_vecComponents.end(); it++ )
 		{
 			(*it)->Connect( in_pEngine, this );
-		}
-
-		m_LuaContext.callLuaFunction<void>("init");
+		}		
+		m_LuaContext.callLuaFunction<void>("OnConnect");
 	}
 	catch ( Lua::LuaContext::ExecutionErrorException e )
 	{
-		Lair::GetLogMan()->Log( "Lua Binding Exception",  e.what() );
+		Lair::GetLogMan()->Log( "Lua Exception", "Execution error while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
 	}
 	catch ( Lua::LuaContext::VariableDoesntExistException  e )
 	{
-		Lair::GetLogMan()->Log( "Lua Binding Exception",  e.what() );
+		Lair::GetLogMan()->Log( "Lua Exception", "Variable not found while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
 	}
 	catch ( Lua::LuaContext::SyntaxErrorException e )
 	{
-		Lair::GetLogMan()->Log( "Lua Binding Exception",  e.what() );
+		Lair::GetLogMan()->Log( "Lua Exception", "Syntax error found while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
 	}
 	catch ( Lua::LuaContext::WrongTypeException e )
 	{
-		Lair::GetLogMan()->Log( "Lua Binding Exception",  e.what() );
+		Lair::GetLogMan()->Log( "Lua Binding Exception", "Type error found while binding script file named %s. (%s)", m_szLuaFilename.c_str(), e.what() );
 	}
-		
-	/*
-	m_LuaContext.writeVariable("increment", [](std::shared_ptr<MyType> ptr) { ptr->increment(); });
-	m_LuaContext.registerFunction("increment", &MyType::increment);
-	m_LuaContext.registerFunction("decrement", &MyType::decrement);
-	m_LuaContext.registerFunction("read", &MyType::read);
-	m_LuaContext.registerFunction("getValue", [](std::shared_ptr<MyType> ptr) -> int { return ptr->getVariable(); });
-	std::shared_ptr<MyType> ptr(new MyType(5));
-	m_LuaContext.writeVariable("create", [ptr]() { return ptr; });
-	m_LuaContext.executeCode(		
-		"function inc()\n"
-		"t:increment()\n"
-		"t:increment()\n"
-		"t:increment()\n"
-		"end\n"
-		"t = create(); increment(t); x = t:getValue(); t:increment();")
 
-		;
-	assert(ptr);
-	assert(ptr->getVariable() == 7);
-	m_LuaContext.callLuaFunction<void>("inc");
-	assert(ptr->getVariable() == 10);
-	assert(m_LuaContext.readVariable<int>("x") == 6);
-	*/
+	nTime = Lair::GetSysMan()->GetTime() - nTime;
+	Lair::GetLogMan()->Log( "Lua", "Connected entity script named %s in %d ms.", m_szLuaFilename.c_str(), nTime );
 }
 
 void CEntity::Disconnect( CEngine* in_pEngine ) 
@@ -106,31 +130,10 @@ void CEntity::Disconnect( CEngine* in_pEngine )
 	{
 		(*it)->Disconnect( in_pEngine, this );
 	}
+	m_vecComponents.clear();
 
 	m_pEngine->Disconnect_OnRenderDebug( this );
-
 	m_pEngine = 0; 
-}
-
-std::shared_ptr<VisualComponent> CEntity::CreateVisualComponent()
-{
-	std::shared_ptr<VisualComponent> ptr = std::shared_ptr<VisualComponent>(new VisualComponent);
-	m_vecComponents.push_back(ptr);
-	return ptr;
-}
-
-std::shared_ptr<GotoComponent> CEntity::CreateGotoComponent()
-{
-	std::shared_ptr<GotoComponent> ptr = std::shared_ptr<GotoComponent>(new GotoComponent);
-	m_vecComponents.push_back(ptr);
-	return ptr;
-}
-
-std::shared_ptr<TurnComponent> CEntity::CreateTurnComponent()
-{
-	std::shared_ptr<TurnComponent> ptr = std::shared_ptr<TurnComponent>(new TurnComponent);
-	m_vecComponents.push_back(ptr);
-	return ptr;
 }
 
 void CEntity::OnRenderDebug( CDebugDraw* in_pRD )
@@ -168,23 +171,7 @@ void CEntity::Component::BindCallback( const char* in_szName, LuaCallbackInfo& i
 	in_LuaCB.bEnabled = GetEntity()->GetLuaContext().doesFunctionExist( in_LuaCB.szName );
 }
 
-/*
 
-/*
-void CLuaEntity::OnUpdate( float in_fDeltaTime )
-{
-	m_LuaContext.callLuaFunction("OnUpdate", in_fDeltaTime);
-}
-
-void CLuaEntity::OnKeyboard( unsigned char in_cKey )
-{
-	m_LuaContext.callLuaFunction("OnKeyboard", in_cKey);
-}
-
-if( GetLuaContext().doesFunctionExist("OnUpdate") ) 
-in_pEngine->Disconnect_OnUpdate( this );
-if( GetLuaContext().doesFunctionExist("OnKeyboard") ) 
-in_pEngine->Disconnect_OnKeyboard( this );
-
-
-*/
+///////////////////////////////////////////////////////////////////////////////
+// CEntityFactory
+// 

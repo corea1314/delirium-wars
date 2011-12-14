@@ -4,15 +4,16 @@
 
 -- gotoComponent = this:createGotoComponent()
 -- turnComponent = this:createTurnComponent()
--- inputComponent = this:createInputComponent()
+ inputComponent = this:createInputComponent()
 -- visualComponent = this:createVisualComponent()
--- engineComponent = this:createEngineComponent()
+ engineComponent = this:createEngineComponent()
 
 -------------------------------------------------------------------------------
 -- onConnect: called when the entity is connected to the engine
 -------------------------------------------------------------------------------
 function OnConnect()
-
+	engineComponent:create_entity( "camera", "scripts/camera.lua", 0,0,0 )
+	engineComponent:create_entity( "tester", "scripts/tester.lua", 0,0,0 )
 end
 
 -------------------------------------------------------------------------------
@@ -46,13 +47,26 @@ end
 -------------------------------------------------------------------------------
 -- InputComponent callbacks
 -------------------------------------------------------------------------------
--- function OnInputComponent_Keyboard( key ) end
--- function OnInputComponent_MouseClick( button, state, screen_x, screen_y, world_x, world_y ) end
--- function OnInputComponent_MouseWheel( value ) end
+function OnInputComponent_Keyboard( key ) 
+
+end
+
+function OnInputComponent_MouseClick( button, state, screenx, screeny, worldx, worldy )
+
+	if button == 1 and state == 1 then
+        engineComponent:create_entity( "tester2", "scripts/tester.lua", worldx, worldy, 0 )
+    end
+end
+
+function OnInputComponent_MouseWheel( value ) 
+	engineComponent:create_entity( "tester3", "scripts/tester.lua", value * 100, 0, 0 )
+end
 
 
 -------------------------------------------------------------------------------
 -- EngineComponent callbacks
 -------------------------------------------------------------------------------
 -- function OnEngineComponent_Update( deltatime ) end
+
+
 

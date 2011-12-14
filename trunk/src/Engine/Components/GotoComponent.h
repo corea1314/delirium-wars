@@ -30,8 +30,8 @@ private:
 	bool	m_bMoving;		// does the it needs to move
 	
 	// callbacks
-	LuaCallbackInfo		m_cbDestReached;
-	LuaCallbackInfo		m_cbMoving;
+	LuaCallbackInfo		m_cbOnDestinationReached;
+	LuaCallbackInfo		m_cbOnMoving;
 };
 
 

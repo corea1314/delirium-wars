@@ -15,8 +15,6 @@ class BodyDefinitionMan;
 
 class CWorld : public CEntityPhysics
 {
-	DECLARE_CLASS_TYPE(CWorld, CEntityPhysics, CEntity);
-
 public:
 	CWorld();
 	void Connect( CEngine* );		// connects object to game engine

@@ -2471,6 +2471,15 @@
 	void name( arg0 val0, arg1 val1, arg2 val2, arg3 val3 ) { m_sig##name.emit(val0,val1,val2,val3); }	\
 	private:
 
+#define NEW_SIGNAL5( name, arg0, arg1, arg2, arg3, arg4 )	\
+	private:						\
+	signal5<arg0,arg1,arg2,arg3,arg4> m_sig##name;		\
+	public:							\
+	template<class desttype>	\
+	void Connect_##name(desttype* pclass, void (desttype::*pmemfun)(arg0,arg1,arg2,arg3,arg4)) { m_sig##name.connect( pclass, pmemfun ); }	\
+	void Disconnect_##name(has_slots<>* pclass) { m_sig##name.disconnect( pclass ); }	\
+	void name( arg0 val0, arg1 val1, arg2 val2, arg3 val3, arg4 val4 ) { m_sig##name.emit(val0,val1,val2,val3,val4); }	\
+	private:
 
 #define NEW_PRIVATE_SIGNAL0( name )			\
 	private:						\

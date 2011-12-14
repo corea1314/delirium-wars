@@ -141,12 +141,14 @@ void glut_OnMouse(int b,int s,int x,int y)
 	
 	//todo: properly redirect button states to app
 	g_App.Buttons[b] = ((GLUT_DOWN==s)?1:0);
-
+	
 	switch(b)
 	{
-	case GLUT_LEFT_BUTTON:		g_App.OnLeftClick(x, y, v);	break;	
-	case GLUT_MIDDLE_BUTTON:	g_App.OnMiddleClick(x, y, v);	break;	
-	case GLUT_RIGHT_BUTTON:		g_App.OnRightClick(x, y, v);	break;	
+	case GLUT_LEFT_BUTTON:
+	case GLUT_MIDDLE_BUTTON:
+	case GLUT_RIGHT_BUTTON:	
+		g_App.OnMouseClick( b, x, y, v );	
+		break;
 	case GLUT_WHEEL_UP:			g_App.OnWheelUp();		break;	
 	case GLUT_WHEEL_DOWN:		g_App.OnWheelDown();	break;	
 	default:

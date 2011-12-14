@@ -6,10 +6,8 @@
 
 class b2Body;
 
-class CEntityPhysics : public CEntity
+class CEntityPhysics : public has_slots<>
 {
-	DECLARE_CLASS_TYPE(CEntityPhysics, CEntity, CEntity);
-
 public:
 	CEntityPhysics();
 	virtual ~CEntityPhysics();
@@ -23,12 +21,16 @@ public:
 	virtual void OnContactPersist() {}
 	virtual void OnContactRemove() {}
 
+	// get access engine
+	CEngine*	GetEngine() { return m_pEngine; }
+
 protected:
 	void CreateBody(const std::string& in_szBodyDefinitionFilename, float x, float y, bool m_bActive);
 	void DestroyBody();
 		
 private:
 	b2Body*		m_pBody;
+	CEngine* m_pEngine;
 };
 
 #endif//_ENTITY_PHYSICS_H

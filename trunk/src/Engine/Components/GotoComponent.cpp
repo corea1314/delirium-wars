@@ -46,8 +46,8 @@ void GotoComponent::Connect( CEngine* in_pEngine, CEntity* in_pEntity )
 	GetEntity()->GetLuaContext().registerFunction( "goto", &GotoComponent::Goto );
 	GetEntity()->GetLuaContext().registerFunction( "abort", &GotoComponent::Abort );
 
-	BindCallback( "OnGotoComponent_DestReached", m_cbDestReached );
-	BindCallback( "OnGotoComponent_Moving", m_cbMoving );
+	BindCallback( "OnGotoComponent_DestReached", m_cbOnDestinationReached );
+	BindCallback( "OnGotoComponent_Moving", m_cbOnMoving );
 }
 
 void GotoComponent::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity )
@@ -70,8 +70,8 @@ void GotoComponent::OnUpdate( float in_fDeltaTime )
 			GetEntity()->GetPos() = m_vDPos;
 			m_bMoving = false;
 
-			if( m_cbDestReached.IsEnabled() )
-				GetEntity()->GetLuaContext().callLuaFunction<void>(m_cbDestReached.GetName());
+			if( m_cbOnDestinationReached.IsEnabled() )
+				GetEntity()->GetLuaContext().callLuaFunction<void>(m_cbOnDestinationReached.GetName());
 		}
 		else
 		{
@@ -80,8 +80,8 @@ void GotoComponent::OnUpdate( float in_fDeltaTime )
 			GetEntity()->GetPos().x = LERP( m_vOPos.x, m_vDPos.x, fRatio );
 			GetEntity()->GetPos().y = LERP( m_vOPos.y, m_vDPos.y, fRatio );
 
-			if( m_cbMoving.IsEnabled() )
-				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbMoving.GetName(), fRatio );
+			if( m_cbOnMoving.IsEnabled() )
+				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbOnMoving.GetName(), fRatio );
 		}
 	}
 }

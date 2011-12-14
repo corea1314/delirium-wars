@@ -105,21 +105,23 @@ namespace Lua {
 		/// \brief Tells that lua will be allowed to access an object's function
 #		ifdef NO_VARIADIC_TEMPLATE
 			template<typename T, typename R>
-			void				registerFunction(const std::string& name, R (T::*f)())					{ _registerFunction(name, [f](std::shared_ptr<T> ptr) { return ((*ptr).*f)(); }); }
+			void				registerFunction(const std::string& name, R (T::*f)())								{ _registerFunction(name, [f](std::shared_ptr<T> ptr) { return ((*ptr).*f)(); }); }
 			template<typename T, typename R>
-			void				registerFunction(const std::string& name, R (T::*f)() const)					{ _registerFunction(name, [f](std::shared_ptr<T> ptr) { return ((*ptr).*f)(); }); }
+			void				registerFunction(const std::string& name, R (T::*f)() const)						{ _registerFunction(name, [f](std::shared_ptr<T> ptr) { return ((*ptr).*f)(); }); }
 			template<typename T, typename R, typename P1>
-			void				registerFunction(const std::string& name, R (T::*f)(P1))					{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1) { return ((*ptr).*f)(p1); }); }
+			void				registerFunction(const std::string& name, R (T::*f)(P1))							{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1) { return ((*ptr).*f)(p1); }); }
 			template<typename T, typename R, typename P1>
-			void				registerFunction(const std::string& name, R (T::*f)(P1) const)					{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1) { return ((*ptr).*f)(p1); }); }
+			void				registerFunction(const std::string& name, R (T::*f)(P1) const)						{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1) { return ((*ptr).*f)(p1); }); }
 			template<typename T, typename R, typename P1, typename P2>
-			void				registerFunction(const std::string& name, R (T::*f)(P1,P2))					{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1, P2 p2) { return ((*ptr).*f)(p1,p2); }); }
+			void				registerFunction(const std::string& name, R (T::*f)(P1,P2))							{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1, P2 p2) { return ((*ptr).*f)(p1,p2); }); }
 			template<typename T, typename R, typename P1, typename P2>
 			void				registerFunction(const std::string& name, R (T::*f)(P1,P2) const)					{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1, P2 p2) { return ((*ptr).*f)(p1,p2); }); }
 			template<typename T, typename R, typename P1, typename P2, typename P3>
-			void				registerFunction(const std::string& name, R (T::*f)(P1,P2,P3))					{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1, P2 p2, P3 p3) { return ((*ptr).*f)(p1,p2,p3); }); }
+			void				registerFunction(const std::string& name, R (T::*f)(P1,P2,P3))						{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1, P2 p2, P3 p3) { return ((*ptr).*f)(p1,p2,p3); }); }
 			template<typename T, typename R, typename P1, typename P2, typename P3, typename P4>
 			void				registerFunction(const std::string& name, R (T::*f)(P1,P2,P3,P4))					{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1, P2 p2, P3 p3, P4 p4) { return ((*ptr).*f)(p1,p2,p3,p4); }); }
+			template<typename T, typename R, typename P1, typename P2, typename P3, typename P4, typename P5>
+			void				registerFunction(const std::string& name, R (T::*f)(P1,P2,P3,P4,P5))				{ _registerFunction(name, [f](std::shared_ptr<T> ptr, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5) { return ((*ptr).*f)(p1,p2,p3,p4,p5); }); }
 #		else
 			template<typename T, typename R, typename... Args>
 			void				registerFunction(const std::string& name, R (T::*f)(Args...))						{ _registerFunction(name, [f](std::shared_ptr<T> ptr, Args... args) { return ((*ptr).*f)(args...); }); }
@@ -232,7 +234,7 @@ namespace Lua {
 			try { _setGlobal(variableName); } catch(...) { lua_pop(_state, pushedElems - 1); throw; }
 			lua_pop(_state, pushedElems - 1);
 		}
-
+		lua_State* getState() { return _state; }
 
 
 	private:

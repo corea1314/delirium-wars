@@ -23,7 +23,7 @@ TurnComponent::~TurnComponent()
 void TurnComponent::Turn( float in_fNewAngle, float in_fDelayToDest )
 {
 	m_fOAngle = GetEntity()->GetAngle();
-	m_fDAngle = DEG_TO_RAD(in_fNewAngle);
+	m_fDAngle = (float)DEG_TO_RAD(in_fNewAngle);
 	m_fOTime = GetEngine()->GetClock()->GetTotalTime();
 	m_fDuration = in_fDelayToDest;
 	m_fDTime = m_fOTime + m_fDuration;
@@ -47,8 +47,8 @@ void TurnComponent::Connect( CEngine* in_pEngine, CEntity* in_pEntity )
 	GetEntity()->GetLuaContext().registerFunction( "abort", &TurnComponent::Abort );
 
 	// callbacks
-	BindCallback( "OnGotoComponent_DestReached", m_cbDestReached );
-	BindCallback( "OnGotoComponent_Turning", m_cbTurning );
+	BindCallback( "OnTurnComponent_DestReached", m_cbOnDestinationReached );
+	BindCallback( "OnTurnComponent_Turning", m_cbOnTurning );
 }
 
 void TurnComponent::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity )
@@ -71,8 +71,8 @@ void TurnComponent::OnUpdate( float in_fDeltaTime )
 			GetEntity()->GetAngle() = m_fDAngle;
 			m_bTurning = false;
 
-			if( m_cbDestReached.IsEnabled() )
-				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbDestReached.GetName() );
+			if( m_cbOnDestinationReached.IsEnabled() )
+				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbOnDestinationReached.GetName() );
 		}
 		else
 		{
@@ -80,8 +80,8 @@ void TurnComponent::OnUpdate( float in_fDeltaTime )
 
 			GetEntity()->GetAngle() = LERP( m_fOAngle, m_fDAngle, fRatio );
 
-			if( m_cbTurning.IsEnabled() )
-				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbTurning.GetName(), fRatio );
+			if( m_cbOnTurning.IsEnabled() )
+				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbOnTurning.GetName(), fRatio );
 		}
 	}
 }

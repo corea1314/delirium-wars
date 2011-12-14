@@ -3,8 +3,6 @@
 #include "Engine/Engine.h"
 #include "Engine/Entities/Clock/Clock.h"
 
-IMPLEMENT_CLASS_TYPE(CCamera)
-
 CCamera::CCamera()
 {
 	m_MovementData.bMoving = false;
@@ -73,12 +71,13 @@ void CCamera::Update( float in_fDeltaTime )
 
 void CCamera::Connect( CEngine* in_pEngine )
 {
-	CEntity::Connect( in_pEngine );
+	m_pEngine = in_pEngine; 
 	GetEngine()->Connect_OnUpdate( this, &CCamera::Update );
 }
 
 void CCamera::Disconnect( CEngine* in_pEngine )
 {
 	in_pEngine->Disconnect_OnUpdate( this );
-	CEntity::Disconnect( in_pEngine );
+	assert(m_pEngine==in_pEngine); 
+	m_pEngine = 0; 
 }

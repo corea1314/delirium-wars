@@ -13,7 +13,10 @@
 class CEngine;
 class GotoComponent;
 class TurnComponent;
-class VisualComponent;
+class VisualComponent; 
+class InputComponent;
+class EngineComponent;
+
 class CDebugDraw;
 
 // this class defines a basic entity of the engine.
@@ -32,6 +35,9 @@ public:
 	
 	// disconnects object from game engine
 	virtual void Disconnect( CEngine* in_pEngine ) ;
+
+	// loading
+	bool CEntity::Load( const std::string& in_szLuaFilename );
 
 	// get access engine
 	CEngine*	GetEngine() { return m_pEngine; }
@@ -86,11 +92,17 @@ public:
 	friend class Component;
 		
 protected:
-	std::shared_ptr<GotoComponent>		CreateGotoComponent();
-	std::shared_ptr<TurnComponent>		CreateTurnComponent();
-	std::shared_ptr<VisualComponent>	CreateVisualComponent();
-	
+	 template<typename U>
+	 std::shared_ptr<U>		CreateComponent()
+	 {
+		 std::shared_ptr<U> ptr = std::shared_ptr<U>(new U);
+		 m_vecComponents.push_back(ptr);
+		 return ptr;
+	 }
+	 	
 private:
+	std::string	m_szLuaFilename;
+
 	Vector2	m_vPos;
 	float	m_fAngle;
 	CEngine* m_pEngine;
@@ -98,6 +110,8 @@ private:
 	std::vector<std::shared_ptr<Component>>	m_vecComponents;
 };
 
+
+/*
 template <class T>
 class CEntityFactory
 {
@@ -151,5 +165,6 @@ class CEntityFactory
 private:
 	std::vector<T*>	m_vecFree;
 };
+*/
 
 #endif//_ENTITY_H

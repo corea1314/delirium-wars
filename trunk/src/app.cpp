@@ -6,7 +6,6 @@
 
 #include "Engine/Engine.h"
 #include "Engine/Entities/Camera/Camera.h"
-#include "Game/Field.h"
 #include "Engine/Entities/Clock/Clock.h"
 
 void Screen_2_App( int x, int y, Vector2& v );
@@ -41,6 +40,12 @@ void App::Exit()
 	delete m_pEngine;
 }
 
+void App::OnMouseClick( int button, int x, int y, Vector2& v )
+{
+	GetEngine()->OnMouseClick( button, x, y, v );
+}
+
+/*
 void App::OnLeftClick( int x, int y, const Vector2& v )
 {
 	GetEngine()->GetCamera()->Goto( v, 1.0f );
@@ -48,30 +53,35 @@ void App::OnLeftClick( int x, int y, const Vector2& v )
 
 void App::OnRightClick( int x, int y, const Vector2& v )
 {
-
 }
 
 void App::OnMiddleClick( int x, int y, const Vector2& v )
 {
-
 }
+*/
 
 void App::OnWheelUp()
 {
+	GetEngine()->OnMouseWheel( 1 );
+	/*
 	float fCurrZoom = g_App.GetEngine()->GetCamera()->GetZoom();
 	if( fCurrZoom >= 0.25f )
 	{
 		GetEngine()->GetCamera()->ZoomTo( fCurrZoom / 2.0f, 1.0f );
 	}
+	*/
 }
 
 void App::OnWheelDown()
 {
+	GetEngine()->OnMouseWheel( -1 );
+	/*
 	float fCurrZoom = g_App.GetEngine()->GetCamera()->GetZoom();
 	if( fCurrZoom <= 4.0f )
 	{
 		GetEngine()->GetCamera()->ZoomTo( fCurrZoom * 2, 1.0f );
 	}
+	*/
 }
 
 void App::OnKeyboard( unsigned char key )

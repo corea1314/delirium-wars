@@ -30,8 +30,8 @@ private:
 	bool	m_bTurning;		// does the it needs to turn
 
 	// callbacks
-	LuaCallbackInfo		m_cbDestReached;
-	LuaCallbackInfo		m_cbTurning;
+	LuaCallbackInfo		m_cbOnDestinationReached;
+	LuaCallbackInfo		m_cbOnTurning;
 };
 
 

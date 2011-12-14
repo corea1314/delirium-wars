@@ -26,4 +26,7 @@ public:
 
 private:
 	Sprite*		m_pSprite;
+
+	// callbacks
+	LuaCallbackInfo		m_cbOnEndOfSequence;	//todo: implement this
 };

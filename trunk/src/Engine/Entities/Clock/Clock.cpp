@@ -6,8 +6,6 @@
 
 #include <algorithm>
 
-IMPLEMENT_CLASS_TYPE(CClock)
-
 CClock::CClock() : m_fDeltaTime(0.0f), m_fTotalTime(0.0f)
 {
 }
@@ -19,13 +17,13 @@ CClock::~CClock()
 void CClock::Connect( CEngine* in_pEngine )
 {
 	in_pEngine->Connect_OnUpdate( this, &CClock::Update );
-	in_pEngine->Connect_OnRenderGUI( this, &CClock::Render );
+	in_pEngine->Connect_OnRenderGUI( this, &CClock::DebugRender );
 }
 
 void CClock::Disconnect( CEngine* in_pEngine )
 {
-	in_pEngine->Disconnect_OnUpdate( this );
 	in_pEngine->Disconnect_OnRenderGUI( this );
+	in_pEngine->Disconnect_OnUpdate( this );	
 }
 
 void CClock::Update( float in_fDeltaTime )
@@ -37,7 +35,7 @@ void CClock::Update( float in_fDeltaTime )
 }
 
 
-void CClock::Render()
+void CClock::DebugRender()
 {
 //todo:
 }
