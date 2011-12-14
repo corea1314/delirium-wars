@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
   <file>
+    <filename>..\..\bin\scripts\camera.lua</filename>
+  </file>
+  <file>
     <filename>..\..\bin\scripts\entity.lua</filename>
   </file>
   <file>
