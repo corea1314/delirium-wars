@@ -28,7 +28,7 @@ void Screen_2_App( int x, int y, Vector2& v )
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
-		glRotatef( fAngle, 0.0f, 0.0f, 1.0f );
+		glRotatef( RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
 		glTranslatef( -vPos.x, -vPos.y, 0.0f );
 		glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();
@@ -59,7 +59,7 @@ void App_2_Screen( const Vector2& v, int& x, int& y )
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
-		glRotatef( fAngle, 0.0f, 0.0f, 1.0f );
+		glRotatef( RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
 		glTranslatef( -vPos.x, -vPos.y, 0.0f );
 		glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();
