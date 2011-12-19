@@ -65,7 +65,7 @@ end
 -------------------------------------------------------------------------------
 -- TurnComponent callbacks
 -------------------------------------------------------------------------------
--- function OnTurnComponent_DestReached() end
+-- function OnTurnComponent_AngleReached() end
 -- function OnTurnComponent_Turning( ratio ) end
 
 
@@ -86,8 +86,8 @@ function OnInputComponent_Keyboard( key )
 	end
 end
 
---function OnInputComponent_MouseClick( button, state, screen_x, screen_y, world_x, world_y )
---	if button == 0 and state == 1 then
+--function OnInputComponent_MouseClick( button, screen_x, screen_y, world_x, world_y )
+--	if button == 0 then
 --		gotoComponent:goto( world_x, world_y, 1 )
 --	end
 --end

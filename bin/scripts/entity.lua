@@ -33,7 +33,7 @@ end
 -------------------------------------------------------------------------------
 -- TurnComponent callbacks
 -------------------------------------------------------------------------------
--- function OnTurnComponent_DestReached() end
+-- function OnTurnComponent_AngleReached() end
 -- function OnTurnComponent_Turning( ratio ) end
 
 
@@ -47,7 +47,7 @@ end
 -- InputComponent callbacks
 -------------------------------------------------------------------------------
 -- function OnInputComponent_Keyboard( key ) end
--- function OnInputComponent_MouseClick( button, state, screen_x, screen_y, world_x, world_y ) end
+-- function OnInputComponent_MouseClick( button, screen_x, screen_y, world_x, world_y ) end
 -- function OnInputComponent_MouseWheel( value ) end
 
 

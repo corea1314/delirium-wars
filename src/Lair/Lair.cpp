@@ -21,10 +21,12 @@ Lair::Lair()
 	__NEW(AtlasMan);
 	__NEW(SequenceMan);
 	__NEW(SpriteMan);
+	__NEW(CameraMan);
 }
 
 Lair::~Lair()
 {
+	__DELETE(CameraMan);
 	__DELETE(SpriteMan);
 	__DELETE(SequenceMan);
 	__DELETE(AtlasMan);

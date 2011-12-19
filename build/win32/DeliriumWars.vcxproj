@@ -180,6 +180,9 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp" />
+    <ClCompile Include="..\..\src\Engine\Clock\Clock.cpp" />
+    <ClCompile Include="..\..\src\Engine\Clock\Timer.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\CameraComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\EngineComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\GotoComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\InputComponent.cpp" />
@@ -187,9 +190,6 @@
     <ClCompile Include="..\..\src\Engine\Components\VisualComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Database\Database.cpp" />
     <ClCompile Include="..\..\src\Engine\Engine.cpp" />
-    <ClCompile Include="..\..\src\Engine\Entities\Camera\Camera.cpp" />
-    <ClCompile Include="..\..\src\Engine\Entities\Clock\Clock.cpp" />
-    <ClCompile Include="..\..\src\Engine\Entities\Clock\Timer.cpp" />
     <ClCompile Include="..\..\src\Engine\Entities\Player\Player.cpp" />
     <ClCompile Include="..\..\src\Engine\Entity.cpp" />
     <ClCompile Include="..\..\src\Engine\Physics\BodyDef.cpp" />
@@ -208,12 +208,15 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Analog\Analog.cpp" />
+    <ClCompile Include="..\..\src\Lair\Animation\Key.cpp" />
+    <ClCompile Include="..\..\src\Lair\Animation\Track.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Atlas.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\Rect.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\ShelfBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.cpp" />
+    <ClCompile Include="..\..\src\Lair\Camera\Camera.cpp" />
     <ClCompile Include="..\..\src\Lair\Command\Command.cpp" />
     <ClCompile Include="..\..\src\Lair\Console\Console.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\Image.cpp" />
@@ -283,6 +286,9 @@
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
+    <ClInclude Include="..\..\src\Engine\Clock\Clock.h" />
+    <ClInclude Include="..\..\src\Engine\Clock\Timer.h" />
+    <ClInclude Include="..\..\src\Engine\Components\CameraComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\EngineComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\GotoComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\InputComponent.h" />
@@ -290,9 +296,6 @@
     <ClInclude Include="..\..\src\Engine\Components\VisualComponent.h" />
     <ClInclude Include="..\..\src\Engine\Database\Database.h" />
     <ClInclude Include="..\..\src\Engine\Engine.h" />
-    <ClInclude Include="..\..\src\Engine\Entities\Camera\Camera.h" />
-    <ClInclude Include="..\..\src\Engine\Entities\Clock\Clock.h" />
-    <ClInclude Include="..\..\src\Engine\Entities\Clock\Timer.h" />
     <ClInclude Include="..\..\src\Engine\Entities\Player\Player.h" />
     <ClInclude Include="..\..\src\Engine\Entity.h" />
     <ClInclude Include="..\..\src\Engine\Physics\BodyDef.h" />
@@ -302,12 +305,15 @@
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\gfx.h" />
     <ClInclude Include="..\..\src\Lair\Analog\Analog.h" />
+    <ClInclude Include="..\..\src\Lair\Animation\Key.h" />
+    <ClInclude Include="..\..\src\Lair\Animation\Track.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\Rect.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\ShelfBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\SkylineBinPack.h" />
+    <ClInclude Include="..\..\src\Lair\Camera\Camera.h" />
     <ClInclude Include="..\..\src\Lair\Color\Color.h" />
     <ClInclude Include="..\..\src\Lair\Command\Command.h" />
     <ClInclude Include="..\..\src\Lair\Console\Console.h" />

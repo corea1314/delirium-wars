@@ -16,6 +16,7 @@ private:																	\
 #include "System/System.h"
 #include "Sprite/Sprite.h"
 #include "Atlas/Atlas.h"
+#include "Camera/Camera.h"
 
 class Lair
 {	
@@ -34,6 +35,7 @@ public:
 	DEFINE(SysMan);
 	DEFINE(AtlasMan);
 	DEFINE(SpriteMan);
+	DEFINE(CameraMan);
 	
 private:
 	static Lair* Get() { return ms_pInstance; }

@@ -2,7 +2,7 @@
 #include "Math/Vector2.h"
 #include "Engine/Entity.h"
 #include "Engine/Engine.h"
-#include "Engine/Entities/Clock/Clock.h"
+#include "Engine/Clock/Clock.h"
 
 #include "GotoComponent.h"
 

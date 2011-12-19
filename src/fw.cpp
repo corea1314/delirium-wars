@@ -8,8 +8,9 @@ int g_delta_time = 0;
 
 #include "app.h"
 
+#include "Lair/Lair.h"
 #include "Engine/Engine.h"
-#include "Engine/Entities/Camera/Camera.h"
+#include "Engine/Clock/Clock.h"
 
 void Screen_2_App( int x, int y, Vector2& v )
 {
@@ -17,16 +18,17 @@ void Screen_2_App( int x, int y, Vector2& v )
 	double M[16];
 	int V[4];
 
-	Vector2 vPos = g_App.GetEngine()->GetCamera()->GetPos();
-	float fZoom = g_App.GetEngine()->GetCamera()->GetZoom();
+	Vector2 vPos = Lair::GetCameraMan()->GetActiveCamera()->GetPos();
+	float fZoom = Lair::GetCameraMan()->GetActiveCamera()->GetZoom();
+	float fAngle = Lair::GetCameraMan()->GetActiveCamera()->GetAngle();
 
-	// Construct matrices used in curver rendering and grab them to undo the transformations
 	glPushMatrix();
 		glLoadIdentity();
 		gluOrtho2D( -1024/2*fZoom, 1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
+		glRotatef( fAngle, 0.0f, 0.0f, 1.0f );
 		glTranslatef( -vPos.x, -vPos.y, 0.0f );
 		glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();
@@ -47,16 +49,17 @@ void App_2_Screen( const Vector2& v, int& x, int& y )
 	double M[16];
 	int V[4];
 
-	Vector2 vPos = g_App.GetEngine()->GetCamera()->GetPos();
-	float fZoom = g_App.GetEngine()->GetCamera()->GetZoom();
+	Vector2 vPos = Lair::GetCameraMan()->GetActiveCamera()->GetPos();
+	float fZoom = Lair::GetCameraMan()->GetActiveCamera()->GetZoom();
+	float fAngle = Lair::GetCameraMan()->GetActiveCamera()->GetAngle();
 
-	// Construct matrices used in curver rendering and grab them to undo the transformations
 	glPushMatrix();
 		glLoadIdentity();
 		gluOrtho2D( -1024/2*fZoom,1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
 		glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 		glLoadIdentity();
+		glRotatef( fAngle, 0.0f, 0.0f, 1.0f );
 		glTranslatef( -vPos.x, -vPos.y, 0.0f );
 		glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();

@@ -2,7 +2,7 @@
 #include "Math/Vector2.h"
 #include "Engine/Entity.h"
 #include "Engine/Engine.h"
-#include "Engine/Entities/Clock/Clock.h"
+#include "Engine/Clock/Clock.h"
 
 #include "TurnComponent.h"
 
@@ -47,7 +47,7 @@ void TurnComponent::Connect( CEngine* in_pEngine, CEntity* in_pEntity )
 	GetEntity()->GetLuaContext().registerFunction( "abort", &TurnComponent::Abort );
 
 	// callbacks
-	BindCallback( "OnTurnComponent_DestReached", m_cbOnDestinationReached );
+	BindCallback( "OnTurnComponent_AngleReached", m_cbOnAngleReached );
 	BindCallback( "OnTurnComponent_Turning", m_cbOnTurning );
 }
 
@@ -71,8 +71,8 @@ void TurnComponent::OnUpdate( float in_fDeltaTime )
 			GetEntity()->GetAngle() = m_fDAngle;
 			m_bTurning = false;
 
-			if( m_cbOnDestinationReached.IsEnabled() )
-				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbOnDestinationReached.GetName() );
+			if( m_cbOnAngleReached.IsEnabled() )
+				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbOnAngleReached.GetName() );
 		}
 		else
 		{

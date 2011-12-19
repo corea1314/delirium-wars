@@ -16,6 +16,11 @@ REAL SHORT TERM TASK LIST
 If have time before JAM
 ** Complete FactoryMan and Entity Factory
 
+TRACK
+- Trackable: Position x/y, Scale x/y, Alpha, 
+
+KEY
+- Value, In v, Out v, Type
 
 ENGINE
 - Have some sort of field class

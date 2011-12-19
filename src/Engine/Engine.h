@@ -6,7 +6,6 @@
 #include "SigSlot.h"
 
 class CClock;
-class CCamera;
 class CPhysicsManager;
 class CDebugDraw;
 class CWorld;
@@ -56,7 +55,6 @@ public:
 	virtual ~CEngine();
 
 	const CClock*	GetClock() const { return m_pClock; }
-	CCamera*		GetCamera() const { return m_pCamera; }
 	CWorld*			GetWorld() const { return m_pWorld; }
 	
 	void RenderDebugDraw();
@@ -64,11 +62,11 @@ public:
 	void RenderGUI();
 	void Update( float in_fDeltaTime );
 
+	CEntity* CEngine::GetEntity( const std::string& in_szEntityName );
 	CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript );
 
 private:
 	CClock*		m_pClock;
-	CCamera*	m_pCamera;
 	CDebugDraw*	m_pDebugDraw;
 	CWorld*		m_pWorld;
 
