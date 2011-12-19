@@ -137,7 +137,7 @@ void CEngine::Render()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glRotatef( fAngle, 0.0f, 0.0f, 1.0f );
+	glRotatef( RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
 	glTranslatef( -vPos.x, -vPos.y, 0.0f );
 
 	glEnable( GL_TEXTURE_2D );
