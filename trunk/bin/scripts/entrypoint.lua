@@ -34,7 +34,7 @@ end
 -------------------------------------------------------------------------------
 -- TurnComponent callbacks
 -------------------------------------------------------------------------------
--- function OnTurnComponent_DestReached() end
+-- function OnTurnComponent_AngleReached() end
 -- function OnTurnComponent_Turning( ratio ) end
 
 
@@ -51,9 +51,9 @@ function OnInputComponent_Keyboard( key )
 
 end
 
-function OnInputComponent_MouseClick( button, state, screenx, screeny, worldx, worldy )
+function OnInputComponent_MouseClick( button, screenx, screeny, worldx, worldy )
 
-	if button == 1 and state == 1 then
+	if button == 1 then
         engineComponent:create_entity( "tester2", "scripts/tester.lua", worldx, worldy, 0 )
     end
 end

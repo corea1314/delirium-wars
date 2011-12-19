@@ -11,6 +11,7 @@ IMPLEMENT_CLASS_TYPE(CEntity)
 #include "Components/TurnComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/EngineComponent.h"
+#include "Components/CameraComponent.h"
 
 #include <luawrapper/LuaContext.h>
 
@@ -48,11 +49,14 @@ bool CEntity::Load( const std::string& in_szLuaFilename )
 
 	try
 	{		
+		m_LuaContext.setChunkName( in_szLuaFilename );
+
 		m_LuaContext.registerFunction("createGotoComponent",	&CEntity::CreateComponent<GotoComponent> );
 		m_LuaContext.registerFunction("createTurnComponent",	&CEntity::CreateComponent<TurnComponent> );
 		m_LuaContext.registerFunction("createVisualComponent",	&CEntity::CreateComponent<VisualComponent> );
 		m_LuaContext.registerFunction("createInputComponent",	&CEntity::CreateComponent<InputComponent> );
 		m_LuaContext.registerFunction("createEngineComponent",	&CEntity::CreateComponent<EngineComponent> );
+		m_LuaContext.registerFunction("createCameraComponent",	&CEntity::CreateComponent<CameraComponent> );
 
 		m_LuaContext.writeVariable("this", std::shared_ptr<CEntity>(this) );
 

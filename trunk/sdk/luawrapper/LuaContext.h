@@ -76,6 +76,7 @@ namespace Lua {
 				 LuaContext& operator=(LuaContext&& s) { std::swap(_state, s._state); return *this; }
 				~LuaContext()				{ if (_state != nullptr) lua_close(_state); }
 		
+				void setChunkName( const std::string& chunkName ) { _chunkname = chunkName; }
 
 		/// \brief The table type can store any key and any value, and can be read or written by LuaContext
 		class Table;
@@ -248,6 +249,7 @@ namespace Lua {
 		//   eg. if multiple thread call "writeVariable" at the same time, we don't want them to be executed simultaneously
 		// the mutex should be locked by all public functions that use the stack
 		lua_State*					_state;
+		std::string					_chunkname;
 		
 		// all the user types in the _state must have the value of &typeid(T) in their
 		//   metatable at key "_typeid"

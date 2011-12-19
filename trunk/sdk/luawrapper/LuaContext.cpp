@@ -75,7 +75,7 @@ void Lua::LuaContext::_load(std::istream& code) {
 
 	// we create an instance of Reader, and we call lua_load
 	std::unique_ptr<Reader> reader(new Reader(code));
-	auto loadReturnValue = lua_load(_state, &Reader::read, reader.get(), "chunk");
+	auto loadReturnValue = lua_load(_state, &Reader::read, reader.get(), _chunkname.c_str() );
 
 	// now we have to check return value
 	if (loadReturnValue != 0) {

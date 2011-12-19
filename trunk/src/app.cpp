@@ -5,8 +5,9 @@
 #include "app.h"
 
 #include "Engine/Engine.h"
-#include "Engine/Entities/Camera/Camera.h"
-#include "Engine/Entities/Clock/Clock.h"
+#include "Engine/Clock/Clock.h"
+
+#include "Lair/Lair.h"
 
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
@@ -99,11 +100,6 @@ void App::OnKeyboard( unsigned char key )
 	case '=':
 		m_Grid.IncreaseGridSize();
 		break;
-
-	case ' ':
-		GetEngine()->GetCamera()->Goto( Vector2(0,0), 1.0f );
-		GetEngine()->GetCamera()->ZoomTo( 1.0f, 1.0f );
-		break;
 	}
 }
 
@@ -141,7 +137,7 @@ void App::Render()
 	
 	glDisable( GL_TEXTURE_2D );
 	gl_SetColor(COLORS::eWHITE);
-	gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", fps, fps_average, m_pEngine->GetCamera()->GetZoom(), w, h );
+	gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", fps, fps_average, Lair::GetCameraMan()->GetActiveCamera()->GetZoom(), w, h );
 }
 
 void App::Update( float dt )

@@ -16,6 +16,7 @@ class TurnComponent;
 class VisualComponent; 
 class InputComponent;
 class EngineComponent;
+class CameraComponent;
 
 class CDebugDraw;
 

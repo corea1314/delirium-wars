@@ -1,7 +1,6 @@
 #include "Engine.h"
 
-#include "Engine/Entities/Clock/Clock.h"
-#include "Engine/Entities/Camera/Camera.h"
+#include "Engine/Clock/Clock.h"
 #include "Engine/Physics/World.h"
 #include "Lair/RenderTarget/RenderTarget.h"
 
@@ -27,14 +26,11 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 	m_pClock = new CClock;
 	m_pClock->Connect(this);
 
-	// Create the camera
-	m_pCamera = new CCamera;
-	m_pCamera->Connect(this);
-
 	// Create the world
 	m_pWorld = new CWorld;
 	m_pWorld->Connect( this );
 
+	// Entry point entity
 	m_pEntryPointEntity = GetEntity( "%entry_point%", "scripts/entrypoint.lua" );
 
 	// Create debug draw interface
@@ -44,6 +40,7 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 	m_pPlayer = new CPlayer;
 	m_pPlayer->Connect( this );
 
+	// Render targets
 	m_pRT = new RenderTarget;
 	m_pRT->Create( RENDER_TARGET_SIZE_X, RENDER_TARGET_SIZE_Y, true, false );
 
@@ -74,9 +71,6 @@ CEngine::~CEngine()
 	m_pWorld->Disconnect(this);
 	SAFE_DELETE(m_pWorld);
 
-	m_pCamera->Disconnect(this);
-	SAFE_DELETE(m_pCamera);
-
 	m_pClock->Disconnect(this);
 	SAFE_DELETE(m_pClock);
 
@@ -85,21 +79,32 @@ CEngine::~CEngine()
 	Lair::Release();
 }
 
-CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript )
+CEntity* CEngine::GetEntity( const std::string& in_szEntityName )
 {
 	std::map< std::string, CEntity* >::iterator it = m_mapEntity.find( in_szEntityName );
 
 	if( it != m_mapEntity.end() )
 	{
 		// found it, return it
-		//		Lair::GetLogMan()->Log( "TextureMan", "Loaded texture from map (%s).", in_szFilename.c_str() );
 		return it->second;
+	}
+	
+	return 0;
+}
+
+CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript )
+{
+	CEntity* pEntity = GetEntity(in_szEntityName);
+
+	if( pEntity != 0 )
+	{
+		// found it, return it
+		return pEntity;
 	}
 	else
 	{
 		// not found, load it, return it
-
-		CEntity* pEntity = new CEntity();
+		pEntity = new CEntity();
 
 		if( pEntity->Load(in_szLuaScript) )
 		{
@@ -121,8 +126,9 @@ void CEngine::Update( float in_fDeltaTime )
 
 void CEngine::Render()
 {
-	Vector2 vPos = GetCamera()->GetPos();
-	float fZoom = GetCamera()->GetZoom();
+	Vector2 vPos = Lair::GetCameraMan()->GetActiveCamera()->GetPos();
+	float fZoom = Lair::GetCameraMan()->GetActiveCamera()->GetZoom();
+	float fAngle = Lair::GetCameraMan()->GetActiveCamera()->GetAngle();
 
 	glMatrixMode( GL_PROJECTION );
 	glPushMatrix();
@@ -131,6 +137,7 @@ void CEngine::Render()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glRotatef( fAngle, 0.0f, 0.0f, 1.0f );
 	glTranslatef( -vPos.x, -vPos.y, 0.0f );
 
 	glEnable( GL_TEXTURE_2D );
