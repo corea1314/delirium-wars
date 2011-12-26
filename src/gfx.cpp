@@ -1,6 +1,8 @@
 
 #include "gfx.h"
 
+#include <stdio.h>
+
 Color COLORS::Random()
 {
 	Color a = rand();

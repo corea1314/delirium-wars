@@ -1,7 +1,11 @@
 #ifndef _GFX_H
 #define _GFX_H
 
-#include "fw.h"
+#ifdef WIN32
+#include <windows.h>
+#endif
+#include "glee/GLee.h"	//todo: boot glee properly
+#include "freeglut-2.4.0/include/gl/freeglut.h"
 
 typedef unsigned long Color;
 
@@ -9,17 +13,19 @@ typedef struct
 {
 	enum E
 	{
-		eBLACK	= 0xFF000000,
-		eWHITE	= 0xFFFFFFFF,
-		eGREY	= 0xFF7F7F7F,
-		eRED	= 0xFF0000FF,
-		eGREEN	= 0xFF00FF00,
-		eBLUE	= 0xFFFF0000,
-		eORANGE = 0xFF007FFF,
-		eYELLOW = 0xFF00FFFF, 
-		ePURPLE = 0xFFFF00FF,
-		eLIME	= 0xFF00FF7F,
-		eCYAN	= 0xFFFFFF00
+		eBLACK		= 0xFF000000,
+		eWHITE		= 0xFFFFFFFF,
+		eGREY		= 0xFF7F7F7F,
+		eLIGHTGREY	= 0xFF808080,
+		eDARKGREY	= 0xFF444444,
+		eRED		= 0xFF0000FF,
+		eGREEN		= 0xFF00FF00,
+		eBLUE		= 0xFFFF0000,
+		eORANGE		= 0xFF007FFF,
+		eYELLOW		= 0xFF00FFFF, 
+		ePURPLE		= 0xFFFF00FF,
+		eLIME		= 0xFF00FF7F,
+		eCYAN		= 0xFFFFFF00
 	};
 
 	static Color Random();

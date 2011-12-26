@@ -169,6 +169,10 @@ public:
 		double fDummy;
 		return GetNormal(fDummy);
 	}
+	inline float GetSlope () const
+	{
+		return y/x;
+	}
 
 	inline Vector2 GetNormal ( double& out_fLen ) const
 	{		
@@ -193,6 +197,130 @@ public:
 		v.x = x * cosa - y * sina;
 		v.y = x * sina + y * cosa;
 		return v;
+	}
+
+	Vector2 Barycentric( const Vector2& value1, const Vector2& value2, const Vector2& value3, float amount1, float amount2 )
+	{
+		Vector2 vector;
+		vector.x = (value1.x + (amount1 * (value2.x - value1.x))) + (amount2 * (value3.x - value1.x));
+		vector.y = (value1.y + (amount1 * (value2.y - value1.y))) + (amount2 * (value3.y - value1.y));
+		return vector;
+	}
+
+	void Barycentric( const Vector2& value1, const Vector2& value2, const Vector2& value3, float amount1, float amount2, Vector2& result )
+	{
+		result = Vector2((value1.x + (amount1 * (value2.x - value1.x))) + (amount2 * (value3.x - value1.x)),
+			(value1.y + (amount1 * (value2.y - value1.y))) + (amount2 * (value3.y - value1.y)) );
+	}
+
+	Vector2 CatmullRom( const Vector2& value1, const Vector2& value2, const Vector2& value3, const Vector2& value4, float amount )
+	{
+		Vector2 vector;
+		float squared = amount * amount;
+		float cubed = amount * squared;
+
+		vector.x = 0.5f * ((((2.0f * value2.x) + ((-value1.x + value3.x) * amount)) + 
+			(((((2.0f * value1.x) - (5.0f * value2.x)) + (4.0f * value3.x)) - value4.x) * squared)) + 
+			((((-value1.x + (3.0f * value2.x)) - (3.0f * value3.x)) + value4.x) * cubed));
+
+		vector.y = 0.5f * ((((2.0f * value2.y) + ((-value1.y + value3.y) * amount)) + 
+			(((((2.0f * value1.y) - (5.0f * value2.y)) + (4.0f * value3.y)) - value4.y) * squared)) + 
+			((((-value1.y + (3.0f * value2.y)) - (3.0f * value3.y)) + value4.y) * cubed));
+
+		return vector;
+	}
+
+	void CatmullRom( const Vector2& value1, const Vector2& value2, const Vector2& value3, const Vector2& value4, float amount, Vector2& result )
+	{
+		float squared = amount * amount;
+		float cubed = amount * squared;
+		Vector2 r;
+
+		r.x = 0.5f * ((((2.0f * value2.x) + ((-value1.x + value3.x) * amount)) + 
+			(((((2.0f * value1.x) - (5.0f * value2.x)) + (4.0f * value3.x)) - value4.x) * squared)) + 
+			((((-value1.x + (3.0f * value2.x)) - (3.0f * value3.x)) + value4.x) * cubed));
+
+		r.y = 0.5f * ((((2.0f * value2.y) + ((-value1.y + value3.y) * amount)) + 
+			(((((2.0f * value1.y) - (5.0f * value2.y)) + (4.0f * value3.y)) - value4.y) * squared)) + 
+			((((-value1.y + (3.0f * value2.y)) - (3.0f * value3.y)) + value4.y) * cubed));
+
+		result = r;
+	}
+		
+	Vector2 Hermite( const Vector2& value1, const Vector2& tangent1, const Vector2& value2, const Vector2& tangent2, float amount )
+	{
+		Vector2 vector;
+		float squared = amount * amount;
+		float cubed = amount * squared;
+		float part1 = ((2.0f * cubed) - (3.0f * squared)) + 1.0f;
+		float part2 = (-2.0f * cubed) + (3.0f * squared);
+		float part3 = (cubed - (2.0f * squared)) + amount;
+		float part4 = cubed - squared;
+
+		vector.x = (((value1.x * part1) + (value2.x * part2)) + (tangent1.x * part3)) + (tangent2.x * part4);
+		vector.y = (((value1.y * part1) + (value2.y * part2)) + (tangent1.y * part3)) + (tangent2.y * part4);
+
+		return vector;
+	}	
+
+	void Hermite( const Vector2& value1, const Vector2& tangent1, const Vector2& value2, const Vector2& tangent2, float amount, Vector2& result )
+	{
+		float squared = amount * amount;
+		float cubed = amount * squared;
+		float part1 = ((2.0f * cubed) - (3.0f * squared)) + 1.0f;
+		float part2 = (-2.0f * cubed) + (3.0f * squared);
+		float part3 = (cubed - (2.0f * squared)) + amount;
+		float part4 = cubed - squared;
+
+		Vector2 r;
+		r.x = (((value1.x * part1) + (value2.x * part2)) + (tangent1.x * part3)) + (tangent2.x * part4);
+		r.y = (((value1.y * part1) + (value2.y * part2)) + (tangent1.y * part3)) + (tangent2.y * part4);
+
+		result = r;
+	}
+
+	Vector2 Lerp( Vector2 start, Vector2 end, float factor )
+	{
+		Vector2 vector;
+
+		vector.x = start.x + ((end.x - start.x) * factor);
+		vector.y = start.y + ((end.y - start.y) * factor);
+
+		return vector;
+	}
+
+	void Lerp( const Vector2& start, const Vector2& end, float factor, Vector2& result )
+	{
+		Vector2 r;
+		r.x = start.x + ((end.x - start.x) * factor);
+		r.y = start.y + ((end.y - start.y) * factor);
+
+		result = r;
+	}
+
+	Vector2 SmoothStep( const Vector2& start, const Vector2& end, float amount )
+	{
+		Vector2 vector;
+
+		amount = (amount > 1.0f) ? 1.0f : ((amount < 0.0f) ? 0.0f : amount);
+		amount = (amount * amount) * (3.0f - (2.0f * amount));
+
+		vector.x = start.x + ((end.x - start.x) * amount);
+		vector.y = start.y + ((end.y - start.y) * amount);
+
+		return vector;
+	}
+
+	void SmoothStep( const Vector2& start, const Vector2& end, float amount, Vector2& result )
+	{
+		amount = (amount > 1.0f) ? 1.0f : ((amount < 0.0f) ? 0.0f : amount);
+		amount = (amount * amount) * (3.0f - (2.0f * amount));
+
+		Vector2 r;
+		r.x = start.x + ((end.x - start.x) * amount);
+		r.y = start.y + ((end.y - start.y) * amount);
+
+		result = r;
 	}
 
 	friend Vector2 operator*(float fl, const Vector2& v) ;	

@@ -4,10 +4,15 @@
 
 #include "app.h"
 
+#include "keys.h"
+
 #include "Engine/Engine.h"
 #include "Engine/Clock/Clock.h"
 
 #include "Lair/Lair.h"
+
+#include "Editors/Editor.h"
+#include "Editors/Curve/CurveEdit.h"
 
 void Screen_2_App( int x, int y, Vector2& v );
 void App_2_Screen( const Vector2& v, int& x, int& y );
@@ -34,71 +39,105 @@ App::App()
 void App::Init()
 {
 	m_pEngine = new CEngine;
+
+	m_pActiveEditor = 0;
+
+	m_pEditors[0] = new CurveEditor;
+	m_pEditors[1] = 0;
+	m_pEditors[2] = 0;
+	m_pEditors[3] = 0;
+	m_pEditors[4] = 0;
+	m_pEditors[5] = 0;
+	m_pEditors[6] = 0;
+	m_pEditors[7] = 0;
+	m_pEditors[8] = 0;
+	m_pEditors[9] = 0;
+	m_pEditors[10] = 0;
+	m_pEditors[11] = 0;
 }
 
 void App::Exit()
 {
 	delete m_pEngine;
+
+	m_pActiveEditor = 0;
+
+	SAFE_DELETE(m_pEditors[0]);
+	SAFE_DELETE(m_pEditors[1]);
+	SAFE_DELETE(m_pEditors[2]);
+	SAFE_DELETE(m_pEditors[3]);
+	SAFE_DELETE(m_pEditors[4]);
+	SAFE_DELETE(m_pEditors[5]);
+	SAFE_DELETE(m_pEditors[6]);
+	SAFE_DELETE(m_pEditors[7]);
+	SAFE_DELETE(m_pEditors[8]);
+	SAFE_DELETE(m_pEditors[9]);
+	SAFE_DELETE(m_pEditors[10]);
+	SAFE_DELETE(m_pEditors[11]);
 }
 
 void App::OnMouseClick( int button, int x, int y, Vector2& v )
 {
 	GetEngine()->OnMouseClick( button, x, y, v );
+
+	if( m_pActiveEditor )
+		m_pActiveEditor->OnMouseClick( button, x, y, v );
 }
 
-/*
-void App::OnLeftClick( int x, int y, const Vector2& v )
+void App::OnMouseMotion( int x, int y, Vector2& v, int dx, int dy, Vector2& d )
 {
-	GetEngine()->GetCamera()->Goto( v, 1.0f );
+	if( m_pActiveEditor )
+		m_pActiveEditor->OnMouseMotion( x, y, v, dx, dy, d );
 }
 
-void App::OnRightClick( int x, int y, const Vector2& v )
+void App::OnMouseWheel( int v )
 {
-}
+	GetEngine()->OnMouseWheel( v );
 
-void App::OnMiddleClick( int x, int y, const Vector2& v )
-{
-}
-*/
-
-void App::OnWheelUp()
-{
-	GetEngine()->OnMouseWheel( 1 );
-	/*
-	float fCurrZoom = g_App.GetEngine()->GetCamera()->GetZoom();
-	if( fCurrZoom >= 0.25f )
-	{
-		GetEngine()->GetCamera()->ZoomTo( fCurrZoom / 2.0f, 1.0f );
-	}
-	*/
-}
-
-void App::OnWheelDown()
-{
-	GetEngine()->OnMouseWheel( -1 );
-	/*
-	float fCurrZoom = g_App.GetEngine()->GetCamera()->GetZoom();
-	if( fCurrZoom <= 4.0f )
-	{
-		GetEngine()->GetCamera()->ZoomTo( fCurrZoom * 2, 1.0f );
-	}
-	*/
+	if( m_pActiveEditor )
+		m_pActiveEditor->OnMouseWheel( v );
 }
 
 void App::OnKeyboard( unsigned char key )
 {
 	GetEngine()->OnKeyboard( key );
 
-	switch(key)
+	if( m_pActiveEditor )
+		m_pActiveEditor->OnKeyboard( key );
+}
+
+void App::OnSpecialKey( int key )
+{
+	if( m_pActiveEditor )
+		m_pActiveEditor->OnSpecialKey( key );
+
+	switch( key )
 	{
-	case 127:	// delete
-		break;
-	case '-':
-		m_Grid.DecreaseGridSize();
+	case SK_F1:	
+	case SK_F2:
+	case SK_F3:
+	case SK_F4:
+	case SK_F5:
+	case SK_F6:
+	case SK_F7:
+	case SK_F8:
+	case SK_F9:
+	case SK_F10:		
+	case SK_F11:		
+	case SK_F12:	
+		SwitchEditor(key-SK_F1);
 		break;
 
-	case '=':
-		m_Grid.IncreaseGridSize();
+	case SK_LEFT:		
+	case SK_DOWN:		
+	case SK_RIGHT:	
+	case SK_UP:	
+
+	case SK_PAGE_UP:
+	case SK_PAGE_DOWN:
+	case SK_HOME:
+	case SK_END:	
+	case SK_INSERT:
 		break;
 	}
 }
@@ -112,6 +151,9 @@ void App::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count,
 	case 2:		GetEngine()->OnGamepad2( buttons, axis_count, axis_values );	break;
 	case 3:		GetEngine()->OnGamepad3( buttons, axis_count, axis_values );	break;
 	}
+
+	if( m_pActiveEditor )
+		m_pActiveEditor->OnGamepad( gamepad, buttons, axis_count, axis_values );
 }
 
 void App::OnOpenFile( const char* in_szFilename )
@@ -138,6 +180,9 @@ void App::Render()
 	glDisable( GL_TEXTURE_2D );
 	gl_SetColor(COLORS::eWHITE);
 	gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", fps, fps_average, Lair::GetCameraMan()->GetActiveCamera()->GetZoom(), w, h );
+
+	if( m_pActiveEditor )
+		m_pActiveEditor->Render();
 }
 
 void App::Update( float dt )
@@ -146,58 +191,35 @@ void App::Update( float dt )
 	m_pEngine->Update( dt );
 }
 
-
-// TEST GRID
-
-
-Grid::Grid()
+void App::SwitchEditor( int inEditorId )
 {
-	grid_size = 16;
-	UpdateGrid();
-}
-
-void Grid::IncreaseGridSize()
-{
-	grid_size *= 2;
-	grid_size = MIN( grid_size, MAX_GRID_SIZE );
-	UpdateGrid();
-}
-
-void Grid::DecreaseGridSize()
-{
-	grid_size /= 2;
-	grid_size = MAX( grid_size, 1 );
-	UpdateGrid();
-}
-
-void Grid::UpdateGrid()
-{
-	Vertex* p = vb_grid;
-
-	int c = grid_size + 1;
-
-	float d = 1000.0f / grid_size;
-
-	int i,j;
-	for( i=0; i<c; i++ )
+	if( m_pActiveEditor )
 	{
-		for( j=0; j<c; j++ )
+		if( m_pActiveEditor != m_pEditors[inEditorId] )
 		{
-			p->x = i * d - 500.0f;
-			p->y = j * d- 500.0f;
-			p->z = 0;
-			p->color = COLORS::eYELLOW;
-			++p;
+			m_pActiveEditor->Exit();					// Exit the previous editor
+			m_pActiveEditor = m_pEditors[inEditorId];	// Set the new editor
+			
+			if( m_pActiveEditor )						// Check if there is an editor in the slot
+				m_pActiveEditor->Init();				// Init the new editor
+		}
+
+		if( m_pActiveEditor == m_pEditors[inEditorId] )
+		{
+			m_pActiveEditor->Exit();	// Exit the current editor
+			m_pActiveEditor = 0;		// Deactivate editor mode
 		}
 	}
-
-	vb_grid_size = c * c;
+	else
+	{
+		if( m_pEditors[inEditorId] )	// Only if there is an editor in the slot
+		{
+			m_pActiveEditor = m_pEditors[inEditorId];	// Set new editor
+			m_pActiveEditor->Init();					// Init the new editor
+		}		
+	}	
 }
 
-void Grid::Render()
-{
-	gl_RenderPoints( vb_grid, 0, vb_grid_size, 2 );
-}
 
 
 void DrawModelUsingFixedFuncPipeline( ModelOBJ* in_pModel, bool in_bEnableModelTexture )

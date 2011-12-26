@@ -114,7 +114,9 @@ void glut_OnMotion(int x,int y)
 
 	Vector2 v;	
 	Screen_2_App( x, y, v );
-	Vector2 d = v - last;	
+	Vector2 d = v - last;
+
+	g_App.OnMouseMotion( x, y, v, diffx, diffy, d );
 
 	//todo: properly redirect drag motion to app
 	{
@@ -152,8 +154,8 @@ void glut_OnMouse(int b,int s,int x,int y)
 	case GLUT_RIGHT_BUTTON:	
 		g_App.OnMouseClick( b, x, y, v );	
 		break;
-	case GLUT_WHEEL_UP:			g_App.OnWheelUp();		break;	
-	case GLUT_WHEEL_DOWN:		g_App.OnWheelDown();	break;	
+	case GLUT_WHEEL_UP:		g_App.OnMouseWheel( 1);	break;	
+	case GLUT_WHEEL_DOWN:	g_App.OnMouseWheel(-1);	break;	
 	default:
 		break;
 	}
@@ -167,7 +169,8 @@ void glut_OnKeyboard(unsigned char key, int posX, int posY )
 void glut_OnSpecialKey( int key, int posX, int posY )
 {	
 	//todo: redirect special keys to app
-	const float KeyOffset = 0.01f;
+
+	g_App.OnSpecialKey( key );
 
 	switch(key)
 	{
@@ -209,8 +212,6 @@ void glut_OnIdle()
 void glut_OnExit()
 {
 	g_App.Exit();
-
-	 menu_Destroy();
 }
 
 void gl_Init( void )
@@ -264,8 +265,6 @@ int main( int argc, char** argv )
      
 	 glutCreateWindow( "Delirium Wars alpha" );
 	 
-	 menu_Create();
-
 	 glutDisplayFunc(glut_OnDisplay);
      glutReshapeFunc(glut_OnReshape);
 	 glutMouseFunc(glut_OnMouse);
@@ -275,9 +274,11 @@ int main( int argc, char** argv )
 	 glutJoystickExFunc( glut_OnJoystickEx, 0 );
 	 glutIdleFunc( glut_OnIdle );
 
+	 glutSetOption( GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS );
+
      gl_Init();
 
-	 atexit(glut_OnExit);
+//	 atexit();
 
 	 glutTimerFunc( MAX_DELTA_TIME, glut_OnTimer, 0 );
 
@@ -286,6 +287,8 @@ int main( int argc, char** argv )
 	 g_App.Init();
 
 	 glutMainLoop();
+	 
+	 glut_OnExit();
 
 	 return 0;
 }
