@@ -30,5 +30,6 @@ void CEntityPhysics::CreateBody( const std::string& in_szBodyDefinitionFilename,
 
 void CEntityPhysics::DestroyBody()
 {
-	GetEngine()->GetWorld()->DestroyBody( &m_pBody );
+	if( m_pBody )
+		GetEngine()->GetWorld()->DestroyBody( &m_pBody );
 }

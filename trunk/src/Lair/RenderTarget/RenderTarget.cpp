@@ -83,7 +83,7 @@ void RenderTarget::Destroy()
 	int i;
 	for(i=0;i<MAX_COLOR_ATTACHMENTS;i++)
 	{
-		delete m_pTexture[i];
+		SAFE_DELETE(m_pTexture[i]);
 	}
 }
 

@@ -139,6 +139,12 @@
     <Filter Include="source\Engine\Clock">
       <UniqueIdentifier>{5de09cd3-52ee-4018-b5a9-7d096d0f9857}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editors">
+      <UniqueIdentifier>{af793fb0-ea17-40ae-8952-6b0198a58c77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editors\curve">
+      <UniqueIdentifier>{dd8c59a8-ed8c-4b8d-a90f-1b915eddfc2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -148,9 +154,6 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\gfx.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\menu.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Math\Matrix2x2.cpp">
@@ -396,12 +399,6 @@
     <ClCompile Include="..\..\src\Engine\Components\EngineComponent.cpp">
       <Filter>source\Engine\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Animation\Key.cpp">
-      <Filter>source\Lair\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Lair\Animation\Track.cpp">
-      <Filter>source\Lair\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Lair\Camera\Camera.cpp">
       <Filter>source\Lair\Camera</Filter>
     </ClCompile>
@@ -414,6 +411,24 @@
     <ClCompile Include="..\..\src\Engine\Clock\Timer.cpp">
       <Filter>source\Engine\Clock</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Animation\Curve.cpp">
+      <Filter>source\Lair\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Curve\CurveEdit.cpp">
+      <Filter>editors\curve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Curve\CurveSelection.cpp">
+      <Filter>editors\curve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Editor.cpp">
+      <Filter>editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Grid.cpp">
+      <Filter>editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Menu.cpp">
+      <Filter>editors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -423,9 +438,6 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\gfx.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\menu.h">
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Math\Matrix2x2.h">
@@ -689,12 +701,6 @@
     <ClInclude Include="..\..\src\Engine\Components\EngineComponent.h">
       <Filter>source\Engine\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Animation\Key.h">
-      <Filter>source\Lair\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Lair\Animation\Track.h">
-      <Filter>source\Lair\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Lair\Camera\Camera.h">
       <Filter>source\Lair\Camera</Filter>
     </ClInclude>
@@ -706,6 +712,30 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Engine\Clock\Timer.h">
       <Filter>source\Engine\Clock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Animation\Curve.h">
+      <Filter>source\Lair\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Editor.h">
+      <Filter>editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Curve\CurveEdit.h">
+      <Filter>editors\curve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Curve\CurveSelection.h">
+      <Filter>editors\curve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Grid.h">
+      <Filter>editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\keys.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Menu.h">
+      <Filter>editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Delegate.h">
+      <Filter>source\Lair</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

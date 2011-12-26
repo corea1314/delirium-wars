@@ -180,6 +180,11 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp" />
+    <ClCompile Include="..\..\src\Editors\Curve\CurveEdit.cpp" />
+    <ClCompile Include="..\..\src\Editors\Curve\CurveSelection.cpp" />
+    <ClCompile Include="..\..\src\Editors\Editor.cpp" />
+    <ClCompile Include="..\..\src\Editors\Grid.cpp" />
+    <ClCompile Include="..\..\src\Editors\Menu.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Clock.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Timer.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\CameraComponent.cpp" />
@@ -208,8 +213,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Analog\Analog.cpp" />
-    <ClCompile Include="..\..\src\Lair\Animation\Key.cpp" />
-    <ClCompile Include="..\..\src\Lair\Animation\Track.cpp" />
+    <ClCompile Include="..\..\src\Lair\Animation\Curve.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Atlas.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.cpp" />
@@ -235,10 +239,6 @@
     <ClCompile Include="..\..\src\Math\Matrix3x3.cpp" />
     <ClCompile Include="..\..\src\Math\Matrix4x4.cpp" />
     <ClCompile Include="..\..\src\Math\Quaternion.cpp" />
-    <ClCompile Include="..\..\src\menu.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\sdk\Box2D_v2.1.2\Box2D\Box2D\Box2D.h" />
@@ -286,6 +286,11 @@
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
+    <ClInclude Include="..\..\src\Editors\Curve\CurveEdit.h" />
+    <ClInclude Include="..\..\src\Editors\Curve\CurveSelection.h" />
+    <ClInclude Include="..\..\src\Editors\Editor.h" />
+    <ClInclude Include="..\..\src\Editors\Grid.h" />
+    <ClInclude Include="..\..\src\Editors\Menu.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Clock.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Timer.h" />
     <ClInclude Include="..\..\src\Engine\Components\CameraComponent.h" />
@@ -304,9 +309,9 @@
     <ClInclude Include="..\..\src\Engine\SigSlot.h" />
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\gfx.h" />
+    <ClInclude Include="..\..\src\keys.h" />
     <ClInclude Include="..\..\src\Lair\Analog\Analog.h" />
-    <ClInclude Include="..\..\src\Lair\Animation\Key.h" />
-    <ClInclude Include="..\..\src\Lair\Animation\Track.h" />
+    <ClInclude Include="..\..\src\Lair\Animation\Curve.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.h" />
@@ -317,6 +322,7 @@
     <ClInclude Include="..\..\src\Lair\Color\Color.h" />
     <ClInclude Include="..\..\src\Lair\Command\Command.h" />
     <ClInclude Include="..\..\src\Lair\Console\Console.h" />
+    <ClInclude Include="..\..\src\Lair\Delegate.h" />
     <ClInclude Include="..\..\src\Lair\Image\Image.h" />
     <ClInclude Include="..\..\src\Lair\Image\LodePNG\LoaderPNG.h" />
     <ClInclude Include="..\..\src\Lair\Image\LodePNG\lodepng.h" />
@@ -337,7 +343,6 @@
     <ClInclude Include="..\..\src\Math\Vector2.h" />
     <ClInclude Include="..\..\src\Math\Vector3.h" />
     <ClInclude Include="..\..\src\Math\Vector4.h" />
-    <ClInclude Include="..\..\src\menu.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />

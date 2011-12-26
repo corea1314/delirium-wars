@@ -1,26 +1,8 @@
 #ifndef _APP_H
 #define _APP_H
 
-#define MAX_GRID_SIZE		512
-
 class CEngine;
-
-class Grid
-{
-public:
-	Grid();
-
-	void IncreaseGridSize();
-	void DecreaseGridSize();
-	void UpdateGrid();
-
-	void Render();
-
-private:
-	int grid_size;
-	Vertex vb_grid[(MAX_GRID_SIZE+1)*(MAX_GRID_SIZE+1)];
-	int vb_grid_size;
-};
+class Editor;
 
 class App
 {
@@ -32,16 +14,12 @@ public:
 	void Update( float dt );
 	void Render();
 
-	void OnWheelUp();
-	void OnWheelDown();
-	
-	void OnLeftClick( int x, int y, const Vector2& v );
-	void OnRightClick( int x, int y, const Vector2& v );
-	void OnMiddleClick( int x, int y, const Vector2& v );
-
+	void OnMouseWheel( int v );
 	void OnMouseClick( int button, int x, int y, Vector2& v );
+	void OnMouseMotion( int x, int y, Vector2& v, int dx, int dy, Vector2& d );
 
 	void OnKeyboard( unsigned char key );
+	void OnSpecialKey( int key );
 
 	void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
 
@@ -64,11 +42,13 @@ public:
 		
 	CEngine* GetEngine() const { return m_pEngine; }
 
-private:
-	Grid	m_Grid;	//todo: remove at some point
-
-	CEngine* m_pEngine;
+	void SwitchEditor( int inEditorId );
 	
+private:
+	CEngine* m_pEngine;
+
+	Editor*	m_pActiveEditor;
+	Editor*	m_pEditors[12];	// for F-keys
 };
 
 extern App g_App;

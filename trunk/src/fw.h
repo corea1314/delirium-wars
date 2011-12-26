@@ -1,17 +1,11 @@
 #ifndef _FW_H
 #define _FW_H
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-#include "glee/GLee.h"	//todo: boot glee properly
-#include "freeglut-2.4.0/include/gl/freeglut.h"
 //#include <GL/glut.h>
 #include <stdio.h>
 #include <math.h>
 
 #include "gfx.h"
-#include "menu.h"
 
 #include <algorithm>
 #include <vector>
