@@ -1,6 +1,6 @@
 
 
-#include "CurveEdit.h"
+#include "CurveEditor.h"
 
 #include "gfx.h"
 
@@ -20,6 +20,11 @@ void CurveEditor::OnInit()
 	GetCamera()->GetPos().Set(0.5f, 0.5f);
 
 	mCurveSelection = 0;
+
+	mCurve.AddKey(	0.0f,	0.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey(	0.3f,	1.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,  -4.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey(	0.6f,	0.5f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey(	1.0f,	1.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	4.0f),	CurveContinuity::Smooth );
 }
 
 void CurveEditor::OnExit()
@@ -250,7 +255,7 @@ void CurveEditor::OnMouseMotion( int x, int y, int dx, int dy )
 		ScreenToEditor( x, y, v );
 		Vector2 d = v - last;
 
-		mCurveSelection->OnDrag(v.x,v.y,d.x,d.y);
+		mCurveSelection->OnDrag(v,d);
 	}
 	else
 	{

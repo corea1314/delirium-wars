@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Math/Vector2.h"
+
 class Curve;
 
 class CurveSelection

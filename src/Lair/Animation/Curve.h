@@ -52,6 +52,7 @@ public:
 		inline bool operator<( const Key& inKey )	{ return mPosition < inKey.mPosition;	}
 	};
 
+	void AddKey( float inPosition, float inValue );
 	void AddKey( float inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity );
 	void CalculateTangents();
 
@@ -67,7 +68,7 @@ public:
 	inline void SetPostLoop( CurveLoopType::E inPostLoop) { mPostLoop = inPostLoop; }
 
 	inline Key& GetKey( unsigned int inIndex ) { return mKeys[inIndex]; }
-	inline unsigned int GetKeyCount() { return mKeys.size(); }
+	inline unsigned int GetKeyCount() const { return mKeys.size(); }
 
 protected:
 

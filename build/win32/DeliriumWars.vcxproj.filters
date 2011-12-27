@@ -148,6 +148,9 @@
     <Filter Include="source\Lair\Input">
       <UniqueIdentifier>{8b210a9c-1deb-41bc-bd80-0b24ce0f8ffa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editors\visual">
+      <UniqueIdentifier>{8152fdc1-dae0-45f7-a1d8-e693d7f4ea74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -417,9 +420,6 @@
     <ClCompile Include="..\..\src\Lair\Animation\Curve.cpp">
       <Filter>source\Lair\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Editors\Curve\CurveEdit.cpp">
-      <Filter>editors\curve</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Editors\Curve\CurveSelection.cpp">
       <Filter>editors\curve</Filter>
     </ClCompile>
@@ -431,6 +431,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Editors\Menu.cpp">
       <Filter>editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Curve\CurveEditor.cpp">
+      <Filter>editors\curve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Visual\VisualEditor.cpp">
+      <Filter>editors\visual</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -722,9 +728,6 @@
     <ClInclude Include="..\..\src\Editors\Editor.h">
       <Filter>editors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Editors\Curve\CurveEdit.h">
-      <Filter>editors\curve</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Editors\Curve\CurveSelection.h">
       <Filter>editors\curve</Filter>
     </ClInclude>
@@ -742,6 +745,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Input\Input.h">
       <Filter>source\Lair\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Curve\CurveEditor.h">
+      <Filter>editors\curve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Visual\VisualEditor.h">
+      <Filter>editors\visual</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

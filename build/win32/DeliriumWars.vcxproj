@@ -180,11 +180,12 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp" />
-    <ClCompile Include="..\..\src\Editors\Curve\CurveEdit.cpp" />
+    <ClCompile Include="..\..\src\Editors\Curve\CurveEditor.cpp" />
     <ClCompile Include="..\..\src\Editors\Curve\CurveSelection.cpp" />
     <ClCompile Include="..\..\src\Editors\Editor.cpp" />
     <ClCompile Include="..\..\src\Editors\Grid.cpp" />
     <ClCompile Include="..\..\src\Editors\Menu.cpp" />
+    <ClCompile Include="..\..\src\Editors\Visual\VisualEditor.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Clock.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Timer.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\CameraComponent.cpp" />
@@ -286,11 +287,12 @@
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
-    <ClInclude Include="..\..\src\Editors\Curve\CurveEdit.h" />
+    <ClInclude Include="..\..\src\Editors\Curve\CurveEditor.h" />
     <ClInclude Include="..\..\src\Editors\Curve\CurveSelection.h" />
     <ClInclude Include="..\..\src\Editors\Editor.h" />
     <ClInclude Include="..\..\src\Editors\Grid.h" />
     <ClInclude Include="..\..\src\Editors\Menu.h" />
+    <ClInclude Include="..\..\src\Editors\Visual\VisualEditor.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Clock.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Timer.h" />
     <ClInclude Include="..\..\src\Engine\Components\CameraComponent.h" />
