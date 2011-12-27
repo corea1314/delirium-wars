@@ -4,13 +4,15 @@
 
 
 Curve::Curve()
-	: mPostLoop(CurveLoopType::Oscillate)
-	, mPreLoop(CurveLoopType::Oscillate)
+	: mPostLoop(CurveLoopType::Linear)
+	, mPreLoop(CurveLoopType::Linear)
 {
-	AddKey(	0.0f,	0.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
-	AddKey(	0.3f,	1.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,  -4.0f),	CurveContinuity::Smooth );
-	AddKey(	0.6f,	0.5f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
-	AddKey(	1.0f,	1.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	4.0f),	CurveContinuity::Smooth );
+}
+
+void Curve::AddKey( float inPosition, float inValue )
+{
+	mKeys.push_back( Key(inPosition, inValue, Vector2(-1,0), Vector2(1,0), CurveContinuity::Smooth ) );
+	Update();
 }
 
 void Curve::AddKey( float inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity )

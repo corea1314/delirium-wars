@@ -12,7 +12,8 @@
 #include "Lair/Lair.h"
 
 #include "Editors/Editor.h"
-#include "Editors/Curve/CurveEdit.h"
+#include "Editors/Curve/CurveEditor.h"
+#include "Editors/Visual/VisualEditor.h"
 
 void Screen_2_App( int x, int y, Vector2& v )
 {
@@ -99,7 +100,7 @@ void App::Init()
 	m_pActiveEditor = 0;
 
 	m_pEditors[0] = new CurveEditor;
-	m_pEditors[1] = 0;
+	m_pEditors[1] = new VisualEditor;
 	m_pEditors[2] = 0;
 	m_pEditors[3] = 0;
 	m_pEditors[4] = 0;
