@@ -145,6 +145,9 @@
     <Filter Include="editors\curve">
       <UniqueIdentifier>{dd8c59a8-ed8c-4b8d-a90f-1b915eddfc2a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\Input">
+      <UniqueIdentifier>{8b210a9c-1deb-41bc-bd80-0b24ce0f8ffa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -736,6 +739,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Lair\Delegate.h">
       <Filter>source\Lair</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Lair\Input\Input.h">
+      <Filter>source\Lair\Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

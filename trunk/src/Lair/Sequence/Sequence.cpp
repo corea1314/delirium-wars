@@ -71,7 +71,7 @@ bool Sequence::ParseFrameScript( const std::string& in_szFilename, char* in_szKe
 		frame.frame = Lair::GetAtlasMan()->Get(szFilename);
 		frame.offset += frame.frame->GetOffset();
 
-		frame.angle = DEG_TO_RAD(frame.angle);
+		frame.angle = (float)DEG_TO_RAD(frame.angle);
 		frame.frametime = m_nDuration;
 				
 		m_vecFrame.push_back(frame);

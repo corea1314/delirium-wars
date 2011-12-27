@@ -4,37 +4,38 @@
 
 Grid::Grid()
 {
-	snap = false;
-	grid_size = 16;
+	mScale = 1.0f;
+	mIsSnapping = false;
+	mSize = 16;
 	UpdateGrid();
 }
 
 void Grid::ToggleSnap()
 {
-	snap = !snap;
+	mIsSnapping = !mIsSnapping;
 }
 
 void Grid::IncreaseGridSize()
 {
-	grid_size *= 2;
-	grid_size = std::min( grid_size, MAX_GRID_SIZE );
+	mSize *= 2;
+	mSize = std::min( mSize, MAX_GRID_SIZE );
 	UpdateGrid();
 }
 
 void Grid::DecreaseGridSize()
 {
-	grid_size /= 2;
-	grid_size = std::max( grid_size, 1 );
+	mSize /= 2;
+	mSize = std::max( mSize, 1 );
 	UpdateGrid();
 }
 
 void Grid::UpdateGrid()
 {
-	Vertex* p = vb_grid;
+	Vertex* p = mVertexBuffer;
 
-	int c = grid_size + 1;
+	int c = mSize + 1;
 
-	float d = 1000.0f / grid_size;
+	float d = 1000.0f / mSize;
 
 	int i,j;
 	for( i=0; i<c; i++ )
@@ -49,10 +50,13 @@ void Grid::UpdateGrid()
 		}
 	}
 
-	vb_grid_size = c * c;
+	mVertexBufferSize = c * c;
 }
 
 void Grid::Render()
 {
-	gl_RenderPoints( vb_grid, 0, vb_grid_size, 2 );
+	glPushMatrix();
+	glScalef( mScale, mScale, 1.0f );
+	gl_RenderPoints( mVertexBuffer, 0, mVertexBufferSize, 2 );
+	glPopMatrix();
 }

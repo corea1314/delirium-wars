@@ -7,11 +7,17 @@
 
 class CurveEditor : public Editor
 {
-public:
-	virtual void Init();
-	virtual void Exit();
-	virtual void Render();
+protected:
+	// Editor callbacks
+	virtual void OnInit();
+	virtual void OnExit();
+	virtual void OnRender();
+	virtual void OnRenderGUI();
+	virtual void OnMouseClick( int button, int x, int y );
+	virtual void OnMouseMotion( int x, int y, int dx, int dy );
+	virtual void OnCreateMenu();
 
+	// Menu callbacks
 	void OnMenuFileSave( int inUnused );
 	void OnMenuFileLoad( int inUnused );
 	void OnMenuPreLoop( int inPreLoop );
@@ -19,19 +25,15 @@ public:
 	void OnMenuAnimate( int inUnused );
 	void OnMenuTexture( int inUnused );
 
-
-protected:
-	virtual void OnCreateMenu();
-
-
 private:
+	// Local methods
 	void RenderCurve();
 
 private:
-	CCurveExSelection cs;
-	CCurveExSelection* selection;
+	CurveSelection	mDummyCurveSelection;
+	CurveSelection*	mCurveSelection;
 
-	Curve c;
+	Curve mCurve;
 
-	bool animate;
+	bool mAnimate;
 };

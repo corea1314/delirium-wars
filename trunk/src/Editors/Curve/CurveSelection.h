@@ -2,11 +2,11 @@
 
 class Curve;
 
-class CCurveExSelection
+class CurveSelection
 {
 public:
 	void Set( Curve* c, int index );
-	void OnDrag( float x, float y, float dx, float dy );
+	void OnDrag( Vector2 v, Vector2 d );
 	void Erase();
 
 	//	Vector2 GetSelectedPoint();

@@ -2,21 +2,21 @@
 
 #include "Lair/Animation/Curve.h"
 
-void CCurveExSelection::OnDrag( float x, float y, float dx, float dy )
+void CurveSelection::OnDrag( Vector2 v, Vector2 d )
 {
 
 #define SNAP( _v )			\
-	if( g_CurveEditor.snap )		\
+	if( g_CurveEditor.mIsSnapping )		\
 	{						\
-	float d = 0.5f * (1.0f / g_CurveEditor.grid_size);\
-	(_v).x = ((int)(((_v).x + d) * g_CurveEditor.grid_size)) / (float)g_CurveEditor.grid_size;	\
-	(_v).y = ((int)(((_v).y + d) * g_CurveEditor.grid_size)) / (float)g_CurveEditor.grid_size;	\
+	float d = 0.5f * (1.0f / g_CurveEditor.mSize);\
+	(_v).x = ((int)(((_v).x + d) * g_CurveEditor.mSize)) / (float)g_CurveEditor.mSize;	\
+	(_v).y = ((int)(((_v).y + d) * g_CurveEditor.mSize)) / (float)g_CurveEditor.mSize;	\
 }
 
 	if( selected == 1 ) // point manipulation
 	{
-		pCurve->GetKey(index).mPosition = x;
-		pCurve->GetKey(index).mValue = y;
+		pCurve->GetKey(index).mPosition = v.x;
+		pCurve->GetKey(index).mValue = v.y;
 
 		pCurve->Update();
 	}
@@ -29,17 +29,17 @@ void CCurveExSelection::OnDrag( float x, float y, float dx, float dy )
 	//TODO	pCurve->Update();
 }
 
-void CCurveExSelection::Erase()
+void CurveSelection::Erase()
 {
 	// todo
 }
 
-int CCurveExSelection::GetSelectedPointIndex()
+int CurveSelection::GetSelectedPointIndex()
 {
 	return index;
 }
 
-void CCurveExSelection::Set( Curve* c, int _index )
+void CurveSelection::Set( Curve* c, int _index )
 {
 	index = _index;
 	pCurve = c;
