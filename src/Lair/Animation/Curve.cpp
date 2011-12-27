@@ -32,7 +32,7 @@ void Curve::CalculateTangents()
 {		
 	float fDx;
 	const unsigned int nKeyCount = mKeys.size();
-	for(int i=0;i<nKeyCount-1;i++)
+	for(unsigned int i=0;i<nKeyCount-1;i++)
 	{
 		fDx = mKeys[i+1].mPosition - mKeys[i].mPosition;
 		mKeys[i].mTangentOut = mKeys[i].mTangentOutVector.GetSlope() * fDx;
@@ -242,7 +242,7 @@ float Curve::GetCurveValue(float position)
 	//only for position in curve
 	Key prev = mKeys[0];
 	Key next;
-	for (int i = 1; i < mKeys.size(); i++)
+	for (unsigned int i = 1; i < mKeys.size(); i++)
 	{
 		next = mKeys[i];
 		if (next.mPosition >= position)
@@ -267,7 +267,7 @@ float Curve::GetCurveTangent(float position)
 	//only for position in curve
 	Key prev = mKeys[0];
 	Key next;
-	for (int i = 1; i < mKeys.size(); i++)
+	for (unsigned int i = 1; i < mKeys.size(); i++)
 	{
 		next = mKeys[i];
 		if (next.mPosition >= position)

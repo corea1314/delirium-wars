@@ -15,8 +15,8 @@ public:
 	void Render();
 
 	void OnMouseWheel( int v );
-	void OnMouseClick( int button, int x, int y, Vector2& v );
-	void OnMouseMotion( int x, int y, Vector2& v, int dx, int dy, Vector2& d );
+	void OnMouseClick( int button, int state, int x, int y );	// down is 1, up is 0
+	void OnMouseMotion( int x, int y );
 
 	void OnKeyboard( unsigned char key );
 	void OnSpecialKey( int key );
@@ -24,25 +24,21 @@ public:
 	void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
 
 	void OnOpenFile( const char* in_szFilename );
-		
-	// todo: better handle mouse position and button states from framework
-	int last_mx;
-	int last_my;
-	int mx;
-	int my;
-	unsigned char Buttons[5];
 
-	// todo: better handle window change event variables from framework
-	int w;
-	int h;
-
-	int fps;
-	int fps_average;
-	float fps_time;
-		
 	CEngine* GetEngine() const { return m_pEngine; }
-
 	void SwitchEditor( int inEditorId );
+
+	void OnReshape( int inNewWindowWidth, int inNewWindowHeight );
+		
+private:
+	// todo: better handle mouse position and button states from framework
+	int mLastMx, mLastMy;			// last mouse position
+	int mMx, mMy;					// current mouse position
+	int mWindowWidth, mWindowHeight;
+
+	int mFps;
+	int mFpsAverage;
+	float mFpsTime;
 	
 private:
 	CEngine* m_pEngine;

@@ -3,16 +3,27 @@
 
 #include "Editor.h"
 #include "Grid.h"
+#include "Lair/Lair.h"
+#include "Lair/Camera/Camera.h"
+
+#define CAMERA_MID_ZOOM_LEVEL	100.0f
 
 Editor::Editor() 
 	: lock(false)
 {
-	m_pGrid = new Grid;
+	mGrid = new Grid;
+	mZoomLevel = 100;
+	mCamera = new Camera;
+	mCamera->GetZoom() = CAMERA_MID_ZOOM_LEVEL / mZoomLevel;
+
+	mViewportSize.x = ( 1280.0f / 720.0f ) / 2.0f;
+	mViewportSize.y = (  720.0f / 720.0f ) / 2.0f;
 }
 
 Editor::~Editor()
 {
-	delete m_pGrid;
+	delete mCamera;
+	delete mGrid;
 }
 
 void Editor::Init()
@@ -23,10 +34,14 @@ void Editor::Init()
 	mMenu->BindButton(2);	// right button
 
 	OnCreateMenu();
+
+	OnInit();
 }
 
 void Editor::Exit()
 {
+	OnExit();
+
 	OnDestroyMenu();
 	
 	mMenu->UnbindButton(2);	// right button
@@ -36,12 +51,42 @@ void Editor::Exit()
 
 void Editor::Render()
 {
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
 
+	Vector2 vPos = mCamera->GetPos();
+	float fZoom =  mCamera->GetZoom();
+	float fAngle = mCamera->GetAngle();
+
+	// Projection
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D( -mViewportSize.x * fZoom, mViewportSize.x * fZoom, -mViewportSize.y * fZoom, mViewportSize.y * fZoom );
+
+	// Model view
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glRotatef( (float)RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
+	glTranslatef( -vPos.x, -vPos.y, 0.0f );
+
+		mGrid->Render();
+
+		// Render in editor space
+		OnRender();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+
+	glMatrixMode( GL_MODELVIEW);
+	glPopMatrix();
+
+	// Render in screen space
+	OnRenderGUI();
 }
 
 void Editor::Update( float dt )
 {
-	timeSeconds += dt;
+	mTimeSeconds += dt;
 }
 
 void Editor::OnKeyboard( unsigned char key )
@@ -51,22 +96,38 @@ void Editor::OnKeyboard( unsigned char key )
 	case '-':	GetGrid()->DecreaseGridSize();		break;
 	case '=':	GetGrid()->IncreaseGridSize();		break;
 	case 127:	/* delete */						break;
+	case ' ':	GetGrid()->ToggleSnap();			break;
 	}
 }
 
 void Editor::OnMouseWheel( int v )
 {
+	mZoomLevel += v;
 
+	if( mZoomLevel < 1 )
+		mZoomLevel = 1;
+
+	mCamera->GetZoom() = CAMERA_MID_ZOOM_LEVEL / mZoomLevel;
 }
 
-void Editor::OnMouseClick( int button, int x, int y, Vector2& v )
+void Editor::OnMouseClick( int button, int x, int y )
 {
-
+	// todo translate from screen to editor space
 }
 
-void Editor::OnMouseMotion( int x, int y, Vector2& v, int dx, int dy, Vector2& d )
+void Editor::OnMouseMotion( int x, int y, int dx, int dy )
 {
+	Vector2 last; 
+	ScreenToEditor( x-dx, y-dy, last );
 
+	Vector2 v;	
+	ScreenToEditor( x, y, v );
+	Vector2 d = v - last;
+
+	if( Lair::GetInputMan()->GetMouseButtonState(0).bState )	// if left mouse button is down
+	{
+		mCamera->GetPos() -= d;
+	}
 }
 
 void Editor::OnSpecialKey( int key )
@@ -151,14 +212,19 @@ void Editor::ScreenToEditor( int x, int y, Vector2& v )
 	double M[16];
 	int V[4];
 
-	// Construct matrices used in curver rendering and grab them to undo the transformations
+	Vector2 vPos = mCamera->GetPos();
+	float fZoom =  mCamera->GetZoom();
+	float fAngle = mCamera->GetAngle();
+
+	// Construct matrices used in rendering and grab them to undo the transformations
 	glPushMatrix();
 	glLoadIdentity();
-	gluOrtho2D( -0.5f / cam_zoom, 0.5f / cam_zoom, -0.5f / cam_zoom, 0.5f / cam_zoom );
+	gluOrtho2D( -mViewportSize.x * fZoom, mViewportSize.x * fZoom, -mViewportSize.y * fZoom, mViewportSize.y * fZoom );
 	glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 	glLoadIdentity();
-	glTranslatef( -cam_pos_x, -cam_pos_y, 0.0f );
+	glRotatef( (float)RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
+	glTranslatef( -vPos.x, -vPos.y, 0.0f );
 	glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();
 
@@ -168,8 +234,8 @@ void Editor::ScreenToEditor( int x, int y, Vector2& v )
 
 	gluUnProject( x,y,0, M, P, V, &X, &Y, &Z );
 
-	v.x = X;
-	v.y = Y;
+	v.x = (float)X;
+	v.y = (float)Y;
 }
 
 void Editor::EditorToScreen( const Vector2& v, int& x, int& y )
@@ -178,14 +244,19 @@ void Editor::EditorToScreen( const Vector2& v, int& x, int& y )
 	double M[16];
 	int V[4];
 
-	// Construct matrices used in curver rendering and grab them to undo the transformations
+	Vector2 vPos = mCamera->GetPos();
+	float fZoom =  mCamera->GetZoom();
+	float fAngle = mCamera->GetAngle();
+
+	// Construct matrices used in rendering and grab them to undo the transformations
 	glPushMatrix();
 	glLoadIdentity();
-	gluOrtho2D( -0.5f / cam_zoom, 0.5f / cam_zoom, -0.5f / cam_zoom, 0.5f / cam_zoom );
+	gluOrtho2D( -mViewportSize.x * fZoom, mViewportSize.x * fZoom, -mViewportSize.y * fZoom, mViewportSize.y * fZoom );
 	glGetDoublev( GL_MODELVIEW_MATRIX, P );
 
 	glLoadIdentity();
-	glTranslatef( -cam_pos_x, -cam_pos_y, 0.0f );
+	glRotatef( (float)RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
+	glTranslatef( -vPos.x, -vPos.y, 0.0f );
 	glGetDoublev( GL_MODELVIEW_MATRIX, M );
 	glPopMatrix();
 
@@ -195,6 +266,6 @@ void Editor::EditorToScreen( const Vector2& v, int& x, int& y )
 
 	gluProject( v.x,v.y,0, M, P, V, &X, &Y, &Z );
 
-	x = X;
-	y = Y;
+	x = (int)X;
+	y = (int)Y;
 }

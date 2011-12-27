@@ -1281,3 +1281,74 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
     fclose(pFile);
     return true;
 }
+
+/*
+void DrawModelUsingFixedFuncPipeline( ModelOBJ* in_pModel, bool in_bEnableModelTexture )
+{
+	const ModelOBJ::Mesh *pMesh = 0;
+	const ModelOBJ::Material *pMaterial = 0;
+	const ModelOBJ::Vertex *pVertices = 0;
+//	ModelTextures::const_iterator iter;
+
+	for (int i = 0; i < in_pModel->getNumberOfMeshes(); ++i)
+	{
+		pMesh = &in_pModel->getMesh(i);
+		pMaterial = pMesh->pMaterial;
+		pVertices = in_pModel->getVertexBuffer();
+
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, pMaterial->ambient);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, pMaterial->diffuse);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, pMaterial->specular);
+		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, pMaterial->shininess * 128.0f);
+
+		if (in_bEnableModelTexture)
+		{
+			iter = g_modelTextures.find(pMaterial->colorMapFilename);
+
+			if (iter == g_modelTextures.end())
+			{
+				glDisable(GL_TEXTURE_2D);
+			}
+			else
+			{
+				glEnable(GL_TEXTURE_2D);
+				glBindTexture(GL_TEXTURE_2D, iter->second);
+			}
+		}
+
+		
+		if (in_pModel->hasPositions())
+		{
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glVertexPointer(3, GL_FLOAT, in_pModel->getVertexSize(),
+				in_pModel->getVertexBuffer()->position);
+		}
+
+		if (in_pModel->hasTextureCoords())
+		{
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glTexCoordPointer(2, GL_FLOAT, in_pModel->getVertexSize(),
+				in_pModel->getVertexBuffer()->texCoord);
+		}
+
+		if (in_pModel->hasNormals())
+		{
+			glEnableClientState(GL_NORMAL_ARRAY);
+			glNormalPointer(GL_FLOAT, in_pModel->getVertexSize(),
+				in_pModel->getVertexBuffer()->normal);
+		}
+
+		glDrawElements(GL_TRIANGLES, pMesh->triangleCount * 3, GL_UNSIGNED_INT,
+			in_pModel->getIndexBuffer() + pMesh->startIndex);
+
+		if (in_pModel->hasNormals())
+			glDisableClientState(GL_NORMAL_ARRAY);
+
+		if (in_pModel->hasTextureCoords())
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		if (in_pModel->hasPositions())
+			glDisableClientState(GL_VERTEX_ARRAY);
+	}
+}
+*/

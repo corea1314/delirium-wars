@@ -14,24 +14,80 @@
 #include "Editors/Editor.h"
 #include "Editors/Curve/CurveEdit.h"
 
-void Screen_2_App( int x, int y, Vector2& v );
-void App_2_Screen( const Vector2& v, int& x, int& y );
+void Screen_2_App( int x, int y, Vector2& v )
+{
+	double P[16];
+	double M[16];
+	int V[4];
+
+	Vector2 vPos = Lair::GetCameraMan()->GetActiveCamera()->GetPos();
+	float fZoom = Lair::GetCameraMan()->GetActiveCamera()->GetZoom();
+	float fAngle = Lair::GetCameraMan()->GetActiveCamera()->GetAngle();
+
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D( -1024/2*fZoom, 1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
+	glGetDoublev( GL_MODELVIEW_MATRIX, P );
+
+	glLoadIdentity();
+	glRotatef( (float)RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
+	glTranslatef( -vPos.x, -vPos.y, 0.0f );
+	glGetDoublev( GL_MODELVIEW_MATRIX, M );
+	glPopMatrix();
+
+	glGetIntegerv( GL_VIEWPORT, V );
+
+	double X,Y,Z;
+
+	gluUnProject( x,y,0, M, P, V, &X, &Y, &Z );
+
+	v.x = (float)X;
+	v.y = (float)Y;
+}
+
+void App_2_Screen( const Vector2& v, int& x, int& y )
+{
+	double P[16];
+	double M[16];
+	int V[4];
+
+	Vector2 vPos = Lair::GetCameraMan()->GetActiveCamera()->GetPos();
+	float fZoom = Lair::GetCameraMan()->GetActiveCamera()->GetZoom();
+	float fAngle = Lair::GetCameraMan()->GetActiveCamera()->GetAngle();
+
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D( -1024/2*fZoom,1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
+	glGetDoublev( GL_MODELVIEW_MATRIX, P );
+
+	glLoadIdentity();
+	glRotatef( (float)RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
+	glTranslatef( -vPos.x, -vPos.y, 0.0f );
+	glGetDoublev( GL_MODELVIEW_MATRIX, M );
+	glPopMatrix();
+
+	glGetIntegerv( GL_VIEWPORT, V );
+
+	double X,Y,Z;
+
+	gluProject( v.x,v.y,0, M, P, V, &X, &Y, &Z );
+
+	x = (int)X;
+	y = (int)Y;
+}
 
 App g_App;
 
 App::App()
 {
-	mx=0;
-	my=0;
-	last_mx=0;
-	last_my=0;
-	Buttons[0] = 0;
-	Buttons[1] = 0;
-	Buttons[2] = 0;
+	mMx=0;
+	mMy=0;
+	mLastMx=0;
+	mLastMy=0;
 
-	fps = 0;
-	fps_average = 0;
-	fps_time = 0.0f;
+	mFps = 0;
+	mFpsAverage = 0;
+	mFpsTime = 0.0f;
 }
 
 #include "objLoader/obj.h"
@@ -76,34 +132,73 @@ void App::Exit()
 	SAFE_DELETE(m_pEditors[11]);
 }
 
-void App::OnMouseClick( int button, int x, int y, Vector2& v )
+void App::OnReshape( int inNewWindowWidth, int inNewWindowHeight )
 {
-	GetEngine()->OnMouseClick( button, x, y, v );
+	mWindowWidth = inNewWindowWidth;
+	mWindowHeight = inNewWindowHeight;
+	
+	glViewport(0,0,mWindowWidth,mWindowHeight);
 
-	if( m_pActiveEditor )
-		m_pActiveEditor->OnMouseClick( button, x, y, v );
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D( 0, mWindowWidth, 0, mWindowHeight );
+	glMatrixMode(GL_MODELVIEW);
 }
 
-void App::OnMouseMotion( int x, int y, Vector2& v, int dx, int dy, Vector2& d )
+void App::OnMouseClick( int button, int state, int x, int y )
 {
+	y = mWindowHeight - y;
+
+	mMx = x;
+	mMy = y;
+	mLastMx=x;
+	mLastMy=y;
+
+	Vector2 v; Screen_2_App( x, y, v );
+
+	Lair::GetInputMan()->UpdateMouseButtonState( button, state == 1 );
+
+	if( state )
+		if( m_pActiveEditor )
+			m_pActiveEditor->OnMouseClick( button, x, y );
+		else
+			GetEngine()->OnMouseClick( button, x, y, v );	
+}
+
+void App::OnMouseMotion( int x, int y )
+{
+	// TODO: have the app handle all the translation between app and screen space
+	y = mWindowHeight - y;
+
+	int dx=x-mLastMx;
+	int dy=y-mLastMy;
+
+	Vector2 last; 
+	Screen_2_App( mLastMx, mLastMy, last );
+
+	mMx=x;
+	mMy=y;
+	mLastMx=x;
+	mLastMy=y;
+
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnMouseMotion( x, y, v, dx, dy, d );
+		m_pActiveEditor->OnMouseMotion( x, y, dx, dy );
 }
 
 void App::OnMouseWheel( int v )
 {
-	GetEngine()->OnMouseWheel( v );
-
 	if( m_pActiveEditor )
 		m_pActiveEditor->OnMouseWheel( v );
+	else
+		GetEngine()->OnMouseWheel( v );
 }
 
 void App::OnKeyboard( unsigned char key )
 {
-	GetEngine()->OnKeyboard( key );
-
 	if( m_pActiveEditor )
 		m_pActiveEditor->OnKeyboard( key );
+	else
+		GetEngine()->OnKeyboard( key );
 }
 
 void App::OnSpecialKey( int key )
@@ -144,16 +239,18 @@ void App::OnSpecialKey( int key )
 
 void App::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values )
 {
-	switch( gamepad )
-	{
-	case 0:		GetEngine()->OnGamepad0( buttons, axis_count, axis_values );	break;
-	case 1:		GetEngine()->OnGamepad1( buttons, axis_count, axis_values );	break;
-	case 2:		GetEngine()->OnGamepad2( buttons, axis_count, axis_values );	break;
-	case 3:		GetEngine()->OnGamepad3( buttons, axis_count, axis_values );	break;
-	}
-
 	if( m_pActiveEditor )
 		m_pActiveEditor->OnGamepad( gamepad, buttons, axis_count, axis_values );
+	else
+	{
+		switch( gamepad )
+		{
+		case 0:		GetEngine()->OnGamepad0( buttons, axis_count, axis_values );	break;
+		case 1:		GetEngine()->OnGamepad1( buttons, axis_count, axis_values );	break;
+		case 2:		GetEngine()->OnGamepad2( buttons, axis_count, axis_values );	break;
+		case 3:		GetEngine()->OnGamepad3( buttons, axis_count, axis_values );	break;
+		}
+	}	
 }
 
 void App::OnOpenFile( const char* in_szFilename )
@@ -163,32 +260,39 @@ void App::OnOpenFile( const char* in_szFilename )
 
 void App::Render()
 {
-	++fps;
-	if( fps_time < m_pEngine->GetClock()->GetTotalTime() )
+	++mFps;
+	if( mFpsTime < m_pEngine->GetClock()->GetTotalTime() )
 	{
-		fps_average += fps;
-		fps_average /= 2;
-		fps_time = m_pEngine->GetClock()->GetTotalTime() + 1.0f;
-		fps = 0;
+		mFpsAverage += mFps;
+		mFpsAverage /= 2;
+		mFpsTime = m_pEngine->GetClock()->GetTotalTime() + 1.0f;
+		mFps = 0;
 	}
 
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
-		
-	m_pEngine->Render();
-	m_pEngine->RenderGUI();
-	
-	glDisable( GL_TEXTURE_2D );
-	gl_SetColor(COLORS::eWHITE);
-	gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", fps, fps_average, Lair::GetCameraMan()->GetActiveCamera()->GetZoom(), w, h );
 
 	if( m_pActiveEditor )
 		m_pActiveEditor->Render();
+	else
+	{		
+		m_pEngine->Render();
+		m_pEngine->RenderGUI();
+
+		glDisable( GL_TEXTURE_2D );
+		gl_SetColor(COLORS::eWHITE);
+		gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", mFps, mFpsAverage, Lair::GetCameraMan()->GetActiveCamera()->GetZoom(), mWindowWidth, mWindowHeight );
+	}	
 }
 
 void App::Update( float dt )
 {
-	//todo: emit any other update related signals
-	m_pEngine->Update( dt );
+	if( m_pActiveEditor )
+		m_pActiveEditor->Update(dt);
+	else
+	{
+		//todo: emit any other update related signals
+		m_pEngine->Update( dt );
+	}
 }
 
 void App::SwitchEditor( int inEditorId )
@@ -218,76 +322,4 @@ void App::SwitchEditor( int inEditorId )
 			m_pActiveEditor->Init();					// Init the new editor
 		}		
 	}	
-}
-
-
-
-void DrawModelUsingFixedFuncPipeline( ModelOBJ* in_pModel, bool in_bEnableModelTexture )
-{
-	const ModelOBJ::Mesh *pMesh = 0;
-	const ModelOBJ::Material *pMaterial = 0;
-	const ModelOBJ::Vertex *pVertices = 0;
-//	ModelTextures::const_iterator iter;
-
-	for (int i = 0; i < in_pModel->getNumberOfMeshes(); ++i)
-	{
-		pMesh = &in_pModel->getMesh(i);
-		pMaterial = pMesh->pMaterial;
-		pVertices = in_pModel->getVertexBuffer();
-
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, pMaterial->ambient);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, pMaterial->diffuse);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, pMaterial->specular);
-		glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, pMaterial->shininess * 128.0f);
-
-		/*
-		if (in_bEnableModelTexture)
-		{
-			iter = g_modelTextures.find(pMaterial->colorMapFilename);
-
-			if (iter == g_modelTextures.end())
-			{
-				glDisable(GL_TEXTURE_2D);
-			}
-			else
-			{
-				glEnable(GL_TEXTURE_2D);
-				glBindTexture(GL_TEXTURE_2D, iter->second);
-			}
-		}
-		*/
-		
-		if (in_pModel->hasPositions())
-		{
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glVertexPointer(3, GL_FLOAT, in_pModel->getVertexSize(),
-				in_pModel->getVertexBuffer()->position);
-		}
-
-		if (in_pModel->hasTextureCoords())
-		{
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glTexCoordPointer(2, GL_FLOAT, in_pModel->getVertexSize(),
-				in_pModel->getVertexBuffer()->texCoord);
-		}
-
-		if (in_pModel->hasNormals())
-		{
-			glEnableClientState(GL_NORMAL_ARRAY);
-			glNormalPointer(GL_FLOAT, in_pModel->getVertexSize(),
-				in_pModel->getVertexBuffer()->normal);
-		}
-
-		glDrawElements(GL_TRIANGLES, pMesh->triangleCount * 3, GL_UNSIGNED_INT,
-			in_pModel->getIndexBuffer() + pMesh->startIndex);
-
-		if (in_pModel->hasNormals())
-			glDisableClientState(GL_NORMAL_ARRAY);
-
-		if (in_pModel->hasTextureCoords())
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		if (in_pModel->hasPositions())
-			glDisableClientState(GL_VERTEX_ARRAY);
-	}
 }

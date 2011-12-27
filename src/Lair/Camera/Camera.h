@@ -14,8 +14,8 @@ public:
 	Camera();
 	virtual ~Camera();
 	
-	Vector2 GetPos();
-	float GetAngle();
+	Vector2& GetPos();
+	float& GetAngle();
 	float& GetZoom() { return m_fZoom; }
 
 	inline CEntity* GetEntity() { return m_pEntity; }
@@ -26,6 +26,8 @@ public:
 private:
 	std::string	m_szName;
 	float		m_fZoom;
+	float		m_fAngle;
+	Vector2		m_vPos;
 	CEntity*	m_pEntity;
 };
 

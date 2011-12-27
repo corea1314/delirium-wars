@@ -8,72 +8,6 @@ int g_delta_time = 0;
 
 #include "app.h"
 
-#include "Lair/Lair.h"
-#include "Engine/Engine.h"
-#include "Engine/Clock/Clock.h"
-
-void Screen_2_App( int x, int y, Vector2& v )
-{
-	double P[16];
-	double M[16];
-	int V[4];
-
-	Vector2 vPos = Lair::GetCameraMan()->GetActiveCamera()->GetPos();
-	float fZoom = Lair::GetCameraMan()->GetActiveCamera()->GetZoom();
-	float fAngle = Lair::GetCameraMan()->GetActiveCamera()->GetAngle();
-
-	glPushMatrix();
-		glLoadIdentity();
-		gluOrtho2D( -1024/2*fZoom, 1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
-		glGetDoublev( GL_MODELVIEW_MATRIX, P );
-
-		glLoadIdentity();
-		glRotatef( RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
-		glTranslatef( -vPos.x, -vPos.y, 0.0f );
-		glGetDoublev( GL_MODELVIEW_MATRIX, M );
-	glPopMatrix();
-
-	glGetIntegerv( GL_VIEWPORT, V );
-
-	double X,Y,Z;
-
-	gluUnProject( x,y,0, M, P, V, &X, &Y, &Z );
-
-	v.x = (float)X;
-	v.y = (float)Y;
-}
-
-void App_2_Screen( const Vector2& v, int& x, int& y )
-{
-	double P[16];
-	double M[16];
-	int V[4];
-
-	Vector2 vPos = Lair::GetCameraMan()->GetActiveCamera()->GetPos();
-	float fZoom = Lair::GetCameraMan()->GetActiveCamera()->GetZoom();
-	float fAngle = Lair::GetCameraMan()->GetActiveCamera()->GetAngle();
-
-	glPushMatrix();
-		glLoadIdentity();
-		gluOrtho2D( -1024/2*fZoom,1024/2*fZoom, -1024/2*fZoom,  1024/2*fZoom );
-		glGetDoublev( GL_MODELVIEW_MATRIX, P );
-
-		glLoadIdentity();
-		glRotatef( RAD_TO_DEG(fAngle), 0.0f, 0.0f, -1.0f );
-		glTranslatef( -vPos.x, -vPos.y, 0.0f );
-		glGetDoublev( GL_MODELVIEW_MATRIX, M );
-	glPopMatrix();
-
-	glGetIntegerv( GL_VIEWPORT, V );
-
-	double X,Y,Z;
-
-	gluProject( v.x,v.y,0, M, P, V, &X, &Y, &Z );
-
-	x = (int)X;
-	y = (int)Y;
-}
-
 void glut_OnDisplay( void )
 {
 	g_App.Render();
@@ -83,48 +17,12 @@ void glut_OnDisplay( void )
 
 void glut_OnReshape( int w, int h )
 {
-	//todo: properly redirect reshape to app
-	g_App.w = w;
-	g_App.h = h;
-
-	glViewport(0,0,w,h);
-	
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D( 0, w, 0, h );
-	glMatrixMode(GL_MODELVIEW);
+	g_App.OnReshape( w,h );
 }
-
-
 
 void glut_OnMotion(int x,int y)
 {
-	y = g_App.h - y;
-
-	int diffx=x-g_App.last_mx;
-	int diffy=y-g_App.last_my;
-	
-	Vector2 last; 
-	Screen_2_App( g_App.last_mx, g_App.last_my, last );
-
-	g_App.mx=x;
-	g_App.my=y;
-	g_App.last_mx=x;
-	g_App.last_my=y;
-
-	Vector2 v;	
-	Screen_2_App( x, y, v );
-	Vector2 d = v - last;
-
-	g_App.OnMouseMotion( x, y, v, diffx, diffy, d );
-
-	//todo: properly redirect drag motion to app
-	{
-		if( g_App.Buttons[GLUT_LEFT_BUTTON] )
-		{
-			//todo: scrolling here using d.x, d.y
-		}
-	}
+	g_App.OnMouseMotion( x, y );
 }
 
 #if !defined(GLUT_WHEEL_UP)
@@ -132,27 +30,16 @@ void glut_OnMotion(int x,int y)
 #  define GLUT_WHEEL_DOWN 4
 #endif
 
-
 void glut_OnMouse(int b,int s,int x,int y)
 {
-	y = g_App.h - y;
-
-	g_App.mx = x;
-	g_App.my = y;
-	g_App.last_mx=x;
-	g_App.last_my=y;
-		
-	Vector2 v; Screen_2_App( x, y, v );
-	
-	//todo: properly redirect button states to app
-	g_App.Buttons[b] = ((GLUT_DOWN==s)?1:0);
+	s = ((GLUT_DOWN==s)?1:0); // usefull?
 	
 	switch(b)
 	{
 	case GLUT_LEFT_BUTTON:
 	case GLUT_MIDDLE_BUTTON:
 	case GLUT_RIGHT_BUTTON:	
-		g_App.OnMouseClick( b, x, y, v );	
+		g_App.OnMouseClick( b, s, x, y );	
 		break;
 	case GLUT_WHEEL_UP:		g_App.OnMouseWheel( 1);	break;	
 	case GLUT_WHEEL_DOWN:	g_App.OnMouseWheel(-1);	break;	
@@ -167,11 +54,10 @@ void glut_OnKeyboard(unsigned char key, int posX, int posY )
 }
 
 void glut_OnSpecialKey( int key, int posX, int posY )
-{	
-	//todo: redirect special keys to app
-
+{		
 	g_App.OnSpecialKey( key );
 
+	/*
 	switch(key)
 	{
 		case GLUT_KEY_F1:			break;
@@ -198,6 +84,7 @@ void glut_OnSpecialKey( int key, int posX, int posY )
 		case GLUT_KEY_END:			break;
 		case GLUT_KEY_INSERT:		break;
 	}
+	*/
 }
 
 void glut_OnJoystickEx( unsigned int gamepad, unsigned int buttons, int axe_count, float* axe_values )
@@ -263,7 +150,7 @@ int main( int argc, char** argv )
      glutInitWindowSize    ( SCREEN_SIZE_X , SCREEN_SIZE_Y );
      glutInitWindowPosition( 0 , 0 );
      
-	 glutCreateWindow( "Delirium Wars alpha" );
+	 glutCreateWindow( "Lair Engine" );
 	 
 	 glutDisplayFunc(glut_OnDisplay);
      glutReshapeFunc(glut_OnReshape);
@@ -277,8 +164,6 @@ int main( int argc, char** argv )
 	 glutSetOption( GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS );
 
      gl_Init();
-
-//	 atexit();
 
 	 glutTimerFunc( MAX_DELTA_TIME, glut_OnTimer, 0 );
 

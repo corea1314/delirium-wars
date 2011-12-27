@@ -17,12 +17,15 @@ public:
 
 	void Render();
 
-	int GetGridSize() { return grid_size; }
-	bool GetSnap() { return snap; }
+	int GetGridSize() { return mSize; }
+	bool GetSnap() { return mIsSnapping; }
+
+	void SetScale( float inScale ) { mScale = inScale; }
 
 private:
-	int grid_size;
-	Vertex vb_grid[(MAX_GRID_SIZE+1)*(MAX_GRID_SIZE+1)];
-	int vb_grid_size;
-	bool snap;
+	int		mSize;
+	Vertex	mVertexBuffer[(MAX_GRID_SIZE+1)*(MAX_GRID_SIZE+1)];
+	int		mVertexBufferSize;
+	bool	mIsSnapping;
+	float	mScale;
 };

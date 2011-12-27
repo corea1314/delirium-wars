@@ -14,6 +14,7 @@
 
 Camera::Camera() 
 	: m_fZoom(1.0f)
+	, m_fAngle(0.0f)
 	, m_pEntity(0)
 {
 }
@@ -23,20 +24,20 @@ Camera::~Camera()
 {
 }
 
-Vector2 Camera::GetPos()
+Vector2& Camera::GetPos()
 {
 	if( m_pEntity )
 		return m_pEntity->GetPos();
 
-	return Vector2(0.0f,0.0f);
+	return m_vPos;
 }
 
-float Camera::GetAngle()
+float& Camera::GetAngle()
 {
 	if( m_pEntity )
 		return m_pEntity->GetAngle();
 
-	return 0.0f;
+	return m_fAngle;
 }
 
 

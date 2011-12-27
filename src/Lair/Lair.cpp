@@ -13,6 +13,7 @@ Lair::Lair()
 {
 	ms_pInstance = this;
 
+	__NEW(InputMan);
 	__NEW(LogMan);
 	__NEW(SysMan);
 	__NEW(ImageMan);
@@ -21,7 +22,7 @@ Lair::Lair()
 	__NEW(AtlasMan);
 	__NEW(SequenceMan);
 	__NEW(SpriteMan);
-	__NEW(CameraMan);
+	__NEW(CameraMan);	
 }
 
 Lair::~Lair()
@@ -35,5 +36,6 @@ Lair::~Lair()
 	__DELETE(ImageMan);
 	__DELETE(SysMan);
 	__DELETE(LogMan);
+	__DELETE(InputMan);
 }
 

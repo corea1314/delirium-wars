@@ -214,7 +214,7 @@ if (_p_p)					\
 //
 #ifndef DEG_TO_RAD
 #define DEG_TO_RAD(p_ang)	\
-	((p_ang) * PI / 180)
+	((p_ang) * PI / 180.0f)
 #endif
 
 //////
@@ -223,7 +223,7 @@ if (_p_p)					\
 //
 #ifndef RAD_TO_DEG
 #define RAD_TO_DEG(p_rads)	\
-	((p_rads) * 180 / PI)
+	((p_rads) * 180.0f / PI)
 #endif
 
 //////
