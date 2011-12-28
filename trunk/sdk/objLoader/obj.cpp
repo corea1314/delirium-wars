@@ -161,9 +161,11 @@ void ModelOBJ::destroy()
 
 bool ModelOBJ::import(const char *pszFilename, bool rebuildNormals)
 {
-    FILE *pFile = fopen(pszFilename, "r");
+	FILE *pFile;
 
-    if (!pFile)
+	errno_t error = fopen_s(&pFile, pszFilename, "r");
+	
+    if ( error != 0 )
         return false;
 
     // Extract the directory the OBJ file is in from the file name.
@@ -1117,9 +1119,11 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
 
 bool ModelOBJ::importMaterials(const char *pszFilename)
 {
-    FILE *pFile = fopen(pszFilename, "r");
+	FILE *pFile;
 
-    if (!pFile)
+	errno_t error = fopen_s(&pFile, pszFilename, "r");
+	
+    if ( error != 0 )
         return false;
 
     Material *pMaterial = 0;

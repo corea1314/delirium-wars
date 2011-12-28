@@ -306,8 +306,7 @@ void App::SwitchEditor( int inEditorId )
 			if( m_pActiveEditor )						// Check if there is an editor in the slot
 				m_pActiveEditor->Init();				// Init the new editor
 		}
-
-		if( m_pActiveEditor == m_pEditors[inEditorId] )
+		else if( m_pActiveEditor == m_pEditors[inEditorId] )
 		{
 			m_pActiveEditor->Exit();	// Exit the current editor
 			m_pActiveEditor = 0;		// Deactivate editor mode

@@ -262,7 +262,7 @@ int ini_gets(const TCHAR *Section, const TCHAR *Key, const TCHAR *DefValue,
 
   if (Buffer == NULL || BufferSize <= 0 || Key == NULL)
     return 0;
-  if (ini_openread(Filename, &fp)) {
+  if (ini_openread(Filename, fp)) {
     ok = getkeystring(&fp, Section, Key, -1, -1, Buffer, BufferSize);
     ini_close(&fp);
   } /* if */
@@ -301,7 +301,7 @@ int  ini_getsection(int idx, TCHAR *Buffer, int BufferSize, const TCHAR *Filenam
 
   if (Buffer == NULL || BufferSize <= 0 || idx < 0)
     return 0;
-  if (ini_openread(Filename, &fp)) {
+  if (ini_openread(Filename, fp)) {
     ok = getkeystring(&fp, NULL, NULL, idx, -1, Buffer, BufferSize);
     ini_close(&fp);
   } /* if */
@@ -327,7 +327,7 @@ int  ini_getkey(const TCHAR *Section, int idx, TCHAR *Buffer, int BufferSize, co
 
   if (Buffer == NULL || BufferSize <= 0 || idx < 0)
     return 0;
-  if (ini_openread(Filename, &fp)) {
+  if (ini_openread(Filename, fp)) {
     ok = getkeystring(&fp, Section, NULL, -1, idx, Buffer, BufferSize);
     ini_close(&fp);
   } /* if */

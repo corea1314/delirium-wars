@@ -4711,8 +4711,9 @@ unsigned LodePNG_loadFile(unsigned char** out, size_t* outsize, const char* file
   *out = 0;
   *outsize = 0;
 
-  file = fopen(filename, "rb");
-  if(!file) return 78;
+  errno_t error = fopen_s( &file, filename, "rb");
+
+  if( error != 0 ) return 78;
 
   /*get filesize:*/
   fseek(file , 0 , SEEK_END);
@@ -4733,8 +4734,9 @@ unsigned LodePNG_loadFile(unsigned char** out, size_t* outsize, const char* file
 unsigned LodePNG_saveFile(const unsigned char* buffer, size_t buffersize, const char* filename)
 {
   FILE* file;
-  file = fopen(filename, "wb" );
-  if(!file) return 79;
+  errno_t error = fopen_s( &file, filename, "wb");
+  
+  if(error != 0) return 79;
   fwrite((char*)buffer , 1 , buffersize, file);
   fclose(file);
   return 0;
