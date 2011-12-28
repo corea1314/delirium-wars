@@ -24,8 +24,8 @@
 
 /* map required file I/O to the standard C library */
 #include <stdio.h>
-#define ini_openread(filename,file)   ((*(file) = fopen((filename),"rt")) != NULL)
-#define ini_openwrite(filename,file)  ((*(file) = fopen((filename),"wt")) != NULL)
+#define ini_openread(filename,file)   (0 == fopen_s(&file,(filename),"rt"))//((*(file) = fopen((filename),"rt")) != NULL)
+#define ini_openwrite(filename,file)  (0 == fopen_s(&file,(filename),"wt"))
 #define ini_close(file)               fclose(*(file))
 #define ini_read(buffer,size,file)    fgets((buffer),(size),*(file))
 #define ini_write(buffer,file)        fputs((buffer),*(file))

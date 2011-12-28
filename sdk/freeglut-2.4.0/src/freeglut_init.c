@@ -498,6 +498,8 @@ void FGAPIENTRY glutInit( int* pargc, char** argv )
     char* displayName = NULL;
     char* geometry = NULL;
     int i, j, argc = *pargc;
+	size_t len;
+	errno_t err;
 
     if( fgState.Initialised )
         fgError( "illegal glutInit() reinitialization attempt" );
@@ -517,20 +519,41 @@ void FGAPIENTRY glutInit( int* pargc, char** argv )
     /* check if GLUT_FPS env var is set */
 #if !TARGET_HOST_WINCE
     {
+		char *fps = 0;
+		err = _dupenv_s( &fps, &len, "GLUT_FPS" );
+		if ( err == 0 && fps != NULL )
+		{
+			int interval;
+			sscanf_s( fps, "%d", &interval );
+
+			if( interval <= 0 )
+				fgState.FPSInterval = 5000;  /* 5000 millisecond default */
+			else
+				fgState.FPSInterval = interval;
+
+			free(fps);
+		}
+		/*
         const char *fps = getenv( "GLUT_FPS" );
         if( fps )
         {
             int interval;
-            sscanf( fps, "%d", &interval );
+            sscanf_s( fps, "%d", &interval );
 
             if( interval <= 0 )
-                fgState.FPSInterval = 5000;  /* 5000 millisecond default */
+                fgState.FPSInterval = 5000;  // 5000 millisecond default
             else
                 fgState.FPSInterval = interval;
         }
+		*/
     }
 
-    displayName = getenv( "DISPLAY");
+//	displayName = getenv( "DISPLAY");
+	err = _dupenv_s( &displayName, &len, "DISPLAY" );
+	if ( err )
+	{
+		// at this point DISPLAY was not found
+	}
 
     for( i = 1; i < argc; i++ )
     {
@@ -643,6 +666,8 @@ void FGAPIENTRY glutInit( int* pargc, char** argv )
         if( (mask & (XValue|YValue)) == (XValue|YValue) )
             fgState.Position.Use = GL_TRUE;
     }
+
+	free(displayName);
 }
 
 /*
@@ -704,13 +729,13 @@ void FGAPIENTRY glutInitDisplayString( const char* displayMode )
      * Unpack a lot of options from a character string.  The options are
      * delimited by blanks or tabs.
      */
-    char *token ;
+    char *token, *next_token ;
     int len = strlen ( displayMode );
     char *buffer = (char *)malloc ( (len+1) * sizeof(char) );
     memcpy ( buffer, displayMode, len );
     buffer[len] = '\0';
 
-    token = strtok ( buffer, " \t" );
+    token = strtok_s( buffer, " \t", &next_token );
     while ( token )
     {
         /* Process this token */
@@ -880,7 +905,7 @@ void FGAPIENTRY glutInitDisplayString( const char* displayMode )
             break ;
         }
 
-        token = strtok ( NULL, " \t" );
+        token = strtok_s ( NULL, " \t", &next_token );
     }
 
     free ( buffer );

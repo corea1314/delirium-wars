@@ -230,7 +230,7 @@ static int fghJoystickFindUSBdev(char *name, char *out, int outlen)
   static int protection_warned = 0;
 
   for (i = 0; i < 16; i++) {
-    sprintf(buf, "%s%d", USBDEV, i);
+    sprintf_s(buf, "%s%d", USBDEV, i);
     f = open(buf, O_RDONLY);
     if (f >= 0) {
       cp = fghJoystickWalkUSBdev(f, name, out, outlen);
@@ -997,7 +997,7 @@ static int fghJoystickGetOEMProductName ( SFG_Joystick* joy, char *buf, int buf_
         return 0;
 
     /* Open .. MediaResources\CurrentJoystickSettings */
-    sprintf ( buffer, "%s\\%s\\%s",
+    sprintf_s ( buffer, 256, "%s\\%s\\%s",
               REGSTR_PATH_JOYCONFIG, joy->jsCaps.szRegKey,
               REGSTR_KEY_JOYCURR );
 
@@ -1009,7 +1009,7 @@ static int fghJoystickGetOEMProductName ( SFG_Joystick* joy, char *buf, int buf_
     dwcb = sizeof(OEMKey);
 
     /* JOYSTICKID1-16 is zero-based; registry entries for VJOYD are 1-based. */
-    sprintf ( buffer, "Joystick%d%s", joy->js_id + 1, REGSTR_VAL_JOYOEMNAME );
+    sprintf_s ( buffer, 256, "Joystick%d%s", joy->js_id + 1, REGSTR_VAL_JOYOEMNAME );
 
     lr = RegQueryValueEx ( hKey, buffer, 0, 0, (LPBYTE) OEMKey, &dwcb);
     RegCloseKey ( hKey );
@@ -1017,7 +1017,7 @@ static int fghJoystickGetOEMProductName ( SFG_Joystick* joy, char *buf, int buf_
     if ( lr != ERROR_SUCCESS ) return 0;
 
     /* Open OEM Key from ...MediaProperties */
-    sprintf ( buffer, "%s\\%s", REGSTR_PATH_JOYOEM, OEMKey );
+    sprintf_s ( buffer, 256, "%s\\%s", REGSTR_PATH_JOYOEM, OEMKey );
 
     lr = RegOpenKeyEx ( HKEY_LOCAL_MACHINE, buffer, 0, KEY_QUERY_VALUE, &hKey );
 
@@ -1246,7 +1246,7 @@ static void fghJoystickOpen( SFG_Joystick* joy )
                                              sizeof( joy->name ) ) )
         {
             fgWarning( "JS: Failed to read joystick name from registry" );
-            strncpy( joy->name, joy->jsCaps.szPname, sizeof( joy->name ) );
+            strncpy_s( joy->name, 128, joy->jsCaps.szPname, sizeof( joy->name ) );
         }
 
         /* Windows joystick drivers may provide any combination of
@@ -1320,7 +1320,7 @@ static void fghJoystickOpen( SFG_Joystick* joy )
         if( joy->error )
             return;
 
-        sprintf( joyfname, "%s/.joy%drc", getenv( "HOME" ), joy->id );
+        sprintf_s( joyfname, "%s/.joy%drc", getenv( "HOME" ), joy->id );
 
         joyfile = fopen( joyfname, "r" );
         joy->error =( joyfile == NULL );
@@ -1483,7 +1483,7 @@ static void fghJoystickInit( int ident )
 
 #if TARGET_HOST_MACINTOSH
     fgJoystick[ ident ]->id = ident;
-    sprintf( fgJoystick[ ident ]->fname, "/dev/js%d", ident ); /* FIXME */
+    sprintf_s( fgJoystick[ ident ]->fname, "/dev/js%d", ident ); /* FIXME */
     fgJoystick[ ident ]->error = GL_FALSE;
 #endif
 
@@ -1568,18 +1568,18 @@ static void fghJoystickInit( int ident )
     if( ident < USB_IDENT_OFFSET )
         fgJoystick[ ident ]->os->is_analog = 1;
     if( fgJoystick[ ident ]->os->is_analog )
-        sprintf( fgJoystick[ ident ]->os->fname, "%s%d", AJSDEV, ident );
+        sprintf_s( fgJoystick[ ident ]->os->fname, "%s%d", AJSDEV, ident );
     else
-        sprintf( fgJoystick[ ident ]->os->fname, "%s%d", UHIDDEV,
+        sprintf_s( fgJoystick[ ident ]->os->fname, "%s%d", UHIDDEV,
                  ident - USB_IDENT_OFFSET );
 #    elif defined( __linux__ )
     fgJoystick[ ident ]->id = ident;
     fgJoystick[ ident ]->error = GL_FALSE;
 
-    sprintf( fgJoystick[ident]->fname, "/dev/input/js%d", ident );
+    sprintf_s( fgJoystick[ident]->fname, "/dev/input/js%d", ident );
 
     if( access( fgJoystick[ ident ]->fname, F_OK ) != 0 )
-        sprintf( fgJoystick[ ident ]->fname, "/dev/js%d", ident );
+        sprintf_s( fgJoystick[ ident ]->fname, "/dev/js%d", ident );
 #    endif
 #endif
 

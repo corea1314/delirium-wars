@@ -390,14 +390,14 @@ void FGAPIENTRY glutGameModeString( const char* string )
      * that I assumed it is: "[width]x[height]:[depth]@[refresh rate]", which
      * appears in all GLUT game mode programs I have seen to date.
      */
-    if( sscanf( string, "%ix%i:%i@%i", &width, &height, &depth, &refresh ) !=
+    if( sscanf_s( string, "%ix%i:%i@%i", &width, &height, &depth, &refresh ) !=
         4 )
-        if( sscanf( string, "%ix%i:%i", &width, &height, &depth ) != 3 )
-            if( sscanf( string, "%ix%i@%i", &width, &height, &refresh ) != 3 )
-                if( sscanf( string, "%ix%i", &width, &height ) != 2 )
-                    if( sscanf( string, ":%i@%i", &depth, &refresh ) != 2 )
-                        if( sscanf( string, ":%i", &depth ) != 1 )
-                            if( sscanf( string, "@%i", &refresh ) != 1 )
+        if( sscanf_s( string, "%ix%i:%i", &width, &height, &depth ) != 3 )
+            if( sscanf_s( string, "%ix%i@%i", &width, &height, &refresh ) != 3 )
+                if( sscanf_s( string, "%ix%i", &width, &height ) != 2 )
+                    if( sscanf_s( string, ":%i@%i", &depth, &refresh ) != 2 )
+                        if( sscanf_s( string, ":%i", &depth ) != 1 )
+                            if( sscanf_s( string, "@%i", &refresh ) != 1 )
                                 fgWarning(
                                     "unable to parse game mode string `%s'",
                                     string

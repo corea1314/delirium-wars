@@ -15920,7 +15920,7 @@ void __GLeeExtList_add(ExtensionList *extList, const char * extName)
 		extList->names=(char **)realloc((void *)extList->names, n*sizeof(char *));
 	}
 	extList->names[i]=(char *)malloc(length*sizeof(char));
-	strcpy(extList->names[i],extName);
+	strcpy_s(extList->names[i],length,extName);
 	extList->lengths[i]=length;
 	extList->numNames++;
 }
@@ -16003,11 +16003,11 @@ GLboolean __GLeeGetExtensions(ExtensionList* extList)
 	/* concatenate the two extension strings */
 	if ( addASpace )
 	{
-	    sprintf(extStr,"%s %s",platExtStr,glExtStr);
+	    sprintf_s(extStr, (totalExtStrLen+2), "%s %s",platExtStr,glExtStr);
 	}
 	else
 	{
-	    sprintf(extStr,"%s%s",platExtStr,glExtStr);
+	    sprintf_s(extStr, (totalExtStrLen+2), "%s%s",platExtStr,glExtStr);
 	}
 
 	/* extract the extensions */
