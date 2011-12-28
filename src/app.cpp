@@ -4,8 +4,6 @@
 
 #include "app.h"
 
-#include "keys.h"
-
 #include "Engine/Engine.h"
 #include "Engine/Clock/Clock.h"
 
@@ -146,7 +144,7 @@ void App::OnReshape( int inNewWindowWidth, int inNewWindowHeight )
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void App::OnMouseClick( int button, int state, int x, int y )
+void App::OnMouseClick( int button, int state, int x, int y, int mod )
 {
 	y = mWindowHeight - y;
 
@@ -161,12 +159,12 @@ void App::OnMouseClick( int button, int state, int x, int y )
 
 	if( state )
 		if( m_pActiveEditor )
-			m_pActiveEditor->OnMouseClick( button, x, y );
+			m_pActiveEditor->OnMouseClick( button, x, y, mod );
 		else
 			GetEngine()->OnMouseClick( button, x, y, v );	
 }
 
-void App::OnMouseMotion( int x, int y )
+void App::OnMouseMotion( int x, int y, int mod )
 {
 	// TODO: have the app handle all the translation between app and screen space
 	y = mWindowHeight - y;
@@ -183,29 +181,29 @@ void App::OnMouseMotion( int x, int y )
 	mLastMy=y;
 
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnMouseMotion( x, y, dx, dy );
+		m_pActiveEditor->OnMouseMotion( x, y, dx, dy, mod );
 }
 
-void App::OnMouseWheel( int v )
+void App::OnMouseWheel( int v, int mod )
 {
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnMouseWheel( v );
+		m_pActiveEditor->OnMouseWheel( v, mod );
 	else
 		GetEngine()->OnMouseWheel( v );
 }
 
-void App::OnKeyboard( unsigned char key )
+void App::OnKeyboard( unsigned char key, int mod )
 {
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnKeyboard( key );
+		m_pActiveEditor->OnKeyboard( key, mod );
 	else
 		GetEngine()->OnKeyboard( key );
 }
 
-void App::OnSpecialKey( int key )
+void App::OnSpecialKey( int key, int mod )
 {
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnSpecialKey( key );
+		m_pActiveEditor->OnSpecialKey( key, mod );
 
 	switch( key )
 	{

@@ -23,11 +23,11 @@ public:
 	virtual void OnRender() {}
 	virtual void OnRenderGUI() {}
 
-	virtual void OnMouseWheel( int v );
-	virtual void OnMouseMotion( int x, int y, int dx, int dy );
-	virtual void OnMouseClick( int button, int x, int y );
-	virtual void OnKeyboard( unsigned char key );
-	virtual void OnSpecialKey( int key );
+	virtual void OnMouseWheel( int v, int mod );
+	virtual void OnMouseMotion( int x, int y, int dx, int dy, int mod );
+	virtual void OnMouseClick( int button, int x, int y, int mod );
+	virtual void OnKeyboard( unsigned char key, int mod );
+	virtual void OnSpecialKey( int key, int mod );
 	virtual void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
 
 protected:

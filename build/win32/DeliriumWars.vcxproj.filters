@@ -734,9 +734,6 @@
     <ClInclude Include="..\..\src\Editors\Grid.h">
       <Filter>editors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\keys.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Editors\Menu.h">
       <Filter>editors</Filter>
     </ClInclude>

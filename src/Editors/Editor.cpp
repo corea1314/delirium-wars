@@ -16,8 +16,8 @@ Editor::Editor()
 	mCamera = new Camera;
 	mCamera->GetZoom() = CAMERA_MID_ZOOM_LEVEL / mZoomLevel;
 
-	mViewportSize.x = ( 1280.0f / 720.0f ) / 2.0f;
-	mViewportSize.y = (  720.0f / 720.0f ) / 2.0f;
+	mViewportSize.x = ( 1280.0f ) / 2.0f;
+	mViewportSize.y = (  720.0f ) / 2.0f;
 }
 
 Editor::~Editor()
@@ -89,7 +89,7 @@ void Editor::Update( float dt )
 	mTimeSeconds += dt;
 }
 
-void Editor::OnKeyboard( unsigned char key )
+void Editor::OnKeyboard( unsigned char key, int mod )
 {
 	switch(key)
 	{
@@ -100,7 +100,7 @@ void Editor::OnKeyboard( unsigned char key )
 	}
 }
 
-void Editor::OnMouseWheel( int v )
+void Editor::OnMouseWheel( int v, int mod )
 {
 	mZoomLevel += v;
 
@@ -110,12 +110,12 @@ void Editor::OnMouseWheel( int v )
 	mCamera->GetZoom() = CAMERA_MID_ZOOM_LEVEL / mZoomLevel;
 }
 
-void Editor::OnMouseClick( int button, int x, int y )
+void Editor::OnMouseClick( int button, int x, int y, int mod )
 {
 	// todo translate from screen to editor space
 }
 
-void Editor::OnMouseMotion( int x, int y, int dx, int dy )
+void Editor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
 {
 	Vector2 last; 
 	ScreenToEditor( x-dx, y-dy, last );
@@ -130,9 +130,15 @@ void Editor::OnMouseMotion( int x, int y, int dx, int dy )
 	}
 }
 
-void Editor::OnSpecialKey( int key )
+void Editor::OnSpecialKey( int key, int mod )
 {
-
+	/*
+	switch( key )
+	{
+	default:
+		break;
+	}
+	*/
 }
 
 void Editor::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values )

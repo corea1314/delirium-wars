@@ -33,7 +33,7 @@ public:
 	{
 	public:
 		Key(){}
-		Key( float inPosition, float inValue, const Vector2& inTangentInVector, const Vector2& inTangentOutVector, CurveContinuity::E inContinuity ) 
+		Key( int inPosition, float inValue, const Vector2& inTangentInVector, const Vector2& inTangentOutVector, CurveContinuity::E inContinuity ) 
 			: mPosition(inPosition)
 			, mValue(inValue)
 			, mTangentInVector(inTangentInVector)
@@ -45,15 +45,16 @@ public:
 		}
 
 		CurveContinuity::E mContinuity;
-		float mValue, mPosition;
+		float mValue;
+		int mPosition;
 		Vector2 mTangentInVector, mTangentOutVector;
 		float mTangentIn, mTangentOut;	// slope y/dx (dx being distance between next key)
 
 		inline bool operator<( const Key& inKey )	{ return mPosition < inKey.mPosition;	}
 	};
 
-	void AddKey( float inPosition, float inValue );
-	void AddKey( float inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity );
+	void AddKey( int inPosition, float inValue );
+	void AddKey( int inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity );
 	void CalculateTangents();
 
 	void Update();

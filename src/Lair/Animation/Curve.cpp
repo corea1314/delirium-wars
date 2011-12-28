@@ -9,13 +9,13 @@ Curve::Curve()
 {
 }
 
-void Curve::AddKey( float inPosition, float inValue )
+void Curve::AddKey( int inPosition, float inValue )
 {
 	mKeys.push_back( Key(inPosition, inValue, Vector2(-1,0), Vector2(1,0), CurveContinuity::Smooth ) );
 	Update();
 }
 
-void Curve::AddKey( float inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity )
+void Curve::AddKey( int inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity )
 {
 	mKeys.push_back( Key(inPosition, inValue, inTangentIn.GetNormal(), inTangentOut.GetNormal(), inContinuity ) );
 	Update();
@@ -36,7 +36,7 @@ void Curve::CalculateTangents()
 	const unsigned int nKeyCount = mKeys.size();
 	for(unsigned int i=0;i<nKeyCount-1;i++)
 	{
-		fDx = mKeys[i+1].mPosition - mKeys[i].mPosition;
+		fDx = (float)mKeys[i+1].mPosition - mKeys[i].mPosition;
 		mKeys[i].mTangentOut = mKeys[i].mTangentOutVector.GetSlope() * fDx;
 		mKeys[i+1].mTangentIn = mKeys[i+1].mTangentInVector.GetSlope() * fDx;
 	}
@@ -305,7 +305,7 @@ float Curve::GetValueAt( float inPosition, Key inKeyPrev, Key inKeyNext )
 
 float Curve::GetTangentAt( float inPosition, Key inKeyPrev, Key inKeyNext )
 {
-	float dv = (inKeyNext.mPosition - inKeyPrev.mPosition);
+	float dv = (float)(inKeyNext.mPosition - inKeyPrev.mPosition);
 	float t = (inPosition - inKeyPrev.mPosition) / dv; //to have t in [0,1]
 	float ts = t * t;
 

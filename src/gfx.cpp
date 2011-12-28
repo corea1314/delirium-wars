@@ -48,7 +48,7 @@ void gl_RenderText( int x, int y, char* text, ... )
 
 	va_list marker;
 	va_start( marker, text );
-	vsprintf( buffer, text, marker );
+	vsprintf_s( buffer, text, marker );
 	va_end(marker);
 
 	int len, i;
