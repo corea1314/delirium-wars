@@ -15,7 +15,7 @@ void CurveSelection::OnDrag( Vector2 v, Vector2 d )
 
 	if( selected == 1 ) // point manipulation
 	{
-		pCurve->GetKey(index).mPosition = v.x;
+		pCurve->GetKey(index).mPosition = (int)v.x;	//fixme cast might better rounded
 		pCurve->GetKey(index).mValue = v.y;
 
 		pCurve->Update();

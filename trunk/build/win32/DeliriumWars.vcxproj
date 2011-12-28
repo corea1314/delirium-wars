@@ -311,7 +311,6 @@
     <ClInclude Include="..\..\src\Engine\SigSlot.h" />
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\gfx.h" />
-    <ClInclude Include="..\..\src\keys.h" />
     <ClInclude Include="..\..\src\Lair\Analog\Analog.h" />
     <ClInclude Include="..\..\src\Lair\Animation\Curve.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h" />

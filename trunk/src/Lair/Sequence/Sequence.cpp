@@ -63,7 +63,8 @@ bool Sequence::ParseFrameScript( const std::string& in_szFilename, char* in_szKe
 
 	Frame	frame;
 
-	if( sscanf( in_szFrameScript.c_str(), "%s %d %f %f %f %f %f", szFilename, &frame.duration, &frame.offset.x, &frame.offset.y, &frame.angle, &frame.scale.x, &frame.scale.y ) == 7 )
+	if( sscanf_s( in_szFrameScript.c_str(), "%s %d %f %f %f %f %f", szFilename, 64, &frame.duration, &frame.offset.x, &frame.offset.y, &frame.angle, &frame.scale.x, &frame.scale.y ) == 7 )
+//	if( sscanf( in_szFrameScript.c_str(), "%s %d %f %f %f %f %f", szFilename, &frame.duration, &frame.offset.x, &frame.offset.y, &frame.angle, &frame.scale.x, &frame.scale.y ) == 7 )
 	{		
 		m_nDuration += frame.duration;
 

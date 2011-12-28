@@ -16,15 +16,14 @@ static const char* OPENFILE_TGA_FILTER = "Targa Image\0*.tga\0";
 
 void CurveEditor::OnInit()
 {
-	GetGrid()->SetScale( 1.0f / 512.0f );
-	GetCamera()->GetPos().Set(0.5f, 0.5f);
+	GetCamera()->GetPos().Set( 256.0f, 256.0f );
 
 	mCurveSelection = 0;
 
-	mCurve.AddKey(	0.0f,	0.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
-	mCurve.AddKey(	0.3f,	1.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,  -4.0f),	CurveContinuity::Smooth );
-	mCurve.AddKey(	0.6f,	0.5f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
-	mCurve.AddKey(	1.0f,	1.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	4.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey(   0,	  0.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey( 128,	128.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,  -4.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey( 256,	256.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey( 512,	512.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	4.0f),	CurveContinuity::Smooth );
 }
 
 void CurveEditor::OnExit()
@@ -65,7 +64,7 @@ void CurveEditor::OnRender()
 	{
 		gl_SetColor( COLORS::eRED );
 		glBegin( GL_POINTS );
-			glVertex2f( mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mPosition, mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mValue );
+			glVertex2f( (GLfloat)mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mPosition, mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mValue );
 		glEnd();
 	}
 }
@@ -76,11 +75,12 @@ void CurveEditor::OnRenderGUI()
 	gl_RenderText( 8, 8, "Zoom: %f -- Grid: %d -- Snap: %s", GetCamera()->GetZoom(), GetGrid()->GetGridSize(), GetGrid()->GetSnap() ? "true" : "false" );
 	gl_RenderText( 8, 720-16-8, "Curved v%d.%d.%d (%s at %s)", CRV_VERSION_MAIN, CRV_VERSION_MAJOR, CRV_VERSION_MINOR, __DATE__, __TIME__ );
 
-	float SPAN = mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition - mCurve.GetKey(0).mPosition;
-	float START_POS = mCurve.GetKey(0).mPosition - SPAN;
-	float MID_POS = mCurve.GetKey(0).mPosition;
-	float END_POS = mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition + SPAN;
-
+	float SPAN = (float)(mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition - mCurve.GetKey(0).mPosition);
+	float START_POS = (float)(mCurve.GetKey(0).mPosition - SPAN);
+	float MID_START_POS = (float)(mCurve.GetKey(0).mPosition);
+	float MID_END_POS = (float)(mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition);
+	float END_POS = (float)(mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition + SPAN);
+	
 	if( mAnimate )
 	{
 		float timePos = GetTime() / ANIMATE_FACTOR; // Slow it by a factor
@@ -104,7 +104,7 @@ void CurveEditor::OnRenderGUI()
 	if( mCurveSelection )
 	{
 		int x,y;
-		Vector2 v( mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mPosition, mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mValue );
+		Vector2 v( (float)mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mPosition, mCurve.GetKey(mCurveSelection->GetSelectedPointIndex()).mValue );
 		EditorToScreen( v, x, y );
 		gl_RenderText( x + 12, y + 12, "%f, %f", v.x, v.y );
 	}
@@ -114,52 +114,55 @@ void CurveEditor::RenderCurve()
 {
 	int i = 0;
 
-	float SPAN = mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition - mCurve.GetKey(0).mPosition;
-	float START_POS = mCurve.GetKey(0).mPosition - SPAN;
-	float MID_START_POS = mCurve.GetKey(0).mPosition;
-	float MID_END_POS = mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition;
-	float END_POS = mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition + SPAN;
+	float SPAN = (float)(mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition - mCurve.GetKey(0).mPosition);
+	float START_POS = (float)(mCurve.GetKey(0).mPosition - SPAN);
+	float MID_START_POS = (float)(mCurve.GetKey(0).mPosition);
+	float MID_END_POS = (float)(mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition);
+	float END_POS = (float)(mCurve.GetKey(mCurve.GetKeyCount()-1).mPosition + SPAN);
+
+	float DELTA = 1.0f;
 
 	// Curve line
 	glBegin( GL_LINE_STRIP );
 	gl_SetColor( COLORS::eDARKGREY );
-	for(float t=START_POS;t<MID_START_POS; t+= 0.01f )		
-		glVertex2f( t, mCurve.Evaluate(t) );
+	for(float t=START_POS;t<MID_START_POS; t+= DELTA )		
+		glVertex2f( (GLfloat)t, mCurve.Evaluate(t) );
 	gl_SetColor( COLORS::eWHITE );
-	for(float t=MID_START_POS;t<MID_END_POS; t+= 0.01f )		
-		glVertex2f( t, mCurve.Evaluate(t) );
+	for(float t=MID_START_POS;t<MID_END_POS; t+= DELTA )		
+		glVertex2f( (GLfloat)t, mCurve.Evaluate(t) );
 	gl_SetColor( COLORS::eDARKGREY );
-	for(float t=MID_END_POS;t<END_POS; t+= 0.01f )		
-		glVertex2f( t, mCurve.Evaluate(t) );
+	for(float t=MID_END_POS;t<END_POS; t+= DELTA )		
+		glVertex2f( (GLfloat)t, mCurve.Evaluate(t) );
 	glEnd();
 	glVertex2f( END_POS, mCurve.Evaluate(END_POS) );
 
 	// Tangents
 	// TODO
-
+#define NORMAL_LENGTH	64.0f
 	gl_SetColor( COLORS::eGREEN );
 	glBegin( GL_LINES );
 	for(unsigned int i=0;i<mCurve.GetKeyCount();i++)
 	{
 		Vector2 ta =mCurve.GetKey(i).mTangentInVector;
-		glVertex2f( mCurve.GetKey(i).mPosition, mCurve.GetKey(i).mValue );
-		glVertex2f( mCurve.GetKey(i).mPosition + ta.x/10.0f, mCurve.GetKey(i).mValue + ta.y/10.0f );
+		glVertex2f( (GLfloat)mCurve.GetKey(i).mPosition, mCurve.GetKey(i).mValue );
+		glVertex2f( (GLfloat)mCurve.GetKey(i).mPosition + ta.x*NORMAL_LENGTH, mCurve.GetKey(i).mValue + ta.y*NORMAL_LENGTH );
 	}
 	glEnd();
 	gl_SetColor( COLORS::eRED );
 	glBegin( GL_LINES );
 	for(unsigned int i=0;i<mCurve.GetKeyCount();i++)
 	{
+
 		Vector2 ta =mCurve.GetKey(i).mTangentOutVector;
-		glVertex2f( mCurve.GetKey(i).mPosition, mCurve.GetKey(i).mValue );
-		glVertex2f( mCurve.GetKey(i).mPosition + ta.x/10.0f, mCurve.GetKey(i).mValue + ta.y/10.0f );
+		glVertex2f( (GLfloat)mCurve.GetKey(i).mPosition, mCurve.GetKey(i).mValue );
+		glVertex2f( (GLfloat)mCurve.GetKey(i).mPosition + ta.x*NORMAL_LENGTH, mCurve.GetKey(i).mValue + ta.y*NORMAL_LENGTH );
 	}
 	glEnd();
 	
 	gl_SetColor( COLORS::eGREY );
 	glBegin( GL_POINTS );
 		for(unsigned int i=0;i<mCurve.GetKeyCount();i++)
-		glVertex2f( mCurve.GetKey(i).mPosition, mCurve.GetKey(i).mValue );
+		glVertex2f( (GLfloat)mCurve.GetKey(i).mPosition, mCurve.GetKey(i).mValue );
 	glEnd();
 
 	if( mAnimate )
@@ -188,7 +191,7 @@ void CurveEditor::RenderCurve()
 	}
 }
 
-void CurveEditor::OnMouseClick( int button, int x, int y )
+void CurveEditor::OnMouseClick( int button, int x, int y, int mod )
 {
 	switch(button)
 	{
@@ -244,7 +247,7 @@ void CurveEditor::OnMouseClick( int button, int x, int y )
 	}
 }
 
-void CurveEditor::OnMouseMotion( int x, int y, int dx, int dy )
+void CurveEditor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
 {
 	if( mCurveSelection )
 	{
@@ -259,32 +262,32 @@ void CurveEditor::OnMouseMotion( int x, int y, int dx, int dy )
 	}
 	else
 	{
-		Editor::OnMouseMotion(x,y,dx,dy);
+		Editor::OnMouseMotion(x,y,dx,dy,mod);
 	}
 }
 
 void CurveEditor::OnCreateMenu()
 {	
-	CREATE_MENU( pFile, "File..." );
-		ADD_MENU_ITEM( pFile, "Save", &CurveEditor::OnMenuFileSave, 0 );
-		ADD_MENU_ITEM( pFile, "Load", &CurveEditor::OnMenuFileSave, 0 );
+	CREATE_MENU( pFile, "  File..." );
+		ADD_MENU_ITEM( pFile, "  Save  ", &CurveEditor::OnMenuFileSave, 0 );
+		ADD_MENU_ITEM( pFile, "  Load  ", &CurveEditor::OnMenuFileSave, 0 );
 	
-	CREATE_MENU( pPreLoop, "PreLoop..." );
-		ADD_MENU_ITEM( pPreLoop, "Constant",	&CurveEditor::OnMenuPreLoop, CurveLoopType::Constant );
-		ADD_MENU_ITEM( pPreLoop, "Cycle",		&CurveEditor::OnMenuPreLoop, CurveLoopType::Cycle );
-		ADD_MENU_ITEM( pPreLoop, "CycleOffset",	&CurveEditor::OnMenuPreLoop, CurveLoopType::CycleOffset );
-		ADD_MENU_ITEM( pPreLoop, "Oscillate",	&CurveEditor::OnMenuPreLoop, CurveLoopType::Oscillate );
-		ADD_MENU_ITEM( pPreLoop, "Linear",		&CurveEditor::OnMenuPreLoop, CurveLoopType::Linear );
+	CREATE_MENU( pPreLoop, "  PreLoop...  " );
+		ADD_MENU_ITEM( pPreLoop, "  Constant  ",	&CurveEditor::OnMenuPreLoop, CurveLoopType::Constant );
+		ADD_MENU_ITEM( pPreLoop, "  Cycle  ",		&CurveEditor::OnMenuPreLoop, CurveLoopType::Cycle );
+		ADD_MENU_ITEM( pPreLoop, "  CycleOffset  ",	&CurveEditor::OnMenuPreLoop, CurveLoopType::CycleOffset );
+		ADD_MENU_ITEM( pPreLoop, "  Oscillate  ",	&CurveEditor::OnMenuPreLoop, CurveLoopType::Oscillate );
+		ADD_MENU_ITEM( pPreLoop, "  Linear  ",		&CurveEditor::OnMenuPreLoop, CurveLoopType::Linear );
 
-	CREATE_MENU( pPostLoop, "PostLoop..." );
-		ADD_MENU_ITEM( pPostLoop, "Constant",		&CurveEditor::OnMenuPostLoop, CurveLoopType::Constant );
-		ADD_MENU_ITEM( pPostLoop, "Cycle",			&CurveEditor::OnMenuPostLoop, CurveLoopType::Cycle );
-		ADD_MENU_ITEM( pPostLoop, "CycleOffset",	&CurveEditor::OnMenuPostLoop, CurveLoopType::CycleOffset );
-		ADD_MENU_ITEM( pPostLoop, "Oscillate",		&CurveEditor::OnMenuPostLoop, CurveLoopType::Oscillate );
-		ADD_MENU_ITEM( pPostLoop, "Linear",			&CurveEditor::OnMenuPostLoop, CurveLoopType::Linear );
+	CREATE_MENU( pPostLoop, "  PostLoop...  " );
+		ADD_MENU_ITEM( pPostLoop, "  Constant  ",		&CurveEditor::OnMenuPostLoop, CurveLoopType::Constant );
+		ADD_MENU_ITEM( pPostLoop, "  Cycle  ",			&CurveEditor::OnMenuPostLoop, CurveLoopType::Cycle );
+		ADD_MENU_ITEM( pPostLoop, "  CycleOffset  ",	&CurveEditor::OnMenuPostLoop, CurveLoopType::CycleOffset );
+		ADD_MENU_ITEM( pPostLoop, "  Oscillate  ",		&CurveEditor::OnMenuPostLoop, CurveLoopType::Oscillate );
+		ADD_MENU_ITEM( pPostLoop, "  Linear  ",			&CurveEditor::OnMenuPostLoop, CurveLoopType::Linear );
 	
-	ADD_MENU_ITEM( GetMenu(), "Animate",	&CurveEditor::OnMenuAnimate, 0 );
-	ADD_MENU_ITEM( GetMenu(), "Texture",	&CurveEditor::OnMenuTexture, 0 );	
+	ADD_MENU_ITEM( GetMenu(), "  Animate  ",	&CurveEditor::OnMenuAnimate, 0 );
+	ADD_MENU_ITEM( GetMenu(), "  Texture  ",	&CurveEditor::OnMenuTexture, 0 );	
 }
 
 void CurveEditor::OnMenuFileSave( int inUnused )

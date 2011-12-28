@@ -22,7 +22,8 @@ void glut_OnReshape( int w, int h )
 
 void glut_OnMotion(int x,int y)
 {
-	g_App.OnMouseMotion( x, y );
+	int m = glutGetModifiers();
+	g_App.OnMouseMotion( x, y, m );
 }
 
 #if !defined(GLUT_WHEEL_UP)
@@ -33,16 +34,18 @@ void glut_OnMotion(int x,int y)
 void glut_OnMouse(int b,int s,int x,int y)
 {
 	s = ((GLUT_DOWN==s)?1:0); // usefull?
+
+	int mod = glutGetModifiers();
 	
 	switch(b)
 	{
 	case GLUT_LEFT_BUTTON:
 	case GLUT_MIDDLE_BUTTON:
 	case GLUT_RIGHT_BUTTON:	
-		g_App.OnMouseClick( b, s, x, y );	
+		g_App.OnMouseClick( b, s, x, y, mod );	
 		break;
-	case GLUT_WHEEL_UP:		g_App.OnMouseWheel( 1);	break;	
-	case GLUT_WHEEL_DOWN:	g_App.OnMouseWheel(-1);	break;	
+	case GLUT_WHEEL_UP:		g_App.OnMouseWheel( 1, mod);	break;	
+	case GLUT_WHEEL_DOWN:	g_App.OnMouseWheel(-1, mod);	break;	
 	default:
 		break;
 	}
@@ -50,12 +53,12 @@ void glut_OnMouse(int b,int s,int x,int y)
 
 void glut_OnKeyboard(unsigned char key, int posX, int posY )
 {	
-	g_App.OnKeyboard( key );
+	g_App.OnKeyboard( key, glutGetModifiers() );
 }
 
 void glut_OnSpecialKey( int key, int posX, int posY )
 {		
-	g_App.OnSpecialKey( key );
+	g_App.OnSpecialKey( key, glutGetModifiers() );
 
 	/*
 	switch(key)

@@ -14,12 +14,12 @@ public:
 	void Update( float dt );
 	void Render();
 
-	void OnMouseWheel( int v );
-	void OnMouseClick( int button, int state, int x, int y );	// down is 1, up is 0
-	void OnMouseMotion( int x, int y );
+	void OnMouseWheel( int v, int mod );
+	void OnMouseClick( int button, int state, int x, int y, int mod );	// down is 1, up is 0
+	void OnMouseMotion( int x, int y, int mod );
 
-	void OnKeyboard( unsigned char key );
-	void OnSpecialKey( int key );
+	void OnKeyboard( unsigned char key, int mod );
+	void OnSpecialKey( int key, int mod );
 
 	void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
 

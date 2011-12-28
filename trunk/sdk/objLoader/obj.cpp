@@ -805,55 +805,55 @@ void ModelOBJ::importGeometryFirstPass(FILE *pFile)
     char buffer[256] = {0};
     std::string name;
 
-    while (fscanf(pFile, "%s", buffer) != EOF)
+    while (fscanf_s(pFile, "%s", buffer) != EOF)
     {
         switch (buffer[0])
         {
         case 'f':   // v, v//vn, v/vt, v/vt/vn.
-            fscanf(pFile, "%s", buffer);
+            fscanf_s(pFile, "%s", buffer);
 
             if (strstr(buffer, "//")) // v//vn
             {
-                sscanf(buffer, "%d//%d", &v, &vn);
-                fscanf(pFile, "%d//%d", &v, &vn);
-                fscanf(pFile, "%d//%d", &v, &vn);
+                sscanf_s(buffer, "%d//%d", &v, &vn);
+                fscanf_s(pFile, "%d//%d", &v, &vn);
+                fscanf_s(pFile, "%d//%d", &v, &vn);
                 ++m_numberOfTriangles;
 
-                while (fscanf(pFile, "%d//%d", &v, &vn) > 0)
+                while (fscanf_s(pFile, "%d//%d", &v, &vn) > 0)
                     ++m_numberOfTriangles;
             }
-            else if (sscanf(buffer, "%d/%d/%d", &v, &vt, &vn) == 3) // v/vt/vn
+            else if (sscanf_s(buffer, "%d/%d/%d", &v, &vt, &vn) == 3) // v/vt/vn
             {
-                fscanf(pFile, "%d/%d/%d", &v, &vt, &vn);
-                fscanf(pFile, "%d/%d/%d", &v, &vt, &vn);
+                fscanf_s(pFile, "%d/%d/%d", &v, &vt, &vn);
+                fscanf_s(pFile, "%d/%d/%d", &v, &vt, &vn);
                 ++m_numberOfTriangles;
 
-                while (fscanf(pFile, "%d/%d/%d", &v, &vt, &vn) > 0)
+                while (fscanf_s(pFile, "%d/%d/%d", &v, &vt, &vn) > 0)
                     ++m_numberOfTriangles;
             }
-            else if (sscanf(buffer, "%d/%d", &v, &vt) == 2) // v/vt
+            else if (sscanf_s(buffer, "%d/%d", &v, &vt) == 2) // v/vt
             {
-                fscanf(pFile, "%d/%d", &v, &vt);
-                fscanf(pFile, "%d/%d", &v, &vt);
+                fscanf_s(pFile, "%d/%d", &v, &vt);
+                fscanf_s(pFile, "%d/%d", &v, &vt);
                 ++m_numberOfTriangles;
 
-                while (fscanf(pFile, "%d/%d", &v, &vt) > 0)
+                while (fscanf_s(pFile, "%d/%d", &v, &vt) > 0)
                     ++m_numberOfTriangles;
             }
             else // v
             {
-                fscanf(pFile, "%d", &v);
-                fscanf(pFile, "%d", &v);
+                fscanf_s(pFile, "%d", &v);
+                fscanf_s(pFile, "%d", &v);
                 ++m_numberOfTriangles;
 
-                while (fscanf(pFile, "%d", &v) > 0)
+                while (fscanf_s(pFile, "%d", &v) > 0)
                     ++m_numberOfTriangles;
             }
             break;
 
         case 'm':   // mtllib
             fgets(buffer, sizeof(buffer), pFile);
-            sscanf(buffer, "%s %s", buffer, buffer);
+            sscanf_s(buffer, "%s %s", buffer, 256, buffer, 256 );
             name = m_directoryPath;
             name += buffer;
             importMaterials(name.c_str());
@@ -932,7 +932,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
     std::string name;
     std::map<std::string, int>::const_iterator iter;
 
-    while (fscanf(pFile, "%s", buffer) != EOF)
+    while (fscanf_s(pFile, "%s", buffer) != EOF)
     {
         switch (buffer[0])
         {
@@ -941,13 +941,13 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
             vt[0] = vt[1] = vt[2] = 0;
             vn[0] = vn[1] = vn[2] = 0;
 
-            fscanf(pFile, "%s", buffer);
+            fscanf_s(pFile, "%s", buffer);
 
             if (strstr(buffer, "//")) // v//vn
             {
-                sscanf(buffer, "%d//%d", &v[0], &vn[0]);
-                fscanf(pFile, "%d//%d", &v[1], &vn[1]);
-                fscanf(pFile, "%d//%d", &v[2], &vn[2]);
+                sscanf_s(buffer, "%d//%d", &v[0], &vn[0]);
+                fscanf_s(pFile, "%d//%d", &v[1], &vn[1]);
+                fscanf_s(pFile, "%d//%d", &v[2], &vn[2]);
 
                 v[0] = (v[0] < 0) ? v[0] + numVertices - 1 : v[0] - 1;
                 v[1] = (v[1] < 0) ? v[1] + numVertices - 1 : v[1] - 1;
@@ -963,7 +963,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
                 v[1] = v[2];
                 vn[1] = vn[2];
 
-                while (fscanf(pFile, "%d//%d", &v[2], &vn[2]) > 0)
+                while (fscanf_s(pFile, "%d//%d", &v[2], &vn[2]) > 0)
                 {
                     v[2] = (v[2] < 0) ? v[2] + numVertices - 1 : v[2] - 1;
                     vn[2] = (vn[2] < 0) ? vn[2] + numNormals - 1 : vn[2] - 1;
@@ -975,10 +975,10 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
                     vn[1] = vn[2];
                 }
             }
-            else if (sscanf(buffer, "%d/%d/%d", &v[0], &vt[0], &vn[0]) == 3) // v/vt/vn
+            else if (sscanf_s(buffer, "%d/%d/%d", &v[0], &vt[0], &vn[0]) == 3) // v/vt/vn
             {
-                fscanf(pFile, "%d/%d/%d", &v[1], &vt[1], &vn[1]);
-                fscanf(pFile, "%d/%d/%d", &v[2], &vt[2], &vn[2]);
+                fscanf_s(pFile, "%d/%d/%d", &v[1], &vt[1], &vn[1]);
+                fscanf_s(pFile, "%d/%d/%d", &v[2], &vt[2], &vn[2]);
 
                 v[0] = (v[0] < 0) ? v[0] + numVertices - 1 : v[0] - 1;
                 v[1] = (v[1] < 0) ? v[1] + numVertices - 1 : v[1] - 1;
@@ -999,7 +999,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
                 vt[1] = vt[2];
                 vn[1] = vn[2];
 
-                while (fscanf(pFile, "%d/%d/%d", &v[2], &vt[2], &vn[2]) > 0)
+                while (fscanf_s(pFile, "%d/%d/%d", &v[2], &vt[2], &vn[2]) > 0)
                 {
                     v[2] = (v[2] < 0) ? v[2] + numVertices - 1 : v[2] - 1;
                     vt[2] = (vt[2] < 0) ? vt[2] + numTexCoords - 1 : vt[2] - 1;
@@ -1013,10 +1013,10 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
                     vn[1] = vn[2];
                 }
             }
-            else if (sscanf(buffer, "%d/%d", &v[0], &vt[0]) == 2) // v/vt
+            else if (sscanf_s(buffer, "%d/%d", &v[0], &vt[0]) == 2) // v/vt
             {
-                fscanf(pFile, "%d/%d", &v[1], &vt[1]);
-                fscanf(pFile, "%d/%d", &v[2], &vt[2]);
+                fscanf_s(pFile, "%d/%d", &v[1], &vt[1]);
+                fscanf_s(pFile, "%d/%d", &v[2], &vt[2]);
 
                 v[0] = (v[0] < 0) ? v[0] + numVertices - 1 : v[0] - 1;
                 v[1] = (v[1] < 0) ? v[1] + numVertices - 1 : v[1] - 1;
@@ -1032,7 +1032,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
                 v[1] = v[2];
                 vt[1] = vt[2];
 
-                while (fscanf(pFile, "%d/%d", &v[2], &vt[2]) > 0)
+                while (fscanf_s(pFile, "%d/%d", &v[2], &vt[2]) > 0)
                 {
                     v[2] = (v[2] < 0) ? v[2] + numVertices - 1 : v[2] - 1;
                     vt[2] = (vt[2] < 0) ? vt[2] + numTexCoords - 1 : vt[2] - 1;
@@ -1046,9 +1046,9 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
             }
             else // v
             {
-                sscanf(buffer, "%d", &v[0]);
-                fscanf(pFile, "%d", &v[1]);
-                fscanf(pFile, "%d", &v[2]);
+                sscanf_s(buffer, "%d", &v[0]);
+                fscanf_s(pFile, "%d", &v[1]);
+                fscanf_s(pFile, "%d", &v[2]);
 
                 v[0] = (v[0] < 0) ? v[0] + numVertices - 1 : v[0] - 1;
                 v[1] = (v[1] < 0) ? v[1] + numVertices - 1 : v[1] - 1;
@@ -1058,7 +1058,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
 
                 v[1] = v[2];
 
-                while (fscanf(pFile, "%d", &v[2]) > 0)
+                while (fscanf_s(pFile, "%d", &v[2]) > 0)
                 {
                     v[2] = (v[2] < 0) ? v[2] + numVertices - 1 : v[2] - 1;
 
@@ -1071,7 +1071,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
 
         case 'u': // usemtl
             fgets(buffer, sizeof(buffer), pFile);
-            sscanf(buffer, "%s %s", buffer, buffer);
+            sscanf_s(buffer, "%s %s", buffer, 256, buffer, 256 );
             name = buffer;
             iter = m_materialCache.find(buffer);
             activeMaterial = (iter == m_materialCache.end()) ? 0 : iter->second;
@@ -1081,7 +1081,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
             switch (buffer[1])
             {
             case '\0': // v
-                fscanf(pFile, "%f %f %f",
+                fscanf_s(pFile, "%f %f %f",
                     &m_vertexCoords[3 * numVertices],
                     &m_vertexCoords[3 * numVertices + 1],
                     &m_vertexCoords[3 * numVertices + 2]);
@@ -1089,7 +1089,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
                 break;
 
             case 'n': // vn
-                fscanf(pFile, "%f %f %f",
+                fscanf_s(pFile, "%f %f %f",
                     &m_normals[3 * numNormals],
                     &m_normals[3 * numNormals + 1],
                     &m_normals[3 * numNormals + 2]);
@@ -1097,7 +1097,7 @@ void ModelOBJ::importGeometrySecondPass(FILE *pFile)
                 break;
 
             case 't': // vt
-                fscanf(pFile, "%f %f",
+                fscanf_s(pFile, "%f %f",
                     &m_textureCoords[2 * numTexCoords],
                     &m_textureCoords[2 * numTexCoords + 1]);
                 ++numTexCoords;
@@ -1128,14 +1128,14 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
     char buffer[256] = {0};
 
     // Count the number of materials in the MTL file.
-    while (fscanf(pFile, "%s", buffer) != EOF)
+    while (fscanf_s(pFile, "%s", buffer) != EOF)
     {
         switch (buffer[0])
         {
         case 'n': // newmtl
             ++numMaterials;
             fgets(buffer, sizeof(buffer), pFile);
-            sscanf(buffer, "%s %s", buffer, buffer);
+            sscanf_s(buffer, "%s %s", buffer, 256, buffer, 256 );
             break;
 
         default:
@@ -1151,12 +1151,12 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
     m_materials.resize(m_numberOfMaterials);
 
     // Load the materials in the MTL file.
-    while (fscanf(pFile, "%s", buffer) != EOF)
+    while (fscanf_s(pFile, "%s", buffer) != EOF)
     {
         switch (buffer[0])
         {
         case 'N': // Ns
-            fscanf(pFile, "%f", &pMaterial->shininess);
+            fscanf_s(pFile, "%f", &pMaterial->shininess);
 
             // Wavefront .MTL file shininess is from [0,1000].
             // Scale back to a generic [0,1] range.
@@ -1167,7 +1167,7 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
             switch (buffer[1])
             {
             case 'a': // Ka
-                fscanf(pFile, "%f %f %f",
+                fscanf_s(pFile, "%f %f %f",
                     &pMaterial->ambient[0],
                     &pMaterial->ambient[1],
                     &pMaterial->ambient[2]);
@@ -1175,7 +1175,7 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
                 break;
 
             case 'd': // Kd
-                fscanf(pFile, "%f %f %f",
+                fscanf_s(pFile, "%f %f %f",
                     &pMaterial->diffuse[0],
                     &pMaterial->diffuse[1],
                     &pMaterial->diffuse[2]);
@@ -1183,7 +1183,7 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
                 break;
 
             case 's': // Ks
-                fscanf(pFile, "%f %f %f",
+                fscanf_s(pFile, "%f %f %f",
                     &pMaterial->specular[0],
                     &pMaterial->specular[1],
                     &pMaterial->specular[2]);
@@ -1200,7 +1200,7 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
             switch (buffer[1])
             {
             case 'r': // Tr
-                fscanf(pFile, "%f", &pMaterial->alpha);
+                fscanf_s(pFile, "%f", &pMaterial->alpha);
                 pMaterial->alpha = 1.0f - pMaterial->alpha;
                 break;
 
@@ -1211,11 +1211,11 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
             break;
 
         case 'd':
-            fscanf(pFile, "%f", &pMaterial->alpha);
+            fscanf_s(pFile, "%f", &pMaterial->alpha);
             break;
 
         case 'i': // illum
-            fscanf(pFile, "%d", &illum);
+            fscanf_s(pFile, "%d", &illum);
 
             if (illum == 1)
             {
@@ -1230,13 +1230,13 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
             if (strstr(buffer, "map_Kd") != 0)
             {
                 fgets(buffer, sizeof(buffer), pFile);
-                sscanf(buffer, "%s %s", buffer, buffer);
+                sscanf_s(buffer, "%s %s", buffer, 256, buffer, 256 );
                 pMaterial->colorMapFilename = buffer;
             }
             else if (strstr(buffer, "map_bump") != 0)
             {
                 fgets(buffer, sizeof(buffer), pFile);
-                sscanf(buffer, "%s %s", buffer, buffer);
+                sscanf_s(buffer, "%s %s", buffer, 256, buffer, 256 );
                 pMaterial->bumpMapFilename = buffer;
             }
             else
@@ -1247,7 +1247,7 @@ bool ModelOBJ::importMaterials(const char *pszFilename)
 
         case 'n': // newmtl
             fgets(buffer, sizeof(buffer), pFile);
-            sscanf(buffer, "%s %s", buffer, buffer);
+            sscanf_s(buffer, "%s %s", buffer, 256, buffer, 256 );
 
             pMaterial = &m_materials[numMaterials];
             pMaterial->ambient[0] = 0.2f;

@@ -56,7 +56,17 @@ void Grid::UpdateGrid()
 void Grid::Render()
 {
 	glPushMatrix();
-	glScalef( mScale, mScale, 1.0f );
-	gl_RenderPoints( mVertexBuffer, 0, mVertexBufferSize, 2 );
+		glScalef( mScale, mScale, 1.0f );
+
+		gl_SetColor( COLORS::eDARKGREY );
+		glBegin( GL_LINES );
+		glVertex2f( 0, -MAX_GRID_SIZE*2 );
+		glVertex2f( 0,  MAX_GRID_SIZE*2 );
+		glVertex2f( -MAX_GRID_SIZE*2, 0 );
+		glVertex2f(  MAX_GRID_SIZE*2, 0 );
+		glEnd();
+
+		gl_RenderPoints( mVertexBuffer, 0, mVertexBufferSize, 2 );
+				
 	glPopMatrix();
 }
