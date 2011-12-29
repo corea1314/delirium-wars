@@ -87,6 +87,8 @@ void Editor::Render()
 void Editor::Update( float dt )
 {
 	mTimeSeconds += dt;
+
+	OnUpdate( dt );
 }
 
 void Editor::OnKeyboard( unsigned char key, int mod )

@@ -184,6 +184,8 @@
     <ClCompile Include="..\..\src\Editors\Curve\CurveSelection.cpp" />
     <ClCompile Include="..\..\src\Editors\Editor.cpp" />
     <ClCompile Include="..\..\src\Editors\Grid.cpp" />
+    <ClCompile Include="..\..\src\Editors\Layout\LayoutEditor.cpp" />
+    <ClCompile Include="..\..\src\Editors\Layout\LayoutElement.cpp" />
     <ClCompile Include="..\..\src\Editors\Menu.cpp" />
     <ClCompile Include="..\..\src\Editors\Visual\VisualEditor.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Clock.cpp" />
@@ -291,6 +293,8 @@
     <ClInclude Include="..\..\src\Editors\Curve\CurveSelection.h" />
     <ClInclude Include="..\..\src\Editors\Editor.h" />
     <ClInclude Include="..\..\src\Editors\Grid.h" />
+    <ClInclude Include="..\..\src\Editors\Layout\LayoutEditor.h" />
+    <ClInclude Include="..\..\src\Editors\Layout\LayoutElement.h" />
     <ClInclude Include="..\..\src\Editors\Menu.h" />
     <ClInclude Include="..\..\src\Editors\Visual\VisualEditor.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Clock.h" />

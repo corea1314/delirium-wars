@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gfx.h"
+#include "Math/Vector2.h"
 
 #define MAX_GRID_SIZE		512
 
@@ -14,6 +15,7 @@ public:
 	void UpdateGrid();
 
 	void ToggleSnap();
+	Vector2 Snap( const Vector2& inPos );
 
 	void Render();
 
@@ -28,4 +30,5 @@ private:
 	int		mVertexBufferSize;
 	bool	mIsSnapping;
 	float	mScale;
+	float	mHalfGridDelta;
 };

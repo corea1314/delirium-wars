@@ -15,17 +15,18 @@ static const char* OPENFILE_BCF_FILTER = "Bezier Curve File\0*.bcf\0";
 static const char* OPENFILE_TGA_EXTENSION = "tga";
 static const char* OPENFILE_TGA_FILTER = "Targa Image\0*.tga\0";
 
-static const int kMinDeltaTrackPosY	= 16;
-static const int kMinDeltaFramePosX	= 16;
+static const int	kMinDeltaTrackPosY	= 16;
+static const int	kMinDeltaFramePosX	=  8;
 
-static const int kStartTrackPosX	= 64;
-static const int kStartTrackPosY	= 34;
+static const int	kStartTrackPosX		= 64;
+static const int	kStartTrackPosY		= 34;
 
-static const int kKeySize			= 12;
-static const int kTrackLineSize		= 14;
+static const int	kKeySize			= 12;
+static const int	kTrackLineSize		= 14;
 
-static const int kMarkFrameCount	= 15;	// mark very 15 frames
+static const int	kMarkFrameCount		= 15;	// mark very 15 frames
 
+static const float	kNormalLength		= 32.0f;
 
 void VisualEditor::OnInit()
 {
@@ -34,12 +35,40 @@ void VisualEditor::OnInit()
 	mFirstFrame = 0;
 	mFirstFrameDelta = 0.0f;
 	mKeyValueScale = 1.0f;
-	mCurrFrame = 0;
+	SetCurrFrame( 0 );
 
-	mTracks[0].Set( "pos:x", kStartTrackPosY+kMinDeltaTrackPosY*0);	mTracks[0].mCurve.AddKey(0,0); mTracks[0].mCurve.AddKey(14,14);	mTracks[0].mCurve.AddKey(29,29); mTracks[0].mCurve.AddKey(59,59);
-	mTracks[1].Set( "pos:y", kStartTrackPosY+kMinDeltaTrackPosY*1);	mTracks[1].mCurve.AddKey(0,0); mTracks[1].mCurve.AddKey( 1, 1);	mTracks[1].mCurve.AddKey( 2, 2); mTracks[1].mCurve.AddKey(39,39);
-	mTracks[2].Set( "angle", kStartTrackPosY+kMinDeltaTrackPosY*2);	mTracks[2].mCurve.AddKey(0,0); mTracks[2].mCurve.AddKey( 2, 2);	mTracks[2].mCurve.AddKey( 4, 4); mTracks[2].mCurve.AddKey(29,29);
-	mTracks[3].Set( "alpha", kStartTrackPosY+kMinDeltaTrackPosY*3);	mTracks[3].mCurve.AddKey(0,0); mTracks[3].mCurve.AddKey( 4, 4);	mTracks[3].mCurve.AddKey( 8, 8); mTracks[3].mCurve.AddKey(49,49);
+	mIsPlaying = false;
+	mCurrTime = 0.0f;
+	mFPS = 60;
+
+	mTrackInfo[TrackType::PosX ].Set( "pos:x", TrackType::PosX, kStartTrackPosY+kMinDeltaTrackPosY*0);	
+	mTrackInfo[TrackType::PosY ].Set( "pos:y", TrackType::PosY, kStartTrackPosY+kMinDeltaTrackPosY*1);	
+	mTrackInfo[TrackType::Angle].Set( "angle", TrackType::Angle, kStartTrackPosY+kMinDeltaTrackPosY*2);	
+	mTrackInfo[TrackType::Alpha].Set( "alpha", TrackType::Alpha, kStartTrackPosY+kMinDeltaTrackPosY*3);	
+
+	// push in dummy tracks
+	mAnimatables.push_back( Animatable() );
+	mSelectedAnimatable = &mAnimatables[0];
+
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  0,   0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey( 15,  15.0f );	
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey( 60, 300.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(120, 600.0f );
+
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  0,   0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey( 10, 100.0f );	
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey( 60,   0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(120, 200.0f );
+
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  0,   0.0f); 
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey( 60, (float)PI );	
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey( 80, (float)PI/2 );	
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(120,  0.0f ); 
+
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 0, 0); 
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 4, 4);	
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 8, 8); 
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(49,49);
 }
 
 void VisualEditor::OnExit()
@@ -51,12 +80,12 @@ void VisualEditor::OnExit()
 void VisualEditor::ClearSelection() 
 { 
 	mSelectedKeys.clear(); 
-	mTracks[0].bSelected = false;
-	mTracks[1].bSelected = false;
-	mTracks[2].bSelected = false;
-	mTracks[3].bSelected = false;
-	mTracks[4].bSelected = false;
-	mTracks[5].bSelected = false;
+	mTrackInfo[0].bSelected = false;
+	mTrackInfo[1].bSelected = false;
+	mTrackInfo[2].bSelected = false;
+	mTrackInfo[3].bSelected = false;
+	mTrackInfo[4].bSelected = false;
+	mTrackInfo[5].bSelected = false;
 }
 
 int VisualEditor::KeyToScreen( int inPosition )
@@ -69,14 +98,41 @@ int VisualEditor::ScreenToKey( int inPosition )
 	return mFirstFrame + ((inPosition + kMinDeltaFramePosX/2 - kStartTrackPosX) / kMinDeltaFramePosX);
 }
 
+void VisualEditor::SetCurrFrame( int inFrame)
+{
+	mCurrFrame = inFrame;
+
+	for( unsigned int i=0;i<mAnimatables.size();i++)
+		mAnimatables[i].Update( (float)mCurrFrame );
+}
+
+void VisualEditor::OnUpdate( float inDeltaTime )
+{
+	if( mIsPlaying )
+	{
+		mCurrTime += inDeltaTime / 4.0f;
+
+		if( mCurrTime > 3.0f ) // fixme 5 secs
+			mCurrTime = 0.0f;
+
+		mCurrFrame = (int)( mCurrTime * mFPS );
+
+		for( unsigned int i=0;i<mAnimatables.size();i++)
+			mAnimatables[i].Update( mCurrTime * mFPS );
+	}
+}
+
 void VisualEditor::OnRender()
 {
 	GetGrid()->Render();
+
+	for( unsigned int i=0;i<mAnimatables.size(); i++)
+		mAnimatables[i].Render();
 }
 
-void VisualEditor::RenderTrack( Track& inTrack, int inPosY )
+void VisualEditor::RenderTrack( TrackInfo& inTrackInfo, int inPosY )
 {
-	if( inTrack.bSelected )
+	if( inTrackInfo.bSelected )
 		gl_SetColor(COLORS::eORANGE);
 	else
 		gl_SetColor(COLORS::eDARKGREY);
@@ -85,22 +141,25 @@ void VisualEditor::RenderTrack( Track& inTrack, int inPosY )
 		glVertex2f( 1280.0f, (GLfloat)inPosY );
 	glEnd();
 		
-	if( inTrack.bSelected )
+	if( inTrackInfo.bSelected )
 		gl_SetColor(COLORS::eRED);
 	else
 		gl_SetColor(COLORS::eWHITE);
-	gl_RenderText( 8, inPosY, "%s", inTrack.mName );	//fixme 8
+	gl_RenderText( 8, inPosY, "%s", inTrackInfo.mName );	//fixme 8
 }
 
-void VisualEditor::RenderTrackKeys( Track& inTrack, int inPosY )
+void VisualEditor::RenderTrackKeys( TrackType::E inType, int inPosY )
 {
-	gl_SetColor(COLORS::eGREY);
-	glBegin( GL_POINTS );
-	for( unsigned int i=0; i<inTrack.mCurve.GetKeyCount(); i++ )
+	if( mSelectedAnimatable )
 	{
-		glVertex2f( (GLfloat)KeyToScreen( inTrack.mCurve.GetKey(i).mPosition), (GLfloat)inPosY );
-	}
-	glEnd();
+		gl_SetColor(COLORS::eGREY);
+		glBegin( GL_POINTS );
+		for( unsigned int i=0; i<mSelectedAnimatable->mCurve[inType].GetKeyCount(); i++ )
+		{
+			glVertex2f( (GLfloat)KeyToScreen( mSelectedAnimatable->mCurve[inType].GetKey(i).mPosition), (GLfloat)inPosY );
+		}
+		glEnd();
+	}	
 }
 
 void VisualEditor::RenderSelectedTrackKeys()
@@ -109,12 +168,12 @@ void VisualEditor::RenderSelectedTrackKeys()
 	glBegin( GL_POINTS );
 	for( unsigned int i=0; i<mSelectedKeys.size(); i++ )
 	{
-		glVertex2f( (GLfloat)KeyToScreen(mSelectedKeys[i].mTrack->mCurve.GetKey(mSelectedKeys[i].mKey).mPosition), (GLfloat)mSelectedKeys[i].mTrack->mPosY );
+//fixme		glVertex2f( (GLfloat)KeyToScreen(mSelectedKeys[i].mTrack->mCurve.GetKey(mSelectedKeys[i].mKey).mPosition), (GLfloat)mSelectedKeys[i].mTrack->mPosY );
 	}
 	glEnd();
 }
 
-void VisualEditor::RenderCurve( Curve& inCurve, int inPosY )
+void VisualEditor::RenderCurve( Curve& inCurve, bool inSelected, int inPosY )
 {
 	if( inCurve.GetKeyCount() < 2 )
 		return;	// not rendering imcomplete curves
@@ -141,7 +200,10 @@ void VisualEditor::RenderCurve( Curve& inCurve, int inPosY )
 			glVertex2f( t, inCurve.Evaluate(t) );
 
 		// first keys to last key
-		gl_SetColor( COLORS::eWHITE );
+		if( inSelected )
+			gl_SetColor( COLORS::eORANGE );
+		else
+			gl_SetColor( COLORS::eWHITE );
 		for(float t=MID_START_POS;t<MID_END_POS; t+= 0.01f )		
 			glVertex2f( t, inCurve.Evaluate(t) );
 
@@ -198,13 +260,10 @@ void VisualEditor::OnRenderGUI()
 
 	int nPosY = kStartTrackPosY;
 
-	for( int i=0; i<6; i++ )
+	for( int i=0; i<4; i++ )	//fixme 4
 	{
-		if( mTracks[i].mCurve.GetKeyCount() )
-		{
-			RenderTrack( mTracks[i], nPosY );
-			nPosY += kMinDeltaTrackPosY;
-		}
+		RenderTrack( mTrackInfo[i], nPosY );
+		nPosY += kMinDeltaTrackPosY;
 	}
 
 	// Render first frame marker
@@ -242,23 +301,24 @@ void VisualEditor::OnRenderGUI()
 
 	nPosY = kStartTrackPosY;
 
-	for( int i=0; i<6; i++ )
+	for( int i=0; i<4; i++ )	//fixme 4
 	{
-		if( mTracks[i].mCurve.GetKeyCount() )
-		{
-			RenderTrackKeys( mTracks[i], nPosY );
-			nPosY += kMinDeltaTrackPosY;
-		}
+		RenderTrackKeys( (TrackType::E)i, nPosY );
+		nPosY += kMinDeltaTrackPosY;
 	}
 	
 	RenderSelectedTrackKeys();
 
 	glPointSize( 8.0f );
 
-	for( int i=0; i<6; i++ )
+	if( mSelectedAnimatable )
 	{
-		RenderCurve( mTracks[i].mCurve, kMinDeltaTrackPosY );
+		for( int i=0; i<4; i++ )	//fixme 4
+		{
+			RenderCurve( mSelectedAnimatable->mCurve[i], mTrackInfo[i].bSelected, kMinDeltaTrackPosY );
+		}
 	}
+
 	glLineWidth( 2.0f );
 }
 
@@ -281,11 +341,11 @@ void VisualEditor::OnMouseClick( int button, int x, int y, int mod )
 					// Select track
 					int nTrackIndex = (y-kStartTrackPosY+kMinDeltaTrackPosY/2)/kMinDeltaTrackPosY;
 					
-					mTracks[nTrackIndex].bSelected = true;
+					mTrackInfo[nTrackIndex].bSelected = true;
 
 					// Select frame
 
-					mCurrFrame = ScreenToKey( x );
+					SetCurrFrame( ScreenToKey( x ) );
 				}
 			}
 		}
@@ -303,23 +363,26 @@ void VisualEditor::OnMouseClick( int button, int x, int y, int mod )
 
 void VisualEditor::OnMouseClickTrackArea( int button, int x, int y )
 {
-	Vector2 vKeyPos;
-	const Vector2 vClickPos((float)x,(float)y);
-	Vector2 vDelta;
-
-	const float fKeyRadiusSquared = (kKeySize/2)*(kKeySize/2);
-
-	for( int i=0; i<6; i++ ) //fixme 6
+	if( mSelectedAnimatable )
 	{
-		for( unsigned int j=0; j<mTracks[i].mCurve.GetKeyCount(); j++ )
-		{
-			vKeyPos.Set( (float)KeyToScreen( mTracks[i].mCurve.GetKey(j).mPosition), (float)(kStartTrackPosY + i*kMinDeltaTrackPosY) );
-			vDelta = vKeyPos - vClickPos;
+		Vector2 vKeyPos;
+		const Vector2 vClickPos((float)x,(float)y);
+		Vector2 vDelta;
 
-			if( vDelta.GetLengthSquare() < fKeyRadiusSquared )
+		const float fKeyRadiusSquared = (kKeySize/2)*(kKeySize/2);
+
+		for( int i=0; i<6; i++ ) //fixme 6
+		{
+			for( unsigned int j=0; j<mSelectedAnimatable->mCurve[i].GetKeyCount(); j++ )
 			{
-				// found one
-				mSelectedKeys.push_back( KeySelection(&mTracks[i],j) );
+				vKeyPos.Set( (float)KeyToScreen(mSelectedAnimatable->mCurve[i].GetKey(j).mPosition), (float)(kStartTrackPosY + i*kMinDeltaTrackPosY) );
+				vDelta = vKeyPos - vClickPos;
+
+				if( vDelta.GetLengthSquare() < fKeyRadiusSquared )
+				{
+					// found one
+					//fixme mSelectedKeys.push_back( KeySelection(&mTrackInfo[i],j) );
+				}
 			}
 		}
 	}
@@ -369,8 +432,9 @@ void VisualEditor::OnSpecialKey( int key, int mod )
 
 	switch( key )
 	{
-	case SK_LEFT:	mCurrFrame--;	mCurrFrame = std::max( 0, mCurrFrame ); break;
-	case SK_RIGHT:	mCurrFrame++;	break;
+	case SK_HOME:	SetCurrFrame(mCurrFrame);	break;
+	case SK_LEFT:	mCurrFrame--;	mCurrFrame = std::max( 0, mCurrFrame ); SetCurrFrame(mCurrFrame); break;
+	case SK_RIGHT:	mCurrFrame++;	SetCurrFrame(mCurrFrame); break;
 	}
 }
 
@@ -385,6 +449,9 @@ void VisualEditor::OnKeyboard( unsigned char key, int mod )
 		break;
 	case 27:	// Escape key
 		ClearSelection();	
+		break;
+	case ' ':
+		mIsPlaying = !mIsPlaying;
 		break;
 	}
 }
@@ -409,3 +476,26 @@ void VisualEditor::OnMenuFileLoad( int inUnused )
 
 }
 
+
+
+void VisualEditor::Animatable::Update( float inPosition )
+{
+	mPos.x = mCurve[TrackType::PosX ].Evaluate(inPosition);
+	mPos.y = mCurve[TrackType::PosY ].Evaluate(inPosition);
+	mAngle = mCurve[TrackType::Angle].Evaluate(inPosition);
+}
+
+void VisualEditor::Animatable::Render()
+{
+	glPointSize( kKeySize );
+	gl_SetColor( COLORS::eGREEN );
+	glBegin( GL_POINTS );
+		glVertex2f( mPos.x, mPos.y );
+	glEnd();
+
+	gl_SetColor( COLORS::eGREEN );
+	glBegin( GL_LINES );
+		glVertex2f( mPos.x, mPos.y );
+		glVertex2f( mPos.x+cos(mAngle)*kNormalLength, mPos.y+sin(mAngle)*kNormalLength );
+	glEnd();
+}
