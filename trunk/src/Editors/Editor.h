@@ -19,7 +19,7 @@ public:
 
 	virtual void OnInit() {}
 	virtual void OnExit() {}
-	virtual void OnUpdate() {}
+	virtual void OnUpdate( float inDeltaTime ) {}
 	virtual void OnRender() {}
 	virtual void OnRenderGUI() {}
 
@@ -29,6 +29,11 @@ public:
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnSpecialKey( int key, int mod );
 	virtual void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
+	
+	void ScreenToEditor( int x, int y, Vector2& v );
+	void EditorToScreen( const Vector2& v, int& x, int& y );
+	
+	Grid*	GetGrid() { return mGrid; }
 
 protected:
 	virtual void OnCreateMenu(){}
@@ -36,11 +41,7 @@ protected:
 
 	const char* GetFileSave( const char* extension, const char* filter );
 	const char* GetFileLoad( const char* extension, const char* filter );
-
-	void ScreenToEditor( int x, int y, Vector2& v );
-	void EditorToScreen( const Vector2& v, int& x, int& y );
-
-	Grid*	GetGrid() { return mGrid; }
+	
 	Menu*	GetMenu() { return mMenu; }
 	float	GetTime() { return mTimeSeconds; }
 	void	ResetTime() { mTimeSeconds = 0.0f; }

@@ -15,6 +15,19 @@ void Grid::ToggleSnap()
 	mIsSnapping = !mIsSnapping;
 }
 
+Vector2 Grid::Snap( const Vector2& inPos )
+{
+	if( mIsSnapping )
+	{
+		Vector2 vNewPos;
+		vNewPos.x = (float)(((int)(inPos.x + mHalfGridDelta) / mSize) * mSize);
+		vNewPos.y = (float)(((int)(inPos.y + mHalfGridDelta) / mSize) * mSize);
+		return vNewPos;
+	}
+
+	return inPos;	
+}
+
 void Grid::IncreaseGridSize()
 {
 	mSize *= 2;
@@ -51,6 +64,8 @@ void Grid::UpdateGrid()
 	}
 
 	mVertexBufferSize = c * c;
+
+	mHalfGridDelta = (512 / mSize ) / 2.0f;
 }
 
 void Grid::Render()

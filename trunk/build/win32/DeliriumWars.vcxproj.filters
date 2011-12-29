@@ -151,6 +151,9 @@
     <Filter Include="editors\visual">
       <UniqueIdentifier>{8152fdc1-dae0-45f7-a1d8-e693d7f4ea74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editors\layout">
+      <UniqueIdentifier>{33ee678f-419b-4d3b-b22f-ae745a2d50a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -437,6 +440,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Editors\Visual\VisualEditor.cpp">
       <Filter>editors\visual</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Layout\LayoutEditor.cpp">
+      <Filter>editors\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Layout\LayoutElement.cpp">
+      <Filter>editors\layout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -748,6 +757,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Editors\Visual\VisualEditor.h">
       <Filter>editors\visual</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Layout\LayoutEditor.h">
+      <Filter>editors\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Layout\LayoutElement.h">
+      <Filter>editors\layout</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

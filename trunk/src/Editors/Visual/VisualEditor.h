@@ -8,27 +8,47 @@
 class VisualEditor : public Editor
 {
 private:
-	class Track
+	class TrackType { public: enum E { PosX, PosY, Angle, Alpha, ScaleX, ScaleY }; };
+	
+	class TrackInfo
 	{
 	public:
-		void Set( const char* inName, int inPosY ) 
+		void Set( const char* inName, TrackType::E inType, int inPosY ) 
 		{
+			mType = inType;
 			mName = inName;
 			mPosY = inPosY;
 			bSelected = false;
 		}
 
-		const char*	mName;
-		Curve		mCurve;
-		bool		bSelected;
-		int			mPosY;
+		const char*		mName;
+		Curve*			mCurve;
+		bool			bSelected;
+		int				mPosY;
+		TrackType::E	mType;
+	};
+
+	class Animatable
+	{
+	public:
+		Animatable() : mAngle(0.0f), mAlpha(1.0f) {}
+
+		Vector2 mPos;
+		Vector2 mScale;
+		float	mAngle;
+		float	mAlpha;
+
+		Curve	mCurve[6];
+
+		void Update( float inPosition );
+		void Render();
 	};
 
 	class KeySelection
 	{
 	public:
-		KeySelection( Track* inTrack, int inKey ) : mTrack(inTrack), mKey(inKey) {}
-		Track* mTrack;
+		KeySelection( TrackInfo* inTrackInfo, int inKey ) : mTrackInfo(inTrackInfo), mKey(inKey) {}
+		TrackInfo* mTrackInfo;
 		int mKey;
 	};
 
@@ -37,6 +57,7 @@ protected:
 	virtual void OnInit();
 	virtual void OnExit();
 	virtual void OnRender();
+	virtual void OnUpdate( float inDeltaTime );
 	virtual void OnRenderGUI();
 	virtual void OnMouseClick( int button, int x, int y, int mod );
 	virtual void OnMouseMotion( int x, int y, int dx, int dy, int mod );
@@ -50,12 +71,13 @@ protected:
 	
 private:
 	// Local methods
-	void RenderTrack( Track& inTrack, int inPosY );
-	void RenderTrackKeys( Track& inTrack, int inPosY );
-	void RenderTrackCurves( Track& inTrack, int inPosY );
-	void RenderCurve( Curve& inCurve, int inPosY );
+	void RenderTrack( TrackInfo& inTrackInfo, int inPosY );
+	void RenderTrackKeys( TrackType::E inType, int inPosY );
+	void RenderTrackCurves( TrackType::E inType, int inPosY );
+	void RenderCurve( Curve& inCurve, bool inSelected, int inPosY );
 	void RenderSelectedTrackKeys();
 
+	void SetCurrFrame( int inFrame );
 	void ClearSelection();
 
 	int KeyToScreen( int inPosition );
@@ -64,11 +86,18 @@ private:
 	void OnMouseClickTrackArea( int button, int x, int y );
 
 private:
-	int		mCurrFrame;
-	int		mFirstFrame;
-	float	mFirstFrameDelta;
-	Track	mTracks[6];
-	float	mKeyValueScale;
+	int			mCurrFrame;
+	int			mFirstFrame;
+	float		mFirstFrameDelta;
+	TrackInfo	mTrackInfo[6];
+	float		mKeyValueScale;
 
+	bool		mIsPlaying;
+	float		mCurrTime;
+	int			mFPS;
+
+	Animatable*	mSelectedAnimatable;
+	
+	std::vector<Animatable>		mAnimatables;
 	std::vector<KeySelection>	mSelectedKeys;
 };
