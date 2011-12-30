@@ -112,7 +112,7 @@ void Editor::OnMouseWheel( int v, int mod )
 	mCamera->GetZoom() = CAMERA_MID_ZOOM_LEVEL / mZoomLevel;
 }
 
-void Editor::OnMouseClick( int button, int x, int y, int mod )
+void Editor::OnMouseClick( int button, int state, int x, int y, int mod )
 {
 	// todo translate from screen to editor space
 }

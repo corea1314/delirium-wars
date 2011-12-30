@@ -158,11 +158,12 @@ void App::OnMouseClick( int button, int state, int x, int y, int mod )
 
 	Lair::GetInputMan()->UpdateMouseButtonState( button, state == 1 );
 
-	if( state )
-		if( m_pActiveEditor )
-			m_pActiveEditor->OnMouseClick( button, x, y, mod );
-		else
-			GetEngine()->OnMouseClick( button, x, y, v );	
+	if( m_pActiveEditor )
+	{
+		m_pActiveEditor->OnMouseClick( button, state, x, y, mod );
+	}
+	else
+		GetEngine()->OnMouseClick( button, x, y, v );	
 }
 
 void App::OnMouseMotion( int x, int y, int mod )

@@ -23,5 +23,5 @@ public:
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnSpecialKey( int key, int mod );
 	virtual bool OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod );
-	virtual bool OnMouseClick( int button, const Vector2& pos, int mod );	// returns true if handled
+	virtual bool OnMouseClick( int button, int state, const Vector2& pos, int mod );	// returns true if handled
 };
