@@ -59,7 +59,7 @@ protected:
 	virtual void OnRender();
 	virtual void OnUpdate( float inDeltaTime );
 	virtual void OnRenderGUI();
-	virtual void OnMouseClick( int button, int x, int y, int mod );
+	virtual void OnMouseClick( int button, int state, int x, int y, int mod );
 	virtual void OnMouseMotion( int x, int y, int dx, int dy, int mod );
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnSpecialKey( int key, int mod );

@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#define GRID_SIZE	1024.0f
+
 Grid::Grid()
 {
 	mScale = 1.0f;
@@ -20,11 +22,10 @@ Vector2 Grid::Snap( const Vector2& inPos )
 	if( mIsSnapping )
 	{
 		Vector2 vNewPos;
-		vNewPos.x = (float)(((int)(inPos.x + mHalfGridDelta) / mSize) * mSize);
-		vNewPos.y = (float)(((int)(inPos.y + mHalfGridDelta) / mSize) * mSize);
+		vNewPos.x = (float)((int)((inPos.x + NUM_SIGN(inPos.x) * mGridDelta/2) / mGridDelta) * mGridDelta);
+		vNewPos.y = (float)((int)((inPos.y + NUM_SIGN(inPos.y) * mGridDelta/2) / mGridDelta) * mGridDelta);
 		return vNewPos;
 	}
-
 	return inPos;	
 }
 
@@ -48,15 +49,15 @@ void Grid::UpdateGrid()
 
 	int c = mSize + 1;
 
-	float d = 1000.0f / mSize;
+	float d = GRID_SIZE / mSize;
 
 	int i,j;
 	for( i=0; i<c; i++ )
 	{
 		for( j=0; j<c; j++ )
 		{
-			p->x = i * d - 500.0f;
-			p->y = j * d- 500.0f;
+			p->x = i * d - GRID_SIZE/2;
+			p->y = j * d - GRID_SIZE/2;
 			p->z = 0;
 			p->color = COLORS::eYELLOW;
 			++p;
@@ -65,7 +66,7 @@ void Grid::UpdateGrid()
 
 	mVertexBufferSize = c * c;
 
-	mHalfGridDelta = (512 / mSize ) / 2.0f;
+	mGridDelta = (GRID_SIZE / mSize );
 }
 
 void Grid::Render()

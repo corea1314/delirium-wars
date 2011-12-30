@@ -30,5 +30,5 @@ private:
 	int		mVertexBufferSize;
 	bool	mIsSnapping;
 	float	mScale;
-	float	mHalfGridDelta;
+	float	mGridDelta;
 };

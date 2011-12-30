@@ -322,7 +322,7 @@ void VisualEditor::OnRenderGUI()
 	glLineWidth( 2.0f );
 }
 
-void VisualEditor::OnMouseClick( int button, int x, int y, int mod )
+void VisualEditor::OnMouseClick( int button, int state, int x, int y, int mod )
 {
 	Vector2 v;	
 	ScreenToEditor( x, y, v );
@@ -487,7 +487,7 @@ void VisualEditor::Animatable::Update( float inPosition )
 
 void VisualEditor::Animatable::Render()
 {
-	glPointSize( kKeySize );
+	glPointSize( (GLfloat)kKeySize );
 	gl_SetColor( COLORS::eGREEN );
 	glBegin( GL_POINTS );
 		glVertex2f( mPos.x, mPos.y );

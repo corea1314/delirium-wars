@@ -7,13 +7,13 @@
 
 #include "Lair/Lair.h"
 
-static const float	kElementSelectionRadius			= 4.0f;
+static const float	kElementSelectionRadius			= 16.0f;
 static const float	kElementSelectionRadiusSquared	= kElementSelectionRadius * kElementSelectionRadius;
 
 
 bool IsAcceptableCharForText( char inKey ) 
 { 
-	return isalnum(inKey); 
+	return isalnum(inKey) || inKey == '.' || inKey == '-' || inKey == '_'; 
 }
 
 void LayoutElement::OnRender()
@@ -44,48 +44,45 @@ void LayoutElement::OnKeyboard( unsigned char key, int mod )
 {
 	if( mSelected == false )
 		return;
-
-	if( IsAcceptableCharForText(key) )
-		mName += key;
-
+	
 	switch( key )
 	{
 	case  8:	// Backspace key
-		// Delete character from name
-		{	
+		{	// Delete character from name
 			if( mName.size() )
 				 mName.pop_back();	
 			break;
+		}	
+	case 13:	// Enter key
+	case 27: 	// Escape key
+		{	// Deselect
+			mSelected = false;	
+			break;
 		}
-	
-	case 13:							// Enter key
-	case 27: mSelected = false;	break;	// Escape key
+	default:
+		{	// Adding character to name
+			if( IsAcceptableCharForText(key) )
+				mName += key;
+		}		
 	}
 }
 
 void LayoutElement::OnSpecialKey( int key, int mod )
 {
-	switch( key )
-	{
-	default:
-		break;
-	}
 }
 
 bool LayoutElement::OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod )
 {
 	if( Lair::GetInputMan()->GetMouseButtonState(0).bState && mSelected )
 	{
-		mPos += delta;
-		mPos = mEditor->GetGrid()->Snap(mPos);
-
+		mPos = mEditor->GetGrid()->Snap(pos);
 		return true;
 	}
 
 	return false;
 }
 
-bool LayoutElement::OnMouseClick( int button, const Vector2& pos, int mod )
+bool LayoutElement::OnMouseClick( int button, int state, const Vector2& pos, int mod )
 {
 	Vector2 vDelta = mPos - pos;
 

@@ -154,6 +154,12 @@
     <Filter Include="editors\layout">
       <UniqueIdentifier>{33ee678f-419b-4d3b-b22f-ae745a2d50a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editors\widgets">
+      <UniqueIdentifier>{0383b956-f3ce-4d9d-a8a2-946b99d931d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editors\gizmos">
+      <UniqueIdentifier>{7b28db89-57d6-4e20-a9f3-99a20627cc63}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -446,6 +452,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Editors\Layout\LayoutElement.cpp">
       <Filter>editors\layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\WidgetRect.cpp">
+      <Filter>editors\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\GizmoRotation.cpp">
+      <Filter>editors\gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\GizmoScaling.cpp">
+      <Filter>editors\gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\GizmoTranslation.cpp">
+      <Filter>editors\gizmos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -763,6 +781,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Editors\Layout\LayoutElement.h">
       <Filter>editors\layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\WidgetRect.h">
+      <Filter>editors\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\GizmoRotation.h">
+      <Filter>editors\gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\GizmoScaling.h">
+      <Filter>editors\gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\GizmoTranslation.h">
+      <Filter>editors\gizmos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

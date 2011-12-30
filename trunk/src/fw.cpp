@@ -33,7 +33,7 @@ void glut_OnMotion(int x,int y)
 
 void glut_OnMouse(int b,int s,int x,int y)
 {
-	s = ((GLUT_DOWN==s)?1:0); // usefull?
+	s = ((GLUT_DOWN==s)?1:0);
 
 	int mod = glutGetModifiers();
 	

@@ -191,7 +191,7 @@ void CurveEditor::RenderCurve()
 	}
 }
 
-void CurveEditor::OnMouseClick( int button, int x, int y, int mod )
+void CurveEditor::OnMouseClick( int button, int state, int x, int y, int mod )
 {
 	switch(button)
 	{
