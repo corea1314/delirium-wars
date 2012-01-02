@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 
-class Editor;
+class MenuUser;
 
 class Menu
 {
@@ -12,9 +12,9 @@ public:
 	class Delegate
 	{
 	public:
-		typedef void (Editor::*Function)( int );
+		typedef void (MenuUser::*Function)( int );
 
-		Delegate( Editor* inInstance, Function inFunction, int inArg0 ) : mpInstance(inInstance), mpFunction(inFunction), mArg0(inArg0) {}
+		Delegate( MenuUser* inInstance, Function inFunction, int inArg0 ) : mpInstance(inInstance), mpFunction(inFunction), mArg0(inArg0) {}
 
 		void operator()() 
 		{ 
@@ -23,7 +23,7 @@ public:
 
 	private:
 		int			mArg0;
-		Editor*		mpInstance;
+		MenuUser*		mpInstance;
 		Function	mpFunction;
 	};
 
@@ -50,9 +50,23 @@ private:
 	static std::map< int, Menu::Delegate >	msMapDelegate;
 };
 
+
+class MenuUser
+{
+public:
+	Menu* GetMenu() { return mMenu; }
+
+protected:
+	virtual void OnCreateMenu() { mMenu = new Menu; }
+	virtual void OnDestroyMenu() { delete mMenu; mMenu =0; }
+
+private:
+	Menu*	mMenu;
+};
+
 #define CREATE_MENU( menu, name )	\
 	Menu*	menu = GetMenu()->AddMenu( name );
 
 #define ADD_MENU_ITEM( menu, name, func, arg )	\
-	menu->AddItem( name, Menu::Delegate( this, static_cast <void (Editor::*)(int)> (func), arg ) );
+	menu->AddItem( name, Menu::Delegate( this, static_cast <void (MenuUser::*)(int)> (func), arg ) );
 

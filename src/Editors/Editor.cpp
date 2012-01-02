@@ -8,6 +8,8 @@
 
 #define CAMERA_MID_ZOOM_LEVEL	100.0f
 
+void ConvertMultiToArray(LPCSTR inPath, std::vector<std::string> &outArray);
+
 Editor::Editor() 
 	: lock(false)
 {
@@ -29,12 +31,11 @@ Editor::~Editor()
 void Editor::Init()
 {
 	ResetTime();
-
-	mMenu = new Menu();
-	mMenu->BindButton(2);	// right button
-
+	
+	MenuUser::OnCreateMenu();
 	OnCreateMenu();
-
+	GetMenu()->BindButton(2);	// right button
+	
 	OnInit();
 }
 
@@ -42,11 +43,9 @@ void Editor::Exit()
 {
 	OnExit();
 
+	GetMenu()->UnbindButton(2);	// right button
 	OnDestroyMenu();
-	
-	mMenu->UnbindButton(2);	// right button
-	delete mMenu;
-	mMenu = 0;
+	MenuUser::OnDestroyMenu();
 }
 
 void Editor::Render()
@@ -148,29 +147,35 @@ void Editor::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_cou
 
 }
 
-const char* Editor::GetFileSave( const char* extension, const char* filter )
+const Editor::FileSelection& Editor::GetFileSave( const char* extension, const char* filter )
 {
-	static char filename[MAX_PATH] = "";
+	static char filename[MAX_PATH];
+	filename[0] = 0; // requirement of ::OpenFilename
 
-	if( !lock && getSaveFilename(filename,sizeof(filename), filter, extension ) )
+	mSelectedFilename.clear();
+
+	if( !lock && GetSaveFilename(filename,sizeof(filename), filter, extension ) )
 	{
-		return filename;
+		return mSelectedFilename;
 	}
-	return 0;
+	return mSelectedFilename;
 }
 
-const char* Editor::GetFileLoad( const char* extension, const char* filter )
+const Editor::FileSelection& Editor::GetFileLoad( const char* extension, const char* filter, bool multiple )
 {
-	static char filename[MAX_PATH] = "";
+	static char filename[MAX_PATH*32];
+	filename[0] = 0; // requirement of ::OpenFilename
 
-	if( !lock && getLoadFilename(filename,sizeof(filename),filter,extension) )
+	mSelectedFilename.clear();
+
+	if( !lock && GetLoadFilename(filename,sizeof(filename),filter,extension,multiple) )
 	{
-		return filename;
+		return mSelectedFilename;
 	}
-	return 0;
+	return mSelectedFilename;
 }
 
-bool Editor::getSaveFilename( char filename[], int count, const char* filter, const char* extension )
+bool Editor::GetSaveFilename( char filename[], int count, const char* filter, const char* extension )
 {
 	::OPENFILENAME openFilename = {0};
 
@@ -184,7 +189,7 @@ bool Editor::getSaveFilename( char filename[], int count, const char* filter, co
 	openFilename.nMaxFileTitle   = 0;
 	openFilename.lpstrInitialDir = 0;
 	openFilename.lpstrDefExt     = extension;
-	openFilename.Flags           = OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT | OFN_NOREADONLYRETURN;
+	openFilename.Flags           = OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT | OFN_NOREADONLYRETURN | OFN_EXPLORER;
 
 	lock = true;
 	bool result = ::GetSaveFileName(&openFilename) != 0;
@@ -192,7 +197,7 @@ bool Editor::getSaveFilename( char filename[], int count, const char* filter, co
 	return result;
 }
 
-bool Editor::getLoadFilename( char filename[], int count, const char* filter, const char* extension )
+bool Editor::GetLoadFilename( char filename[], int count, const char* filter, const char* extension, bool multiple )
 {
 	::OPENFILENAME openFilename = {0};
 
@@ -206,10 +211,18 @@ bool Editor::getLoadFilename( char filename[], int count, const char* filter, co
 	openFilename.nMaxFileTitle   = 0;
 	openFilename.lpstrInitialDir = 0;
 	openFilename.lpstrDefExt     = extension;
-	openFilename.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+	openFilename.Flags           = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_EXPLORER;
+
+	if( multiple )
+		openFilename.Flags |= OFN_ALLOWMULTISELECT;
 
 	lock = true;
 	bool result = ::GetOpenFileName(&openFilename) != 0;
+
+	if( result )
+	{
+		ConvertMultiToArray( filename, mSelectedFilename );
+	}
 	lock = false;
 	return result;
 }
@@ -276,4 +289,87 @@ void Editor::EditorToScreen( const Vector2& v, int& x, int& y )
 
 	x = (int)X;
 	y = (int)Y;
+}
+
+void Editor::OnMenuFileSave( int unused )
+{
+	FileSelection fs = GetFileSave( GetFileExtension(), GetFileFilter() );
+	if( fs.size() != 0 )
+	{
+		TiXmlDocument doc;
+
+		TiXmlElement * pxmlRoot = new TiXmlElement( GetFileExtension() );
+		
+		int nVersion = 0;	// todo save version
+		pxmlRoot->SetAttribute("version", nVersion);
+
+			OnSerializeSave( pxmlRoot );
+
+			// todo save editor options (camera, grid, zoom)
+		
+		doc.LinkEndChild( pxmlRoot );
+
+		doc.SaveFile( fs[0].c_str() );
+	}
+}
+
+void Editor::OnMenuFileLoad( int unused )
+{
+	FileSelection fs = GetFileLoad( GetFileExtension(), GetFileFilter() );
+	if( fs.size() != 0 )
+	{
+		TiXmlDocument doc;
+		doc.LoadFile( fs[0].c_str() );
+
+		if ( doc.Error() )
+		{
+			Lair::GetLogMan()->Log( "Editor", "OnFileLoad - XML parse error in file %s - %s: %s (Line %d)\n", fs[0].c_str(), doc.Value(), doc.ErrorDesc(), doc.ErrorRow() );
+			return;
+		}
+
+		TiXmlElement* pxmlRoot = doc.FirstChildElement( GetFileExtension() );
+
+		if( pxmlRoot )
+		{
+			// todo load and validate version
+			int nVersion;
+			pxmlRoot->Attribute("version", &nVersion);
+
+			// todo load editor options (camera, grid, zoom)
+
+			OnSerializeLoad( pxmlRoot );
+		}
+	}
+}
+
+
+void ConvertMultiToArray(LPCSTR inPath, std::vector<std::string> &outArray)
+{
+	char	szDir[MAX_PATH+1] = "";
+	char	szFile[MAX_PATH+1];
+	LPCSTR	p;
+
+	outArray.clear();
+
+	for (p = inPath; *p; p += lstrlen(p) + 1)
+	{
+		if (szDir[0] == '\0')
+		{
+			lstrcpyn(szDir, p, sizeof(szDir));
+		}
+		else
+		{
+			_snprintf_s(szFile, sizeof(szFile), "%s\\%s", szDir, p);
+			outArray.push_back(szFile);
+		}
+	}
+
+	// If there is only one file its here
+	if (outArray.size() == 0 && szDir[0] != '\0')
+	{
+		outArray.push_back(szDir);
+	}
+
+	// The file names come back in an unpredictable order (not reversed) so sorting is the best we can do - thanks Microsoft
+	std::sort(outArray.begin(), outArray.end());
 }

@@ -34,13 +34,16 @@ protected:
 	virtual void OnCreateMenu();
 	
 	// Menu callbacks
-	void OnMenuFileSave( int inUnused );
-	void OnMenuFileLoad( int inUnused );
 	void OnMenuMode( int inMode );
+
+	// File management
+	virtual const char*	GetFileExtension() { return "xlay"; }
+	virtual const char*	GetFileFilter() { return "XML Layout File\0*.xlay\0"; }
 	
 private:
 	// Local methods
 	void SetMode( Mode::E inMode );
+	void CleanupDeleted();
 	
 private:
 	Mode::E						mMode;

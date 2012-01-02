@@ -4,7 +4,9 @@
 class CEngine;
 class Editor;
 
-class App
+#include "Editors/Menu.h"
+
+class App : public MenuUser
 {
 public:
 	App();
@@ -29,6 +31,8 @@ public:
 	void SwitchEditor( int inEditorId );
 
 	void OnReshape( int inNewWindowWidth, int inNewWindowHeight );
+
+	void OnCreateMenu();
 		
 private:
 	// todo: better handle mouse position and button states from framework
@@ -39,6 +43,8 @@ private:
 	int mFps;
 	int mFpsAverage;
 	float mFpsTime;
+
+	bool mEditMode;
 	
 private:
 	CEngine* m_pEngine;

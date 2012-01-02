@@ -13,6 +13,7 @@
 #include "Editors/Curve/CurveEditor.h"
 #include "Editors/Visual/VisualEditor.h"
 #include "Editors/Layout/LayoutEditor.h"
+#include "Editors/Sequence/SequenceEditor.h"
 
 void Screen_2_App( int x, int y, Vector2& v )
 {
@@ -88,6 +89,8 @@ App::App()
 	mFps = 0;
 	mFpsAverage = 0;
 	mFpsTime = 0.0f;
+
+	mEditMode = false;
 }
 
 #include "objLoader/obj.h"
@@ -101,7 +104,7 @@ void App::Init()
 	m_pEditors[0] = new CurveEditor;
 	m_pEditors[1] = new VisualEditor;
 	m_pEditors[2] = new LayoutEditor;
-	m_pEditors[3] = 0;
+	m_pEditors[3] = new SequenceEditor;
 	m_pEditors[4] = 0;
 	m_pEditors[5] = 0;
 	m_pEditors[6] = 0;
@@ -110,10 +113,14 @@ void App::Init()
 	m_pEditors[9] = 0;
 	m_pEditors[10] = 0;
 	m_pEditors[11] = 0;
+
+	OnCreateMenu();
 }
 
 void App::Exit()
 {
+	OnDestroyMenu();
+
 	delete m_pEngine;
 
 	m_pActiveEditor = 0;
@@ -196,6 +203,20 @@ void App::OnMouseWheel( int v, int mod )
 
 void App::OnKeyboard( unsigned char key, int mod )
 {
+	if( key == 9 )	// TAB key
+	{
+		mEditMode = !mEditMode;
+
+		if( mEditMode )
+		{
+			GetMenu()->BindButton(2);	// right button
+		}
+		else
+		{
+			GetMenu()->UnbindButton(2);	// right button
+		}
+	}
+
 	if( m_pActiveEditor )
 		m_pActiveEditor->OnKeyboard( key, mod );
 	else
@@ -261,12 +282,13 @@ void App::OnOpenFile( const char* in_szFilename )
 
 void App::Render()
 {
+	float fTotalTime = (timeGetTime()/1000.0f);
 	++mFps;
-	if( mFpsTime < m_pEngine->GetClock()->GetTotalTime() )
+	if( mFpsTime < fTotalTime )
 	{
 		mFpsAverage += mFps;
 		mFpsAverage /= 2;
-		mFpsTime = m_pEngine->GetClock()->GetTotalTime() + 1.0f;
+		mFpsTime = fTotalTime + 1.0f;
 		mFps = 0;
 	}
 
@@ -281,7 +303,11 @@ void App::Render()
 
 		glDisable( GL_TEXTURE_2D );
 		gl_SetColor(COLORS::eWHITE);
-		gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", mFps, mFpsAverage, Lair::GetCameraMan()->GetActiveCamera()->GetZoom(), mWindowWidth, mWindowHeight );
+		
+		if( mEditMode )
+			gl_RenderText( 8, 8, "*** EDIT MODE *** FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", mFps, mFpsAverage, Lair::GetCameraMan()->GetActiveCamera()->GetZoom(), mWindowWidth, mWindowHeight );
+		else
+			gl_RenderText( 8, 8, "FPS: %d (%d) - Zoom: %0.1fX -- w:%d, %d", mFps, mFpsAverage, Lair::GetCameraMan()->GetActiveCamera()->GetZoom(), mWindowWidth, mWindowHeight );
 	}	
 }
 
@@ -292,7 +318,8 @@ void App::Update( float dt )
 	else
 	{
 		//todo: emit any other update related signals
-		m_pEngine->Update( dt );
+		if( mEditMode == false )
+			m_pEngine->Update( dt );
 	}
 }
 
@@ -322,4 +349,17 @@ void App::SwitchEditor( int inEditorId )
 			m_pActiveEditor->Init();					// Init the new editor
 		}		
 	}	
+}
+
+void App::OnCreateMenu()
+{	
+	MenuUser::OnCreateMenu();
+
+	CREATE_MENU( pFile, "  Editors..." );
+		ADD_MENU_ITEM( pFile, "  Curve  ", &App::SwitchEditor, 0 );
+		ADD_MENU_ITEM( pFile, "  Visual  ", &App::SwitchEditor, 1 );
+		ADD_MENU_ITEM( pFile, "  Layout  ", &App::SwitchEditor, 2 );
+		ADD_MENU_ITEM( pFile, "  Sequence  ", &App::SwitchEditor, 3 );
+
+		// todo add more commands 
 }

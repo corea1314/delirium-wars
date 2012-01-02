@@ -66,8 +66,10 @@ protected:
 	virtual void OnCreateMenu();
 	
 	// Menu callbacks
-	void OnMenuFileSave( int inUnused );
-	void OnMenuFileLoad( int inUnused );
+
+	// File management
+	virtual const char*	GetFileExtension() { return "xvsl"; }
+	virtual const char*	GetFileFilter() { return "XML Visual File\0*.xvsl\0"; }
 	
 private:
 	// Local methods

@@ -19,7 +19,7 @@ void SpriteMan::Init( unsigned long in_nReservedSpriteCount )
 	glBufferData(GL_ARRAY_BUFFER, m_nMaxSpriteCount*sizeof(SpriteData), &m_pSpriteDataBuffer[0].pos.x, GL_STREAM_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0 );
 
-	Test();
+//	Test();
 }
 
 void SpriteMan::Exit()
@@ -247,6 +247,18 @@ bool Sprite::IsPlaying() const
 	return m_bIsPlaying;
 }
 
+void Sprite::SetFrame( AtlasFrame* in_pFrame )
+{
+	m_pSD->pos = m_vPos;
+	m_pSD->offset.x = in_pFrame->GetOffset().x;
+	m_pSD->offset.y = in_pFrame->GetOffset().y;
+	m_pSD->angle = m_fAngle;
+	m_pSD->size.x = in_pFrame->GetSize().x/2;
+	m_pSD->size.y = in_pFrame->GetSize().y/2;
+	m_pSD->uv_min = in_pFrame->GetMinUV();
+	m_pSD->uv_max = in_pFrame->GetMaxUV();
+}
+
 void Sprite::UpdateFromFrame()
 {
 	float fGlobalScaleX = m_vScale.x * m_pCurrFrame->scale.x;
@@ -279,13 +291,13 @@ void SpriteMan::Test()
 //	m_vecSpriteDataBuffer.push_back( spr[0] );
 
 	// 16k
-	for( int i=-8;i<8; i++ )
-	for( int j=-8;j<8; j++ )
-	{
-		SpriteData spr[] = { { Vector2( i*64.0f, j*64.0f), 0.0f, Vector2(32.0f,32.0f), Vector2(0.0f,0.0f),  0.0f, Vector2(0.0f,0.0f), Vector2(1.0f,1.0f), 0xFFFFFFFF }};
-		*m_pCurrSpriteData = spr[0];
-		++m_pCurrSpriteData;
-	}
+ 	for( int i=-8;i<8; i++ )
+ 	for( int j=-8;j<8; j++ )
+ 	{
+ 		SpriteData spr[] = { { Vector2( i*64.0f, j*64.0f), 0.0f, Vector2(32.0f,32.0f), Vector2(0.0f,0.0f),  0.0f, Vector2(0.0f,0.0f), Vector2(1.0f,1.0f), 0xFFFFFFFF }};
+ 		*m_pCurrSpriteData = spr[0];
+ 		++m_pCurrSpriteData;
+ 	}
 
 	// ~4 million
 //	for( int i=-1024;i<1024; i++ )

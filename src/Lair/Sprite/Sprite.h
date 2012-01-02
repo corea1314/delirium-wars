@@ -103,6 +103,7 @@ public:
 	void Set( float x, float y, float a = 0.0f, float sx = 1.0f, float sy = 1.0f );
 	void SetAlpha( float a );
 	void SetColor( float r, float g, float b );
+	void SetFrame( AtlasFrame* in_pFrame );
 };
 
 #endif//_SPRITE_H

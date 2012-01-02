@@ -88,7 +88,7 @@ void GizmoRotation::OnMouseMotion( const Vector2& pos, const Vector2& delta, int
 		mAnchor = mEditor->GetGrid()->Snap(pos);
 		mDir = mAnchor - mPos;
 		Vector2::Normalize(mDir);
-		mAngle = atan2( mDir.x, mDir.y );
+		mAngle = atan2( mDir.y, mDir.x );
 	}
 }
 
@@ -100,7 +100,7 @@ void GizmoRotation::OnMouseClick( int button, int state, const Vector2& pos, int
 		mAnchor = mEditor->GetGrid()->Snap(pos);
 		mDir = mAnchor - mPos;
 		Vector2::Normalize(mDir);
-		mAngle = atan2( mDir.x, mDir.y );
+		mAngle = atan2( mDir.y, mDir.x );
 
 		mMode = Mode::Dragging;
 	}

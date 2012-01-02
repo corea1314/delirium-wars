@@ -18,12 +18,16 @@ protected:
 	virtual void OnCreateMenu();
 
 	// Menu callbacks
-	void OnMenuFileSave( int inUnused );
-	void OnMenuFileLoad( int inUnused );
 	void OnMenuPreLoop( int inPreLoop );
 	void OnMenuPostLoop( int inPostLoop );
 	void OnMenuAnimate( int inUnused );
 	void OnMenuTexture( int inUnused );
+
+	// File management
+	virtual const char*	GetFileExtension() { return "xcrv"; }
+	virtual const char*	GetFileFilter() { return "XML Curve File\0*.xcrv\0"; }
+	virtual void OnSerializeSave( TiXmlElement* inNode );
+	virtual void OnSerializeLoad( TiXmlElement* inNode );
 
 private:
 	// Local methods
