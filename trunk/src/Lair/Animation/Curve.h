@@ -56,6 +56,7 @@ public:
 	void AddKey( int inPosition, float inValue );
 	void AddKey( int inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity );
 	void CalculateTangents();
+	void ClearKeys() { mKeys.clear(); }
 
 	void Update();
 
@@ -70,6 +71,9 @@ public:
 
 	inline Key& GetKey( unsigned int inIndex ) { return mKeys[inIndex]; }
 	inline unsigned int GetKeyCount() const { return mKeys.size(); }
+
+	inline CurveLoopType::E	GetPreLoop() const { return mPreLoop; }
+	inline CurveLoopType::E	GetPostLoop() const { return mPostLoop; }
 
 protected:
 

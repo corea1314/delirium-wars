@@ -2,10 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeliriumWars", "DeliriumWars.vcxproj", "{030AFE2E-4616-403F-BE9A-D2035A16C35B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DCD5F412-BD2E-44A0-8B75-5199E84E4EAB} = {DCD5F412-BD2E-44A0-8B75-5199E84E4EAB}
-		{CBAE38AD-293F-4A95-96A7-7F2C4F5C19C3} = {CBAE38AD-293F-4A95-96A7-7F2C4F5C19C3}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freeglut_static", "..\..\sdk\freeglut-2.4.0\freeglut_static.vcxproj", "{DCD5F412-BD2E-44A0-8B75-5199E84E4EAB}"
 EndProject

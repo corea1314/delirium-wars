@@ -13,8 +13,10 @@ public:
 	float		mAngle;
 	bool		mSelected;
 	Editor*		mEditor;
+	bool		mDeleteRequest;
 
-	LayoutElement( Vector2 inPos, Editor* inEditor ) : mName("elem"), mPos(inPos), mAngle(0.0f), mEditor(inEditor), mSelected(false) {}
+	LayoutElement( Vector2 inPos, Editor* inEditor ) 
+		: mName("elem"), mPos(inPos), mAngle(0.0f), mEditor(inEditor), mSelected(false), mDeleteRequest(false) {}
 
 public:
 	virtual void OnRender();

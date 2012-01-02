@@ -7,7 +7,7 @@
 
 #include "Lair/Lair.h"
 
-static const float	kElementSelectionRadius			= 16.0f;
+static const float	kElementSelectionRadius			= 8.0f;
 static const float	kElementSelectionRadiusSquared	= kElementSelectionRadius * kElementSelectionRadius;
 
 
@@ -59,6 +59,11 @@ void LayoutElement::OnKeyboard( unsigned char key, int mod )
 			mSelected = false;	
 			break;
 		}
+	case 127:	// Delete key
+		{	// Delete element
+			mDeleteRequest = true;
+		}
+		break;
 	default:
 		{	// Adding character to name
 			if( IsAcceptableCharForText(key) )
@@ -84,16 +89,18 @@ bool LayoutElement::OnMouseMotion( const Vector2& pos, const Vector2& delta, int
 
 bool LayoutElement::OnMouseClick( int button, int state, const Vector2& pos, int mod )
 {
-	Vector2 vDelta = mPos - pos;
-
-	if( vDelta.GetLengthSquare() < kElementSelectionRadiusSquared )
+	if( state )	// OnClick only
 	{
-		mSelected = true;
-	}
-	else
-	{
-		mSelected = false;
-	}
+		Vector2 vDelta = mPos - pos;
 
+		if( vDelta.GetLengthSquare() < kElementSelectionRadiusSquared )
+		{
+			mSelected = true;
+		}
+		else
+		{
+			mSelected = false;
+		}
+	}	
 	return mSelected;
 }

@@ -165,6 +165,10 @@ void LayoutEditor::OnKeyboard( unsigned char key, int mod )
 		{
 			for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
 				(*it)->OnKeyboard( key, mod );
+
+			if( key == 127 ) // Delete ley
+				CleanupDeleted();
+
 			mGizmoScaling->OnKeyboard( key, mod );
 			mGizmoRotation->OnKeyboard( key, mod );
 			mGizmoTranslation->OnKeyboard( key, mod );
@@ -183,11 +187,19 @@ void LayoutEditor::SetMode( Mode::E inMode )
 	mMode = inMode;
 }
 
+// a predicate implemented as a function:
+bool ShouldDelete (const LayoutElement* inElement ) { return inElement->mDeleteRequest; }
+
+void LayoutEditor::CleanupDeleted()
+{
+	mElements.remove_if(ShouldDelete);
+}
+
 void LayoutEditor::OnCreateMenu()
 {	
 	CREATE_MENU( pFile, "  File...  " );
-		ADD_MENU_ITEM( pFile, "  Save  ", &LayoutEditor::OnMenuFileSave, 0 );
-		ADD_MENU_ITEM( pFile, "  Load  ", &LayoutEditor::OnMenuFileSave, 0 );
+		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
+		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
 
 	CREATE_MENU( pMode, "  Mode...  " );
 		ADD_MENU_ITEM( pMode, "  Selection  ", &LayoutEditor::OnMenuMode, Mode::Selection );
@@ -196,16 +208,6 @@ void LayoutEditor::OnCreateMenu()
 		
 //	ADD_MENU_ITEM( GetMenu(), "Animate",	&VisualEditor::OnMenuAnimate, 0 );
 //	ADD_MENU_ITEM( GetMenu(), "Texture",	&VisualEditor::OnMenuTexture, 0 );	
-}
-
-void LayoutEditor::OnMenuFileSave( int inUnused )
-{
-
-}
-
-void LayoutEditor::OnMenuFileLoad( int inUnused )
-{
-
 }
 
 void LayoutEditor::OnMenuMode( int inMode )

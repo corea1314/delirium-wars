@@ -160,6 +160,9 @@
     <Filter Include="editors\gizmos">
       <UniqueIdentifier>{7b28db89-57d6-4e20-a9f3-99a20627cc63}</UniqueIdentifier>
     </Filter>
+    <Filter Include="editors\sequence">
+      <UniqueIdentifier>{0985933f-abaf-44ef-bb86-3d3816c90538}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -464,6 +467,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Editors\GizmoTranslation.cpp">
       <Filter>editors\gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Sequence\SequenceEditor.cpp">
+      <Filter>editors\sequence</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -794,10 +800,9 @@
     <ClInclude Include="..\..\src\Editors\GizmoTranslation.h">
       <Filter>editors\gizmos</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
-    <Library Include="..\..\sdk\freeglut-2.4.0\ReleaseStatic\freeglut_static.lib" />
+    <ClInclude Include="..\..\src\Editors\Sequence\SequenceEditor.h">
+      <Filter>editors\sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todo.txt" />
@@ -834,5 +839,8 @@
     <None Include="..\..\bin\scripts\tester.lua">
       <Filter>bin\scipts</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\sdk\freeglut-2.4.0\DebugStatic\freeglut_static.lib" />
   </ItemGroup>
 </Project>

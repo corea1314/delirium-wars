@@ -97,7 +97,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;FREEGLUT_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -190,6 +190,7 @@
     <ClCompile Include="..\..\src\Editors\Layout\LayoutEditor.cpp" />
     <ClCompile Include="..\..\src\Editors\Layout\LayoutElement.cpp" />
     <ClCompile Include="..\..\src\Editors\Menu.cpp" />
+    <ClCompile Include="..\..\src\Editors\Sequence\SequenceEditor.cpp" />
     <ClCompile Include="..\..\src\Editors\Visual\VisualEditor.cpp" />
     <ClCompile Include="..\..\src\Editors\WidgetRect.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Clock.cpp" />
@@ -303,6 +304,7 @@
     <ClInclude Include="..\..\src\Editors\Layout\LayoutEditor.h" />
     <ClInclude Include="..\..\src\Editors\Layout\LayoutElement.h" />
     <ClInclude Include="..\..\src\Editors\Menu.h" />
+    <ClInclude Include="..\..\src\Editors\Sequence\SequenceEditor.h" />
     <ClInclude Include="..\..\src\Editors\Visual\VisualEditor.h" />
     <ClInclude Include="..\..\src\Editors\WidgetRect.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Clock.h" />
@@ -359,10 +361,6 @@
     <ClInclude Include="..\..\src\Math\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\sdk\freeglut-2.4.0\Release\freeglut.lib" />
-    <Library Include="..\..\sdk\freeglut-2.4.0\ReleaseStatic\freeglut_static.lib" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\..\bin\sample.spr" />
     <None Include="..\..\bin\sample.xml" />
     <None Include="..\..\bin\scripts\camera.lua" />
@@ -375,6 +373,9 @@
     <None Include="..\..\bin\sprite_glow.spr" />
     <None Include="..\..\bin\system.log" />
     <None Include="..\..\todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\sdk\freeglut-2.4.0\DebugStatic\freeglut_static.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

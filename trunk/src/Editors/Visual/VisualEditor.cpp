@@ -432,7 +432,7 @@ void VisualEditor::OnSpecialKey( int key, int mod )
 
 	switch( key )
 	{
-	case SK_HOME:	SetCurrFrame(mCurrFrame);	break;
+	case SK_HOME:	SetCurrFrame(0);	break;
 	case SK_LEFT:	mCurrFrame--;	mCurrFrame = std::max( 0, mCurrFrame ); SetCurrFrame(mCurrFrame); break;
 	case SK_RIGHT:	mCurrFrame++;	SetCurrFrame(mCurrFrame); break;
 	}
@@ -459,24 +459,12 @@ void VisualEditor::OnKeyboard( unsigned char key, int mod )
 void VisualEditor::OnCreateMenu()
 {	
 	CREATE_MENU( pFile, "  File...  " );
-		ADD_MENU_ITEM( pFile, "  Save  ", &VisualEditor::OnMenuFileSave, 0 );
-		ADD_MENU_ITEM( pFile, "  Load  ", &VisualEditor::OnMenuFileSave, 0 );
+		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
+		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
 		
 //	ADD_MENU_ITEM( GetMenu(), "Animate",	&VisualEditor::OnMenuAnimate, 0 );
 //	ADD_MENU_ITEM( GetMenu(), "Texture",	&VisualEditor::OnMenuTexture, 0 );	
 }
-
-void VisualEditor::OnMenuFileSave( int inUnused )
-{
-
-}
-
-void VisualEditor::OnMenuFileLoad( int inUnused )
-{
-
-}
-
-
 
 void VisualEditor::Animatable::Update( float inPosition )
 {
