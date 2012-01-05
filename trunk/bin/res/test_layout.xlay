@@ -1,0 +1,17 @@
+<xlay version="0">
+    <layout>
+        <point name="foobar" position.x="192" position.y="401" angle="0" />
+        <point name="foo_bar" position.x="55" position.y="343" angle="0" />
+        <point name="foo_bar" position.x="55" position.y="343" angle="0" />
+        <point name="" position.x="47" position.y="159" angle="0" />
+        <point name="" position.x="47" position.y="159" angle="0" />
+        <point name="foo-bar" position.x="-129" position.y="128" angle="0" />
+        <point name="foo-bar" position.x="-129" position.y="128" angle="0" />
+        <point name="foo.bar" position.x="233" position.y="40" angle="0" />
+        <point name="foo.bar" position.x="233" position.y="40" angle="0" />
+        <point name="bar" position.x="409" position.y="202" angle="0" />
+        <point name="bar" position.x="409" position.y="202" angle="0" />
+        <point name="foo" position.x="473" position.y="421" angle="0" />
+        <point name="foo" position.x="473" position.y="421" angle="0" />
+    </layout>
+</xlay>
