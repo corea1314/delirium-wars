@@ -1,4 +1,7 @@
 
+//TODO
+//- Implement insertion/deletion/manipulation of keys
+
 
 #include "CurveEditor.h"
 

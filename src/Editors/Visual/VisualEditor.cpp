@@ -1,4 +1,8 @@
 
+//FIXME
+// - Implement keyframing of single selected track
+// - Implement keyframing of multiple selected track
+// - Implement insertion/deletion/manipulation of keys
 
 #include "VisualEditor.h"
 
@@ -8,12 +12,6 @@
 #include "Lair/Lair.h"
 #include "Lair/Camera/Camera.h"
 #include "Lair/Input/Input.h"
-
-static const char* OPENFILE_BCF_EXTENSION = "bcf";
-static const char* OPENFILE_BCF_FILTER = "Bezier Curve File\0*.bcf\0";
-
-static const char* OPENFILE_TGA_EXTENSION = "tga";
-static const char* OPENFILE_TGA_FILTER = "Targa Image\0*.tga\0";
 
 static const int	kMinDeltaTrackPosY	= 16;
 static const int	kMinDeltaFramePosX	=  8;
@@ -50,24 +48,24 @@ void VisualEditor::OnInit()
 	mAnimatables.push_back( Animatable() );
 	mSelectedAnimatable = &mAnimatables[0];
 
-	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  0,   0.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey( 15,  15.0f );	
-	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey( 60, 300.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(120, 600.0f );
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(   0,   0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  15,  15.0f );	
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  60, 300.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey( 120, 600.0f );
 
-	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  0,   0.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey( 10, 100.0f );	
-	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey( 60,   0.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(120, 200.0f );
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(   0,   0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  10, 100.0f );	
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  60,   0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey( 120, 200.0f );
 
-	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  0,   0.0f); 
-	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey( 60, (float)PI );	
-	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey( 80, (float)PI/2 );	
-	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(120,  0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(   0,   0.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  60,  90.0f );	
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  80,  45.0f );	
+	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey( 120,   0.0f ); 
 
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 0, 0); 
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 4, 4);	
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 8, 8); 
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(   0,   1.0f ); 
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(  40,   0.5f );	
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 120,   1.0f ); 
 	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(49,49);
 }
 
@@ -470,7 +468,7 @@ void VisualEditor::Animatable::Update( float inPosition )
 {
 	mPos.x = mCurve[TrackType::PosX ].Evaluate(inPosition);
 	mPos.y = mCurve[TrackType::PosY ].Evaluate(inPosition);
-	mAngle = mCurve[TrackType::Angle].Evaluate(inPosition);
+	mAngle = (float)DEG_TO_RAD(mCurve[TrackType::Angle].Evaluate(inPosition));
 }
 
 void VisualEditor::Animatable::Render()
