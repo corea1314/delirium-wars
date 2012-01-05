@@ -1,0 +1,8 @@
+<xcrv Version="0">
+    <curve PreLoop="CycleOffset" PostLoop="Oscillate">
+        <key position="0" value="0" tix="-1" tiy="0" tox="1" toy="0" continuity="Smooth" />
+        <key position="128" value="128" tix="-1" tiy="0" tox="0.242536" toy="-0.970143" continuity="Smooth" />
+        <key position="256" value="256" tix="-1" tiy="0" tox="1" toy="0" continuity="Smooth" />
+        <key position="512" value="512" tix="-1" tiy="0" tox="0.242536" toy="0.970143" continuity="Smooth" />
+    </curve>
+</xcrv>

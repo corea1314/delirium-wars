@@ -1,0 +1,8 @@
+<xseq Version="0">
+    <sequence fps="30">
+        <frame filename="C:\Work\Delirium Wars\bin\sprite.png" />
+        <frame filename="C:\Work\Delirium Wars\bin\sprite_glow.png" />
+        <frame filename="C:\Work\Delirium Wars\bin\TestCardA256x256.png" />
+        <frame filename="C:\Work\Delirium Wars\bin\TestCardA512x512.png" />
+    </sequence>
+</xseq>
