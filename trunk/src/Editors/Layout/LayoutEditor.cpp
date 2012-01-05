@@ -1,4 +1,7 @@
 
+//TODO
+// - Finish rect insertion/deletion/manipulation
+
 
 #include "LayoutEditor.h"
 #include "LayoutElement.h"
@@ -65,9 +68,9 @@ void LayoutEditor::OnRender()
 		(*it)->OnRender();
 
 	mWidgetRect->OnRender();
-	mGizmoScaling->OnRender();
-	mGizmoRotation->OnRender();
-	mGizmoTranslation->OnRender();
+//	mGizmoScaling->OnRender();
+//	mGizmoRotation->OnRender();
+//	mGizmoTranslation->OnRender();
 }
 
 void LayoutEditor::OnRenderGUI()
@@ -80,9 +83,9 @@ void LayoutEditor::OnRenderGUI()
 		(*it)->OnRenderGUI();
 
 	mWidgetRect->OnRenderGUI();
-	mGizmoScaling->OnRenderGUI();
-	mGizmoRotation->OnRenderGUI();
-	mGizmoTranslation->OnRenderGUI();
+//	mGizmoScaling->OnRenderGUI();
+//	mGizmoRotation->OnRenderGUI();
+//	mGizmoTranslation->OnRenderGUI();
 }
 
 void LayoutEditor::OnMouseClick( int button, int state, int x, int y, int mod )
@@ -96,14 +99,17 @@ void LayoutEditor::OnMouseClick( int button, int state, int x, int y, int mod )
 		{
 			for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
 				(*it)->OnMouseClick( button, state, v, mod );
+			/*
 			mGizmoScaling->OnMouseClick( button, state, v, mod );
 			mGizmoRotation->OnMouseClick( button, state, v, mod );
 			mGizmoTranslation->OnMouseClick( button, state, v, mod );
+			*/
 		}		
 		break;
 	case Mode::Point:
-		{
-			mElements.push_back( new LayoutElement(v,this) );
+		{			
+			if( state ) // On click down
+				mElements.push_back( new LayoutElement(v,this) );
 		}
 		break;
 	case Mode::Rect:
@@ -132,11 +138,11 @@ void LayoutEditor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
 			for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
 				bMovingElement |= (*it)->OnMouseMotion( v, d, mod );
 
-// fixme			if( bMovingElement == false )
-//				Editor::OnMouseMotion( x,y,dx,dy,mod );
-			mGizmoScaling->OnMouseMotion( v, d, mod );
-			mGizmoRotation->OnMouseMotion( v, d, mod );
-			mGizmoTranslation->OnMouseMotion( v, d, mod );
+			if( bMovingElement == false )
+				Editor::OnMouseMotion( x,y,dx,dy,mod );
+//			mGizmoScaling->OnMouseMotion( v, d, mod );
+//			mGizmoRotation->OnMouseMotion( v, d, mod );
+//			mGizmoTranslation->OnMouseMotion( v, d, mod );
 		}
 		break;
 	case Mode::Rect:
@@ -169,9 +175,9 @@ void LayoutEditor::OnKeyboard( unsigned char key, int mod )
 			if( key == 127 ) // Delete ley
 				CleanupDeleted();
 
-			mGizmoScaling->OnKeyboard( key, mod );
-			mGizmoRotation->OnKeyboard( key, mod );
-			mGizmoTranslation->OnKeyboard( key, mod );
+//			mGizmoScaling->OnKeyboard( key, mod );
+//			mGizmoRotation->OnKeyboard( key, mod );
+//			mGizmoTranslation->OnKeyboard( key, mod );
 		}
 		break;
 	case Mode::Rect:
@@ -213,4 +219,48 @@ void LayoutEditor::OnCreateMenu()
 void LayoutEditor::OnMenuMode( int inMode )
 {
 	SetMode( (Mode::E)inMode );
+}
+
+void LayoutEditor::OnSerializeSave( TiXmlElement* inNode )
+{
+	TiXmlElement* pxmlLayout = new TiXmlElement("layout");
+
+//	pxmlLayout->SetAttribute( "PreLoop", szCurveLoopType[mCurve.GetPreLoop()] );
+
+	TiXmlElement* pxmlElement;
+	for( std::list<LayoutElement*>::iterator it = mElements.begin(); it != mElements.end(); it++ )
+	{
+		pxmlElement = new TiXmlElement("point");
+		pxmlElement->SetAttribute( "name", (*it)->mName );
+		pxmlElement->SetDoubleAttribute( "position.x", (*it)->mPos.x );
+		pxmlElement->SetDoubleAttribute( "position.y", (*it)->mPos.y );
+		pxmlElement->SetDoubleAttribute( "angle", (*it)->mAngle );
+
+		pxmlLayout->LinkEndChild(pxmlElement);
+	}	
+
+	inNode->LinkEndChild(pxmlLayout);
+}
+
+void LayoutEditor::OnSerializeLoad( TiXmlElement* inNode )
+{
+	TiXmlElement* pxmlLayout = inNode->FirstChildElement("layout");
+
+	if( pxmlLayout )
+	{
+//		const char* szPreLoop = pxmlLayout->Attribute( "PreLoop" );
+		double fAttribute;
+		
+		for( TiXmlElement* pxmlElement = pxmlLayout->FirstChildElement("point"); pxmlElement; pxmlElement = pxmlElement->NextSiblingElement("point") )
+		{	
+			LayoutElement* pElement = new LayoutElement(this);
+
+			pElement->mName = pxmlElement->Attribute( "name" );
+			pxmlElement->Attribute( "position.x", &fAttribute );	pElement->mPos.x = (float)fAttribute;
+			pxmlElement->Attribute( "position.y", &fAttribute );	pElement->mPos.y = (float)fAttribute;
+			pxmlElement->Attribute( "angle", &fAttribute );			pElement->mAngle = (float)fAttribute;
+
+			mElements.push_back( pElement );
+		}	
+	}
 }

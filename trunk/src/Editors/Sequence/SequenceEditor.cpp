@@ -1,4 +1,8 @@
 
+//TODO
+//- Implement frame naming scheme
+//- Have a film-strip like display + controller
+
 
 #include "SequenceEditor.h"
 

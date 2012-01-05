@@ -35,6 +35,8 @@ protected:
 	
 	// Menu callbacks
 	void OnMenuMode( int inMode );
+	void OnSerializeSave( TiXmlElement* inNode );
+	void OnSerializeLoad( TiXmlElement* inNode );
 
 	// File management
 	virtual const char*	GetFileExtension() { return "xlay"; }

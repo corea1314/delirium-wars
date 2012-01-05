@@ -193,7 +193,9 @@ bool Editor::GetSaveFilename( char filename[], int count, const char* filter, co
 
 	lock = true;
 	bool result = ::GetSaveFileName(&openFilename) != 0;
+	ConvertMultiToArray( filename, mSelectedFilename );
 	lock = false;
+	
 	return result;
 }
 
@@ -218,12 +220,9 @@ bool Editor::GetLoadFilename( char filename[], int count, const char* filter, co
 
 	lock = true;
 	bool result = ::GetOpenFileName(&openFilename) != 0;
-
-	if( result )
-	{
-		ConvertMultiToArray( filename, mSelectedFilename );
-	}
+	ConvertMultiToArray( filename, mSelectedFilename );
 	lock = false;
+
 	return result;
 }
 
