@@ -35,22 +35,12 @@ void LayoutEditor::OnInit()
 	GetCamera()->GetPos().Set( 256.0f, 256.0f );
 
 	mWidgetRect = new WidgetRect(this);
-	
-	mGizmoScaling = new GizmoScaling(this);	
-	mGizmoScaling->mPos.Set(-256.0f, 256.0f);
-
-	mGizmoRotation = new GizmoRotation(this);
-	mGizmoRotation->mPos.Set( 256.0f, 256.0f);
-
-	mGizmoTranslation = new GizmoTranslation(this);
 }
 
 void LayoutEditor::OnExit()
 {
 	SAFE_DELETE(mWidgetRect);
-	SAFE_DELETE(mGizmoScaling);
-	SAFE_DELETE(mGizmoRotation);
-	SAFE_DELETE(mGizmoTranslation);
+
 
 	glPointSize( 8.0f );
 	glLineWidth( 2.0f );
@@ -62,12 +52,9 @@ void LayoutEditor::OnUpdate( float inDeltaTime )
 
 void LayoutEditor::OnRender()
 {
-	GetGrid()->Render();
+	Editor::OnRender();
 
-	for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-		(*it)->OnRender();
-
-	mWidgetRect->OnRender();
+	mWidgetRect->OnRender();	//todo render rect widget in 2d
 //	mGizmoScaling->OnRender();
 //	mGizmoRotation->OnRender();
 //	mGizmoTranslation->OnRender();
@@ -78,87 +65,51 @@ void LayoutEditor::OnRenderGUI()
 	gl_SetColor(COLORS::eWHITE);
 	gl_RenderText( 8, 8, "Zoom: %f -- Grid: %d -- Snap: %s", GetCamera()->GetZoom(), GetGrid()->GetGridSize(), GetGrid()->GetSnap() ? "true" : "false" );
 	gl_RenderText( 8, 720-16-8, "Layout Editor v%d.%d.%d (%s at %s) - Mode: %s", LAY_VERSION_MAIN, LAY_VERSION_MAJOR, LAY_VERSION_MINOR, __DATE__, __TIME__, kModeString[mMode] );
-
-	for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-		(*it)->OnRenderGUI();
-
+		
 	mWidgetRect->OnRenderGUI();
 //	mGizmoScaling->OnRenderGUI();
 //	mGizmoRotation->OnRenderGUI();
 //	mGizmoTranslation->OnRenderGUI();
 }
 
-void LayoutEditor::OnMouseClick( int button, int state, int x, int y, int mod )
+void LayoutEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
-	Vector2 v;	
-	ScreenToEditor( x, y, v );
-
 	switch( mMode )
 	{
 	case Mode::Selection:
 		{
-			for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-				(*it)->OnMouseClick( button, state, v, mod );
-			/*
-			mGizmoScaling->OnMouseClick( button, state, v, mod );
-			mGizmoRotation->OnMouseClick( button, state, v, mod );
-			mGizmoTranslation->OnMouseClick( button, state, v, mod );
-			*/
+			Editor::OnMouseClick( button, state, mm );
 		}		
 		break;
 	case Mode::Point:
 		{			
-			if( state ) // On click down
-				mElements.push_back( new LayoutElement(v,this) );
+			if( state ) // On click down, TODO create a real object and its associated editor element
+				AddElement( new LayoutElement( mm.x, mm.y, mm.pos, this ) );
 		}
 		break;
 	case Mode::Rect:
 		{
-			mWidgetRect->OnMouseClick( button, state, v, mod );	
+			mWidgetRect->OnMouseClick( button, state, mm );	
 		}
 		break;
 	}	
 }
 
-void LayoutEditor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
+void LayoutEditor::OnMouseMotion( const MouseMotion& mm )
 {
-	Vector2 last; 
-	ScreenToEditor( x-dx, y-dy, last );
-
-	Vector2 v;	
-	ScreenToEditor( x, y, v );
-	Vector2 d = v - last;
-
 	switch( mMode )
 	{
 	case Mode::Selection:
 		{
-			bool bMovingElement = false;
-
-			for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-				bMovingElement |= (*it)->OnMouseMotion( v, d, mod );
-
-			if( bMovingElement == false )
-				Editor::OnMouseMotion( x,y,dx,dy,mod );
-//			mGizmoScaling->OnMouseMotion( v, d, mod );
-//			mGizmoRotation->OnMouseMotion( v, d, mod );
-//			mGizmoTranslation->OnMouseMotion( v, d, mod );
+			Editor::OnMouseMotion( mm );
 		}
 		break;
 	case Mode::Rect:
 		{
-			mWidgetRect->OnMouseMotion( v, d, mod );
+			mWidgetRect->OnMouseMotion( mm );
 		}
 		break;
 	}
-}
-
-void LayoutEditor::OnSpecialKey( int key, int mod )
-{
-	Editor::OnSpecialKey(key, mod);
-
-	for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-		(*it)->OnSpecialKey( key, mod );
 }
 
 void LayoutEditor::OnKeyboard( unsigned char key, int mod )
@@ -167,19 +118,6 @@ void LayoutEditor::OnKeyboard( unsigned char key, int mod )
 
 	switch( mMode )
 	{
-	case Mode::Selection:
-		{
-			for( std::list<LayoutElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-				(*it)->OnKeyboard( key, mod );
-
-			if( key == 127 ) // Delete ley
-				CleanupDeleted();
-
-//			mGizmoScaling->OnKeyboard( key, mod );
-//			mGizmoRotation->OnKeyboard( key, mod );
-//			mGizmoTranslation->OnKeyboard( key, mod );
-		}
-		break;
 	case Mode::Rect:
 		{
 			mWidgetRect->OnKeyboard( key, mod );
@@ -191,14 +129,6 @@ void LayoutEditor::OnKeyboard( unsigned char key, int mod )
 void LayoutEditor::SetMode( Mode::E inMode )
 {
 	mMode = inMode;
-}
-
-// a predicate implemented as a function:
-bool ShouldDelete (const LayoutElement* inElement ) { return inElement->mDeleteRequest; }
-
-void LayoutEditor::CleanupDeleted()
-{
-	mElements.remove_if(ShouldDelete);
 }
 
 void LayoutEditor::OnCreateMenu()
@@ -225,10 +155,11 @@ void LayoutEditor::OnSerializeSave( TiXmlElement* inNode )
 {
 	TiXmlElement* pxmlLayout = new TiXmlElement("layout");
 
-//	pxmlLayout->SetAttribute( "PreLoop", szCurveLoopType[mCurve.GetPreLoop()] );
+	//fixme: here we should save actual layout objects, not editor elements.
 
+	/*
 	TiXmlElement* pxmlElement;
-	for( std::list<LayoutElement*>::iterator it = mElements.begin(); it != mElements.end(); it++ )
+	for( std::list<EditorElement*>::iterator it = mElements.begin(); it != mElements.end(); it++ )
 	{
 		pxmlElement = new TiXmlElement("point");
 		pxmlElement->SetAttribute( "name", (*it)->mName );
@@ -237,7 +168,8 @@ void LayoutEditor::OnSerializeSave( TiXmlElement* inNode )
 		pxmlElement->SetDoubleAttribute( "angle", (*it)->mAngle );
 
 		pxmlLayout->LinkEndChild(pxmlElement);
-	}	
+	}
+	*/
 
 	inNode->LinkEndChild(pxmlLayout);
 }

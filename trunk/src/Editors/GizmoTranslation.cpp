@@ -7,7 +7,7 @@
 
 static const int kWidgetSize	=	64;
 
-GizmoTranslation::GizmoTranslation( Editor* inEditor ) : mMode(Mode::NotDragging), mEditor(inEditor)
+GizmoTranslation::GizmoTranslation( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::NotDragging)
 {
 }
 
@@ -87,19 +87,19 @@ void GizmoTranslation::OnKeyboard( unsigned char key, int mod )
 	}
 }
 
-void GizmoTranslation::OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod )
+void GizmoTranslation::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mMode == Mode::NotDragging || mMode == Mode::DoneDragging )
 	{
 		if( Lair::GetInputMan()->GetMouseButtonState(0).bState )
 		{
 			mMode = Mode::Dragging;
-			mPos = mEditor->GetGrid()->Snap(pos);
+			mPos = mEditor->GetGrid()->Snap(mm.pos);
 		}
 	}
 	else if( mMode == Mode::Dragging )
 	{
-		Vector2 vPos = mEditor->GetGrid()->Snap(pos);
+		Vector2 vPos = mEditor->GetGrid()->Snap(mm.pos);
 		
 		if( mAxis == Axis::X )
 			mPos.x = vPos.x;
@@ -110,22 +110,22 @@ void GizmoTranslation::OnMouseMotion( const Vector2& pos, const Vector2& delta, 
 	}
 }
 
-void GizmoTranslation::OnMouseClick( int button, int state, const Vector2& pos, int mod )
+void GizmoTranslation::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
 	//fixme: should handle the delta position to correct the glitch on click
 	if( state )
 	{
 		//fixme: should check if we clicked on gizmo
-		if( fabsf( pos.x-mPos.x) < 2.0f && fabsf( pos.y-mPos.y) > 8.0f )
+		if( fabsf( mm.pos.x-mPos.x) < 2.0f && fabsf( mm.pos.y-mPos.y) > 8.0f )
 			mAxis = Axis::Y;
-		else if( fabsf( pos.y-mPos.y) < 2.0f && fabsf( pos.x-mPos.x) > 8.0f )
+		else if( fabsf( mm.pos.y-mPos.y) < 2.0f && fabsf( mm.pos.x-mPos.x) > 8.0f )
 			mAxis = Axis::X;
 		else
 			mAxis = Axis::Both;
 
 		mMode = Mode::Dragging;
 		mOrigin = mPos;
-		mPos = mEditor->GetGrid()->Snap(pos);
+		mPos = mEditor->GetGrid()->Snap(mm.pos);
 	}
 	else
 	{

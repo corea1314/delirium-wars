@@ -187,20 +187,17 @@ void CurveEditor::RenderCurve()
 	}
 }
 
-void CurveEditor::OnMouseClick( int button, int state, int x, int y, int mod )
+void CurveEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
 	switch(button)
 	{
 	case 0:		
 		{		
-			Vector2 v;	
-			ScreenToEditor( x, y, v );
-			
 			unsigned int nKeyIndex = -1;
 			for( unsigned int i=0; i<mCurve.GetKeyCount(); i++ )
 			{
-				if( fabsf(v.x-mCurve.GetKey(i).mPosition) < 0.1f && 
-					fabsf(v.y-mCurve.GetKey(i).mValue) < 0.1f )
+				if( fabsf(mm.pos.x-mCurve.GetKey(i).mPosition) < 0.1f && 
+					fabsf(mm.pos.y-mCurve.GetKey(i).mValue) < 0.1f )
 				{
 					nKeyIndex = i;
 					break;
@@ -243,22 +240,15 @@ void CurveEditor::OnMouseClick( int button, int state, int x, int y, int mod )
 	}
 }
 
-void CurveEditor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
+void CurveEditor::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mCurveSelection )
 	{
-		Vector2 last; 
-		ScreenToEditor( x-dx, y-dy, last );
-
-		Vector2 v;	
-		ScreenToEditor( x, y, v );
-		Vector2 d = v - last;
-
-		mCurveSelection->OnDrag(v,d);
+		mCurveSelection->OnDrag(mm);
 	}
 	else
 	{
-		Editor::OnMouseMotion(x,y,dx,dy,mod);
+		Editor::OnMouseMotion(mm);
 	}
 }
 

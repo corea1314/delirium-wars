@@ -6,6 +6,12 @@
 #include "Lair/Lair.h"
 #include "Lair/Camera/Camera.h"
 
+#include "GizmoScaling.h"
+#include "GizmoRotation.h"
+#include "GizmoTranslation.h"
+
+#include "EditorElement.h"
+
 #define CAMERA_MID_ZOOM_LEVEL	100.0f
 
 void ConvertMultiToArray(LPCSTR inPath, std::vector<std::string> &outArray);
@@ -20,12 +26,44 @@ Editor::Editor()
 
 	mViewportSize.x = ( 1280.0f ) / 2.0f;
 	mViewportSize.y = (  720.0f ) / 2.0f;
+
+	mGizmoScaling = new GizmoScaling(this);	
+	mGizmoScaling->mPos.Set(-256.0f, 256.0f);
+
+	mGizmoRotation = new GizmoRotation(this);
+	mGizmoRotation->mPos.Set( 256.0f, 256.0f);
+
+	mGizmoTranslation = new GizmoTranslation(this);
+
+	mActiveGizmo = 0;
 }
 
 Editor::~Editor()
 {
 	delete mCamera;
 	delete mGrid;
+	delete mGizmoTranslation;
+	delete mGizmoRotation;
+	delete mGizmoScaling;
+}
+
+
+void Editor::ActivateGizmo( GizmoType::E inGizmoType, EditorElement* inElement )
+{
+	switch( inGizmoType )
+	{
+	case GizmoType::Scaling:		mActiveGizmo = mGizmoScaling;		break;
+	case GizmoType::Rotation:		mActiveGizmo = mGizmoRotation;		break;
+	case GizmoType::Translation:	mActiveGizmo = mGizmoTranslation;	break;
+	case GizmoType::None:			mActiveGizmo = 0;					break;
+	}
+	if( mActiveGizmo )
+		mActiveGizmo->SetElement(inElement);
+}
+
+void Editor::AddElement( EditorElement* inElement )
+{
+	mElements.push_back( inElement );
 }
 
 void Editor::Init()
@@ -70,8 +108,14 @@ void Editor::Render()
 
 		mGrid->Render();
 
+		for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+			(*it)->OnRender();
+
 		// Render in editor space
 		OnRender();
+
+		if( mActiveGizmo )
+			mActiveGizmo->OnRender();
 
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
@@ -80,7 +124,13 @@ void Editor::Render()
 	glPopMatrix();
 
 	// Render in screen space
+	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+		(*it)->OnRenderGUI();
+
 	OnRenderGUI();
+
+	if( mActiveGizmo )
+		mActiveGizmo->OnRenderGUI();
 }
 
 void Editor::Update( float dt )
@@ -88,17 +138,36 @@ void Editor::Update( float dt )
 	mTimeSeconds += dt;
 
 	OnUpdate( dt );
+
+	if( mActiveGizmo )
+		mActiveGizmo->OnUpdate( dt );
 }
 
 void Editor::OnKeyboard( unsigned char key, int mod )
 {
+	if( mActiveGizmo )
+		mActiveGizmo->OnKeyboard( key, mod );
+	else
+	{
+		for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+			(*it)->OnKeyboard( key, mod );
+	}	
+
 	switch(key)
 	{
 	case '-':	GetGrid()->DecreaseGridSize();		break;
 	case '=':	GetGrid()->IncreaseGridSize();		break;
-	case 127:	/* delete */						break;
+	case 127:	CleanupDeleted();					break;			
 	case ' ':	GetGrid()->ToggleSnap();			break;
 	}
+}
+
+// a predicate implemented as a function:
+bool ShouldDelete (const EditorElement* inElement ) { return inElement->mDeleteRequest; }
+
+void Editor::CleanupDeleted()
+{
+	mElements.remove_if(ShouldDelete);
 }
 
 void Editor::OnMouseWheel( int v, int mod )
@@ -111,40 +180,66 @@ void Editor::OnMouseWheel( int v, int mod )
 	mCamera->GetZoom() = CAMERA_MID_ZOOM_LEVEL / mZoomLevel;
 }
 
-void Editor::OnMouseClick( int button, int state, int x, int y, int mod )
+void Editor::BuildMouseMotion( MouseMotion& mm, int x, int y, int dx, int dy, int mod )
 {
-	// todo translate from screen to editor space
+	mm.x = x; mm.y = y; mm.dx = dx; mm.dy = dy; mm.mod = mod;
+
+	ScreenToEditor( x, y, mm.pos );
+	
+	if( dx==0 && dy==0 )
+	{
+		mm.delta.Set(0.0f,0.0f);
+	}
+	else
+	{
+		Vector2 last; 
+		ScreenToEditor( x-dx, y-dy, last );
+		mm.delta = mm.pos - last;
+	}
 }
 
-void Editor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
+void Editor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
-	Vector2 last; 
-	ScreenToEditor( x-dx, y-dy, last );
-
-	Vector2 v;	
-	ScreenToEditor( x, y, v );
-	Vector2 d = v - last;
-
-	if( Lair::GetInputMan()->GetMouseButtonState(0).bState )	// if left mouse button is down
+	if( mActiveGizmo )
+		mActiveGizmo->OnMouseClick( button, state, mm );
+	else
 	{
-		mCamera->GetPos() -= d;
+		for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+			(*it)->OnMouseClick( button, state, mm );
+	}
+}
+
+void Editor::OnMouseMotion( const MouseMotion& mm )
+{
+	if( mActiveGizmo )
+		mActiveGizmo->OnMouseMotion( mm );
+	else
+	{
+		bool bMovingElement = false;
+
+		for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+			bMovingElement |= (*it)->OnMouseMotion( mm );
+
+		if( bMovingElement == false )
+		{
+			if( Lair::GetInputMan()->GetMouseButtonState(0).bState )	// if left mouse button is down
+			{
+				mCamera->GetPos() -= mm.delta;
+			}
+		}
 	}
 }
 
 void Editor::OnSpecialKey( int key, int mod )
 {
-	/*
-	switch( key )
-	{
-	default:
-		break;
-	}
-	*/
+	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+		(*it)->OnSpecialKey( key, mod );
 }
 
 void Editor::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values )
 {
-
+//	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+//		(*it)->OnGamepad( gamepad, buttons, axis_count, axis_values );
 }
 
 const Editor::FileSelection& Editor::GetFileSave( const char* extension, const char* filter )

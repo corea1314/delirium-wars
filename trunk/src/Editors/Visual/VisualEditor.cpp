@@ -39,6 +39,8 @@ void VisualEditor::OnInit()
 	mCurrTime = 0.0f;
 	mFPS = 60;
 
+	mShowCurve = false;
+
 	mTrackInfo[TrackType::PosX ].Set( "pos:x", TrackType::PosX, kStartTrackPosY+kMinDeltaTrackPosY*0);	
 	mTrackInfo[TrackType::PosY ].Set( "pos:y", TrackType::PosY, kStartTrackPosY+kMinDeltaTrackPosY*1);	
 	mTrackInfo[TrackType::Angle].Set( "angle", TrackType::Angle, kStartTrackPosY+kMinDeltaTrackPosY*2);	
@@ -194,7 +196,7 @@ void VisualEditor::RenderCurve( Curve& inCurve, bool inSelected, int inPosY )
 		// -inf to first key
 		glBegin( GL_LINE_STRIP );
 		gl_SetColor( COLORS::eDARKGREY );
-		for(float t=START_POS;t<MID_START_POS; t+= 0.01f )		
+		for(float t=START_POS;t<MID_START_POS; t+= 1.0f )		
 			glVertex2f( t, inCurve.Evaluate(t) );
 
 		// first keys to last key
@@ -202,12 +204,12 @@ void VisualEditor::RenderCurve( Curve& inCurve, bool inSelected, int inPosY )
 			gl_SetColor( COLORS::eORANGE );
 		else
 			gl_SetColor( COLORS::eWHITE );
-		for(float t=MID_START_POS;t<MID_END_POS; t+= 0.01f )		
+		for(float t=MID_START_POS;t<MID_END_POS; t+= 1.0f )		
 			glVertex2f( t, inCurve.Evaluate(t) );
 
 		// last key to +inf
 		gl_SetColor( COLORS::eDARKGREY );
-		for(float t=MID_END_POS;t<END_POS; t+= 0.01f )		
+		for(float t=MID_END_POS;t<END_POS; t+= 1.0f )		
 			glVertex2f( t, inCurve.Evaluate(t) );
 		glEnd();
 		glVertex2f( END_POS, inCurve.Evaluate(END_POS) );
@@ -309,41 +311,41 @@ void VisualEditor::OnRenderGUI()
 
 	glPointSize( 8.0f );
 
-	if( mSelectedAnimatable )
+	if( mShowCurve )
 	{
-		for( int i=0; i<4; i++ )	//fixme 4
+		if( mSelectedAnimatable )
 		{
-			RenderCurve( mSelectedAnimatable->mCurve[i], mTrackInfo[i].bSelected, kMinDeltaTrackPosY );
+			for( int i=0; i<4; i++ )	//fixme 4
+			{
+				RenderCurve( mSelectedAnimatable->mCurve[i], mTrackInfo[i].bSelected, kMinDeltaTrackPosY );
+			}
 		}
 	}
 
 	glLineWidth( 2.0f );
 }
 
-void VisualEditor::OnMouseClick( int button, int state, int x, int y, int mod )
+void VisualEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
-	Vector2 v;	
-	ScreenToEditor( x, y, v );
-
-	if( (y < 4 * kMinDeltaTrackPosY + kStartTrackPosY) && !(mod & SK_MOD_SHIFT) )	//fixme 4
-		OnMouseClickTrackArea( button, x, y );
+	if( (mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY) && !(mm.mod & SK_MOD_SHIFT) )	//fixme 4
+		OnMouseClickTrackArea( button, mm.x, mm.y );
 
 	switch(button)
 	{
 	case 0:		
 		{	
-			if( y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
+			if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
 			{
-				if( Lair::GetInputMan()->GetMouseButtonState(0).bState && !(mod & SK_MOD_SHIFT) )
+				if( Lair::GetInputMan()->GetMouseButtonState(0).bState && !(mm.mod & SK_MOD_SHIFT) )
 				{
 					// Select track
-					int nTrackIndex = (y-kStartTrackPosY+kMinDeltaTrackPosY/2)/kMinDeltaTrackPosY;
+					int nTrackIndex = (mm.y-kStartTrackPosY+kMinDeltaTrackPosY/2)/kMinDeltaTrackPosY;
 					
 					mTrackInfo[nTrackIndex].bSelected = true;
 
 					// Select frame
 
-					SetCurrFrame( ScreenToKey( x ) );
+					SetCurrFrame( ScreenToKey( mm.x ) );
 				}
 			}
 		}
@@ -387,39 +389,30 @@ void VisualEditor::OnMouseClickTrackArea( int button, int x, int y )
 }
 
 
-void VisualEditor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
+void VisualEditor::OnMouseMotion( const MouseMotion& mm )
 {
-	/*
-	Vector2 last; 
-	ScreenToEditor( x-dx, y-dy, last );
-
-	Vector2 v;	
-	ScreenToEditor( x, y, v );
-	Vector2 d = v - last;
-	*/
-
-	if( y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
+	if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState(0).bState  && (mod & SK_MOD_SHIFT) )
+		if( Lair::GetInputMan()->GetMouseButtonState(0).bState  && (mm.mod & SK_MOD_SHIFT) )
 		{
 			// Scroll key tracks
-			mFirstFrameDelta -= ( dx / (float)kMinDeltaFramePosX );
+			mFirstFrameDelta -= ( mm.dx / (float)kMinDeltaFramePosX );
 			mFirstFrame = (int)mFirstFrameDelta;
 		}		
 	}
 	else
 	{
-		if( x < 32 ) // fixme 32
+		if( mm.x < 32 ) // fixme 32
 		{
 			// Scale curve values
-			mKeyValueScale += dy / 10.0f;
+			mKeyValueScale += mm.dy / 10.0f;
 
 			if( mKeyValueScale < 0.5f ) //fixme 0.5f
 				mKeyValueScale = 0.5f;
 		}
 		else
 		{
-			Editor::OnMouseMotion(x,y,dx,dy,mod);
+			Editor::OnMouseMotion(mm);
 		}		
 	}
 }
@@ -460,8 +453,16 @@ void VisualEditor::OnCreateMenu()
 		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
 		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
 		
+	CREATE_MENU( pShow, "  Show...  " );
+		ADD_MENU_ITEM( pShow, "  Curve  ", &VisualEditor::OnMenuShowCurve, 0 );
+
 //	ADD_MENU_ITEM( GetMenu(), "Animate",	&VisualEditor::OnMenuAnimate, 0 );
 //	ADD_MENU_ITEM( GetMenu(), "Texture",	&VisualEditor::OnMenuTexture, 0 );	
+}
+
+void VisualEditor::OnMenuShowCurve( int unused )
+{
+	mShowCurve = !mShowCurve;
 }
 
 void VisualEditor::Animatable::Update( float inPosition )

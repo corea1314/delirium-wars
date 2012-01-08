@@ -50,29 +50,29 @@ void WidgetRect::OnKeyboard( unsigned char key, int mod )
 	}
 }
 
-void WidgetRect::OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod )
+void WidgetRect::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mMode == Mode::NotDragging || mMode == Mode::DoneDragging )
 	{
 		if( Lair::GetInputMan()->GetMouseButtonState(0).bState )
 		{
 			mMode = Mode::Dragging;
-			mRect[0] = mEditor->GetGrid()->Snap(pos);
+			mRect[0] = mEditor->GetGrid()->Snap(mm.pos);
 		}
 	}
 	else if( mMode == Mode::Dragging )
 	{
-		mRect[1] = mEditor->GetGrid()->Snap(pos);
+		mRect[1] = mEditor->GetGrid()->Snap(mm.pos);
 	}
 }
 
-void WidgetRect::OnMouseClick( int button, int state, const Vector2& pos, int mod )
+void WidgetRect::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
 	if( state )
 	{
 		mMode = Mode::Dragging;
-		mRect[0] = mEditor->GetGrid()->Snap(pos);
-		mRect[1] = mEditor->GetGrid()->Snap(pos);
+		mRect[0] = mEditor->GetGrid()->Snap(mm.pos);
+		mRect[1] = mEditor->GetGrid()->Snap(mm.pos);
 	}
 	else
 	{
