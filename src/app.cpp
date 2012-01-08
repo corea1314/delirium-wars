@@ -167,7 +167,9 @@ void App::OnMouseClick( int button, int state, int x, int y, int mod )
 
 	if( m_pActiveEditor )
 	{
-		m_pActiveEditor->OnMouseClick( button, state, x, y, mod );
+		MouseMotion mm;
+		m_pActiveEditor->BuildMouseMotion( mm, x, y, 0, 0, mod );
+		m_pActiveEditor->OnMouseClick( button, state, mm );
 	}
 	else
 		GetEngine()->OnMouseClick( button, x, y, v );	
@@ -190,7 +192,11 @@ void App::OnMouseMotion( int x, int y, int mod )
 	mLastMy=y;
 
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnMouseMotion( x, y, dx, dy, mod );
+	{
+		MouseMotion mm;
+		m_pActiveEditor->BuildMouseMotion( mm, x, y, dx, dy, mod );
+		m_pActiveEditor->OnMouseMotion( mm );
+	}
 }
 
 void App::OnMouseWheel( int v, int mod )

@@ -53,22 +53,14 @@ void LayoutElement::OnKeyboard( unsigned char key, int mod )
 				 mName.pop_back();	
 			break;
 		}	
-	case 13:	// Enter key
-	case 27: 	// Escape key
-		{	// Deselect
-			mSelected = false;	
-			break;
-		}
-	case 127:	// Delete key
-		{	// Delete element
-			mDeleteRequest = true;
-		}
-		break;
 	default:
 		{	// Adding character to name
 			if( IsAcceptableCharForText(key) )
 				mName += key;
-		}		
+			else
+				EditorElement::OnKeyboard( key, mod );
+		}
+		break;
 	}
 }
 
@@ -76,31 +68,17 @@ void LayoutElement::OnSpecialKey( int key, int mod )
 {
 }
 
-bool LayoutElement::OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod )
+void LayoutElement::OnTranslate( const Vector2& inNewPos, const Vector2& inDelta ) 
 {
-	if( Lair::GetInputMan()->GetMouseButtonState(0).bState && mSelected )
-	{
-		mPos = mEditor->GetGrid()->Snap(pos);
-		return true;
-	}
-
-	return false;
+	mPos += inDelta;
 }
 
-bool LayoutElement::OnMouseClick( int button, int state, const Vector2& pos, int mod )
+void LayoutElement::OnScale( const Vector2& inNewScale, const Vector2& inDelta ) 
 {
-	if( state )	// OnClick only
-	{
-		Vector2 vDelta = mPos - pos;
+	// Do nothing, cannot scale base element
+}
 
-		if( vDelta.GetLengthSquare() < kElementSelectionRadiusSquared )
-		{
-			mSelected = true;
-		}
-		else
-		{
-			mSelected = false;
-		}
-	}	
-	return mSelected;
+void LayoutElement::OnRotate( float inAngle, float inDelta ) 
+{
+	mAngle += inDelta;
 }

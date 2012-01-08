@@ -116,15 +116,14 @@ void SequenceEditor::OnRenderGUI()
 	gl_RenderText( 8, 720-16-8, "Sequence v%d.%d.%d (%s at %s)", 1, 0, 0, __DATE__, __TIME__ ); //todo
 }
 
-void SequenceEditor::OnMouseClick( int button, int state, int x, int y, int mod )
+void SequenceEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
+	Editor::OnMouseClick( button, state, mm );
 }
 
-void SequenceEditor::OnMouseMotion( int x, int y, int dx, int dy, int mod )
+void SequenceEditor::OnMouseMotion( const MouseMotion& mm )
 {
-	{
-		Editor::OnMouseMotion(x,y,dx,dy,mod);
-	}
+	Editor::OnMouseMotion( mm );
 }
 
 void SequenceEditor::OnSpecialKey( int key, int mod )

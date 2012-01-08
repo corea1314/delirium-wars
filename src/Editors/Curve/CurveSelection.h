@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Lair/Lair.h"
+
 #include "Math/Vector2.h"
 
 class Curve;
@@ -8,7 +10,7 @@ class CurveSelection
 {
 public:
 	void Set( Curve* c, int index );
-	void OnDrag( Vector2 v, Vector2 d );
+	void OnDrag( const MouseMotion& mm );
 	void Erase();
 
 	//	Vector2 GetSelectedPoint();

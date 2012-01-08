@@ -32,6 +32,16 @@ private:
 	MouseButtonState	mMouseButtonState[3];	// support only 3 buttons
 };
 
+typedef struct  
+{
+	int x,y;		// mouse position in screen space
+	int dx,dy;		// delta since last frame
+	Vector2 pos;	// mouse position in app space
+	Vector2 delta;	// delta since last frame
+	int mod;		// modifier key mask (shift,alt,ctrl)
+
+} MouseMotion;
+
 #define SK_F1			0x0001	//GLUT_KEY_F1
 #define SK_F2 			0x0002	//GLUT_KEY_F2
 #define SK_F3 			0x0003	//GLUT_KEY_F3

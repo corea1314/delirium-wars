@@ -13,8 +13,8 @@ protected:
 	virtual void OnExit();
 	virtual void OnRender();
 	virtual void OnRenderGUI();
-	virtual void OnMouseClick( int button, int state, int x, int y, int mod );
-	virtual void OnMouseMotion( int x, int y, int dx, int dy, int mod );
+	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
+	virtual void OnMouseMotion( const MouseMotion& mm );
 	virtual void OnCreateMenu();
 
 	// Menu callbacks

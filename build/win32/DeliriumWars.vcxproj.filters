@@ -471,6 +471,9 @@
     <ClCompile Include="..\..\src\Editors\Sequence\SequenceEditor.cpp">
       <Filter>editors\sequence</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Editors\EditorElement.cpp">
+      <Filter>editors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -802,6 +805,12 @@
     </ClInclude>
     <ClInclude Include="..\..\src\Editors\Sequence\SequenceEditor.h">
       <Filter>editors\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Gizmo.h">
+      <Filter>editors\gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\EditorElement.h">
+      <Filter>editors</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

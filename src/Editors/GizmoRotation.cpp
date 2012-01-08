@@ -8,7 +8,7 @@
 static const int kWidgetSize	=	64;
 static const int kWidgetSize2	=	(64*7)/10;
 
-GizmoRotation::GizmoRotation( Editor* inEditor ) : mMode(Mode::NotDragging), mEditor(inEditor)
+GizmoRotation::GizmoRotation( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::NotDragging)
 {
 }
 
@@ -81,23 +81,23 @@ void GizmoRotation::OnKeyboard( unsigned char key, int mod )
 	}
 }
 
-void GizmoRotation::OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod )
+void GizmoRotation::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mMode == Mode::Dragging )
 	{
-		mAnchor = mEditor->GetGrid()->Snap(pos);
+		mAnchor = mEditor->GetGrid()->Snap(mm.pos);
 		mDir = mAnchor - mPos;
 		Vector2::Normalize(mDir);
 		mAngle = atan2( mDir.y, mDir.x );
 	}
 }
 
-void GizmoRotation::OnMouseClick( int button, int state, const Vector2& pos, int mod )
+void GizmoRotation::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
 	if( state )
 	{
 		//fixme: should check if we clicked on gizmo
-		mAnchor = mEditor->GetGrid()->Snap(pos);
+		mAnchor = mEditor->GetGrid()->Snap(mm.pos);
 		mDir = mAnchor - mPos;
 		Vector2::Normalize(mDir);
 		mAngle = atan2( mDir.y, mDir.x );

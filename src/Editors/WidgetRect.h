@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Lair/Lair.h"
+
 #include "Math/Vector2.h"
 
 class Editor;
@@ -20,6 +22,6 @@ public:
 	virtual void OnRenderGUI();
 
 	virtual void OnKeyboard( unsigned char key, int mod );
-	virtual void OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod );
-	virtual void OnMouseClick( int button, int state, const Vector2& pos, int mod );
+	virtual void OnMouseMotion( const MouseMotion& mm );
+	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
 };

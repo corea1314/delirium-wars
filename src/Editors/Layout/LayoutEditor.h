@@ -3,13 +3,29 @@
 #include "../Editor.h"
 #include "../Menu.h"
 
-#include <list>
-
-class LayoutElement;
 class WidgetRect;
-class GizmoScaling;
-class GizmoRotation;
-class GizmoTranslation;
+
+class Layout
+{
+	class Point
+	{
+
+	};
+
+	class Rect
+	{
+
+	};
+
+	class Path
+	{
+		std::vector<Point> mPoints;
+	};
+
+	std::vector<Rect>	mRects;
+	std::vector<Point>	mPoints;
+	std::vector<Path>	mPaths;
+};
 
 class LayoutEditor : public Editor
 {
@@ -27,10 +43,10 @@ protected:
 	virtual void OnRender();
 	virtual void OnUpdate( float inDeltaTime );
 	virtual void OnRenderGUI();
-	virtual void OnMouseClick( int button, int state, int x, int y, int mod );
-	virtual void OnMouseMotion( int x, int y, int dx, int dy, int mod );
+	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
+	virtual void OnMouseMotion( const MouseMotion& mm );
 	virtual void OnKeyboard( unsigned char key, int mod );
-	virtual void OnSpecialKey( int key, int mod );
+//	virtual void OnSpecialKey( int key, int mod );
 	virtual void OnCreateMenu();
 	
 	// Menu callbacks
@@ -49,12 +65,6 @@ private:
 	
 private:
 	Mode::E						mMode;
-	
 	WidgetRect*					mWidgetRect;
-	
-	GizmoScaling*				mGizmoScaling;
-	GizmoRotation*				mGizmoRotation;
-	GizmoTranslation*			mGizmoTranslation;
-
-	std::list<LayoutElement*>	mElements;
+	Layout*						mLayout;
 };

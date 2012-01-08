@@ -2,9 +2,9 @@
 
 #include "Math/Vector2.h"
 
-class Editor;
+#include "Gizmo.h"
 
-class GizmoTranslation
+class GizmoTranslation : public Gizmo
 {
 public:
 	class Mode { public: enum E { NotDragging, Dragging, DoneDragging }; };
@@ -24,6 +24,6 @@ public:
 	virtual void OnRenderGUI();
 
 	virtual void OnKeyboard( unsigned char key, int mod );
-	virtual void OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod );
-	virtual void OnMouseClick( int button, int state, const Vector2& pos, int mod );
+	virtual void OnMouseMotion( const MouseMotion& mm );
+	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
 };

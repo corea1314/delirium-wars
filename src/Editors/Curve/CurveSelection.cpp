@@ -2,21 +2,12 @@
 
 #include "Lair/Animation/Curve.h"
 
-void CurveSelection::OnDrag( Vector2 v, Vector2 d )
+void CurveSelection::OnDrag( const MouseMotion& mm )
 {
-
-#define SNAP( _v )			\
-	if( g_CurveEditor.mIsSnapping )		\
-	{						\
-	float d = 0.5f * (1.0f / g_CurveEditor.mSize);\
-	(_v).x = ((int)(((_v).x + d) * g_CurveEditor.mSize)) / (float)g_CurveEditor.mSize;	\
-	(_v).y = ((int)(((_v).y + d) * g_CurveEditor.mSize)) / (float)g_CurveEditor.mSize;	\
-}
-
 	if( selected == 1 ) // point manipulation
 	{
-		pCurve->GetKey(index).mPosition = (int)v.x;	//fixme cast might better rounded
-		pCurve->GetKey(index).mValue = v.y;
+		pCurve->GetKey(index).mPosition = (int)mm.pos.x;	//fixme cast might better rounded
+		pCurve->GetKey(index).mValue = mm.pos.y;
 
 		pCurve->Update();
 	}

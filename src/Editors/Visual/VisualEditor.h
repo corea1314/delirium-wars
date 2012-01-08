@@ -59,13 +59,14 @@ protected:
 	virtual void OnRender();
 	virtual void OnUpdate( float inDeltaTime );
 	virtual void OnRenderGUI();
-	virtual void OnMouseClick( int button, int state, int x, int y, int mod );
-	virtual void OnMouseMotion( int x, int y, int dx, int dy, int mod );
+	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
+	virtual void OnMouseMotion( const MouseMotion& mm );
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnSpecialKey( int key, int mod );
 	virtual void OnCreateMenu();
 	
 	// Menu callbacks
+	virtual void OnMenuShowCurve( int unused );
 
 	// File management
 	virtual const char*	GetFileExtension() { return "xvsl"; }
@@ -97,6 +98,8 @@ private:
 	bool		mIsPlaying;
 	float		mCurrTime;
 	int			mFPS;
+
+	bool		mShowCurve;
 
 	Animatable*	mSelectedAnimatable;
 	

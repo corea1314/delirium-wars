@@ -183,6 +183,7 @@
     <ClCompile Include="..\..\src\Editors\Curve\CurveEditor.cpp" />
     <ClCompile Include="..\..\src\Editors\Curve\CurveSelection.cpp" />
     <ClCompile Include="..\..\src\Editors\Editor.cpp" />
+    <ClCompile Include="..\..\src\Editors\EditorElement.cpp" />
     <ClCompile Include="..\..\src\Editors\GizmoRotation.cpp" />
     <ClCompile Include="..\..\src\Editors\GizmoScaling.cpp" />
     <ClCompile Include="..\..\src\Editors\GizmoTranslation.cpp" />
@@ -297,6 +298,8 @@
     <ClInclude Include="..\..\src\Editors\Curve\CurveEditor.h" />
     <ClInclude Include="..\..\src\Editors\Curve\CurveSelection.h" />
     <ClInclude Include="..\..\src\Editors\Editor.h" />
+    <ClInclude Include="..\..\src\Editors\EditorElement.h" />
+    <ClInclude Include="..\..\src\Editors\Gizmo.h" />
     <ClInclude Include="..\..\src\Editors\GizmoRotation.h" />
     <ClInclude Include="..\..\src\Editors\GizmoScaling.h" />
     <ClInclude Include="..\..\src\Editors\GizmoTranslation.h" />

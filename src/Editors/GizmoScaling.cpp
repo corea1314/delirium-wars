@@ -7,7 +7,7 @@
 
 static const int kWidgetSize	=	64;
 
-GizmoScaling::GizmoScaling( Editor* inEditor ) : mMode(Mode::NotDragging), mEditor(inEditor)
+GizmoScaling::GizmoScaling( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::NotDragging)
 {
 }
 
@@ -89,19 +89,19 @@ void GizmoScaling::OnKeyboard( unsigned char key, int mod )
 	}
 }
 
-void GizmoScaling::OnMouseMotion( const Vector2& pos, const Vector2& delta, int mod )
+void GizmoScaling::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mMode == Mode::NotDragging || mMode == Mode::DoneDragging )
 	{
 		if( Lair::GetInputMan()->GetMouseButtonState(0).bState )
 		{
 			mMode = Mode::Dragging;
-			mPos = mEditor->GetGrid()->Snap(pos);
+			mPos = mEditor->GetGrid()->Snap(mm.pos);
 		}
 	}
 	else if( mMode == Mode::Dragging )
 	{
-		mAnchor = mEditor->GetGrid()->Snap(pos);
+		mAnchor = mEditor->GetGrid()->Snap(mm.pos);
 
 		// Compute distance from center of widget
 		Vector2 vDelta = mAnchor - mPos;
@@ -118,20 +118,20 @@ void GizmoScaling::OnMouseMotion( const Vector2& pos, const Vector2& delta, int 
 	}
 }
 
-void GizmoScaling::OnMouseClick( int button, int state, const Vector2& pos, int mod )
+void GizmoScaling::OnMouseClick( int button, int state, const MouseMotion& mm )
 {	
 	if( state )
 	{
 		//fixme: should check if we clicked on gizmo
-		if( fabsf( pos.x-mPos.x) < 2.0f && fabsf( pos.y-mPos.y) > 8.0f )
+		if( fabsf( mm.pos.x-mPos.x) < 2.0f && fabsf( mm.pos.y-mPos.y) > 8.0f )
 			mAxis = Axis::Y;
-		else if( fabsf( pos.y-mPos.y) < 2.0f && fabsf( pos.x-mPos.x) > 8.0f )
+		else if( fabsf( mm.pos.y-mPos.y) < 2.0f && fabsf( mm.pos.x-mPos.x) > 8.0f )
 			mAxis = Axis::X;
 		else
 			mAxis = Axis::Both;
 
 		mMode = Mode::Dragging;
-		mAnchor = mEditor->GetGrid()->Snap(pos);
+		mAnchor = mEditor->GetGrid()->Snap(mm.pos);
 	}
 	else
 	{

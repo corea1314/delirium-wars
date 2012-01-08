@@ -1,14 +1,26 @@
 #pragma once
 
+#include <list>
+
 #include "Menu.h"
 #include "Math/Vector2.h"
 #include "tinyxml/tinyxml.h"
 
+#include "Lair/Lair.h"
+
 class Grid;
 class Camera;
+class Gizmo;
+class GizmoScaling;
+class GizmoTranslation;
+class GizmoRotation;
+class EditorElement;
 
 class Editor : public MenuUser
 {
+public:
+	class GizmoType { public: enum E { Translation, Rotation, Scaling, None }; };
+
 public:
 	Editor();
 	virtual ~Editor();
@@ -27,19 +39,23 @@ public:
 	virtual void OnRenderGUI() {}
 
 	virtual void OnMouseWheel( int v, int mod );
-	virtual void OnMouseMotion( int x, int y, int dx, int dy, int mod );
-	virtual void OnMouseClick( int button, int state, int x, int y, int mod );
+	virtual void OnMouseMotion( const MouseMotion& mm );
+	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnSpecialKey( int key, int mod );
 	virtual void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
 
 	// Menu callbacks
-	virtual void OnMenuFileSave( int unused );
-	virtual void OnMenuFileLoad( int unused );
+	virtual void OnMenuFileSave( int unused );	// Save back to resmap, to xml and binary
+	virtual void OnMenuFileLoad( int unused );	// Load from resmap, otherwise from binary or xml
 	
 	// Helpers
 	void ScreenToEditor( int x, int y, Vector2& v );
 	void EditorToScreen( const Vector2& v, int& x, int& y );
+	
+	void BuildMouseMotion( MouseMotion& mm, int x, int y, int dx, int dy, int mod );
+
+	void ActivateGizmo( GizmoType::E inGizmoType, EditorElement* inElement );
 	
 	// Accessors
 	Grid*	GetGrid() { return mGrid; }
@@ -49,9 +65,13 @@ protected:
 	float	GetTime() { return mTimeSeconds; }
 	void	ResetTime() { mTimeSeconds = 0.0f; }
 
+	void	CleanupDeleted();
+
 	Camera*	GetCamera() { return mCamera; }
 	void	SetViewportSize( Vector2 inViewportSize ) { mViewportSize = inViewportSize; }
-	
+
+	void AddElement( EditorElement* inElement );
+		
 	// File management
 	virtual void OnSerializeSave( TiXmlElement* inNode ) {}
 	virtual void OnSerializeLoad( TiXmlElement* inNode ) {}
@@ -62,7 +82,7 @@ protected:
 
 	const FileSelection& GetFileSave( const char* extension, const char* filter );
 	const FileSelection& GetFileLoad( const char* extension, const char* filter, bool multiple = false );
-
+	
 private:
 	bool GetSaveFilename( char filename[], int count, const char* filter, const char* extension );
 	bool GetLoadFilename( char filename[], int count, const char* filter, const char* extension, bool multiple = false );
@@ -75,6 +95,14 @@ private:
 	unsigned int	mZoomLevel;
 	Camera*			mCamera;
 
+	GizmoScaling*		mGizmoScaling;
+	GizmoRotation*		mGizmoRotation;
+	GizmoTranslation*	mGizmoTranslation;
+	Gizmo*				mActiveGizmo;
+
 	Vector2			mViewportSize;
 	std::vector<std::string>		mSelectedFilename;
+
+protected:
+	std::list<EditorElement*>	mElements;
 };
