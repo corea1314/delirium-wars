@@ -336,7 +336,7 @@ void VisualEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 		{	
 			if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
 			{
-				if( Lair::GetInputMan()->GetMouseButtonState(0).bState && !(mm.mod & SK_MOD_SHIFT) )
+				if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState && !(mm.mod & SK_MOD_SHIFT) )
 				{
 					// Select track
 					int nTrackIndex = (mm.y-kStartTrackPosY+kMinDeltaTrackPosY/2)/kMinDeltaTrackPosY;
@@ -393,7 +393,7 @@ void VisualEditor::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState(0).bState  && (mm.mod & SK_MOD_SHIFT) )
+		if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState  && (mm.mod & SK_MOD_SHIFT) )
 		{
 			// Scroll key tracks
 			mFirstFrameDelta -= ( mm.dx / (float)kMinDeltaFramePosX );
@@ -449,9 +449,7 @@ void VisualEditor::OnKeyboard( unsigned char key, int mod )
 
 void VisualEditor::OnCreateMenu()
 {	
-	CREATE_MENU( pFile, "  File...  " );
-		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
-		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
+	Editor::OnCreateMenu();
 		
 	CREATE_MENU( pShow, "  Show...  " );
 		ADD_MENU_ITEM( pShow, "  Curve  ", &VisualEditor::OnMenuShowCurve, 0 );

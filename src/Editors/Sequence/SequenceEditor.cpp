@@ -156,9 +156,7 @@ void SequenceEditor::OnSpecialKey( int key, int mod )
 
 void SequenceEditor::OnCreateMenu()
 {	
-	CREATE_MENU( pFile, "  File..." );
-		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
-		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
+	Editor::OnCreateMenu();
 
 	CREATE_MENU( pShow, "  Show..." );
 		ADD_MENU_ITEM( pShow, "  Frame  ", &SequenceEditor::OnMenuShowFrame, 0 );

@@ -44,18 +44,26 @@ public:
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnSpecialKey( int key, int mod );
 	virtual void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
-
+	
+	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );
+	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );
+	virtual void OnRotate( float inAngle, float inDelta );
+	
 	// Menu callbacks
+	virtual void OnCreateMenu();
 	virtual void OnMenuFileSave( int unused );	// Save back to resmap, to xml and binary
 	virtual void OnMenuFileLoad( int unused );	// Load from resmap, otherwise from binary or xml
+	virtual void OnMenuTransform( int inGizmoType );
 	
 	// Helpers
 	void ScreenToEditor( int x, int y, Vector2& v );
 	void EditorToScreen( const Vector2& v, int& x, int& y );
 	
+	Camera*	GetCamera() { return mCamera; }
+
 	void BuildMouseMotion( MouseMotion& mm, int x, int y, int dx, int dy, int mod );
 
-	void ActivateGizmo( GizmoType::E inGizmoType, EditorElement* inElement );
+	void ActivateGizmo( GizmoType::E inGizmoType );
 	
 	// Accessors
 	Grid*	GetGrid() { return mGrid; }
@@ -66,8 +74,7 @@ protected:
 	void	ResetTime() { mTimeSeconds = 0.0f; }
 
 	void	CleanupDeleted();
-
-	Camera*	GetCamera() { return mCamera; }
+		
 	void	SetViewportSize( Vector2 inViewportSize ) { mViewportSize = inViewportSize; }
 
 	void AddElement( EditorElement* inElement );

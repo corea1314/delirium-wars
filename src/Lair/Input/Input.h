@@ -26,7 +26,9 @@ public:
 		mMouseButtonState[inButtonIndex].bState = inState;
 	}
 
-	const MouseButtonState& GetMouseButtonState( int inButtonIndex ) { return mMouseButtonState[inButtonIndex]; }
+	class MouseButton { public: enum E { Left, Middle, Right } ; };
+
+	const MouseButtonState& GetMouseButtonState( MouseButton::E inButtonIndex ) { return mMouseButtonState[inButtonIndex]; }
 
 private:
 	MouseButtonState	mMouseButtonState[3];	// support only 3 buttons
@@ -69,3 +71,4 @@ typedef struct
 #define SK_MOD_SHIFT	0x0001	//GLUT_ACTIVE_SHIFT
 #define SK_MOD_CTRL		0x0002	//GLUT_ACTIVE_CTRL
 #define SK_MOD_ALT		0x0004	//GLUT_ACTIVE_ALT 
+

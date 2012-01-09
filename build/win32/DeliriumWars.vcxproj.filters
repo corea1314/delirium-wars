@@ -459,20 +459,23 @@
     <ClCompile Include="..\..\src\Editors\WidgetRect.cpp">
       <Filter>editors\widgets</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Editors\GizmoRotation.cpp">
-      <Filter>editors\gizmos</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Editors\GizmoScaling.cpp">
-      <Filter>editors\gizmos</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\Editors\GizmoTranslation.cpp">
-      <Filter>editors\gizmos</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\Editors\Sequence\SequenceEditor.cpp">
       <Filter>editors\sequence</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Editors\EditorElement.cpp">
       <Filter>editors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Gizmo\Gizmo.cpp">
+      <Filter>editors\gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Gizmo\GizmoRotation.cpp">
+      <Filter>editors\gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Gizmo\GizmoScaling.cpp">
+      <Filter>editors\gizmos</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Gizmo\GizmoTranslation.cpp">
+      <Filter>editors\gizmos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -794,23 +797,23 @@
     <ClInclude Include="..\..\src\Editors\WidgetRect.h">
       <Filter>editors\widgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Editors\GizmoRotation.h">
-      <Filter>editors\gizmos</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Editors\GizmoScaling.h">
-      <Filter>editors\gizmos</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Editors\GizmoTranslation.h">
-      <Filter>editors\gizmos</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Editors\Sequence\SequenceEditor.h">
       <Filter>editors\sequence</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Editors\Gizmo.h">
-      <Filter>editors\gizmos</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\Editors\EditorElement.h">
       <Filter>editors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Gizmo\Gizmo.h">
+      <Filter>editors\gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Gizmo\GizmoRotation.h">
+      <Filter>editors\gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Gizmo\GizmoScaling.h">
+      <Filter>editors\gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Gizmo\GizmoTranslation.h">
+      <Filter>editors\gizmos</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

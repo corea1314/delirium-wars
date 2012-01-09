@@ -54,11 +54,20 @@ private:
 class MenuUser
 {
 public:
-	Menu* GetMenu() { return mMenu; }
+	Menu* GetMenu() 
+	{ 
+		return mMenu; 
+	}
 
 protected:
-	virtual void OnCreateMenu() { mMenu = new Menu; }
-	virtual void OnDestroyMenu() { delete mMenu; mMenu =0; }
+	virtual void OnCreateMenu() 
+	{ 
+		mMenu = new Menu; 
+	}
+	virtual void OnDestroyMenu() 
+	{ 
+		delete mMenu; mMenu =0; 
+	}
 
 private:
 	Menu*	mMenu;

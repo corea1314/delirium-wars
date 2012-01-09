@@ -25,4 +25,7 @@ public:
 	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );
 	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );
 	virtual void OnRotate( float inAngle, float inDelta );
+
+private:
+	bool IsAcceptableCharForText( char inKey );
 };
