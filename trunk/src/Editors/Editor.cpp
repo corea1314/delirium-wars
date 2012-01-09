@@ -6,9 +6,9 @@
 #include "Lair/Lair.h"
 #include "Lair/Camera/Camera.h"
 
-#include "GizmoScaling.h"
-#include "GizmoRotation.h"
-#include "GizmoTranslation.h"
+#include "Editors/Gizmo/GizmoScaling.h"
+#include "Editors/Gizmo/GizmoRotation.h"
+#include "Editors/Gizmo/GizmoTranslation.h"
 
 #include "EditorElement.h"
 
@@ -28,11 +28,7 @@ Editor::Editor()
 	mViewportSize.y = (  720.0f ) / 2.0f;
 
 	mGizmoScaling = new GizmoScaling(this);	
-	mGizmoScaling->mPos.Set(-256.0f, 256.0f);
-
 	mGizmoRotation = new GizmoRotation(this);
-	mGizmoRotation->mPos.Set( 256.0f, 256.0f);
-
 	mGizmoTranslation = new GizmoTranslation(this);
 
 	mActiveGizmo = 0;
@@ -48,7 +44,7 @@ Editor::~Editor()
 }
 
 
-void Editor::ActivateGizmo( GizmoType::E inGizmoType, EditorElement* inElement )
+void Editor::ActivateGizmo( GizmoType::E inGizmoType )
 {
 	switch( inGizmoType )
 	{
@@ -57,8 +53,6 @@ void Editor::ActivateGizmo( GizmoType::E inGizmoType, EditorElement* inElement )
 	case GizmoType::Translation:	mActiveGizmo = mGizmoTranslation;	break;
 	case GizmoType::None:			mActiveGizmo = 0;					break;
 	}
-	if( mActiveGizmo )
-		mActiveGizmo->SetElement(inElement);
 }
 
 void Editor::AddElement( EditorElement* inElement )
@@ -150,15 +144,23 @@ void Editor::OnKeyboard( unsigned char key, int mod )
 	else
 	{
 		for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-			(*it)->OnKeyboard( key, mod );
+		{
+			if( (*it)->mSelected )
+				(*it)->OnKeyboard( key, mod );
+		}
 	}	
 
 	switch(key)
 	{
-	case '-':	GetGrid()->DecreaseGridSize();		break;
-	case '=':	GetGrid()->IncreaseGridSize();		break;
+	case 'q':	ActivateGizmo( GizmoType::None );			break;
+	case 'w':	ActivateGizmo( GizmoType::Translation );	break;
+	case 'e':	ActivateGizmo( GizmoType::Rotation );		break;
+	case 'r':	ActivateGizmo( GizmoType::Scaling );		break;
+
+	case '[':	GetGrid()->DecreaseGridSize();		break;
+	case ']':	GetGrid()->IncreaseGridSize();		break;
 	case 127:	CleanupDeleted();					break;			
-	case ' ':	GetGrid()->ToggleSnap();			break;
+	case 's':	GetGrid()->ToggleSnap();			break;
 	}
 }
 
@@ -213,6 +215,11 @@ void Editor::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mActiveGizmo )
 		mActiveGizmo->OnMouseMotion( mm );
+
+	// On drag with middle button, move camera
+	if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Middle ).bState )	// if left mouse button is down
+		mCamera->GetPos() -= mm.delta;
+	/*
 	else
 	{
 		bool bMovingElement = false;
@@ -222,24 +229,75 @@ void Editor::OnMouseMotion( const MouseMotion& mm )
 
 		if( bMovingElement == false )
 		{
-			if( Lair::GetInputMan()->GetMouseButtonState(0).bState )	// if left mouse button is down
+			if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Middle ).bState )	// if left mouse button is down
 			{
 				mCamera->GetPos() -= mm.delta;
 			}
 		}
 	}
+	*/
 }
 
 void Editor::OnSpecialKey( int key, int mod )
 {
 	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-		(*it)->OnSpecialKey( key, mod );
+	{
+		if( (*it)->mSelected )
+			(*it)->OnSpecialKey( key, mod );
+	}
 }
 
 void Editor::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values )
 {
 //	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
-//		(*it)->OnGamepad( gamepad, buttons, axis_count, axis_values );
+//	{
+//		if( (*it)->mSelected )
+//			(*it)->OnGamepad( gamepad, buttons, axis_count, axis_values );
+//	}
+}
+
+void Editor::OnTranslate( const Vector2& inNewPos, const Vector2& inDelta )
+{
+	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+	{
+		if( (*it)->mSelected )
+			(*it)->OnTranslate( inNewPos, inDelta );
+	}
+}
+
+void Editor::OnScale( const Vector2& inNewScale, const Vector2& inDelta )
+{
+	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+	{
+		if( (*it)->mSelected )
+			(*it)->OnScale( inNewScale, inDelta );
+	}
+}
+
+void Editor::OnRotate( float inAngle, float inDelta )
+{
+	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+	{
+		if( (*it)->mSelected )
+			(*it)->OnRotate( inAngle, inDelta );
+	}
+}
+
+void Editor::OnCreateMenu()
+{	
+	CREATE_MENU( pFile, "  File...  " );
+		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
+		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
+
+	CREATE_MENU( pTransform, "  Transform...  " );
+		ADD_MENU_ITEM( pTransform, "  Translation  ", &Editor::OnMenuTransform, GizmoType::Translation );
+		ADD_MENU_ITEM( pTransform, "  Rotation  ", &Editor::OnMenuTransform, GizmoType::Rotation );
+		ADD_MENU_ITEM( pTransform, "  Scale  ", &Editor::OnMenuTransform, GizmoType::Scaling );
+}
+
+void Editor::OnMenuTransform( int inGizmoType )
+{
+	ActivateGizmo( (GizmoType::E)inGizmoType );
 }
 
 const Editor::FileSelection& Editor::GetFileSave( const char* extension, const char* filter )
@@ -435,7 +493,6 @@ void Editor::OnMenuFileLoad( int unused )
 		}
 	}
 }
-
 
 void ConvertMultiToArray(LPCSTR inPath, std::vector<std::string> &outArray)
 {

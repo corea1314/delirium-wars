@@ -8,15 +8,15 @@
 
 #include "gfx.h"
 
-#include "../Grid.h"
+#include "Editors/Grid.h"
 #include "Lair/Lair.h"
 #include "Lair/Camera/Camera.h"
 #include "Lair/Input/Input.h"
 
 #include "../WidgetRect.h"
-#include "../GizmoScaling.h"
-#include "../GizmoRotation.h"
-#include "../GizmoTranslation.h"
+#include "Editors/Gizmo/GizmoScaling.h"
+#include "Editors/Gizmo/GizmoRotation.h"
+#include "Editors/Gizmo/GizmoTranslation.h"
 
 static const char* OPENFILE_BCF_EXTENSION = "lay";
 static const char* OPENFILE_BCF_FILTER = "Layout File\0*.lay\0";
@@ -133,9 +133,7 @@ void LayoutEditor::SetMode( Mode::E inMode )
 
 void LayoutEditor::OnCreateMenu()
 {	
-	CREATE_MENU( pFile, "  File...  " );
-		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
-		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
+	Editor::OnCreateMenu();
 
 	CREATE_MENU( pMode, "  Mode...  " );
 		ADD_MENU_ITEM( pMode, "  Selection  ", &LayoutEditor::OnMenuMode, Mode::Selection );

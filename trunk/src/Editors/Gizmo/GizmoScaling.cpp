@@ -1,9 +1,12 @@
 #include "GizmoScaling.h"
 
 #include "Lair/Lair.h"
-#include "Editor.h"
-#include "Grid.h"
+#include "../Editor.h"
+#include "../Grid.h"
 #include "gfx.h"
+
+#include <stdlib.h>
+#include <float.h>
 
 static const int kWidgetSize	=	64;
 
@@ -82,18 +85,20 @@ void GizmoScaling::OnKeyboard( unsigned char key, int mod )
 {
 	switch( key )
 	{
-		
 	case 13:	// Enter key
 	case 27: 	// Escape key
 		mMode = Mode::NotDragging;	break;	// Clear widget
 	}
+
+	if( mMode != Mode::Dragging )
+		Gizmo::OnKeyboard( key, mod );
 }
 
 void GizmoScaling::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mMode == Mode::NotDragging || mMode == Mode::DoneDragging )
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState(0).bState )
+		if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState )
 		{
 			mMode = Mode::Dragging;
 			mPos = mEditor->GetGrid()->Snap(mm.pos);
@@ -137,4 +142,18 @@ void GizmoScaling::OnMouseClick( int button, int state, const MouseMotion& mm )
 	{
 		mMode = Mode::DoneDragging;
 	}	
+}
+
+void GizmoScaling::ProcessTextEntry( const char* inText )
+{
+	float x,y;
+	if( sscanf_s( inText, "%f &f", &x, &y ) == 2 )
+	{
+		if( _isnan(x) == 0 && _isnan(y) == 0 )
+		{
+			Vector2 vOldScale = mScale;
+			mScale.Set(x,y);
+			mEditor->OnScale( mScale, mScale-vOldScale );
+		}
+	}
 }

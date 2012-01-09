@@ -4,6 +4,26 @@
 #include "CurveSelection.h"
 #include "Lair/Animation/Curve.h"
 #include "../Menu.h"
+#include "../EditorElement.h"
+
+class EditorElementCurve : public EditorElement
+{
+public:
+	EditorElementCurve( Editor* inEditor ) : EditorElement(inEditor) {}
+
+public:
+	virtual void OnRender();
+	virtual void OnRenderGUI();
+
+	virtual void OnKeyboard( unsigned char key, int mod );
+	virtual void OnSpecialKey( int key, int mod );
+	virtual bool OnMouseMotion( const MouseMotion& mm );
+	virtual bool OnMouseClick( int button, int state, const MouseMotion& mm );
+
+	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );
+	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );
+	virtual void OnRotate( float inAngle, float inDelta );
+};
 
 class CurveEditor : public Editor
 {

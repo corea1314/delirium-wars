@@ -1,9 +1,12 @@
 #include "GizmoTranslation.h"
 
 #include "Lair/Lair.h"
-#include "Editor.h"
-#include "Grid.h"
+#include "../Editor.h"
+#include "../Grid.h"
 #include "gfx.h"
+
+#include <stdlib.h>
+#include <float.h>
 
 static const int kWidgetSize	=	64;
 
@@ -73,33 +76,37 @@ void GizmoTranslation::OnRenderGUI()
 		Vector2 vDelta = (mPos-mOrigin);
 		gl_RenderText( x+16, y-16, "(%0.2f,%0.2f)", vDelta.x, vDelta.y );
 	}
+	else
+	{
+		// Display text entry
+		if( mTextEntry.size() != 0 )
+			gl_RenderText( x+16, y-16, "(%s)", mTextEntry.c_str() );
+	}
 
 	glLineWidth(2.0f);
 }
 
 void GizmoTranslation::OnKeyboard( unsigned char key, int mod )
-{
+{	
 	switch( key )
 	{		
-	case 13:	// Enter key
 	case 27: 	// Escape key
 		mMode = Mode::NotDragging;	break;	// Clear widget
 	}
+
+	if( mMode != Mode::Dragging )
+		Gizmo::OnKeyboard( key, mod );
 }
 
 void GizmoTranslation::OnMouseMotion( const MouseMotion& mm )
 {
-	if( mMode == Mode::NotDragging || mMode == Mode::DoneDragging )
+	if( mMode == Mode::Dragging )
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState(0).bState )
-		{
-			mMode = Mode::Dragging;
-			mPos = mEditor->GetGrid()->Snap(mm.pos);
-		}
-	}
-	else if( mMode == Mode::Dragging )
-	{
-		Vector2 vPos = mEditor->GetGrid()->Snap(mm.pos);
+		Vector2 vOldPos = mPos;
+		Vector2 vPos = mm.pos;
+		mDelta = vPos - mClickOrigin;
+
+		vPos = mEditor->GetGrid()->Snap(mOrigin + mDelta);	// snap resulting point
 		
 		if( mAxis == Axis::X )
 			mPos.x = vPos.x;
@@ -107,6 +114,8 @@ void GizmoTranslation::OnMouseMotion( const MouseMotion& mm )
 			mPos.y = vPos.y;
 		else
 			mPos = vPos;
+
+		mEditor->OnTranslate( mPos, mPos-vOldPos );
 	}
 }
 
@@ -115,20 +124,49 @@ void GizmoTranslation::OnMouseClick( int button, int state, const MouseMotion& m
 	//fixme: should handle the delta position to correct the glitch on click
 	if( state )
 	{
-		//fixme: should check if we clicked on gizmo
-		if( fabsf( mm.pos.x-mPos.x) < 2.0f && fabsf( mm.pos.y-mPos.y) > 8.0f )
-			mAxis = Axis::Y;
-		else if( fabsf( mm.pos.y-mPos.y) < 2.0f && fabsf( mm.pos.x-mPos.x) > 8.0f )
-			mAxis = Axis::X;
-		else
-			mAxis = Axis::Both;
+		const float dx = mm.pos.x-mPos.x;
+		const float fdx = fabsf(dx);
+		const float dy = mm.pos.y-mPos.y;
+		const float fdy = fabsf(dy);
+		
+		const float kAxisThickness = 4.0f * mEditor->GetCamera()->GetZoom();
+		const float kAxisLength = kWidgetSize * mEditor->GetCamera()->GetZoom();
 
-		mMode = Mode::Dragging;
-		mOrigin = mPos;
-		mPos = mEditor->GetGrid()->Snap(mm.pos);
+		// Click on Y axis
+		if( dy > 0 && fdx < kAxisThickness && 0 < fdy && fdy < kAxisLength )
+			mAxis = Axis::Y;
+		// Click on X axis
+		else if( dx > 0 && fdy < kAxisThickness && 0 < fdx && fdx < kAxisLength )
+			mAxis = Axis::X;
+		// Click on triangle
+		else if( dx > 0 && dy > 0 && fdx > 0 && fdy > 0 && fdx < kAxisLength/2 && fdy < kAxisLength/2 )
+			mAxis = Axis::Both;
+		else
+			mAxis = Axis::None;
+
+		if( mAxis != Axis::None )
+		{
+			mMode = Mode::Dragging;
+			mOrigin = mPos;
+			mClickOrigin = mm.pos;
+		}		
 	}
 	else
-	{
+	{		
 		mMode = Mode::DoneDragging;
+	}
+}
+
+void GizmoTranslation::ProcessTextEntry( const char* inText )
+{
+	float x,y;
+	if( sscanf_s( inText, "%f %f", &x, &y ) == 2 )
+	{
+		if( _isnan(x) == 0 && _isnan(y) == 0 )
+		{
+			Vector2 vOldPos = mPos;
+			mPos.Set(x,y);
+			mEditor->OnTranslate( mPos, mPos-vOldPos );
+		}
 	}
 }

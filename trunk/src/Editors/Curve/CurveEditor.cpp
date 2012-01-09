@@ -191,7 +191,7 @@ void CurveEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
 	switch(button)
 	{
-	case 0:		
+	case InputMan::MouseButton::Left:
 		{		
 			unsigned int nKeyIndex = -1;
 			for( unsigned int i=0; i<mCurve.GetKeyCount(); i++ )
@@ -214,27 +214,8 @@ void CurveEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 				mCurveSelection = 0;
 			}
 
-			if( Lair::GetInputMan()->GetMouseButtonState(button).bState == false )
+			if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState == false )
 				mCurveSelection = 0;
-		}
-		break;
-	case 1:
-		{
-			/* FIXME
-			if( g_App.Buttons[b] == 0 )
-			{	
-				float r;	
-				Vector2 newpt;
-				if( g_App.c.FindClosestPoint( v, 0.01f, newpt, index, r ) )
-				{
-					g_App.c.AddPointAtR( index, r );
-				}
-			}
-			*/
-		}
-		break;
-	case 2:		
-		{
 		}
 		break;
 	}
@@ -254,9 +235,7 @@ void CurveEditor::OnMouseMotion( const MouseMotion& mm )
 
 void CurveEditor::OnCreateMenu()
 {	
-	CREATE_MENU( pFile, "  File..." );
-		ADD_MENU_ITEM( pFile, "  Save  ", &Editor::OnMenuFileSave, 0 );
-		ADD_MENU_ITEM( pFile, "  Load  ", &Editor::OnMenuFileLoad, 0 );
+	Editor::OnCreateMenu();
 	
 	CREATE_MENU( pPreLoop, "  PreLoop...  " );
 		ADD_MENU_ITEM( pPreLoop, "  Constant  ",	&CurveEditor::OnMenuPreLoop, CurveLoopType::Constant );

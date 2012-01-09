@@ -54,7 +54,7 @@ void WidgetRect::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mMode == Mode::NotDragging || mMode == Mode::DoneDragging )
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState(0).bState )
+		if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState )
 		{
 			mMode = Mode::Dragging;
 			mRect[0] = mEditor->GetGrid()->Snap(mm.pos);

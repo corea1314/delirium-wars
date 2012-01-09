@@ -10,12 +10,6 @@
 static const float	kElementSelectionRadius			= 8.0f;
 static const float	kElementSelectionRadiusSquared	= kElementSelectionRadius * kElementSelectionRadius;
 
-
-bool IsAcceptableCharForText( char inKey ) 
-{ 
-	return isalnum(inKey) || inKey == '.' || inKey == '-' || inKey == '_'; 
-}
-
 void LayoutElement::OnRender()
 {
 	glPointSize( kElementSelectionRadius*2 );
@@ -81,4 +75,9 @@ void LayoutElement::OnScale( const Vector2& inNewScale, const Vector2& inDelta )
 void LayoutElement::OnRotate( float inAngle, float inDelta ) 
 {
 	mAngle += inDelta;
+}
+
+bool LayoutElement::IsAcceptableCharForText( char inKey ) 
+{ 
+	return isalnum(inKey) || inKey == '.' || inKey == '-' || inKey == '_' || inKey == ' '; 
 }
