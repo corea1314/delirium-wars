@@ -26,48 +26,63 @@ void GizmoScaling::OnRenderGUI()
 	int ax,ay;
 	mEditor->EditorToScreen(mAnchor,ax,ay);
 
-	// Square
-	if( mMode == Mode::Dragging && mAxis == Axis::Both )
-		gl_SetColor( COLORS::eWHITE );
-	else
-		gl_SetColor( COLORS::eLIGHTGREY );
-	glBegin(GL_QUADS);
-	glVertex2i( x+kWidgetSize/2, y+kWidgetSize/2 );
-	glVertex2i( x-kWidgetSize/2, y+kWidgetSize/2 );
-	glVertex2i( x-kWidgetSize/2, y-kWidgetSize/2 );
-	glVertex2i( x+kWidgetSize/2, y-kWidgetSize/2 );
+	const int kScaleHandleSize = kWidgetSize / 16; 
+
+	// Squares
+	glBegin(GL_QUADS);	
+		if( mMode == Mode::Dragging && mAxis == Axis::Both)
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eLIGHTGREY );
+		glVertex2i( x+kScaleHandleSize*2, y+kScaleHandleSize*2 );
+		glVertex2i( x-kScaleHandleSize*2, y+kScaleHandleSize*2 );
+		glVertex2i( x-kScaleHandleSize*2, y-kScaleHandleSize*2 );
+		glVertex2i( x+kScaleHandleSize*2, y-kScaleHandleSize*2 );
+
+		if( mMode == Mode::Dragging && (mAxis == Axis::X || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eRED );
+		glVertex2i( x+kWidgetSize+kScaleHandleSize, y+kScaleHandleSize );
+		glVertex2i( x+kWidgetSize-kScaleHandleSize, y+kScaleHandleSize );
+		glVertex2i( x+kWidgetSize-kScaleHandleSize, y-kScaleHandleSize );
+		glVertex2i( x+kWidgetSize+kScaleHandleSize, y-kScaleHandleSize );
+
+		if( mMode == Mode::Dragging && (mAxis == Axis::Y || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eGREEN );
+		glVertex2i( x+kScaleHandleSize, y+kWidgetSize+kScaleHandleSize );
+		glVertex2i( x-kScaleHandleSize, y+kWidgetSize+kScaleHandleSize );
+		glVertex2i( x-kScaleHandleSize, y+kWidgetSize-kScaleHandleSize );
+		glVertex2i( x+kScaleHandleSize, y+kWidgetSize-kScaleHandleSize );
 	glEnd();
 
+	gl_SetColor( COLORS::eLIGHTGREY );
+	
 	// Drag vector
 	glBegin(GL_LINES);
-	if( mMode == Mode::Dragging )
-	{
-		gl_SetColor( COLORS::eLIGHTGREY );
+		if( mMode == Mode::Dragging )
+		{		
+			glVertex2i( x, y );
+			glVertex2i( ax, ay );
+		}
+
+		// X axis
+		if( mMode == Mode::Dragging && (mAxis == Axis::X || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eRED );
 		glVertex2i( x, y );
-		glVertex2i( ax, ay );
-	}
-	glEnd();
+		glVertex2i( x+kWidgetSize, y );
 
-	// X axis
-	if( mMode == Mode::Dragging && mAxis == Axis::X )
-		glLineWidth(6.0f);
-	else
-		glLineWidth(2.0f);
-	glBegin(GL_LINES);
-	gl_SetColor( COLORS::eRED );
-	glVertex2i( x, y );
-	glVertex2i( x+kWidgetSize, y );
-	glEnd();
-
-	// Y axis
-	if( mMode == Mode::Dragging && mAxis == Axis::Y )
-		glLineWidth(6.0f);
-	else
-		glLineWidth(2.0f);
-	glBegin(GL_LINES);
-	gl_SetColor( COLORS::eGREEN );
-	glVertex2i( x, y );
-	glVertex2i( x, y+kWidgetSize );
+		// Y axis
+		if( mMode == Mode::Dragging && (mAxis == Axis::Y || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eGREEN );
+		glVertex2i( x, y );
+		glVertex2i( x, y+kWidgetSize );
 	glEnd();
 
 	// Text
@@ -77,8 +92,6 @@ void GizmoScaling::OnRenderGUI()
 		Vector2 vDelta = (mPos-mAnchor);
 		gl_RenderText( x+16, y-16, "(%0.2f,%0.2f)", vDelta.x, vDelta.y );
 	}
-
-	glLineWidth(2.0f);
 }
 
 void GizmoScaling::OnKeyboard( unsigned char key, int mod )

@@ -26,47 +26,61 @@ void GizmoTranslation::OnRenderGUI()
 	int ox,oy;
 	mEditor->EditorToScreen(mOrigin,ox,oy);
 
+	const int kWidgetArrowSize = kWidgetSize/4;
+
 	// Triangle
 	if( mMode == Mode::Dragging && mAxis == Axis::Both )
-		gl_SetColor( COLORS::eWHITE );
+		gl_SetColor( COLORS::eYELLOW );
 	else
 		gl_SetColor( COLORS::eLIGHTGREY );
 	glBegin(GL_TRIANGLES);
 		glVertex2i( x, y );
 		glVertex2i( x+kWidgetSize/2, y );
 		glVertex2i( x, y+kWidgetSize/2 );
+
+		if( mMode == Mode::Dragging && (mAxis == Axis::X || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eRED );
+		glVertex2i( x+kWidgetSize-kWidgetArrowSize, y-kWidgetArrowSize/3 );
+		glVertex2i( x+kWidgetSize, y );
+		glVertex2i( x+kWidgetSize-kWidgetArrowSize, y+kWidgetArrowSize/3 );
+		
+		if( mMode == Mode::Dragging && (mAxis == Axis::Y || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eGREEN );
+		glVertex2i( x-kWidgetArrowSize/3, y+kWidgetSize-kWidgetArrowSize );
+		glVertex2i( x, y+kWidgetSize );
+		glVertex2i( x+kWidgetArrowSize/3, y+kWidgetSize-kWidgetArrowSize );
 	glEnd();
 
-	// Drag vector
+	
 	glBegin(GL_LINES);
+	
+		// Drag vector
 		if( mMode == Mode::Dragging )
 		{
 			gl_SetColor( COLORS::eLIGHTGREY );
 			glVertex2i( x, y );
 			glVertex2i( ox, oy );
 		}
-	glEnd();
 	
-	// X axis
-	if( mMode == Mode::Dragging && mAxis == Axis::X )
-		glLineWidth(6.0f);
-	else
-		glLineWidth(2.0f);
-	glBegin(GL_LINES);
-	gl_SetColor( COLORS::eRED );
-	glVertex2i( x, y );
-	glVertex2i( x+kWidgetSize, y );
-	glEnd();
+		// X axis
+		if( mMode == Mode::Dragging && (mAxis == Axis::X || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+			gl_SetColor( COLORS::eRED );
+		glVertex2i( x, y );
+		glVertex2i( x+kWidgetSize, y );
 
-	// Y axis
-	if( mMode == Mode::Dragging && mAxis == Axis::Y )
-		glLineWidth(6.0f);
-	else
-		glLineWidth(2.0f);
-	glBegin(GL_LINES);
-	gl_SetColor( COLORS::eGREEN );
-	glVertex2i( x, y );
-	glVertex2i( x, y+kWidgetSize );
+		// Y axis
+		if( mMode == Mode::Dragging && (mAxis == Axis::Y || mAxis == Axis::Both) )
+			gl_SetColor( COLORS::eYELLOW );
+		else
+		gl_SetColor( COLORS::eGREEN );
+		glVertex2i( x, y );
+		glVertex2i( x, y+kWidgetSize );
 	glEnd();
 	
 	// Text
@@ -82,8 +96,6 @@ void GizmoTranslation::OnRenderGUI()
 		if( mTextEntry.size() != 0 )
 			gl_RenderText( x+16, y-16, "(%s)", mTextEntry.c_str() );
 	}
-
-	glLineWidth(2.0f);
 }
 
 void GizmoTranslation::OnKeyboard( unsigned char key, int mod )
