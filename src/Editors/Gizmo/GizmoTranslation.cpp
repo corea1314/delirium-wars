@@ -14,6 +14,13 @@ GizmoTranslation::GizmoTranslation( Editor* inEditor ) : Gizmo(inEditor), mMode(
 {
 }
 
+
+void GizmoTranslation::Init( const Vector2& inPos, float inAngle )
+{
+	mOrigin = mPos = mClickOrigin = inPos;
+}
+
+
 void GizmoTranslation::OnRender()
 {
 }

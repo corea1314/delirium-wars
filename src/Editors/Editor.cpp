@@ -53,6 +53,8 @@ void Editor::ActivateGizmo( GizmoType::E inGizmoType )
 	case GizmoType::Translation:	mActiveGizmo = mGizmoTranslation;	break;
 	case GizmoType::None:			mActiveGizmo = 0;					break;
 	}
+
+	OnActivateGizmo();
 }
 
 void Editor::AddElement( EditorElement* inElement )

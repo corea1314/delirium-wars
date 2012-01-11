@@ -12,6 +12,7 @@
 #include "Lair/Lair.h"
 #include "Lair/Camera/Camera.h"
 #include "Lair/Input/Input.h"
+#include "Editors/Gizmo/Gizmo.h"
 
 static const int	kMinDeltaTrackPosY	= 16;
 static const int	kMinDeltaFramePosX	=  8;
@@ -51,24 +52,23 @@ void VisualEditor::OnInit()
 	mSelectedAnimatable = &mAnimatables[0];
 
 	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(   0,   0.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  15,  15.0f );	
-	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  60, 300.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey( 120, 600.0f );
+//	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  15,  15.0f );	
+//	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey(  60, 300.0f ); 
+//	mSelectedAnimatable->mCurve[TrackType::PosX ].AddKey( 120, 600.0f );
 
 	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(   0,   0.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  10, 100.0f );	
-	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  60,   0.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey( 120, 200.0f );
+//	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  10, 100.0f );	
+//	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey(  60,   0.0f ); 
+//	mSelectedAnimatable->mCurve[TrackType::PosY ].AddKey( 120, 200.0f );
 
 	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(   0,   0.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  60,  90.0f );	
-	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  80,  45.0f );	
-	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey( 120,   0.0f ); 
+//	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  60,  90.0f );	
+//	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey(  80,  45.0f );	
+//	mSelectedAnimatable->mCurve[TrackType::Angle].AddKey( 120,   0.0f ); 
 
 	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(   0,   1.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(  40,   0.5f );	
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 120,   1.0f ); 
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(49,49);
+//	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(  40,   0.5f );	
+//	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 120,   1.0f ); 
 }
 
 void VisualEditor::OnExit()
@@ -98,12 +98,15 @@ int VisualEditor::ScreenToKey( int inPosition )
 	return mFirstFrame + ((inPosition + kMinDeltaFramePosX/2 - kStartTrackPosX) / kMinDeltaFramePosX);
 }
 
-void VisualEditor::SetCurrFrame( int inFrame)
+void VisualEditor::SetCurrFrame( int inFrame )
 {
 	mCurrFrame = inFrame;
 
 	for( unsigned int i=0;i<mAnimatables.size();i++)
 		mAnimatables[i].Update( (float)mCurrFrame );
+
+	if( mSelectedAnimatable && GetActiveGizmo() )
+		GetActiveGizmo()->Init( mSelectedAnimatable->mPos, mSelectedAnimatable->mAngle );		
 }
 
 void VisualEditor::OnUpdate( float inDeltaTime )
@@ -119,7 +122,16 @@ void VisualEditor::OnUpdate( float inDeltaTime )
 
 		for( unsigned int i=0;i<mAnimatables.size();i++)
 			mAnimatables[i].Update( mCurrTime * mFPS );
+
+		if( mSelectedAnimatable && GetActiveGizmo() )
+			GetActiveGizmo()->Init( mSelectedAnimatable->mPos, mSelectedAnimatable->mAngle );		
 	}
+}
+
+void VisualEditor::OnActivateGizmo()
+{
+	if( mSelectedAnimatable && GetActiveGizmo() )
+		GetActiveGizmo()->Init( mSelectedAnimatable->mPos, mSelectedAnimatable->mAngle );
 }
 
 void VisualEditor::OnRender()
@@ -327,6 +339,8 @@ void VisualEditor::OnRenderGUI()
 
 void VisualEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
+	Editor::OnMouseClick( button, state, mm );
+
 	if( (mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY) && !(mm.mod & SK_MOD_SHIFT) )	//fixme 4
 		OnMouseClickTrackArea( button, mm.x, mm.y );
 
@@ -393,7 +407,7 @@ void VisualEditor::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState  && (mm.mod & SK_MOD_SHIFT) )
+		if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState && (mm.mod & SK_MOD_SHIFT) )
 		{
 			// Scroll key tracks
 			mFirstFrameDelta -= ( mm.dx / (float)kMinDeltaFramePosX );
@@ -436,14 +450,55 @@ void VisualEditor::OnKeyboard( unsigned char key, int mod )
 	switch( key )
 	{
 	case 'k':	// Keyframe selected tracks
+		OnKeyframeSelected();		break;
 	case 'K':	// Keyframe all tracks
+		OnKeyframeAllSelected();	break;
 		break;
 	case 27:	// Escape key
 		ClearSelection();	
 		break;
-	case ' ':
+	case 'p':
 		mIsPlaying = !mIsPlaying;
 		break;
+	}
+}
+
+void VisualEditor::OnTranslate( const Vector2& inNewPos, const Vector2& inDelta )
+{
+	if(mSelectedAnimatable)
+		mSelectedAnimatable->OnTranslate(inNewPos);
+}
+
+void VisualEditor::OnScale( const Vector2& inNewScale, const Vector2& inDelta )
+{
+	if(mSelectedAnimatable)
+		mSelectedAnimatable->OnScale(inNewScale);
+}
+
+void VisualEditor::OnRotate( float inAngle, float inDelta )
+{
+	if(mSelectedAnimatable)
+		mSelectedAnimatable->OnRotate(inAngle);
+}
+
+void VisualEditor::OnKeyframeSelected()
+{
+	if( mSelectedAnimatable )
+	{
+		//fixme check gizmo and keyframe active gizmo
+		mSelectedAnimatable->KeyFrame( TrackType::PosX, mCurrFrame );
+		mSelectedAnimatable->KeyFrame( TrackType::PosY, mCurrFrame );
+		mSelectedAnimatable->KeyFrame( TrackType::Angle, mCurrFrame );
+	}
+}
+
+void VisualEditor::OnKeyframeAllSelected()
+{
+	if( mSelectedAnimatable )
+	{
+		mSelectedAnimatable->KeyFrame( TrackType::PosX, mCurrFrame );
+		mSelectedAnimatable->KeyFrame( TrackType::PosY, mCurrFrame );
+		mSelectedAnimatable->KeyFrame( TrackType::Angle, mCurrFrame );
 	}
 }
 
@@ -468,6 +523,18 @@ void VisualEditor::Animatable::Update( float inPosition )
 	mPos.x = mCurve[TrackType::PosX ].Evaluate(inPosition);
 	mPos.y = mCurve[TrackType::PosY ].Evaluate(inPosition);
 	mAngle = (float)DEG_TO_RAD(mCurve[TrackType::Angle].Evaluate(inPosition));
+}
+
+void VisualEditor::Animatable::KeyFrame( TrackType::E inTrackType, int inPosition )
+{
+	switch( inTrackType )
+	{
+	case TrackType::PosX:	mCurve[TrackType::PosX ].AddKey( inPosition, mPos.x );	break;
+	case TrackType::PosY:	mCurve[TrackType::PosY ].AddKey( inPosition, mPos.y );	break;
+	case TrackType::Angle:	mCurve[TrackType::Angle].AddKey( inPosition, mAngle );	break;
+//	case TrackType::ScaleX:	mCurve[TrackType::ScaleX].AddKey( inPosition, mPos.x );	break;
+//	case TrackType::ScaleY:	mCurve[TrackType::ScaleX].AddKey( inPosition, mPos.x );	break;
+	}	
 }
 
 void VisualEditor::Animatable::Render()

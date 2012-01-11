@@ -38,6 +38,8 @@ public:
 	virtual void OnRender() {}
 	virtual void OnRenderGUI() {}
 
+	virtual void OnActivateGizmo() {}
+
 	virtual void OnMouseWheel( int v, int mod );
 	virtual void OnMouseMotion( const MouseMotion& mm );
 	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
@@ -67,6 +69,7 @@ public:
 	
 	// Accessors
 	Grid*	GetGrid() { return mGrid; }
+	Gizmo*	GetActiveGizmo() { return mActiveGizmo; }
 
 protected:
 	// Helpers and accessors

@@ -11,14 +11,47 @@ Curve::Curve()
 
 void Curve::AddKey( int inPosition, float inValue )
 {
-	mKeys.push_back( Key(inPosition, inValue, Vector2(-1,0), Vector2(1,0), CurveContinuity::Smooth ) );
-	Update();
+	std::vector<Key>::iterator itKey = FindKey(inPosition);
+
+	if( itKey != mKeys.end() )
+	{
+		// key at this position already exists, so update value
+		itKey->mValue = inValue;
+	}
+	else
+	{
+		// no key found to add it
+		mKeys.push_back( Key(inPosition, inValue, Vector2(-1,0), Vector2(1,0), CurveContinuity::Smooth ) );
+	}
+
+	Update();	//fixme, overkill to recompute everything for a single key add
 }
 
 void Curve::AddKey( int inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity )
 {
-	mKeys.push_back( Key(inPosition, inValue, inTangentIn.GetNormal(), inTangentOut.GetNormal(), inContinuity ) );
-	Update();
+	std::vector<Key>::iterator itKey = FindKey(inPosition);
+
+	if( itKey != mKeys.end() )
+	{
+		// key at this position already exists, so update value
+		itKey->mValue = inValue;
+		itKey->mTangentInVector = inTangentIn;
+		itKey->mTangentOutVector = inTangentOut;
+		itKey->mContinuity = inContinuity;
+	}
+	else
+	{
+		// no key found to add it
+		mKeys.push_back( Key(inPosition, inValue, inTangentIn.GetNormal(), inTangentOut.GetNormal(), inContinuity ) );
+	}
+	
+	Update();	//fixme, overkill to recompute everything for a single key add
+}
+
+std::vector<Curve::Key>::iterator Curve::FindKey( int inPosition )
+{
+	std::vector<Curve::Key>::iterator itKey = std::find( mKeys.begin(), mKeys.end(), Key(inPosition) );
+	return itKey;
 }
 
 void Curve::Update()
