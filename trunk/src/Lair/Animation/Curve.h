@@ -32,7 +32,8 @@ public:
 	class Key
 	{
 	public:
-		Key(){}
+		Key() : mPosition(-1), mValue(-1.0f) {}
+		Key( int inPosition ) : mPosition(inPosition) {}
 		Key( int inPosition, float inValue, const Vector2& inTangentInVector, const Vector2& inTangentOutVector, CurveContinuity::E inContinuity ) 
 			: mPosition(inPosition)
 			, mValue(inValue)
@@ -51,10 +52,13 @@ public:
 		float mTangentIn, mTangentOut;	// slope y/dx (dx being distance between next key)
 
 		inline bool operator<( const Key& inKey )	{ return mPosition < inKey.mPosition;	}
+		inline bool operator==( const Key& inKey )	{ return mPosition == inKey.mPosition;	}
 	};
 
 	void AddKey( int inPosition, float inValue );
 	void AddKey( int inPosition, float inValue, const Vector2& inTangentIn, const Vector2& inTangentOut, CurveContinuity::E inContinuity );
+	std::vector<Key>::iterator FindKey( int inPosition );
+
 	void CalculateTangents();
 	void ClearKeys() { mKeys.clear(); }
 

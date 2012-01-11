@@ -14,6 +14,8 @@ class Gizmo
 public:
 	Gizmo( Editor* inEditor ) : mEditor(inEditor) {}
 
+	virtual void Init( const Vector2& inPos, float inAngle );
+
 	virtual void OnRender();
 	virtual void OnRenderGUI();
 	virtual void OnUpdate( float inDeltaTime );

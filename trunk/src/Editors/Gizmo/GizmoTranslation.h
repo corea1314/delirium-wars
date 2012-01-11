@@ -23,6 +23,8 @@ private:
 public:
 	GizmoTranslation( Editor* inEditor );
 
+	virtual void Init( const Vector2& inPos, float inAngle );
+
 	virtual void OnRender();
 	virtual void OnRenderGUI();
 

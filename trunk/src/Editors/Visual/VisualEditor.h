@@ -42,6 +42,12 @@ private:
 
 		void Update( float inPosition );
 		void Render();
+
+		void KeyFrame( TrackType::E inTrackType, int inPosition );
+
+		inline void OnTranslate( const Vector2& inPos ) { mPos = inPos;}
+		inline void OnRotate( float inAngle ) { mAngle = inAngle; }
+		inline void OnScale( const Vector2& inScale ) { mScale = inScale;}
 	};
 
 	class KeySelection
@@ -64,6 +70,10 @@ protected:
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnSpecialKey( int key, int mod );
 	virtual void OnCreateMenu();
+	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );
+	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );
+	virtual void OnRotate( float inAngle, float inDelta );
+	virtual void OnActivateGizmo();
 	
 	// Menu callbacks
 	virtual void OnMenuShowCurve( int unused );
@@ -79,6 +89,9 @@ private:
 	void RenderTrackCurves( TrackType::E inType, int inPosY );
 	void RenderCurve( Curve& inCurve, bool inSelected, int inPosY );
 	void RenderSelectedTrackKeys();
+
+	void OnKeyframeSelected();
+	void OnKeyframeAllSelected();
 
 	void SetCurrFrame( int inFrame );
 	void ClearSelection();

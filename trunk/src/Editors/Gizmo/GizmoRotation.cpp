@@ -35,6 +35,12 @@ GizmoRotation::GizmoRotation( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::
 	}
 }
 
+void GizmoRotation::Init( const Vector2& inPos, float inAngle )
+{
+	mPos = inPos;
+	mAngle = inAngle;
+}
+
 void GizmoRotation::OnRender()
 {
 }
