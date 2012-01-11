@@ -104,6 +104,7 @@ private:
 private:
 	int			mCurrFrame;
 	int			mFirstFrame;
+	int			mLastFrame;
 	float		mFirstFrameDelta;
 	TrackInfo	mTrackInfo[6];
 	float		mKeyValueScale;
