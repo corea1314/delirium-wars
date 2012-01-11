@@ -32,6 +32,7 @@ void VisualEditor::OnInit()
 	GetCamera()->GetPos().Set( 256.0f, 256.0f );
 
 	mFirstFrame = 0;
+	mLastFrame = 100;
 	mFirstFrameDelta = 0.0f;
 	mKeyValueScale = 1.0f;
 	SetCurrFrame( 0 );
@@ -115,10 +116,13 @@ void VisualEditor::OnUpdate( float inDeltaTime )
 	{
 		mCurrTime += inDeltaTime / 4.0f;
 
-		if( mCurrTime > 3.0f ) // fixme 5 secs
-			mCurrTime = 0.0f;
-
 		mCurrFrame = (int)( mCurrTime * mFPS );
+
+		if( mCurrFrame == mLastFrame )
+		{
+			mCurrFrame = 0;
+			mCurrTime = 0.0f;
+		}
 
 		for( unsigned int i=0;i<mAnimatables.size();i++)
 			mAnimatables[i].Update( mCurrTime * mFPS );
@@ -256,8 +260,13 @@ void VisualEditor::RenderCurve( Curve& inCurve, bool inSelected, int inPosY )
 			glVertex2f( (GLfloat)inCurve.GetKey(i).mPosition, inCurve.GetKey(i).mValue );
 		glEnd();
 
+		gl_SetColor( COLORS::eWHITE );
+		for(unsigned int i=0;i<inCurve.GetKeyCount();i++)
+			gl_RenderText( inCurve.GetKey(i).mPosition, (GLint)(inCurve.GetKey(i).mValue+8), "%0.2f", inCurve.GetKey(i).mValue ); //fixme 8
+
 	glPopMatrix();
 
+	
 	glLineWidth( 2.0f );
 }
 
@@ -286,9 +295,13 @@ void VisualEditor::OnRenderGUI()
 		glVertex2f( (GLfloat)KeyToScreen(0), (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
 	glEnd();
 
-	// Render fix distance marker
-	gl_SetColor(COLORS::eLIGHTGREY);
+	
+	
+	
 	glBegin( GL_LINES );
+/*
+		// Render fix distance marker
+		gl_SetColor(COLORS::eLIGHTGREY);
 		int nStartPos = KeyToScreen( kMarkFrameCount-1 );
 		int nNextPos =  KeyToScreen( 2*kMarkFrameCount-1 );
 		int nDeltaPos = nNextPos-nStartPos;
@@ -298,7 +311,7 @@ void VisualEditor::OnRenderGUI()
 			glVertex2f( (GLfloat)i, (GLfloat)(kStartTrackPosY - kKeySize/2) );
 			glVertex2f( (GLfloat)i, (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
 		}
-
+*/
 		int nCurrFramePosX = KeyToScreen( mCurrFrame );
 
 		glLineWidth( 6.0f );
@@ -306,7 +319,13 @@ void VisualEditor::OnRenderGUI()
 		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY - kKeySize/2) );
 		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
 
+		nCurrFramePosX = KeyToScreen( mLastFrame );
+		gl_SetColor(COLORS::eBLACK);
+		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY - kKeySize/2) );
+		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
+		
 	glEnd();
+	
 
 	// Render keys	
 	glPointSize( (GLfloat)kKeySize );
@@ -438,6 +457,11 @@ void VisualEditor::OnSpecialKey( int key, int mod )
 	switch( key )
 	{
 	case SK_HOME:	SetCurrFrame(0);	break;
+	case SK_END:	
+		if( mod == SK_MOD_SHIFT )
+			mLastFrame = mCurrFrame;
+		else
+			SetCurrFrame(mLastFrame);	break;
 	case SK_LEFT:	mCurrFrame--;	mCurrFrame = std::max( 0, mCurrFrame ); SetCurrFrame(mCurrFrame); break;
 	case SK_RIGHT:	mCurrFrame++;	SetCurrFrame(mCurrFrame); break;
 	}
@@ -459,6 +483,9 @@ void VisualEditor::OnKeyboard( unsigned char key, int mod )
 		break;
 	case 'p':
 		mIsPlaying = !mIsPlaying;
+		break;
+	case 'c':
+		mShowCurve = !mShowCurve;
 		break;
 	}
 }
@@ -531,7 +558,7 @@ void VisualEditor::Animatable::KeyFrame( TrackType::E inTrackType, int inPositio
 	{
 	case TrackType::PosX:	mCurve[TrackType::PosX ].AddKey( inPosition, mPos.x );	break;
 	case TrackType::PosY:	mCurve[TrackType::PosY ].AddKey( inPosition, mPos.y );	break;
-	case TrackType::Angle:	mCurve[TrackType::Angle].AddKey( inPosition, mAngle );	break;
+	case TrackType::Angle:	mCurve[TrackType::Angle].AddKey( inPosition, (float)RAD_TO_DEG(mAngle) );	break;
 //	case TrackType::ScaleX:	mCurve[TrackType::ScaleX].AddKey( inPosition, mPos.x );	break;
 //	case TrackType::ScaleY:	mCurve[TrackType::ScaleX].AddKey( inPosition, mPos.x );	break;
 	}	
