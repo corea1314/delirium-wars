@@ -7,6 +7,7 @@ Curve::Curve()
 	: mPostLoop(CurveLoopType::Linear)
 	, mPreLoop(CurveLoopType::Linear)
 {
+	AddKey( 0, 0.0f );	//fixme, should never have to add a key, if curve has no keys, then it should not exist
 }
 
 void Curve::AddKey( int inPosition, float inValue )

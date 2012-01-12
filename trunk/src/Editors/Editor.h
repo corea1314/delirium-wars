@@ -11,6 +11,7 @@
 class Grid;
 class Camera;
 class Gizmo;
+class GizmoAlpha;
 class GizmoScaling;
 class GizmoTranslation;
 class GizmoRotation;
@@ -19,7 +20,7 @@ class EditorElement;
 class Editor : public MenuUser
 {
 public:
-	class GizmoType { public: enum E { Translation, Rotation, Scaling, None }; };
+	class GizmoType { public: enum E { Translation, Rotation, Scaling, Alpha, None }; };
 
 public:
 	Editor();
@@ -50,6 +51,7 @@ public:
 	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );
 	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );
 	virtual void OnRotate( float inAngle, float inDelta );
+	virtual void OnAlpha( float inAlpha, float inDelta );
 	
 	// Menu callbacks
 	virtual void OnCreateMenu();
@@ -66,6 +68,7 @@ public:
 	void BuildMouseMotion( MouseMotion& mm, int x, int y, int dx, int dy, int mod );
 
 	void ActivateGizmo( GizmoType::E inGizmoType );
+	GizmoType::E GetActiveGizmoType() const { return mActiveGizmoType; }
 	
 	// Accessors
 	Grid*	GetGrid() { return mGrid; }
@@ -105,10 +108,12 @@ private:
 	unsigned int	mZoomLevel;
 	Camera*			mCamera;
 
+	GizmoAlpha*			mGizmoAlpha;
 	GizmoScaling*		mGizmoScaling;
 	GizmoRotation*		mGizmoRotation;
 	GizmoTranslation*	mGizmoTranslation;
 	Gizmo*				mActiveGizmo;
+	GizmoType::E		mActiveGizmoType;
 
 	Vector2			mViewportSize;
 	std::vector<std::string>		mSelectedFilename;

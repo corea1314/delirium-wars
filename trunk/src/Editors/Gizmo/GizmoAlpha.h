@@ -1,33 +1,33 @@
 #pragma once
 
-#include "Lair/Lair.h"
-
 #include "Math/Vector2.h"
 
-#include <math.h>
+#include "Gizmo.h"
 
-class Editor;
-class Animatable;
-
-class Gizmo
+class GizmoAlpha : public Gizmo
 {
 public:
-	Gizmo( Editor* inEditor ) : mEditor(inEditor) {}
+	class Mode { public: enum E { NotDragging, Dragging, DoneDragging }; };
+
+private:
+	Mode::E	mMode;
+
+	Vector2 mPos;
+	Vector2 mAnchor;
+	float	mAlpha;
+			
+public:
+	GizmoAlpha( Editor* inEditor );
 
 	virtual void Init( Animatable* inAnimatable );
 
 	virtual void OnRender();
 	virtual void OnRenderGUI();
-	virtual void OnUpdate( float inDeltaTime );
+
 	virtual void OnKeyboard( unsigned char key, int mod );
 	virtual void OnMouseMotion( const MouseMotion& mm );
 	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
 
 protected:
-	bool IsAcceptableCharForText( char inKey );
-	virtual void ProcessTextEntry( const char* inText ) {}
-
-protected:
-	Editor*			mEditor;
-	std::string		mTextEntry;
+	virtual void ProcessTextEntry( const char* inText );
 };

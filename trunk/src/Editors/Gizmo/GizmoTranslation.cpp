@@ -5,6 +5,8 @@
 #include "../Grid.h"
 #include "gfx.h"
 
+#include "Editors/Animatable/Animatable.h"
+
 #include <stdlib.h>
 #include <float.h>
 
@@ -15,9 +17,9 @@ GizmoTranslation::GizmoTranslation( Editor* inEditor ) : Gizmo(inEditor), mMode(
 }
 
 
-void GizmoTranslation::Init( const Vector2& inPos, float inAngle )
+void GizmoTranslation::Init( Animatable* inAnimatable )
 {
-	mOrigin = mPos = mClickOrigin = inPos;
+	mOrigin = mPos = mClickOrigin = inAnimatable->mPos;
 }
 
 

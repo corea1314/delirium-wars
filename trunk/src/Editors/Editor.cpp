@@ -6,6 +6,7 @@
 #include "Lair/Lair.h"
 #include "Lair/Camera/Camera.h"
 
+#include "Editors/Gizmo/GizmoAlpha.h"
 #include "Editors/Gizmo/GizmoScaling.h"
 #include "Editors/Gizmo/GizmoRotation.h"
 #include "Editors/Gizmo/GizmoTranslation.h"
@@ -27,11 +28,13 @@ Editor::Editor()
 	mViewportSize.x = ( 1280.0f ) / 2.0f;
 	mViewportSize.y = (  720.0f ) / 2.0f;
 
+	mGizmoAlpha = new GizmoAlpha(this);
 	mGizmoScaling = new GizmoScaling(this);	
 	mGizmoRotation = new GizmoRotation(this);
 	mGizmoTranslation = new GizmoTranslation(this);
 
 	mActiveGizmo = 0;
+	mActiveGizmoType = GizmoType::None;
 }
 
 Editor::~Editor()
@@ -41,16 +44,19 @@ Editor::~Editor()
 	delete mGizmoTranslation;
 	delete mGizmoRotation;
 	delete mGizmoScaling;
+	delete mGizmoAlpha;
 }
 
 
 void Editor::ActivateGizmo( GizmoType::E inGizmoType )
 {
-	switch( inGizmoType )
+	mActiveGizmoType = inGizmoType;
+	switch( mActiveGizmoType )
 	{
 	case GizmoType::Scaling:		mActiveGizmo = mGizmoScaling;		break;
 	case GizmoType::Rotation:		mActiveGizmo = mGizmoRotation;		break;
 	case GizmoType::Translation:	mActiveGizmo = mGizmoTranslation;	break;
+	case GizmoType::Alpha:			mActiveGizmo = mGizmoAlpha;			break;
 	case GizmoType::None:			mActiveGizmo = 0;					break;
 	}
 
@@ -158,6 +164,7 @@ void Editor::OnKeyboard( unsigned char key, int mod )
 	case 'w':	ActivateGizmo( GizmoType::Translation );	break;
 	case 'e':	ActivateGizmo( GizmoType::Rotation );		break;
 	case 'r':	ActivateGizmo( GizmoType::Scaling );		break;
+	case 'a':	ActivateGizmo( GizmoType::Alpha );			break;
 
 	case '[':	GetGrid()->DecreaseGridSize();		break;
 	case ']':	GetGrid()->IncreaseGridSize();		break;
@@ -282,6 +289,15 @@ void Editor::OnRotate( float inAngle, float inDelta )
 	{
 		if( (*it)->mSelected )
 			(*it)->OnRotate( inAngle, inDelta );
+	}
+}
+
+void Editor::OnAlpha( float inAlpha, float inDelta )
+{
+	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+	{
+		if( (*it)->mSelected )
+			(*it)->OnRotate( inAlpha, inDelta );
 	}
 }
 
