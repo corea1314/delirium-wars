@@ -180,11 +180,13 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\..\src\DebugDraw\DebugDraw.cpp" />
+    <ClCompile Include="..\..\src\Editors\Animatable\Animatable.cpp" />
     <ClCompile Include="..\..\src\Editors\Curve\CurveEditor.cpp" />
     <ClCompile Include="..\..\src\Editors\Curve\CurveSelection.cpp" />
     <ClCompile Include="..\..\src\Editors\Editor.cpp" />
     <ClCompile Include="..\..\src\Editors\EditorElement.cpp" />
     <ClCompile Include="..\..\src\Editors\Gizmo\Gizmo.cpp" />
+    <ClCompile Include="..\..\src\Editors\Gizmo\GizmoAlpha.cpp" />
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoRotation.cpp" />
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoScaling.cpp" />
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoTranslation.cpp" />
@@ -296,11 +298,13 @@
     <ClInclude Include="..\..\sdk\tinyxml\tinyxml.h" />
     <ClInclude Include="..\..\src\app.h" />
     <ClInclude Include="..\..\src\DebugDraw\DebugDraw.h" />
+    <ClInclude Include="..\..\src\Editors\Animatable\Animatable.h" />
     <ClInclude Include="..\..\src\Editors\Curve\CurveEditor.h" />
     <ClInclude Include="..\..\src\Editors\Curve\CurveSelection.h" />
     <ClInclude Include="..\..\src\Editors\Editor.h" />
     <ClInclude Include="..\..\src\Editors\EditorElement.h" />
     <ClInclude Include="..\..\src\Editors\Gizmo\Gizmo.h" />
+    <ClInclude Include="..\..\src\Editors\Gizmo\GizmoAlpha.h" />
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoRotation.h" />
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoScaling.h" />
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoTranslation.h" />

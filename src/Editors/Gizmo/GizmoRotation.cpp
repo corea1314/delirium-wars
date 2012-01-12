@@ -5,6 +5,8 @@
 #include "../Grid.h"
 #include "gfx.h"
 
+#include "Editors/Animatable/Animatable.h"
+
 #include <stdlib.h>
 #include <float.h>
 
@@ -35,10 +37,10 @@ GizmoRotation::GizmoRotation( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::
 	}
 }
 
-void GizmoRotation::Init( const Vector2& inPos, float inAngle )
+void GizmoRotation::Init( Animatable* inAnimatable )
 {
-	mPos = inPos;
-	mAngle = inAngle;
+	mPos = inAnimatable->mPos;
+	mAngle = inAnimatable->mAngle;
 }
 
 void GizmoRotation::OnRender()

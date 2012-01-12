@@ -51,6 +51,7 @@ typedef struct
 #define VB_FORMAT	GL_C4UB_V3F
 
 void gl_SetColor( Color c );
+void gl_SetColor( Color c, float a );
 void gl_RenderText( int x, int y, char* text, ... );
 void gl_RenderVB( GLenum mode, Vertex* buffer, int start, int count );
 void gl_RenderPoints( Vertex* buffer, int start, int count, float psize );

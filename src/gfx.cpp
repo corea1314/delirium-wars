@@ -16,6 +16,13 @@ void gl_SetColor( Color c )
 	glColor4ubv( (unsigned char*)&c );
 }
 
+void gl_SetColor( Color c, float a )
+{
+	Color t = (((Color)(a * 255) << 24));
+	c = (c & 0x00FFFFFF) | t;
+	glColor4ubv( (unsigned char*)&c );
+}
+
 void gl_RenderVB( GLenum mode, Vertex* buffer, int start, int count )
 {
 	glInterleavedArrays( VB_FORMAT, sizeof(Vertex), buffer );
