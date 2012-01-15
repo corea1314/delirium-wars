@@ -140,6 +140,12 @@ public:
 		return fLen;
 	}
 
+	static bool IsPointInRect( const Vector2& in_vPoint, const Vector2& in_vMin, const Vector2& in_vMax )
+	{
+		return	in_vMin.x < in_vPoint.x && in_vPoint.x < in_vMax.x && 
+				in_vMin.y < in_vPoint.y && in_vPoint.y < in_vMax.y;
+	}
+
 	inline double	GetLength(void) const				{ return sqrt(x*x + y*y );			}
 	inline _tvec2	GetLengthFast(void) const	
 	{	
