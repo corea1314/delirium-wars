@@ -1,5 +1,22 @@
 #pragma once
 
+
+typedef struct
+{
+	struct Button { enum Enum { A, B, X, Y, LeftBumper, RightBumper, Back, Start, LeftThumbClick, RightThumbClick }; };
+
+	unsigned int mButtons;
+
+	Vector2		mLeftThumbstick;
+	Vector2		mRightThumbstick;
+	Vector2		mTriggers;
+	Vector2		mPad;
+
+	inline bool IsButtonPressed( Button::Enum inButton ) { return (MAKE_BIT(inButton) & mButtons) != 0; }
+
+} Xbox360Gamepad;
+
+
 class InputMan
 {
 private:
@@ -26,12 +43,29 @@ public:
 		mMouseButtonState[inButtonIndex].bState = inState;
 	}
 
+	void UpdateGamepad( int inGamepadIndex, int inButtons, int inAxisCount, float* inAxisValues )
+	{
+		mGamepad[inGamepadIndex].mButtons = inButtons;
+		mGamepad[inGamepadIndex].mLeftThumbstick.x = inAxisValues[0];	// -1000 L, 1000 R
+		mGamepad[inGamepadIndex].mLeftThumbstick.y = inAxisValues[1];	// -1000 U, 1000 D
+		mGamepad[inGamepadIndex].mRightThumbstick.x = inAxisValues[3];	// -1000 U, 1000 D
+		mGamepad[inGamepadIndex].mRightThumbstick.y = inAxisValues[4];	// -1000 L, 1000 R
+		mGamepad[inGamepadIndex].mTriggers.x = inAxisValues[2];			// -1000 R, 1000 L
+		mGamepad[inGamepadIndex].mPad.x = inAxisValues[6];				// -1000 L, 1000 R
+		mGamepad[inGamepadIndex].mPad.y = inAxisValues[7];				// -1000 D, 1000 U
+	}
+
 	class MouseButton { public: enum E { Left, Middle, Right } ; };
 
 	const MouseButtonState& GetMouseButtonState( MouseButton::E inButtonIndex ) { return mMouseButtonState[inButtonIndex]; }
 
+	bool	IsMouseButtonDown( MouseButton::E inButtonIndex ) { return mMouseButtonState[inButtonIndex].bState; }
+
+	const Xbox360Gamepad*	GetGamepad( int inIndex ) { return &mGamepad[inIndex]; }
+
 private:
 	MouseButtonState	mMouseButtonState[3];	// support only 3 buttons
+	Xbox360Gamepad		mGamepad[4];
 };
 
 typedef struct  

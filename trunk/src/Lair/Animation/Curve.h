@@ -8,6 +8,8 @@
 #define CRV_VERSION_MAJOR	0
 #define CRV_VERSION_MINOR	0
 
+class TiXmlElement;
+
 #include <vector>
 
 class CurveLoopType { public: enum E {
@@ -78,6 +80,9 @@ public:
 
 	inline CurveLoopType::E	GetPreLoop() const { return mPreLoop; }
 	inline CurveLoopType::E	GetPostLoop() const { return mPostLoop; }
+
+	void SerializeLoad( TiXmlElement* inNode );
+	void SerializeSave( TiXmlElement* inNode );
 
 protected:
 

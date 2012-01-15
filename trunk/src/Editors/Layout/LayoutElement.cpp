@@ -30,7 +30,8 @@ void LayoutElement::OnRenderGUI()
 {
 	int x,y;
 	mEditor->EditorToScreen( mPos, x, y );
-
+	
+	gl_SetColor( COLORS::eWHITE );
 	gl_RenderText( x + 8, y - 16, "\"%s\" @ %0.2f, %0.2f", mName.c_str(), mPos.x, mPos.y );
 }
 

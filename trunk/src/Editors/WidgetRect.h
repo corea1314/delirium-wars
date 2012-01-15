@@ -13,6 +13,7 @@ public:
 
 	Mode::E	mMode;
 	Vector2 mRect[2];
+	
 	Editor*	mEditor;
 	
 public:

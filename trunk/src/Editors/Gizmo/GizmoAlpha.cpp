@@ -16,7 +16,7 @@ GizmoAlpha::GizmoAlpha( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::NotDra
 {
 }
 
-void GizmoAlpha::Init( Animatable* inAnimatable )
+void GizmoAlpha::Init( AnimatableElement* inAnimatable )
 {
 	mPos = inAnimatable->mPos;
 	mAlpha = inAnimatable->mAlpha;
@@ -90,7 +90,7 @@ void GizmoAlpha::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mMode == Mode::NotDragging || mMode == Mode::DoneDragging )
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState )
+		if( Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) )
 		{
 			mMode = Mode::Dragging;
 			mPos = mEditor->GetGrid()->Snap(mm.pos);
@@ -117,7 +117,7 @@ void GizmoAlpha::OnMouseMotion( const MouseMotion& mm )
 
 void GizmoAlpha::OnMouseClick( int button, int state, const MouseMotion& mm )
 {	
-	if( state )
+	if( button == InputMan::MouseButton::Left && state )
 	{
 		mMode = Mode::Dragging;
 		mAnchor = mEditor->GetGrid()->Snap(mm.pos);

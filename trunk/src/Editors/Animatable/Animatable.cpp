@@ -8,7 +8,7 @@
 #include "Lair/Input/Input.h"
 #include "Editors/Gizmo/Gizmo.h"
 
-void Animatable::Update( float inPosition )
+void AnimatableElement::Update( float inPosition )
 {
 	mPos.x	 = mCurve[TrackType::PosX].Evaluate(inPosition);
 	mPos.y	 = mCurve[TrackType::PosY].Evaluate(inPosition);
@@ -19,7 +19,7 @@ void Animatable::Update( float inPosition )
 	mScale.y = mCurve[TrackType::ScaleY].Evaluate(inPosition);
 }
 
-void Animatable::KeyFrame( TrackType::E inTrackType, int inPosition )
+void AnimatableElement::KeyFrame( TrackType::E inTrackType, int inPosition )
 {
 	switch( inTrackType )
 	{
@@ -32,7 +32,7 @@ void Animatable::KeyFrame( TrackType::E inTrackType, int inPosition )
 	}	
 }
 
-void Animatable::Render()
+void AnimatableElement::Render()
 {
 	glPointSize( (GLfloat)16 );		//fixme 16
 	gl_SetColor( COLORS::eGREEN, mAlpha );

@@ -189,6 +189,7 @@
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoAlpha.cpp" />
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoRotation.cpp" />
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoScaling.cpp" />
+    <ClCompile Include="..\..\src\Editors\Gizmo\GizmoSelection.cpp" />
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoTranslation.cpp" />
     <ClCompile Include="..\..\src\Editors\Grid.cpp" />
     <ClCompile Include="..\..\src\Editors\Layout\LayoutEditor.cpp" />
@@ -307,6 +308,7 @@
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoAlpha.h" />
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoRotation.h" />
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoScaling.h" />
+    <ClInclude Include="..\..\src\Editors\Gizmo\GizmoSelection.h" />
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoTranslation.h" />
     <ClInclude Include="..\..\src\Editors\Grid.h" />
     <ClInclude Include="..\..\src\Editors\Layout\LayoutEditor.h" />

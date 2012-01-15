@@ -17,10 +17,10 @@ void CurveEditor::OnInit()
 
 	mCurveSelection = 0;
 
-	mCurve.AddKey(   0,	  0.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey(   0,	 64.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
 	mCurve.AddKey( 128,	128.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,  -4.0f),	CurveContinuity::Smooth );
 	mCurve.AddKey( 256,	256.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	0.0f),	CurveContinuity::Smooth );
-	mCurve.AddKey( 512,	512.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	4.0f),	CurveContinuity::Smooth );
+	mCurve.AddKey( 512,	384.0f,	Vector2(-1.0f,	0.0f),	Vector2(1.0f,	4.0f),	CurveContinuity::Smooth );
 }
 
 void CurveEditor::OnExit()
@@ -214,7 +214,7 @@ void CurveEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 				mCurveSelection = 0;
 			}
 
-			if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState == false )
+			if( Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) == false )
 				mCurveSelection = 0;
 		}
 		break;

@@ -1,8 +1,9 @@
 #pragma once
 
+#include "gfx.h"
+
 #include <string>
 #include "Math/Vector2.h"
-
 #include "Lair/Input/Input.h"
 
 class Editor;
@@ -25,6 +26,8 @@ public:
 		: mEditor(inEditor), mSelected(false), mDeleteRequest(false), mAngle(0.0f) {}
 
 public:
+	virtual bool OnSelect( const Vector2& inPos );
+	virtual bool OnSelectRect( const Vector2& inMin, const Vector2& inMax );
 	virtual void OnRender() = 0;
 	virtual void OnRenderGUI() = 0;
 
