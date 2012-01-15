@@ -7,14 +7,14 @@
 #include <math.h>
 
 class Editor;
-class Animatable;
+class AnimatableElement;
 
 class Gizmo
 {
 public:
 	Gizmo( Editor* inEditor ) : mEditor(inEditor) {}
 
-	virtual void Init( Animatable* inAnimatable );
+	virtual void Init( AnimatableElement* inAnimatable );
 
 	virtual void OnRender();
 	virtual void OnRenderGUI();

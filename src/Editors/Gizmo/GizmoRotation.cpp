@@ -37,7 +37,7 @@ GizmoRotation::GizmoRotation( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::
 	}
 }
 
-void GizmoRotation::Init( Animatable* inAnimatable )
+void GizmoRotation::Init( AnimatableElement* inAnimatable )
 {
 	mPos = inAnimatable->mPos;
 	mAngle = inAnimatable->mAngle;
@@ -121,7 +121,7 @@ void GizmoRotation::OnKeyboard( unsigned char key, int mod )
 
 void GizmoRotation::OnMouseMotion( const MouseMotion& mm )
 {
-	if( mMode == Mode::Dragging && Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState )
+	if( mMode == Mode::Dragging && Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) )
 	{
 		Vector2 vOldDir = mDir;
 		mAnchor = mEditor->GetGrid()->Snap(mm.pos);
@@ -138,7 +138,7 @@ void GizmoRotation::OnMouseMotion( const MouseMotion& mm )
 
 void GizmoRotation::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
-	if( button == 0 && state )
+	if( button == InputMan::MouseButton::Left && state )
 	{
 		const float kWidgetRadius = kWidgetSize * mEditor->GetCamera()->GetZoom();
 

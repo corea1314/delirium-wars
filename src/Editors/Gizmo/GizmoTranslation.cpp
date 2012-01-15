@@ -17,7 +17,7 @@ GizmoTranslation::GizmoTranslation( Editor* inEditor ) : Gizmo(inEditor), mMode(
 }
 
 
-void GizmoTranslation::Init( Animatable* inAnimatable )
+void GizmoTranslation::Init( AnimatableElement* inAnimatable )
 {
 	mOrigin = mPos = mClickOrigin = inAnimatable->mPos;
 }
@@ -143,7 +143,7 @@ void GizmoTranslation::OnMouseMotion( const MouseMotion& mm )
 void GizmoTranslation::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
 	//fixme: should handle the delta position to correct the glitch on click
-	if( state )
+	if( button == InputMan::MouseButton::Left && state )
 	{
 		const float dx = mm.pos.x-mPos.x;
 		const float fdx = fabsf(dx);

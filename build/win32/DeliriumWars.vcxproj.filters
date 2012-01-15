@@ -483,6 +483,9 @@
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoAlpha.cpp">
       <Filter>editors\gizmos</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Editors\Gizmo\GizmoSelection.cpp">
+      <Filter>editors\gizmos</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -825,6 +828,9 @@
       <Filter>editors\gizmos</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoAlpha.h">
+      <Filter>editors\gizmos</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Editors\Gizmo\GizmoSelection.h">
       <Filter>editors\gizmos</Filter>
     </ClInclude>
   </ItemGroup>

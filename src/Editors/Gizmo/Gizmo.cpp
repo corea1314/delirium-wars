@@ -1,7 +1,7 @@
 #include "Gizmo.h"
 #include "Editors/Editor.h"
 
-void Gizmo::Init( Animatable* inAnimatable ) {}
+void Gizmo::Init( AnimatableElement* inAnimatable ) {}
 void Gizmo::OnRender() {}
 void Gizmo::OnRenderGUI() {}
 void Gizmo::OnUpdate( float inDeltaTime ) {}

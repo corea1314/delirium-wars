@@ -295,7 +295,7 @@ float Curve::GetCurveValue(float position)
 		}
 		prev = next;
 	}
-	return 0.0f;
+	return mKeys[0].mValue;
 }
 
 float Curve::GetCurveTangent(float position)
@@ -322,7 +322,7 @@ float Curve::GetCurveTangent(float position)
 		}
 		prev = next;
 	}
-	return 0.0f;
+	return mKeys[0].mTangentOut;
 }
 
 
@@ -350,4 +350,14 @@ float Curve::GetTangentAt( float inPosition, Key inKeyPrev, Key inKeyNext )
 	// x = (Xmax - Xmin) * t + Xmin
 	
 	return ((6.0f * ts - 6.0f * t) * inKeyPrev.mValue + (3.0f*ts - 4.0f * t + 1.0f) * inKeyPrev.mTangentOut + (6.0f * t - 6.0f * ts) * inKeyNext.mValue + (3.0f*ts - 2.0f*t) * inKeyNext.mTangentIn) / dv;
+}
+
+void Curve::SerializeLoad( TiXmlElement* inNode )
+{
+	
+}
+
+void Curve::SerializeSave( TiXmlElement* inNode )
+{
+
 }

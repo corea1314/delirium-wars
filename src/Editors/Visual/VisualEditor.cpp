@@ -30,7 +30,21 @@ static const float	kNormalLength		= 32.0f;
 void VisualEditor::OnInit()
 {
 	GetCamera()->GetPos().Set( 256.0f, 256.0f );
+	
+	mTrackInfo[TrackType::PosX ].Set( "pos:x", TrackType::PosX, kStartTrackPosY+kMinDeltaTrackPosY*0);	
+	mTrackInfo[TrackType::PosY ].Set( "pos:y", TrackType::PosY, kStartTrackPosY+kMinDeltaTrackPosY*1);	
+	mTrackInfo[TrackType::Angle].Set( "angle", TrackType::Angle, kStartTrackPosY+kMinDeltaTrackPosY*2);	
+	mTrackInfo[TrackType::Alpha].Set( "alpha", TrackType::Alpha, kStartTrackPosY+kMinDeltaTrackPosY*3);	
+	mTrackInfo[TrackType::ScaleX].Set( "scale:x", TrackType::ScaleX, kStartTrackPosY+kMinDeltaTrackPosY*4);	
+	mTrackInfo[TrackType::ScaleY].Set( "scale:y", TrackType::ScaleY, kStartTrackPosY+kMinDeltaTrackPosY*5);	
 
+	// push in dummy tracks
+	mAnimatables.push_back( AnimatableElement() );
+	mSelectedAnimatable = &mAnimatables[0];
+	
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(   0,   1.0f ); //fixme
+
+	// init info
 	mFirstFrame = 0;
 	mLastFrame = 100;
 	mFirstFrameDelta = 0.0f;
@@ -42,19 +56,6 @@ void VisualEditor::OnInit()
 	mFPS = 60;
 
 	mShowCurve = false;
-
-	mTrackInfo[TrackType::PosX ].Set( "pos:x", TrackType::PosX, kStartTrackPosY+kMinDeltaTrackPosY*0);	
-	mTrackInfo[TrackType::PosY ].Set( "pos:y", TrackType::PosY, kStartTrackPosY+kMinDeltaTrackPosY*1);	
-	mTrackInfo[TrackType::Angle].Set( "angle", TrackType::Angle, kStartTrackPosY+kMinDeltaTrackPosY*2);	
-	mTrackInfo[TrackType::Alpha].Set( "alpha", TrackType::Alpha, kStartTrackPosY+kMinDeltaTrackPosY*3);	
-	mTrackInfo[TrackType::ScaleX].Set( "scale:x", TrackType::ScaleX, kStartTrackPosY+kMinDeltaTrackPosY*4);	
-	mTrackInfo[TrackType::ScaleY].Set( "scale:y", TrackType::ScaleY, kStartTrackPosY+kMinDeltaTrackPosY*5);	
-
-	// push in dummy tracks
-	mAnimatables.push_back( Animatable() );
-	mSelectedAnimatable = &mAnimatables[0];
-	
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(   0,   1.0f ); //fixme
 }
 
 void VisualEditor::OnExit()
@@ -351,7 +352,7 @@ void VisualEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 		{	
 			if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
 			{
-				if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState && !(mm.mod & SK_MOD_SHIFT) )
+				if( Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) && !(mm.mod & SK_MOD_SHIFT) )
 				{
 					// Select track
 					int nTrackIndex = (mm.y-kStartTrackPosY+kMinDeltaTrackPosY/2)/kMinDeltaTrackPosY;
@@ -408,7 +409,7 @@ void VisualEditor::OnMouseMotion( const MouseMotion& mm )
 {
 	if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
 	{
-		if( Lair::GetInputMan()->GetMouseButtonState( InputMan::MouseButton::Left ).bState && (mm.mod & SK_MOD_SHIFT) )
+		if( Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) && (mm.mod & SK_MOD_SHIFT) )
 		{
 			// Scroll key tracks
 			mFirstFrameDelta -= ( mm.dx / (float)kMinDeltaFramePosX );

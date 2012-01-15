@@ -94,8 +94,8 @@ private:
 
 	bool		mShowCurve;
 
-	Animatable*	mSelectedAnimatable;
+	AnimatableElement*	mSelectedAnimatable;
 	
-	std::vector<Animatable>		mAnimatables;
+	std::vector<AnimatableElement>		mAnimatables;
 	std::vector<KeySelection>	mSelectedKeys;
 };

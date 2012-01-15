@@ -4,24 +4,20 @@
 
 #include "Gizmo.h"
 
-class GizmoTranslation : public Gizmo
+class GizmoSelection : public Gizmo
 {
 public:
 	class Mode { public: enum E { NotDragging, Dragging, DoneDragging }; };
-	class Axis { public: enum E { None, X, Y, Both }; };
 
 private:
 	Mode::E	mMode;
-	Axis::E	mAxis;
 
 	Vector2 mPos;
-	Vector2 mOrigin, mClickOrigin;
+	Vector2 mOrigin;
 	Vector2 mDelta;
-
-	float	mWidgetAppSize;
-			
+				
 public:
-	GizmoTranslation( Editor* inEditor );
+	GizmoSelection( Editor* inEditor );
 
 	virtual void Init( AnimatableElement* inAnimatable );
 

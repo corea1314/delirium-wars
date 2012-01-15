@@ -15,12 +15,13 @@ class GizmoAlpha;
 class GizmoScaling;
 class GizmoTranslation;
 class GizmoRotation;
+class GizmoSelection;
 class EditorElement;
 
 class Editor : public MenuUser
 {
 public:
-	class GizmoType { public: enum E { Translation, Rotation, Scaling, Alpha, None }; };
+	class GizmoType { public: enum E { Translation, Rotation, Scaling, Alpha, Selection }; };
 
 public:
 	Editor();
@@ -52,6 +53,9 @@ public:
 	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );
 	virtual void OnRotate( float inAngle, float inDelta );
 	virtual void OnAlpha( float inAlpha, float inDelta );
+
+	virtual void OnSelect( const Vector2& inPos );
+	virtual void OnSelectRect( const Vector2& inMin, const Vector2& inMax );
 	
 	// Menu callbacks
 	virtual void OnCreateMenu();
@@ -103,6 +107,8 @@ private:
 private:
 	bool			lock;
 
+	bool			mTextEntryRequest;
+
 	Grid*			mGrid;		//todo render grid in screen space
 	float			mTimeSeconds;
 	unsigned int	mZoomLevel;
@@ -112,6 +118,7 @@ private:
 	GizmoScaling*		mGizmoScaling;
 	GizmoRotation*		mGizmoRotation;
 	GizmoTranslation*	mGizmoTranslation;
+	GizmoSelection*		mGizmoSelection;
 	Gizmo*				mActiveGizmo;
 	GizmoType::E		mActiveGizmoType;
 

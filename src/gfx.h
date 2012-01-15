@@ -47,6 +47,35 @@ typedef struct
 
 } Vertex;
 
+class Point
+{
+public:
+	int x,y;
+};
+
+class Rect
+{
+public:
+	Point mMin, mMax;
+
+public:
+	inline bool IsPointInRect ( const Point& inPoint ) const
+	{
+		return (mMin.x < inPoint.x) && (inPoint.x < mMax.x) && (mMin.y < inPoint.y) && (inPoint.y < mMax.y);
+	}
+
+	inline bool IsRectIntersecting ( const Rect& inRect ) const
+	{
+		return (mMin.y > inRect.mMax.y)&&(mMax.y < inRect.mMin.y)&&(mMax.x > inRect.mMin.x)&&(mMin.x < inRect.mMax.x);
+	}
+
+	inline bool IsRectContained ( const Rect& inRect ) const
+	{
+		return (inRect.mMax.x < mMax.x)&&(inRect.mMin.x > mMin.x)&&(inRect.mMax.y < mMax.y)&&(inRect.mMin.y > mMin.y);
+	}
+};
+
+
 
 #define VB_FORMAT	GL_C4UB_V3F
 

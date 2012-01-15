@@ -51,6 +51,15 @@ inline float SWAP_FLOAT(
 }
 
 //////
+// MAKE_BIT
+//!		Create bit from index
+//
+#ifndef MAKE_BIT
+#define MAKE_BIT(p_val)			\
+	( 1 << (p_val))
+#endif
+
+//////
 // SET_BITS
 //!		Ones the bits specified in the mask.
 //

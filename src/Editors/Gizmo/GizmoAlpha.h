@@ -19,7 +19,7 @@ private:
 public:
 	GizmoAlpha( Editor* inEditor );
 
-	virtual void Init( Animatable* inAnimatable );
+	virtual void Init( AnimatableElement* inAnimatable );
 
 	virtual void OnRender();
 	virtual void OnRenderGUI();

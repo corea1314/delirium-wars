@@ -4,10 +4,10 @@
 
 class TrackType { public: enum E { PosX, PosY, Angle, Alpha, ScaleX, ScaleY }; };
 
-class Animatable
+class AnimatableElement
 {
 public:
-	Animatable() : mAngle(0.0f), mAlpha(1.0f) {}
+	AnimatableElement() : mAngle(0.0f), mAlpha(1.0f) {}
 
 	Vector2 mPos;
 	Vector2 mScale;
