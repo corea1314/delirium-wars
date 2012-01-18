@@ -1,4 +1,9 @@
 
+
+//TODO
+//- 
+
+
 #include "gfx.h"
 
 #include "Editor.h"
@@ -74,6 +79,9 @@ void Editor::AddElement( EditorElement* inElement )
 void Editor::Init()
 {
 	ResetTime();
+
+	mSpriteMan = new SpriteMan;
+	mSpriteMan->Init(64);
 	
 	MenuUser::OnCreateMenu();
 	OnCreateMenu();
@@ -89,6 +97,10 @@ void Editor::Exit()
 	GetMenu()->UnbindButton(2);	// right button
 	OnDestroyMenu();
 	MenuUser::OnDestroyMenu();
+
+	mSpriteMan->Exit();
+	delete mSpriteMan;
+	mSpriteMan = 0;
 }
 
 void Editor::Render()

@@ -22,6 +22,15 @@ class Editor : public MenuUser
 {
 public:
 	class GizmoType { public: enum E { Translation, Rotation, Scaling, Alpha, Selection }; };
+	
+	class Frame
+	{
+	public:
+		Frame( const std::string& inFilename, AtlasFrame* inAtlasFrame ) : mFilename(inFilename), mAtlasFrame(inAtlasFrame) {}
+
+		AtlasFrame*	mAtlasFrame;
+		std::string mFilename;
+	};
 
 public:
 	Editor();
@@ -68,6 +77,7 @@ public:
 	void EditorToScreen( const Vector2& v, int& x, int& y );
 	
 	Camera*	GetCamera() { return mCamera; }
+	SpriteMan*	GetSpriteMan() { return mSpriteMan; }
 
 	void BuildMouseMotion( MouseMotion& mm, int x, int y, int dx, int dy, int mod );
 
@@ -113,6 +123,8 @@ private:
 	float			mTimeSeconds;
 	unsigned int	mZoomLevel;
 	Camera*			mCamera;
+
+	SpriteMan*	mSpriteMan;
 
 	GizmoAlpha*			mGizmoAlpha;
 	GizmoScaling*		mGizmoScaling;

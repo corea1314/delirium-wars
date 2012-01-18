@@ -23,19 +23,14 @@ void SequenceEditor::OnInit()
 	mAnimate = false;
 	mFPS = 30;
 
-	mSpriteMan = new SpriteMan;
-	mSpriteMan->Init(64);
-
 	GetCamera()->GetPos().Set( 0.0f, 0.0f );
 	
-	mSprite = mSpriteMan->GetSprite();
+	mSprite = GetSpriteMan()->GetSprite();
 }
 
 void SequenceEditor::OnExit()
 {
-	mSpriteMan->Exit();
-	delete mSpriteMan;
-	mSpriteMan = 0;
+
 }
 
 void SequenceEditor::SetCurrFrame( int inFrame ) 
@@ -87,7 +82,7 @@ void SequenceEditor::OnRender()
 	{
 		if( mFrames.size() != 0 )// dont try to render empty sequence
 		{
-			mSpriteMan->Render();
+			GetSpriteMan()->Render();
 		
 			if( mShowFrame )
 			{

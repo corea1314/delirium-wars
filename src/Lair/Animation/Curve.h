@@ -81,8 +81,8 @@ public:
 	inline CurveLoopType::E	GetPreLoop() const { return mPreLoop; }
 	inline CurveLoopType::E	GetPostLoop() const { return mPostLoop; }
 
-	void SerializeLoad( TiXmlElement* inNode );
-	void SerializeSave( TiXmlElement* inNode );
+	void SerializeLoad( TiXmlElement* inNodeCurve );
+	void SerializeSave( TiXmlElement* inNodeCurve );
 
 protected:
 

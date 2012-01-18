@@ -10,7 +10,8 @@
 #include <stdlib.h>
 #include <float.h>
 
-static const int kWidgetSize	=	64;
+static const int kWidgetSize	=	16;
+static const float kAlphaChangeFactor		= 0.05f;
 
 GizmoAlpha::GizmoAlpha( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::NotDragging)
 {
@@ -34,7 +35,7 @@ void GizmoAlpha::OnRenderGUI()
 	int ax,ay;
 	mEditor->EditorToScreen(mAnchor,ax,ay);
 
-	const int kBoxSizeX = kWidgetSize / 16; 
+	const int kBoxSizeX = kWidgetSize; 
 	const int kBoxSizeY = kWidgetSize; 
 
 	// Squares
@@ -103,15 +104,16 @@ void GizmoAlpha::OnMouseMotion( const MouseMotion& mm )
 		// Compute distance from center of widget
 		Vector2 vDelta = mAnchor - mPos;
 
-		// Convert distance to scale ratio 
-		// Negative distance equals reduction
-		// Positive distance equals magnification
-		// Apply on selected axis
-		/*
-		if( mAxis == Axis::X )
-		else if( mAxis == Axis::Y )
+		float fOldAlpha = mAlpha;
+
+		if( ABS(mm.dx) > ABS(mm.dy) )
+			mAlpha += mm.dx * kAlphaChangeFactor;
 		else
-		*/
+			mAlpha += mm.dy * kAlphaChangeFactor;
+				
+		mAlpha = CLAMP( mAlpha, 0.0f, 1.0f );
+
+		mEditor->OnAlpha( mAlpha, mAlpha-fOldAlpha );
 	}
 }
 

@@ -5,13 +5,22 @@
 #include "../Grid.h"
 #include "gfx.h"
 
+#include "Editors/Animatable/Animatable.h"
+
 #include <stdlib.h>
 #include <float.h>
 
 static const int kWidgetSize	=	64;
+static const float kScaleChangeFactor		= 0.005f;
 
 GizmoScaling::GizmoScaling( Editor* inEditor ) : Gizmo(inEditor), mMode(Mode::NotDragging)
 {
+}
+
+void GizmoScaling::Init( AnimatableElement* inAnimatable )
+{
+	mPos = inAnimatable->mPos;
+	mScale = inAnimatable->mScale;
 }
 
 void GizmoScaling::OnRender()
@@ -89,8 +98,13 @@ void GizmoScaling::OnRenderGUI()
 	gl_SetColor( COLORS::eWHITE );
 	if( mMode == Mode::Dragging )
 	{		
-		Vector2 vDelta = (mPos-mAnchor);
-		gl_RenderText( x+16, y-16, "(%0.2f,%0.2f)", vDelta.x, vDelta.y );
+		gl_RenderText( x+16, y-16, "(%0.2f,%0.2f)", mScale.x, mScale.y );
+	}
+	else
+	{
+		// Display text entry
+		if( mTextEntry.size() != 0 )
+			gl_RenderText( x+16, y-16, "(%s)", mTextEntry.c_str() );
 	}
 }
 
@@ -114,25 +128,36 @@ void GizmoScaling::OnMouseMotion( const MouseMotion& mm )
 		if( Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) )
 		{
 			mMode = Mode::Dragging;
-			mPos = mEditor->GetGrid()->Snap(mm.pos);
 		}
 	}
 	else if( mMode == Mode::Dragging )
 	{
-		mAnchor = mEditor->GetGrid()->Snap(mm.pos);
-
-		// Compute distance from center of widget
-		Vector2 vDelta = mAnchor - mPos;
-
 		// Convert distance to scale ratio 
 		// Negative distance equals reduction
 		// Positive distance equals magnification
 		// Apply on selected axis
-		/*
+
+		Vector2 vOldScale = mScale;
+
 		if( mAxis == Axis::X )
+			mScale.x += mm.dx * kScaleChangeFactor;
 		else if( mAxis == Axis::Y )
+			mScale.y += mm.dy * kScaleChangeFactor;
 		else
-		*/
+		{
+			if( ABS(mm.dx) > ABS(mm.dy) )
+			{
+				mScale.x += mm.dx * kScaleChangeFactor;
+				mScale.y += mm.dx * kScaleChangeFactor;
+			}
+			else
+			{
+				mScale.x += mm.dy * kScaleChangeFactor;
+				mScale.y += mm.dy * kScaleChangeFactor;
+			}
+		}
+
+		mEditor->OnScale( mScale, mScale-vOldScale );
 	}
 }
 
@@ -140,16 +165,30 @@ void GizmoScaling::OnMouseClick( int button, int state, const MouseMotion& mm )
 {	
 	if( button == InputMan::MouseButton::Left && state )
 	{
-		//fixme: should check if we clicked on gizmo
-		if( fabsf( mm.pos.x-mPos.x) < 2.0f && fabsf( mm.pos.y-mPos.y) > 8.0f )
-			mAxis = Axis::Y;
-		else if( fabsf( mm.pos.y-mPos.y) < 2.0f && fabsf( mm.pos.x-mPos.x) > 8.0f )
-			mAxis = Axis::X;
-		else
-			mAxis = Axis::Both;
+		const float dx = mm.pos.x-mPos.x;
+		const float fdx = fabsf(dx);
+		const float dy = mm.pos.y-mPos.y;
+		const float fdy = fabsf(dy);
 
-		mMode = Mode::Dragging;
-		mAnchor = mEditor->GetGrid()->Snap(mm.pos);
+		const float kAxisThickness = 4.0f * mEditor->GetCamera()->GetZoom();
+		const float kAxisLength = kWidgetSize * mEditor->GetCamera()->GetZoom();
+
+		// Click on Y axis
+		if( dy > 0 && fdx < kAxisThickness && 0 < fdy && fdy < kAxisLength )
+			mAxis = Axis::Y;
+		// Click on X axis
+		else if( dx > 0 && fdy < kAxisThickness && 0 < fdx && fdx < kAxisLength )
+			mAxis = Axis::X;
+		// Click on triangle
+		else if( dx > 0 && dy > 0 && fdx > 0 && fdy > 0 && fdx < kAxisLength/2 && fdy < kAxisLength/2 )
+			mAxis = Axis::Both;
+		else
+			mAxis = Axis::None;
+
+		if( mAxis != Axis::None )
+		{
+			mMode = Mode::Dragging;
+		}		
 	}
 	else
 	{
@@ -160,7 +199,7 @@ void GizmoScaling::OnMouseClick( int button, int state, const MouseMotion& mm )
 void GizmoScaling::ProcessTextEntry( const char* inText )
 {
 	float x,y;
-	if( sscanf_s( inText, "%f &f", &x, &y ) == 2 )
+	if( sscanf_s( inText, "%f %f", &x, &y ) == 2 )
 	{
 		if( _isnan(x) == 0 && _isnan(y) == 0 )
 		{

@@ -60,6 +60,8 @@ protected:
 	// File management
 	virtual const char*	GetFileExtension() { return "xvsl"; }
 	virtual const char*	GetFileFilter() { return "XML Visual File\0*.xvsl\0"; }
+	virtual void OnSerializeSave( TiXmlElement* inNode );
+	virtual void OnSerializeLoad( TiXmlElement* inNode );
 	
 private:
 	// Local methods
@@ -96,6 +98,6 @@ private:
 
 	AnimatableElement*	mSelectedAnimatable;
 	
-	std::vector<AnimatableElement>		mAnimatables;
-	std::vector<KeySelection>	mSelectedKeys;
+	std::vector<AnimatableElement>	mAnimatables;
+	std::vector<KeySelection>		mSelectedKeys;
 };

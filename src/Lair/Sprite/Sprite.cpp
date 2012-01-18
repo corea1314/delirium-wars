@@ -169,7 +169,7 @@ void SpriteMan::RenderWithVA()
 
 // ============================================================================
 
-Sprite::Sprite(SpriteMan::SpriteData* in_pSD) : m_pSD(in_pSD), m_pCurrSequence(0), m_pCurrFrame(0), m_bIsPlaying(false), m_bIsLooping(false), m_fAnimTime(0)
+Sprite::Sprite(SpriteMan::SpriteData* in_pSD) : m_pSD(in_pSD), m_pCurrSequence(0), m_pCurrFrame(0), m_bIsPlaying(false), m_bIsLooping(false), m_fAnimTime(0), m_pAtlasFrame(0)
 {
 	Set( 0.0f, 0.0f );
 
@@ -192,6 +192,17 @@ void Sprite::Set( float x, float y, float a, float sx, float sy )
 	if( m_pCurrFrame )
 	{
 		UpdateFromFrame();
+	}
+	else
+	{
+		m_pSD->pos = m_vPos;
+		m_pSD->angle = m_fAngle;
+
+		if( m_pAtlasFrame )
+		{
+			m_pSD->size.x = m_vScale.x * m_pAtlasFrame->GetSize().x/2;
+			m_pSD->size.y = m_vScale.y * m_pAtlasFrame->GetSize().y/2;
+		}		
 	}
 }
 
@@ -249,6 +260,8 @@ bool Sprite::IsPlaying() const
 
 void Sprite::SetFrame( AtlasFrame* in_pFrame )
 {
+	m_pAtlasFrame = in_pFrame;
+
 	m_pSD->pos = m_vPos;
 	m_pSD->offset.x = in_pFrame->GetOffset().x;
 	m_pSD->offset.y = in_pFrame->GetOffset().y;

@@ -42,7 +42,7 @@ public:
 public:
 //	Frame* GetFrame( const char* in_szFilename );
 
-	Sprite* GetSprite();
+	Sprite* GetSprite();	//TODO add free sprite method !!!
 		
 	void Init( unsigned long in_nReservedSpriteCount = 8192 );
 	void Exit();
@@ -68,10 +68,10 @@ private:
 
 #include "Lair/Sequence/Sequence.h"
 
-class Sprite
+class Sprite	//todo: remove all Sequence functionality.
 {
 private:
-	Sequence*			m_pCurrSequence;
+	Sequence*			m_pCurrSequence;	
 	Sequence::Frame*	m_pCurrFrame;
 
 	SpriteMan::SpriteData*	m_pSD;
@@ -87,6 +87,8 @@ private:
 	Vector2		m_vScale;
 
 	unsigned char*	m_pColor;
+
+	AtlasFrame*	m_pAtlasFrame;
 
 protected:
 	void UpdateFromFrame();

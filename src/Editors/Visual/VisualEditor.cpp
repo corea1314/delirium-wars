@@ -1,8 +1,9 @@
 
 //FIXME
-// - Implement keyframing of single selected track
-// - Implement keyframing of multiple selected track
-// - Implement insertion/deletion/manipulation of keys
+// - Implement insertion/deletion/manipulation of keys (maybe using curve editor)
+// - Move rendering of track and keys to AnimatableElement (maybe even key manipulation too)
+// - Determine if we want to support multiple selection of animatable (and keyframing of multiple animatables at the same time)
+// - Add sprite support (to animatable also)
 
 #include "VisualEditor.h"
 
@@ -27,9 +28,26 @@ static const int	kMarkFrameCount		= 15;	// mark very 15 frames
 
 static const float	kNormalLength		= 32.0f;
 
+typedef struct
+{
+	TrackType::E	mTrackType;
+	const char*		mTrackName;
+
+} TrackInfoHelper;
+
+const TrackInfoHelper	kTrackInfo[] = 
+{
+	{ TrackType::PosX,		"position.x" },
+	{ TrackType::PosY, 		"position.y" },
+	{ TrackType::Angle, 	"angle" },
+	{ TrackType::Alpha, 	"alpha" },
+	{ TrackType::ScaleX, 	"scale.x" }, 
+	{ TrackType::ScaleY,	"scale.y" }
+};
+
 void VisualEditor::OnInit()
 {
-	GetCamera()->GetPos().Set( 256.0f, 256.0f );
+	GetCamera()->GetPos().Set( 0.0f, 0.0f );
 	
 	mTrackInfo[TrackType::PosX ].Set( "pos:x", TrackType::PosX, kStartTrackPosY+kMinDeltaTrackPosY*0);	
 	mTrackInfo[TrackType::PosY ].Set( "pos:y", TrackType::PosY, kStartTrackPosY+kMinDeltaTrackPosY*1);	
@@ -39,10 +57,12 @@ void VisualEditor::OnInit()
 	mTrackInfo[TrackType::ScaleY].Set( "scale:y", TrackType::ScaleY, kStartTrackPosY+kMinDeltaTrackPosY*5);	
 
 	// push in dummy tracks
-	mAnimatables.push_back( AnimatableElement() );
+	mAnimatables.push_back( AnimatableElement(this) );
 	mSelectedAnimatable = &mAnimatables[0];
 	
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey(   0,   1.0f ); //fixme
+	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 0, 1.0f ); //fixme
+	mSelectedAnimatable->mCurve[TrackType::ScaleX].AddKey( 0, 1.0f ); //fixme
+	mSelectedAnimatable->mCurve[TrackType::ScaleY].AddKey( 0, 1.0f ); //fixme
 
 	// init info
 	mFirstFrame = 0;
@@ -90,7 +110,7 @@ void VisualEditor::SetCurrFrame( int inFrame )
 	mCurrFrame = inFrame;
 
 	for( unsigned int i=0;i<mAnimatables.size();i++)
-		mAnimatables[i].Update( (float)mCurrFrame );
+		mAnimatables[i].SetFramePosition( (float)mCurrFrame );
 
 	if( mSelectedAnimatable && GetActiveGizmo() )
 		GetActiveGizmo()->Init( mSelectedAnimatable );		
@@ -111,11 +131,15 @@ void VisualEditor::OnUpdate( float inDeltaTime )
 		}
 
 		for( unsigned int i=0;i<mAnimatables.size();i++)
-			mAnimatables[i].Update( mCurrTime * mFPS );
+		{
+			mAnimatables[i].SetFramePosition( mCurrTime * mFPS );
+			mAnimatables[i].OnUpdate( inDeltaTime );
+		}
 
 		if( mSelectedAnimatable && GetActiveGizmo() )
 			GetActiveGizmo()->Init( mSelectedAnimatable );		
 	}
+
 }
 
 void VisualEditor::OnActivateGizmo()
@@ -128,8 +152,11 @@ void VisualEditor::OnRender()
 {
 	GetGrid()->Render();
 
+	Lair::GetAtlasMan()->Bind();
+	GetSpriteMan()->Render();
+
 	for( unsigned int i=0;i<mAnimatables.size(); i++)
-		mAnimatables[i].Render();
+		mAnimatables[i].OnRender();
 }
 
 void VisualEditor::RenderTrack( TrackInfo& inTrackInfo, int inPosY )
@@ -476,25 +503,25 @@ void VisualEditor::OnKeyboard( unsigned char key, int mod )
 void VisualEditor::OnTranslate( const Vector2& inNewPos, const Vector2& inDelta )
 {
 	if(mSelectedAnimatable)
-		mSelectedAnimatable->OnTranslate(inNewPos);
+		mSelectedAnimatable->OnTranslate(inNewPos,inDelta);
 }
 
 void VisualEditor::OnScale( const Vector2& inNewScale, const Vector2& inDelta )
 {
 	if(mSelectedAnimatable)
-		mSelectedAnimatable->OnScale(inNewScale);
+		mSelectedAnimatable->OnScale(inNewScale,inDelta);
 }
 
 void VisualEditor::OnRotate( float inAngle, float inDelta )
 {
 	if(mSelectedAnimatable)
-		mSelectedAnimatable->OnRotate(inAngle);
+		mSelectedAnimatable->OnRotate(inAngle,inDelta);
 }
 
 void VisualEditor::OnAlpha( float inAlpha, float inDelta )
 {
 	if(mSelectedAnimatable)
-		mSelectedAnimatable->OnAlpha(inAlpha);
+		mSelectedAnimatable->OnAlpha(inAlpha,inDelta);
 }
 
 void VisualEditor::OnKeyframeSelected()
@@ -546,3 +573,70 @@ void VisualEditor::OnMenuShowCurve( int unused )
 {
 	mShowCurve = !mShowCurve;
 }
+
+void VisualEditor::OnSerializeSave( TiXmlElement* inNode )
+{
+	TiXmlElement* pxmlVisual = new TiXmlElement("visual");
+
+	TiXmlElement* pxmlAnimatable, *pxmlCurve;
+	for( std::vector<AnimatableElement>::iterator it = mAnimatables.begin(); it != mAnimatables.end(); it++ )
+	{
+		pxmlAnimatable = new TiXmlElement("animatable");
+		pxmlAnimatable->SetAttribute( "name", it->mName );
+		
+		for( int i=0; i<6; i++ )	//fixme 6
+		{
+			pxmlCurve = new TiXmlElement("curve");
+			pxmlCurve->SetAttribute( "name", kTrackInfo[i].mTrackName );
+			it->mCurve[kTrackInfo[i].mTrackType].SerializeSave( pxmlCurve );
+			pxmlAnimatable->LinkEndChild(pxmlCurve);
+		}
+		
+		pxmlVisual->LinkEndChild(pxmlAnimatable);
+	}
+
+	inNode->LinkEndChild(pxmlVisual);
+}
+
+void VisualEditor::OnSerializeLoad( TiXmlElement* inNode )
+{
+	mAnimatables.clear();
+
+	TiXmlElement* pxmlVisual = inNode->FirstChildElement("visual");
+
+	if( pxmlVisual )
+	{
+		for( TiXmlElement* pxmlAnimatable = pxmlVisual->FirstChildElement("animatable"); pxmlAnimatable; pxmlAnimatable = pxmlAnimatable->NextSiblingElement("animatable") )
+		{	
+			mAnimatables.push_back( AnimatableElement(this) );
+
+			AnimatableElement* pAnimatable = &mAnimatables.back();
+
+			pAnimatable->mName = pxmlAnimatable->Attribute( "name" );
+
+			for( TiXmlElement* pxmlCurve = pxmlAnimatable->FirstChildElement("curve"); pxmlCurve; pxmlCurve = pxmlCurve->NextSiblingElement("curve") )
+			{
+				for( int i=0; i<6; i++ )
+				{
+					if( strcmp( kTrackInfo[i].mTrackName, pxmlCurve->Attribute("name") ) == 0 )
+						pAnimatable->mCurve[i].SerializeLoad( pxmlCurve );
+				}				
+			}
+		}	
+	}
+
+	if( !mAnimatables.empty() )
+		mSelectedAnimatable = &mAnimatables[0];
+	else
+		mSelectedAnimatable = 0;
+}
+
+/*
+<visual>
+	<animatable>
+		<curve name="position.x">
+			<key position="" value=""/>
+		</curve>
+	</animatable>
+</visual>
+*/

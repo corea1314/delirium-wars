@@ -8,7 +8,7 @@ class GizmoScaling : public Gizmo
 {
 public:
 	class Mode { public: enum E { NotDragging, Dragging, DoneDragging }; };
-	class Axis { public: enum E { X, Y, Both }; };
+	class Axis { public: enum E { None, X, Y, Both }; };
 
 private:
 	Mode::E	mMode;
@@ -20,6 +20,8 @@ private:
 			
 public:
 	GizmoScaling( Editor* inEditor );
+
+	virtual void Init( AnimatableElement* inAnimatable );
 
 	virtual void OnRender();
 	virtual void OnRenderGUI();
