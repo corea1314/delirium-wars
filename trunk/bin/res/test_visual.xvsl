@@ -1,0 +1,47 @@
+<xvsl version="0">
+    <visual>
+        <animatable name="">
+            <curve name="position.x" PreLoop="Linear" PostLoop="Linear">
+                <key position="0" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="19" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="33" value="256" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="52" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="72" value="-256" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="88" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="100" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+            </curve>
+            <curve name="position.y" PreLoop="Linear" PostLoop="Linear">
+                <key position="0" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="19" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="33" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="52" value="256" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="72" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="88" value="-256" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="100" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+            </curve>
+            <curve name="angle" PreLoop="Linear" PostLoop="Linear">
+                <key position="0" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="33" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="100" value="360" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+            </curve>
+            <curve name="alpha" PreLoop="Linear" PostLoop="Linear">
+                <key position="0" value="0" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="19" value="1" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+            </curve>
+            <curve name="scale.x" PreLoop="Linear" PostLoop="Linear">
+                <key position="0" value="2" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="19" value="1" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="61" value="1.25" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="83" value="0.75" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="100" value="1" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+            </curve>
+            <curve name="scale.y" PreLoop="Linear" PostLoop="Linear">
+                <key position="0" value="2" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="19" value="1" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="61" value="0.75" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="83" value="1.25" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+                <key position="100" value="1" tangent.in.x="-1" tangent.in.y="0" tangent.out.x="1" tangent.out.y="0" continuity="Smooth" />
+            </curve>
+        </animatable>
+    </visual>
+</xvsl>

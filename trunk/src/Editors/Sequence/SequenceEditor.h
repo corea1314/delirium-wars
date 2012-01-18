@@ -10,15 +10,6 @@ class AtlasFrame;
 class SequenceEditor : public Editor
 {
 protected:
-	class Frame
-	{
-	public:
-		Frame( const std::string& inFilename, AtlasFrame* inAtlasFrame ) : mFilename(inFilename), mAtlasFrame(inAtlasFrame) {}
-
-		AtlasFrame*	mAtlasFrame;
-		std::string mFilename;
-	};
-
 
 	// Editor callbacks
 	virtual void OnInit();
@@ -49,7 +40,6 @@ private:
 
 private:
 	Sprite*		mSprite;
-	SpriteMan*	mSpriteMan;
 
 	std::vector<Frame>	mFrames;
 

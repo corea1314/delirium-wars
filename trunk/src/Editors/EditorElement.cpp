@@ -9,6 +9,10 @@
 
 const int kClickSelectionDelta	= 8;
 
+void EditorElement::OnUpdate( float inPosition )
+{
+}
+
 bool EditorElement::OnSelect( const Vector2& inPos )
 {
 	int mx,my;
@@ -37,13 +41,13 @@ void EditorElement::OnKeyboard( unsigned char key, int mod )
 	{
 	case 13:	// Enter key
 	case 27: 	// Escape key
-		{	// Deselect
-			mSelected = false;	
+		{	
+			mSelected = false;	// Deselect
 			break;
 		}
 	case 127:	// Delete key
-		{	// Delete element
-			mDeleteRequest = true;
+		{	
+			mDeleteRequest = true; // Delete element
 		}
 		break;
 	}
@@ -53,6 +57,7 @@ void EditorElement::OnSpecialKey( int key, int mod ) {}
 bool EditorElement::OnMouseMotion( const MouseMotion& mm ) { return false; }
 bool EditorElement::OnMouseClick( int button, int state, const MouseMotion& mm ) { return false; }
 
-void EditorElement::OnTranslate( const Vector2& inNewPos, const Vector2& inDelta ) {}
+void EditorElement::OnTranslate( const Vector2& inNewPos, const Vector2& inDelta ) { mPos = inNewPos;}
 void EditorElement::OnScale( const Vector2& inNewScale, const Vector2& inDelta ) {}
-void EditorElement::OnRotate( float inAngle, float inDelta ) {}
+void EditorElement::OnRotate( float inNewAngle, float inDelta ) { mAngle = inNewAngle; }
+void EditorElement::OnAlpha( float inNewAlpha, float inDelta ) { mAlpha = inNewAlpha; }

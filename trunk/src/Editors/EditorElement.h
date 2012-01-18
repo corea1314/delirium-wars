@@ -15,17 +15,19 @@ public:
 	Editor*		mEditor;
 	bool		mDeleteRequest;
 	
-	int			mX, mY;		//screen space position
+//	int			mX, mY;		//screen space position
 	Vector2		mPos;		//app space position
 	float		mAngle;	
+	float		mAlpha;
 
 	EditorElement( int inX, int inY, Vector2 inPos, Editor* inEditor ) 
-		: mEditor(inEditor), mSelected(false), mDeleteRequest(false), mX(inX), mY(inY), mPos(inPos), mAngle(0.0f) {}
+		: mEditor(inEditor), mSelected(false), mDeleteRequest(false)/*, mX(inX), mY(inY)*/, mPos(inPos), mAngle(0.0f), mAlpha(1.0f) {}
 
 	EditorElement( Editor* inEditor ) 
-		: mEditor(inEditor), mSelected(false), mDeleteRequest(false), mAngle(0.0f) {}
+		: mEditor(inEditor), mSelected(false), mDeleteRequest(false), mAngle(0.0f), mAlpha(1.0f) {}
 
 public:
+	virtual void OnUpdate( float inPosition );
 	virtual bool OnSelect( const Vector2& inPos );
 	virtual bool OnSelectRect( const Vector2& inMin, const Vector2& inMax );
 	virtual void OnRender() = 0;
@@ -38,5 +40,6 @@ public:
 
 	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );
 	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );
-	virtual void OnRotate( float inAngle, float inDelta );
+	virtual void OnRotate( float inNewAngle, float inDelta );
+	virtual void OnAlpha( float inNewAlpha, float inDelta );
 };

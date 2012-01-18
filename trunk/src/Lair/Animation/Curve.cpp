@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include <tinyxml/tinyxml.h>
+
 
 Curve::Curve()
 	: mPostLoop(CurveLoopType::Linear)
@@ -352,12 +354,81 @@ float Curve::GetTangentAt( float inPosition, Key inKeyPrev, Key inKeyNext )
 	return ((6.0f * ts - 6.0f * t) * inKeyPrev.mValue + (3.0f*ts - 4.0f * t + 1.0f) * inKeyPrev.mTangentOut + (6.0f * t - 6.0f * ts) * inKeyNext.mValue + (3.0f*ts - 2.0f*t) * inKeyNext.mTangentIn) / dv;
 }
 
-void Curve::SerializeLoad( TiXmlElement* inNode )
+void Curve::SerializeLoad( TiXmlElement* inNodeCurve )
 {
-	
+	const char* szPreLoop = inNodeCurve->Attribute( "PreLoop" );
+	if( szPreLoop )
+	{
+			 if( _stricmp(szPreLoop, "Constant" ) == 0 )	SetPreLoop( CurveLoopType::Constant );
+		else if( _stricmp(szPreLoop, "Cycle" ) == 0 )		SetPreLoop( CurveLoopType::Cycle );
+		else if( _stricmp(szPreLoop, "CycleOffset" ) == 0 )	SetPreLoop( CurveLoopType::CycleOffset );
+		else if( _stricmp(szPreLoop, "Oscillate" ) == 0 )	SetPreLoop( CurveLoopType::Oscillate );
+		else if( _stricmp(szPreLoop, "Linear" ) == 0 )		SetPreLoop( CurveLoopType::Linear );
+		else												SetPreLoop( CurveLoopType::Linear );
+	}
+
+	const char* szPostLoop = inNodeCurve->Attribute( "PostLoop" );
+	if( szPostLoop )
+	{
+			 if( _stricmp(szPostLoop, "Constant" ) == 0 )	SetPostLoop( CurveLoopType::Constant );
+		else if( _stricmp(szPostLoop, "Cycle" ) == 0 )		SetPostLoop( CurveLoopType::Cycle );
+		else if( _stricmp(szPostLoop, "CycleOffset" ) == 0 )SetPostLoop( CurveLoopType::CycleOffset );
+		else if( _stricmp(szPostLoop, "Oscillate" ) == 0 )	SetPostLoop( CurveLoopType::Oscillate );
+		else if( _stricmp(szPostLoop, "Linear" ) == 0 )		SetPostLoop( CurveLoopType::Linear );
+		else												SetPostLoop( CurveLoopType::Linear );
+	}		
+
+	int nPosition;
+	float fValue;
+	double fAttribute;
+	Vector2 vTangentIn;
+	Vector2 vTangentOut;
+	CurveContinuity::E eCurveContinuity;
+	const char* szCurveContinuity;
+
+	ClearKeys();	// fixme should be better handled
+
+	for( TiXmlElement* pxmlKey = inNodeCurve->FirstChildElement("key"); pxmlKey; pxmlKey = pxmlKey->NextSiblingElement("key") )
+	{			
+		pxmlKey->Attribute( "position", &nPosition );
+		pxmlKey->Attribute( "value", &fAttribute ); fValue = (float)fAttribute;
+		pxmlKey->Attribute( "tangent.in.x", &fAttribute );	vTangentIn.x = (float)fAttribute;
+		pxmlKey->Attribute( "tangent.in.y", &fAttribute );	vTangentIn.y = (float)fAttribute;
+		pxmlKey->Attribute( "tangent.out.x", &fAttribute );	vTangentOut.x = (float)fAttribute;
+		pxmlKey->Attribute( "tangent.out.y", &fAttribute );	vTangentOut.y = (float)fAttribute;
+		szCurveContinuity = pxmlKey->Attribute( "continuity" );
+
+		if( szCurveContinuity )
+		{
+				 if( _stricmp( szCurveContinuity, "Smooth" ) == 0 )		eCurveContinuity = CurveContinuity::Smooth;
+			else if( _stricmp( szCurveContinuity, "Step" ) == 0 )		eCurveContinuity = CurveContinuity::Step;
+		}
+
+		AddKey( nPosition, fValue, vTangentIn, vTangentOut, eCurveContinuity );
+	}		
 }
 
-void Curve::SerializeSave( TiXmlElement* inNode )
+void Curve::SerializeSave( TiXmlElement* inNodeCurve )
 {
+	const char *  szCurveLoopType[] = { "Constant", "Cycle", "CycleOffset", "Oscillate", "Linear" };
 
+	inNodeCurve->SetAttribute( "PreLoop", szCurveLoopType[GetPreLoop()] );
+	inNodeCurve->SetAttribute( "PostLoop", szCurveLoopType[GetPostLoop()] );
+
+	const char *  szCurveContinuity[] = { "Smooth", "Step" };
+
+	TiXmlElement* pxmlKey;
+	for( unsigned int i=0;i<GetKeyCount(); i++ )
+	{
+		pxmlKey = new TiXmlElement("key");
+		pxmlKey->SetAttribute( "position", GetKey(i).mPosition );
+		pxmlKey->SetDoubleAttribute( "value", GetKey(i).mValue );
+		pxmlKey->SetDoubleAttribute( "tangent.in.x", GetKey(i).mTangentInVector.x );
+		pxmlKey->SetDoubleAttribute( "tangent.in.y", GetKey(i).mTangentInVector.y );
+		pxmlKey->SetDoubleAttribute( "tangent.out.x", GetKey(i).mTangentOutVector.x );
+		pxmlKey->SetDoubleAttribute( "tangent.out.y", GetKey(i).mTangentOutVector.y );
+		pxmlKey->SetAttribute( "continuity", szCurveContinuity[GetKey(i).mContinuity] );
+
+		inNodeCurve->LinkEndChild(pxmlKey);
+	}
 }
