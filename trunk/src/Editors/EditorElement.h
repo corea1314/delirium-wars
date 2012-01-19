@@ -26,6 +26,8 @@ public:
 	EditorElement( Editor* inEditor ) 
 		: mEditor(inEditor), mSelected(false), mDeleteRequest(false), mAngle(0.0f), mAlpha(1.0f) {}
 
+	virtual ~EditorElement() {}
+
 public:
 	virtual void OnUpdate( float inPosition );
 	virtual bool OnSelect( const Vector2& inPos );

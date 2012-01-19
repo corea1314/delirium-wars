@@ -12,6 +12,7 @@ class AnimatableElement : public EditorElement
 {
 public:
 	AnimatableElement( Editor* inEditor );
+	virtual ~AnimatableElement();
 	
 	Curve	mCurve[6];
 	Vector2 mScale;

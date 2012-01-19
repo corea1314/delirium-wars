@@ -57,8 +57,8 @@ void VisualEditor::OnInit()
 	mTrackInfo[TrackType::ScaleY].Set( "scale:y", TrackType::ScaleY, kStartTrackPosY+kMinDeltaTrackPosY*5);	
 
 	// push in dummy tracks
-	mAnimatables.push_back( AnimatableElement(this) );
-	mSelectedAnimatable = &mAnimatables[0];
+	mAnimatables.push_back( new AnimatableElement(this) );
+	mSelectedAnimatable = mAnimatables[0];
 	
 	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 0, 1.0f ); //fixme
 	mSelectedAnimatable->mCurve[TrackType::ScaleX].AddKey( 0, 1.0f ); //fixme
@@ -110,7 +110,7 @@ void VisualEditor::SetCurrFrame( int inFrame )
 	mCurrFrame = inFrame;
 
 	for( unsigned int i=0;i<mAnimatables.size();i++)
-		mAnimatables[i].SetFramePosition( (float)mCurrFrame );
+		mAnimatables[i]->SetFramePosition( (float)mCurrFrame );
 
 	if( mSelectedAnimatable && GetActiveGizmo() )
 		GetActiveGizmo()->Init( mSelectedAnimatable );		
@@ -132,8 +132,8 @@ void VisualEditor::OnUpdate( float inDeltaTime )
 
 		for( unsigned int i=0;i<mAnimatables.size();i++)
 		{
-			mAnimatables[i].SetFramePosition( mCurrTime * mFPS );
-			mAnimatables[i].OnUpdate( inDeltaTime );
+			mAnimatables[i]->SetFramePosition( mCurrTime * mFPS );
+			mAnimatables[i]->OnUpdate( inDeltaTime );
 		}
 
 		if( mSelectedAnimatable && GetActiveGizmo() )
@@ -156,7 +156,7 @@ void VisualEditor::OnRender()
 	GetSpriteMan()->Render();
 
 	for( unsigned int i=0;i<mAnimatables.size(); i++)
-		mAnimatables[i].OnRender();
+		mAnimatables[i]->OnRender();
 }
 
 void VisualEditor::RenderTrack( TrackInfo& inTrackInfo, int inPosY )
@@ -579,16 +579,16 @@ void VisualEditor::OnSerializeSave( TiXmlElement* inNode )
 	TiXmlElement* pxmlVisual = new TiXmlElement("visual");
 
 	TiXmlElement* pxmlAnimatable, *pxmlCurve;
-	for( std::vector<AnimatableElement>::iterator it = mAnimatables.begin(); it != mAnimatables.end(); it++ )
+	for( std::vector<AnimatableElement*>::iterator it = mAnimatables.begin(); it != mAnimatables.end(); it++ )
 	{
 		pxmlAnimatable = new TiXmlElement("animatable");
-		pxmlAnimatable->SetAttribute( "name", it->mName );
+		pxmlAnimatable->SetAttribute( "name", (*it)->mName );
 		
 		for( int i=0; i<6; i++ )	//fixme 6
 		{
 			pxmlCurve = new TiXmlElement("curve");
 			pxmlCurve->SetAttribute( "name", kTrackInfo[i].mTrackName );
-			it->mCurve[kTrackInfo[i].mTrackType].SerializeSave( pxmlCurve );
+			(*it)->mCurve[kTrackInfo[i].mTrackType].SerializeSave( pxmlCurve );
 			pxmlAnimatable->LinkEndChild(pxmlCurve);
 		}
 		
@@ -598,8 +598,18 @@ void VisualEditor::OnSerializeSave( TiXmlElement* inNode )
 	inNode->LinkEndChild(pxmlVisual);
 }
 
+struct DeletePtr
+{
+	template <class T>
+	void operator() ( T* ptr) const
+	{
+		delete ptr;
+	}
+};
+
 void VisualEditor::OnSerializeLoad( TiXmlElement* inNode )
 {
+	std::for_each( mAnimatables.begin(), mAnimatables.end(), DeletePtr() );
 	mAnimatables.clear();
 
 	TiXmlElement* pxmlVisual = inNode->FirstChildElement("visual");
@@ -608,9 +618,9 @@ void VisualEditor::OnSerializeLoad( TiXmlElement* inNode )
 	{
 		for( TiXmlElement* pxmlAnimatable = pxmlVisual->FirstChildElement("animatable"); pxmlAnimatable; pxmlAnimatable = pxmlAnimatable->NextSiblingElement("animatable") )
 		{	
-			mAnimatables.push_back( AnimatableElement(this) );
+			mAnimatables.push_back( new AnimatableElement(this) );
 
-			AnimatableElement* pAnimatable = &mAnimatables.back();
+			AnimatableElement* pAnimatable = mAnimatables.back();
 
 			pAnimatable->mName = pxmlAnimatable->Attribute( "name" );
 
@@ -626,7 +636,7 @@ void VisualEditor::OnSerializeLoad( TiXmlElement* inNode )
 	}
 
 	if( !mAnimatables.empty() )
-		mSelectedAnimatable = &mAnimatables[0];
+		mSelectedAnimatable = mAnimatables[0];
 	else
 		mSelectedAnimatable = 0;
 }

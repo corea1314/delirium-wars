@@ -31,11 +31,28 @@ void SpriteMan::Exit()
 
 Sprite* SpriteMan::GetSprite()
 {
-	Sprite* pSprite = new Sprite(m_pCurrSpriteData);
-	
-	++m_pCurrSpriteData;
-
+	Sprite* pSprite = 0;
+	if( GetCurrSpriteCount() < m_nMaxSpriteCount-1 )
+	{
+		pSprite = new Sprite(m_pCurrSpriteData);
+		++m_pCurrSpriteData;
+	}
 	return pSprite;
+}
+
+void SpriteMan::FreeSprite( Sprite* in_pSprite )
+{
+	assert( m_pSpriteDataBuffer <= in_pSprite->GetSpriteData() && in_pSprite->GetSpriteData() < m_pCurrSpriteData );
+
+	if( GetCurrSpriteCount() > 0 )
+	{
+		unsigned int nIndex = in_pSprite->GetSpriteData() - m_pSpriteDataBuffer;
+
+		SpriteData temp;
+		SWAP( m_pSpriteDataBuffer[nIndex], m_pSpriteDataBuffer[GetCurrSpriteCount()-1], temp );
+	}
+	--m_pCurrSpriteData;
+	delete in_pSprite;
 }
 
 void SpriteMan::Render()

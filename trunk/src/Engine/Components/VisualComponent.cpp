@@ -52,7 +52,11 @@ void VisualComponent::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity )
 {
 	in_pEngine->Disconnect_OnUpdate( this );
 
-	// TODO free sprite interface
+	if( m_pSprite )
+	{
+		Lair::GetSpriteMan()->FreeSprite( m_pSprite );
+		m_pSprite = 0;
+	}
 
 	Component::Disconnect( in_pEngine, in_pEntity );
 }
