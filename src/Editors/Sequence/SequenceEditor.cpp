@@ -30,7 +30,11 @@ void SequenceEditor::OnInit()
 
 void SequenceEditor::OnExit()
 {
-
+	if( mSprite )
+	{
+		GetSpriteMan()->FreeSprite(mSprite);
+		mSprite = 0;
+	}
 }
 
 void SequenceEditor::SetCurrFrame( int inFrame ) 

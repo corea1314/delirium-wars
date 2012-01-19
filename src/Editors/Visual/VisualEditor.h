@@ -98,6 +98,6 @@ private:
 
 	AnimatableElement*	mSelectedAnimatable;
 	
-	std::vector<AnimatableElement>	mAnimatables;
+	std::vector<AnimatableElement*>	mAnimatables;
 	std::vector<KeySelection>		mSelectedKeys;
 };

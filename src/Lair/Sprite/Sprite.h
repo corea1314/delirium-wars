@@ -42,7 +42,8 @@ public:
 public:
 //	Frame* GetFrame( const char* in_szFilename );
 
-	Sprite* GetSprite();	//TODO add free sprite method !!!
+	Sprite* GetSprite();
+	void FreeSprite( Sprite* in_pSprite );
 		
 	void Init( unsigned long in_nReservedSpriteCount = 8192 );
 	void Exit();
@@ -106,6 +107,8 @@ public:
 	void SetAlpha( float a );
 	void SetColor( float r, float g, float b );
 	void SetFrame( AtlasFrame* in_pFrame );
+
+	const SpriteMan::SpriteData* GetSpriteData() const { return m_pSD; }
 };
 
 #endif//_SPRITE_H

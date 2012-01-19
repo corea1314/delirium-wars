@@ -20,6 +20,15 @@ AnimatableElement::AnimatableElement( Editor* inEditor ) : EditorElement(inEdito
 
 }
 
+AnimatableElement::~AnimatableElement()
+{
+	if( mSprite )
+	{
+		mEditor->GetSpriteMan()->FreeSprite(mSprite);
+		mSprite = 0;
+	}	
+}
+
 void AnimatableElement::SetFramePosition( float inFramePosition ) 
 { 
 	mFramePosition = inFramePosition; 
