@@ -25,7 +25,7 @@ public:
 
 protected:
 	bool IsAcceptableCharForText( char inKey );
-	virtual void ProcessTextEntry( const char* inText ) {}
+	virtual void ProcessTextEntry( const std::string& inText ) {}
 
 protected:
 	Editor*			mEditor;

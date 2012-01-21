@@ -1,5 +1,5 @@
 
-//TODO
+//TODO list for Sequence Editor
 //- Implement frame naming scheme
 //- Have a film-strip like display + controller
 
@@ -40,16 +40,16 @@ void SequenceEditor::OnExit()
 void SequenceEditor::SetCurrFrame( int inFrame ) 
 { 
 	mCurrFrame = inFrame; 
-	mSprite->SetFrame( mFrames[mCurrFrame].mAtlasFrame );
+	mSprite->SetFrame( mSequence.GetFrame(mCurrFrame) );
 }
 
 void SequenceEditor::OnUpdate( float inDeltaTime )
 {
-	if( mAnimate && mFrames.size() != 0  )
+	if( mAnimate && mSequence.GetFrameCount() != 0  )
 	{
 		mCurrTime += inDeltaTime;
 
-		SetCurrFrame( (int)( mCurrTime * mFPS ) % mFrames.size() );
+		SetCurrFrame( (int)( mCurrTime * mFPS ) % mSequence.GetFrameCount() );
 	}
 }
 
@@ -84,7 +84,7 @@ void SequenceEditor::OnRender()
 	}
 	else
 	{
-		if( mFrames.size() != 0 )// dont try to render empty sequence
+		if( mSequence.GetFrameCount() != 0 )// dont try to render empty sequence
 		{
 			GetSpriteMan()->Render();
 		
@@ -92,10 +92,10 @@ void SequenceEditor::OnRender()
 			{
 				gl_SetColor( COLORS::eCYAN );
 
-				float wx = mFrames[mCurrFrame].mAtlasFrame->GetSize().x;
-				float wy = mFrames[mCurrFrame].mAtlasFrame->GetSize().y;
-				float ox = mFrames[mCurrFrame].mAtlasFrame->GetOffset().x;
-				float oy = mFrames[mCurrFrame].mAtlasFrame->GetOffset().y;
+				float wx = mSequence.GetFrame(mCurrFrame)->GetSize().x;
+				float wy = mSequence.GetFrame(mCurrFrame)->GetSize().y;
+				float ox = mSequence.GetFrame(mCurrFrame)->GetOffset().x;
+				float oy = mSequence.GetFrame(mCurrFrame)->GetOffset().y;
 
 				glBegin( GL_LINE_LOOP );
 				glVertex2f( -wx/2+ox, -wy/2+oy );
@@ -112,7 +112,7 @@ void SequenceEditor::OnRenderGUI()
 {
 	gl_SetColor(COLORS::eWHITE);
 	gl_RenderText( 8, 8, "Zoom: %f -- Grid: %d -- FPS: %d", GetCamera()->GetZoom(), GetGrid()->GetGridSize(), mFPS );
-	gl_RenderText( 8, 720-16-8, "Sequence v%d.%d.%d (%s at %s)", 1, 0, 0, __DATE__, __TIME__ ); //todo
+	gl_RenderText( 8, 720-16-8, "Sequence v%d.%d.%d (%s at %s)", 1, 0, 0, __DATE__, __TIME__ ); //todo display something better
 }
 
 void SequenceEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
@@ -139,7 +139,7 @@ void SequenceEditor::OnSpecialKey( int key, int mod )
 		break;
 	case SK_RIGHT:	
 		mCurrFrame++; 
-		mCurrFrame = std::min( (int)mFrames.size()-1, mCurrFrame); 
+		mCurrFrame = std::min( (int)mSequence.GetFrameCount()-1, mCurrFrame); 
 		SetCurrFrame(mCurrFrame); 
 		break;
 	
@@ -161,7 +161,7 @@ void SequenceEditor::OnCreateMenu()
 		ADD_MENU_ITEM( pShow, "  Frame  ", &SequenceEditor::OnMenuShowFrame, 0 );
 		ADD_MENU_ITEM( pShow, "  Atlas  ", &SequenceEditor::OnMenuShowAtlas, 0 );
 			
-	ADD_MENU_ITEM( GetMenu(), "  Add Frame  ",	&SequenceEditor::OnMenuAddFrame, 0 );
+	ADD_MENU_ITEM( GetMenu(), "  Add Frame(s)  ",	&SequenceEditor::OnMenuAddFrame, 0 );
 	ADD_MENU_ITEM( GetMenu(), "  Animate  ",	&SequenceEditor::OnMenuAnimate, 0 );
 }
 
@@ -187,8 +187,8 @@ void SequenceEditor::OnMenuAddFrame( int inUnused )
 
 	for( FileSelection::iterator it = fs.begin(); it != fs.end(); it++ )
 	{
-		mFrames.push_back( Frame( (*it).c_str(), Lair::GetAtlasMan()->Get((*it).c_str()) ) );
-		SetCurrFrame( mFrames.size() - 1 );
+		mSequence.AddFrame( it->c_str() );
+		SetCurrFrame( mSequence.GetFrameCount() - 1 );
 	}
 }
 
@@ -198,14 +198,8 @@ void SequenceEditor::OnSerializeSave( TiXmlElement* inNode )
 
 	pxmlSequence->SetAttribute( "fps", mFPS );
 	
-	TiXmlElement* pxmlFrame;
-	for( unsigned int i=0;i<mFrames.size(); i++ )
-	{
-		pxmlFrame = new TiXmlElement("frame");
-		pxmlFrame->SetAttribute( "filename", mFrames[i].mFilename );
-	
-		pxmlSequence->LinkEndChild(pxmlFrame);
-	}
+	mSequence.SerializeSave(pxmlSequence);
+
 	inNode->LinkEndChild(pxmlSequence);
 }
 
@@ -215,15 +209,7 @@ void SequenceEditor::OnSerializeLoad( TiXmlElement* inNode )
 
 	if( pxmlSequence )
 	{
-		mFrames.clear();	// fixme should be better handled
-
 		pxmlSequence->Attribute( "fps", &mFPS );
-
-		for( TiXmlElement* pxmlFrame = pxmlSequence->FirstChildElement("frame"); pxmlFrame; pxmlFrame = pxmlFrame->NextSiblingElement("frame") )
-		{	
-			const char* szFilename = pxmlFrame->Attribute( "filename" );
-		
-			mFrames.push_back( Frame( szFilename, Lair::GetAtlasMan()->Get(szFilename) ) );
-		}	
+		mSequence.SerializeLoad(pxmlSequence);
 	}
 }

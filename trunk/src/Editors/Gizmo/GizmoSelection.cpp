@@ -94,16 +94,7 @@ void GizmoSelection::OnMouseClick( int button, int state, const MouseMotion& mm 
 	}
 }
 
-void GizmoSelection::ProcessTextEntry( const char* inText )
+void GizmoSelection::ProcessTextEntry( const std::string& inText )
 {
-	float x,y;
-	if( sscanf_s( inText, "%f %f", &x, &y ) == 2 )
-	{
-		if( _isnan(x) == 0 && _isnan(y) == 0 )
-		{
-			Vector2 vOldPos = mPos;
-			mPos.Set(x,y);
-			mEditor->OnTranslate( mPos, mPos-vOldPos );
-		}
-	}
+	mEditor->OnSelectTextEntry( inText );
 }

@@ -1,5 +1,5 @@
 
-//FIXME
+//TODO list for Visual Editor
 // - Implement insertion/deletion/manipulation of keys (maybe using curve editor)
 // - Move rendering of track and keys to AnimatableElement (maybe even key manipulation too)
 // - Determine if we want to support multiple selection of animatable (and keyframing of multiple animatables at the same time)
@@ -18,7 +18,7 @@
 static const int	kMinDeltaTrackPosY	= 16;
 static const int	kMinDeltaFramePosX	=  8;
 
-static const int	kStartTrackPosX		= 64;
+static const int	kStartTrackPosX		= 100;
 static const int	kStartTrackPosY		= 34;
 
 static const int	kKeySize			= 12;
@@ -48,21 +48,21 @@ const TrackInfoHelper	kTrackInfo[] =
 void VisualEditor::OnInit()
 {
 	GetCamera()->GetPos().Set( 0.0f, 0.0f );
+
+	for( int i=0; i<6; i++ )
+		mTrackInfo[ kTrackInfo[i].mTrackType ].Set( kTrackInfo[i].mTrackName, kTrackInfo[i].mTrackType, kStartTrackPosY+kMinDeltaTrackPosY*(5-i) );
 	
+	/*
 	mTrackInfo[TrackType::PosX ].Set( "pos:x", TrackType::PosX, kStartTrackPosY+kMinDeltaTrackPosY*0);	
 	mTrackInfo[TrackType::PosY ].Set( "pos:y", TrackType::PosY, kStartTrackPosY+kMinDeltaTrackPosY*1);	
 	mTrackInfo[TrackType::Angle].Set( "angle", TrackType::Angle, kStartTrackPosY+kMinDeltaTrackPosY*2);	
 	mTrackInfo[TrackType::Alpha].Set( "alpha", TrackType::Alpha, kStartTrackPosY+kMinDeltaTrackPosY*3);	
 	mTrackInfo[TrackType::ScaleX].Set( "scale:x", TrackType::ScaleX, kStartTrackPosY+kMinDeltaTrackPosY*4);	
 	mTrackInfo[TrackType::ScaleY].Set( "scale:y", TrackType::ScaleY, kStartTrackPosY+kMinDeltaTrackPosY*5);	
+	*/
 
-	// push in dummy tracks
-	mAnimatables.push_back( new AnimatableElement(this) );
-	mSelectedAnimatable = mAnimatables[0];
-	
-	mSelectedAnimatable->mCurve[TrackType::Alpha].AddKey( 0, 1.0f ); //fixme
-	mSelectedAnimatable->mCurve[TrackType::ScaleX].AddKey( 0, 1.0f ); //fixme
-	mSelectedAnimatable->mCurve[TrackType::ScaleY].AddKey( 0, 1.0f ); //fixme
+	// push in initial element
+	AddAnimatable();	
 
 	// init info
 	mFirstFrame = 0;
@@ -76,6 +76,12 @@ void VisualEditor::OnInit()
 	mFPS = 60;
 
 	mShowCurve = false;
+}
+
+void VisualEditor::AddAnimatable()
+{
+	mAnimatables.push_back( new AnimatableElement(this) );
+	mSelectedAnimatable = mAnimatables.back();
 }
 
 void VisualEditor::OnExit()
@@ -120,11 +126,11 @@ void VisualEditor::OnUpdate( float inDeltaTime )
 {
 	if( mIsPlaying )
 	{
-		mCurrTime += inDeltaTime / 4.0f;
+		mCurrTime += inDeltaTime;
 
 		mCurrFrame = (int)( mCurrTime * mFPS );
 
-		if( mCurrFrame == mLastFrame )
+		if( mCurrFrame >= mLastFrame )
 		{
 			mCurrFrame = 0;
 			mCurrTime = 0.0f;
@@ -159,33 +165,33 @@ void VisualEditor::OnRender()
 		mAnimatables[i]->OnRender();
 }
 
-void VisualEditor::RenderTrack( TrackInfo& inTrackInfo, int inPosY )
+void VisualEditor::RenderTrack( TrackInfo& inTrackInfo )
 {
 	if( inTrackInfo.bSelected )
 		gl_SetColor(COLORS::eORANGE,0.5f);
 	else
 		gl_SetColor(COLORS::eDARKGREY);
 	glBegin( GL_LINES );
-		glVertex2f( (GLfloat)KeyToScreen(mFirstFrame), (GLfloat)inPosY );
-		glVertex2f( 1280.0f, (GLfloat)inPosY );
+		glVertex2f( (GLfloat)KeyToScreen(mFirstFrame), (GLfloat)inTrackInfo.mPosY );
+		glVertex2f( 1280.0f, (GLfloat)inTrackInfo.mPosY);
 	glEnd();
 		
 	if( inTrackInfo.bSelected )
 		gl_SetColor(COLORS::eRED);
 	else
 		gl_SetColor(COLORS::eWHITE);
-	gl_RenderText( 8, inPosY, "%s", inTrackInfo.mName );	//fixme 8
+	gl_RenderText( 8, inTrackInfo.mPosY, "%s", inTrackInfo.mName );	//fixme 8
 }
 
-void VisualEditor::RenderTrackKeys( TrackType::E inType, int inPosY )
+void VisualEditor::RenderTrackKeys( TrackInfo& inTrackInfo )
 {
 	if( mSelectedAnimatable )
 	{
 		gl_SetColor(COLORS::eGREY);
 		glBegin( GL_POINTS );
-		for( unsigned int i=0; i<mSelectedAnimatable->mCurve[inType].GetKeyCount(); i++ )
+		for( unsigned int i=0; i<mSelectedAnimatable->mCurve[inTrackInfo.mType].GetKeyCount(); i++ )
 		{
-			glVertex2f( (GLfloat)KeyToScreen( mSelectedAnimatable->mCurve[inType].GetKey(i).mPosition), (GLfloat)inPosY );
+			glVertex2f( (GLfloat)KeyToScreen( mSelectedAnimatable->mCurve[inTrackInfo.mType].GetKey(i).mPosition), (GLfloat)inTrackInfo.mPosY );
 		}
 		glEnd();
 	}	
@@ -286,28 +292,35 @@ void VisualEditor::RenderCurve( Curve& inCurve, bool inSelected, int inPosY )
 void VisualEditor::OnRenderGUI()
 {
 	gl_SetColor(COLORS::eWHITE);
-	gl_RenderText( 8, 8, "Zoom: %f -- Grid: %d -- Snap: %s", GetCamera()->GetZoom(), GetGrid()->GetGridSize(), GetGrid()->GetSnap() ? "true" : "false" );
+	if( mSelectedAnimatable )
+		gl_RenderText( 8, 8, "Zoom: %f -- Grid: %d -- Snap: %s -- FPS: %d -- Frame: %d -- Selected: %s", GetCamera()->GetZoom(), GetGrid()->GetGridSize(), GetGrid()->GetSnap() ? "true" : "false", mFPS, mCurrFrame, mSelectedAnimatable->mName.c_str() );
+	else
+		gl_RenderText( 8, 8, "Zoom: %f -- Grid: %d -- Snap: %s -- FPS: %d -- Frame: %d", GetCamera()->GetZoom(), GetGrid()->GetGridSize(), GetGrid()->GetSnap() ? "true" : "false", mFPS, mCurrFrame );
 	gl_RenderText( 8, 720-16-8, "Visual Editor v%d.%d.%d (%s at %s)", CRV_VERSION_MAIN, CRV_VERSION_MAJOR, CRV_VERSION_MINOR, __DATE__, __TIME__ );
 
 	// Render tracks
 	glLineWidth( (GLfloat)kTrackLineSize );
 
-	int nPosY = kStartTrackPosY;
-
-	for( int i=0; i<4; i++ )	//fixme 4
+	for( int i=0; i<6; i++ )	//fixme 6
 	{
-		RenderTrack( mTrackInfo[i], nPosY );
-		nPosY += kMinDeltaTrackPosY;
+		RenderTrack( mTrackInfo[i] );
 	}
+
+	int nCurrFramePosX;
 
 	// Render first frame marker
 	glLineWidth( 6.0f );
 	gl_SetColor(COLORS::eBLACK);
 	glBegin( GL_LINES );
 		glVertex2f( (GLfloat)KeyToScreen(0), (GLfloat)(kStartTrackPosY - kMinDeltaTrackPosY/2) );
-		glVertex2f( (GLfloat)KeyToScreen(0), (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
+		glVertex2f( (GLfloat)KeyToScreen(0), (GLfloat)(kStartTrackPosY + 6 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 6
+
+		nCurrFramePosX = KeyToScreen( mLastFrame );
+		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY - kKeySize/2) );
+		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY + 6 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 6
 	glEnd();
-		
+	
+	glLineWidth( 3.0f );
 	glBegin( GL_LINES );
 /*
 		// Render fix distance marker
@@ -319,33 +332,21 @@ void VisualEditor::OnRenderGUI()
 		for( int i=nStartPos; i<1280; i+=nDeltaPos )	//fixme 1280
 		{
 			glVertex2f( (GLfloat)i, (GLfloat)(kStartTrackPosY - kKeySize/2) );
-			glVertex2f( (GLfloat)i, (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
+			glVertex2f( (GLfloat)i, (GLfloat)(kStartTrackPosY + 6 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 6
 		}
 */
-		int nCurrFramePosX = KeyToScreen( mCurrFrame );
-
-		glLineWidth( 6.0f );
+		float fPosX = kStartTrackPosX + (mCurrTime*mFPS - mFirstFrame) * kMinDeltaFramePosX;;
 		gl_SetColor(COLORS::eGREEN);
-		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY - kKeySize/2) );
-		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
-
-		nCurrFramePosX = KeyToScreen( mLastFrame );
-		gl_SetColor(COLORS::eBLACK);
-		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY - kKeySize/2) );
-		glVertex2f( (GLfloat)nCurrFramePosX, (GLfloat)(kStartTrackPosY + 4 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 4
-		
+		glVertex2f( (GLfloat)fPosX, (GLfloat)(kStartTrackPosY - kKeySize/2) );
+		glVertex2f( (GLfloat)fPosX, (GLfloat)(kStartTrackPosY + 6 * kMinDeltaTrackPosY - kMinDeltaTrackPosY/2) ); //fixme 6
 	glEnd();
-	
 
 	// Render keys	
 	glPointSize( (GLfloat)kKeySize );
 
-	nPosY = kStartTrackPosY;
-
-	for( int i=0; i<4; i++ )	//fixme 4
+	for( int i=0; i<6; i++ )	//fixme 6
 	{
-		RenderTrackKeys( (TrackType::E)i, nPosY );
-		nPosY += kMinDeltaTrackPosY;
+		RenderTrackKeys( mTrackInfo[i] );
 	}
 	
 	RenderSelectedTrackKeys();
@@ -356,7 +357,7 @@ void VisualEditor::OnRenderGUI()
 	{
 		if( mSelectedAnimatable )
 		{
-			for( int i=0; i<4; i++ )	//fixme 4
+			for( int i=0; i<6; i++ )	//fixme 6
 			{
 				RenderCurve( mSelectedAnimatable->mCurve[i], mTrackInfo[i].bSelected, kMinDeltaTrackPosY );
 			}
@@ -368,23 +369,24 @@ void VisualEditor::OnRenderGUI()
 
 void VisualEditor::OnMouseClick( int button, int state, const MouseMotion& mm )
 {
-	Editor::OnMouseClick( button, state, mm );
-
-	if( (mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY) && !(mm.mod & SK_MOD_SHIFT) )	//fixme 4
+	if( (mm.y < 6 * kMinDeltaTrackPosY + kStartTrackPosY) /*&& !(mm.mod & SK_MOD_SHIFT)*/ )	//fixme 6
 		OnMouseClickTrackArea( button, mm.x, mm.y );
+	else
+		Editor::OnMouseClick( button, state, mm );
 
 	switch(button)
 	{
 	case 0:		
 		{	
-			if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
+			if( mm.y < 6 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 6
 			{
 				if( Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) && !(mm.mod & SK_MOD_SHIFT) )
 				{
 					// Select track
+					/* //fixme DISABLED
 					int nTrackIndex = (mm.y-kStartTrackPosY+kMinDeltaTrackPosY/2)/kMinDeltaTrackPosY;
-					
 					mTrackInfo[nTrackIndex].bSelected = true;
+					*/
 
 					// Select frame
 
@@ -434,7 +436,7 @@ void VisualEditor::OnMouseClickTrackArea( int button, int x, int y )
 
 void VisualEditor::OnMouseMotion( const MouseMotion& mm )
 {
-	if( mm.y < 4 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 4
+	if( mm.y < 6 * kMinDeltaTrackPosY + kStartTrackPosY  )	//fixme 6
 	{
 		if( Lair::GetInputMan()->IsMouseButtonDown( InputMan::MouseButton::Left ) && (mm.mod & SK_MOD_SHIFT) )
 		{
@@ -474,6 +476,14 @@ void VisualEditor::OnSpecialKey( int key, int mod )
 			SetCurrFrame(mLastFrame);	break;
 	case SK_LEFT:	mCurrFrame--;	mCurrFrame = std::max( 0, mCurrFrame ); SetCurrFrame(mCurrFrame); break;
 	case SK_RIGHT:	mCurrFrame++;	SetCurrFrame(mCurrFrame); break;
+
+	case SK_PAGE_UP:	
+		mFPS++;	
+		break;
+	case SK_PAGE_DOWN:	
+		mFPS--;	
+		mFPS = std::max( 1, mFPS ); 
+		break;
 	}
 }
 
@@ -524,6 +534,34 @@ void VisualEditor::OnAlpha( float inAlpha, float inDelta )
 		mSelectedAnimatable->OnAlpha(inAlpha,inDelta);
 }
 
+void VisualEditor::OnSelect( const Vector2& inPos )
+{
+	mSelectedAnimatable = 0;
+
+	for( std::vector<AnimatableElement*>::iterator it=mAnimatables.begin(); it != mAnimatables.end(); it++ )
+	{
+		if( (*it)->mSelected = (*it)->OnSelect( inPos ) )
+		{
+			mSelectedAnimatable = *it;
+			break; // can select only one
+		}
+	}
+}
+
+void VisualEditor::OnSelectRect( const Vector2& inMin, const Vector2& inMax )
+{
+	mSelectedAnimatable = 0;
+
+	for( std::vector<AnimatableElement*>::iterator it=mAnimatables.begin(); it != mAnimatables.end(); it++ )
+	{
+		if( (*it)->mSelected = (*it)->OnSelectRect( inMin, inMax ) )
+		{
+			mSelectedAnimatable = *it;
+			break; // can select only one
+		}
+	}
+}
+
 void VisualEditor::OnKeyframeSelected()
 {
 	if( mSelectedAnimatable )
@@ -561,12 +599,20 @@ void VisualEditor::OnKeyframeAllSelected()
 void VisualEditor::OnCreateMenu()
 {	
 	Editor::OnCreateMenu();
+
+	CREATE_MENU( pAdd, "  Add...  " );
+		ADD_MENU_ITEM( pAdd, "  new Animatable  ", &VisualEditor::OnMenuAddAnimatable, 0 );
 		
 	CREATE_MENU( pShow, "  Show...  " );
 		ADD_MENU_ITEM( pShow, "  Curve  ", &VisualEditor::OnMenuShowCurve, 0 );
 
 //	ADD_MENU_ITEM( GetMenu(), "Animate",	&VisualEditor::OnMenuAnimate, 0 );
 //	ADD_MENU_ITEM( GetMenu(), "Texture",	&VisualEditor::OnMenuTexture, 0 );	
+}
+
+void VisualEditor::OnMenuAddAnimatable( int unused )
+{
+	AddAnimatable();
 }
 
 void VisualEditor::OnMenuShowCurve( int unused )
@@ -577,6 +623,8 @@ void VisualEditor::OnMenuShowCurve( int unused )
 void VisualEditor::OnSerializeSave( TiXmlElement* inNode )
 {
 	TiXmlElement* pxmlVisual = new TiXmlElement("visual");
+
+	pxmlVisual->SetAttribute( "fps", mFPS );
 
 	TiXmlElement* pxmlAnimatable, *pxmlCurve;
 	for( std::vector<AnimatableElement*>::iterator it = mAnimatables.begin(); it != mAnimatables.end(); it++ )
@@ -616,6 +664,8 @@ void VisualEditor::OnSerializeLoad( TiXmlElement* inNode )
 
 	if( pxmlVisual )
 	{
+		pxmlVisual->Attribute( "fps", &mFPS );
+
 		for( TiXmlElement* pxmlAnimatable = pxmlVisual->FirstChildElement("animatable"); pxmlAnimatable; pxmlAnimatable = pxmlAnimatable->NextSiblingElement("animatable") )
 		{	
 			mAnimatables.push_back( new AnimatableElement(this) );

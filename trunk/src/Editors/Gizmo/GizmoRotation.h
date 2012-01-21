@@ -34,6 +34,6 @@ public:
 	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
 
 protected:
-	virtual void ProcessTextEntry( const char* inText );
+	virtual void ProcessTextEntry( const std::string& inText );
 
 };

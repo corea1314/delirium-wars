@@ -18,6 +18,9 @@ AnimatableElement::AnimatableElement( Editor* inEditor ) : EditorElement(inEdito
 
 	mScale.Set( 1.0f, 1.0f );
 
+	mCurve[TrackType::Alpha].AddKey( 0, 1.0f );
+	mCurve[TrackType::ScaleX].AddKey( 0, 1.0f );
+	mCurve[TrackType::ScaleY].AddKey( 0, 1.0f ); 
 }
 
 AnimatableElement::~AnimatableElement()
@@ -72,8 +75,13 @@ void AnimatableElement::KeyFrame( TrackType::E inTrackType, int inPosition )
 
 void AnimatableElement::OnRender()
 {
-	glPointSize( (GLfloat)4 );		//fixme 16
-	gl_SetColor( COLORS::eGREEN, mAlpha );
+	glPointSize( (GLfloat)4 );//fixme 4
+
+	if( mSelected )
+		gl_SetColor( COLORS::eRED, mAlpha );
+	else
+		gl_SetColor( COLORS::eGREY, mAlpha );
+
 	glBegin( GL_POINTS );
 	glVertex2f( mPos.x, mPos.y );
 	glEnd();

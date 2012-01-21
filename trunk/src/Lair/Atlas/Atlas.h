@@ -5,8 +5,11 @@ class Atlas;
 class AtlasPack;
 
 #include <string>
+#include <vector>
 
 #include "Math/Vector2.h"
+
+class TiXmlElement;
 
 class AtlasFrame
 {
@@ -23,6 +26,24 @@ private:
 	AtlasPack*	pack;
 
 	friend class Atlas;
+};
+
+class AtlasFrameSequence
+{
+public:
+	void AddFrame( const char* inFilename );
+	AtlasFrame*	GetFrame( unsigned int inIndex );
+	unsigned int GetFrameCount();
+
+	void SerializeLoad( TiXmlElement* inNodeCurve );
+	void SerializeSave( TiXmlElement* inNodeCurve );
+
+protected:
+	void Clear();
+
+private:
+	std::vector< AtlasFrame* >	mFrames;
+	std::vector< std::string >	mNames;
 };
 
 class AtlasMan

@@ -130,10 +130,10 @@ void GizmoAlpha::OnMouseClick( int button, int state, const MouseMotion& mm )
 	}	
 }
 
-void GizmoAlpha::ProcessTextEntry( const char* inText )
+void GizmoAlpha::ProcessTextEntry( const std::string& inText )
 {
 	float a;
-	if( sscanf_s( inText, "%f", &a ) == 1 )
+	if( sscanf_s( inText.c_str(), "%f", &a ) == 1 )
 	{
 		if( _isnan(a) == 0 )
 		{

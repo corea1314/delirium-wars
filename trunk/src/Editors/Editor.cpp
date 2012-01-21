@@ -1,6 +1,6 @@
 
 
-//TODO
+//TODO list for editor
 //- 
 
 
@@ -181,6 +181,18 @@ void Editor::OnSelectRect( const Vector2& inMin, const Vector2& inMax )
 	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
 	{
 		(*it)->mSelected = (*it)->OnSelectRect( inMin, inMax );
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// OnSelectTextEntry: Called by Selection Gizmo on text entry
+//
+void Editor::OnSelectTextEntry( const std::string& inText )
+{
+	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
+	{
+		if( (*it)->mSelected )
+			(*it)->mName = inText;
 	}
 }
 

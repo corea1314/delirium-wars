@@ -5,7 +5,7 @@
 
 class Sprite;
 class SpriteMan;
-class AtlasFrame;
+
 
 class SequenceEditor : public Editor
 {
@@ -41,7 +41,7 @@ private:
 private:
 	Sprite*		mSprite;
 
-	std::vector<Frame>	mFrames;
+	AtlasFrameSequence	mSequence;
 
 	bool mAnimate;
 	bool mShowFrame;

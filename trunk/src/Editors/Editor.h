@@ -22,15 +22,6 @@ class Editor : public MenuUser
 {
 public:
 	class GizmoType { public: enum E { Translation, Rotation, Scaling, Alpha, Selection }; };
-	
-	class Frame
-	{
-	public:
-		Frame( const std::string& inFilename, AtlasFrame* inAtlasFrame ) : mFilename(inFilename), mAtlasFrame(inAtlasFrame) {}
-
-		AtlasFrame*	mAtlasFrame;
-		std::string mFilename;
-	};
 
 public:
 	Editor();
@@ -65,6 +56,8 @@ public:
 
 	virtual void OnSelect( const Vector2& inPos );
 	virtual void OnSelectRect( const Vector2& inMin, const Vector2& inMax );
+
+	virtual void OnSelectTextEntry( const std::string& inName );
 	
 	// Menu callbacks
 	virtual void OnCreateMenu();
