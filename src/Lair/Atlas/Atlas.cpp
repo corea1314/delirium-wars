@@ -214,3 +214,58 @@ void AtlasMan::Bind()
 	m_pAtlas->BindTexture(0);
 }
 
+// ============================================================================
+
+#include "tinyxml/tinyxml.h"
+
+void AtlasFrameSequence::AddFrame( const char* inFilename )
+{
+	AtlasFrame* pFrame = Lair::GetAtlasMan()->Get(inFilename);
+
+	if( pFrame )
+	{
+		mFrames.push_back( pFrame );
+		mNames.push_back( inFilename );
+	}
+}
+
+AtlasFrame*	AtlasFrameSequence::GetFrame( unsigned int inIndex )
+{
+	return mFrames[inIndex];
+}
+
+unsigned int AtlasFrameSequence::GetFrameCount()
+{
+	return mFrames.size();
+}
+
+void AtlasFrameSequence::Clear()
+{
+	mFrames.clear();
+	mNames.clear();
+}
+
+void AtlasFrameSequence::SerializeLoad( TiXmlElement* inNodeSequence )
+{
+	Clear();
+
+	const char* szFilename = 0;
+
+	for( TiXmlElement* pxmlFrame = inNodeSequence->FirstChildElement("frame"); pxmlFrame; pxmlFrame = pxmlFrame->NextSiblingElement("frame") )
+	{	
+		if( (szFilename = pxmlFrame->Attribute( "filename" )) != 0 )
+			AddFrame( szFilename );
+	}	
+}
+
+void AtlasFrameSequence::SerializeSave( TiXmlElement* inNodeSequence )
+{
+	TiXmlElement* pxmlFrame;
+	for( unsigned int i=0;i<mFrames.size(); i++ )
+	{
+		pxmlFrame = new TiXmlElement("frame");
+		pxmlFrame->SetAttribute( "filename", mNames[i] );
+
+		inNodeSequence->LinkEndChild(pxmlFrame);
+	}
+}

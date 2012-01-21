@@ -16,7 +16,6 @@ public:
 	
 	Curve	mCurve[6];
 	Vector2 mScale;
-	std::string mName;
 	Sprite*		mSprite;
 	AtlasFrame*	mFrame;
 

@@ -10,11 +10,8 @@ class Editor;
 class LayoutElement : public EditorElement
 {
 public:
-	LayoutElement( int inX, int inY, Vector2 inPos, Editor* inEditor ) : EditorElement(inX,inY,inPos,inEditor), mName("") {}
-	LayoutElement( Editor* inEditor ) : EditorElement(inEditor), mName("") {}
-
-public:
-	std::string	mName;
+	LayoutElement( int inX, int inY, Vector2 inPos, Editor* inEditor ) : EditorElement(inX,inY,inPos,inEditor) { }
+	LayoutElement( Editor* inEditor ) : EditorElement(inEditor) {}
 
 public:
 	virtual void OnRender();

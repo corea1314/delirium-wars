@@ -196,10 +196,10 @@ void GizmoScaling::OnMouseClick( int button, int state, const MouseMotion& mm )
 	}	
 }
 
-void GizmoScaling::ProcessTextEntry( const char* inText )
+void GizmoScaling::ProcessTextEntry( const std::string& inText )
 {
 	float x,y;
-	if( sscanf_s( inText, "%f %f", &x, &y ) == 2 )
+	if( sscanf_s( inText.c_str(), "%f %f", &x, &y ) == 2 )
 	{
 		if( _isnan(x) == 0 && _isnan(y) == 0 )
 		{

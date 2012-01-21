@@ -19,12 +19,13 @@ public:
 	Vector2		mPos;		//app space position
 	float		mAngle;	
 	float		mAlpha;
+	std::string	mName;
 
 	EditorElement( int inX, int inY, Vector2 inPos, Editor* inEditor ) 
-		: mEditor(inEditor), mSelected(false), mDeleteRequest(false)/*, mX(inX), mY(inY)*/, mPos(inPos), mAngle(0.0f), mAlpha(1.0f) {}
+		: mEditor(inEditor), mSelected(false), mDeleteRequest(false)/*, mX(inX), mY(inY)*/, mPos(inPos), mAngle(0.0f), mAlpha(1.0f), mName("element") {}
 
 	EditorElement( Editor* inEditor ) 
-		: mEditor(inEditor), mSelected(false), mDeleteRequest(false), mAngle(0.0f), mAlpha(1.0f) {}
+		: mEditor(inEditor), mSelected(false), mDeleteRequest(false), mAngle(0.0f), mAlpha(1.0f), mName("element") {}
 
 	virtual ~EditorElement() {}
 

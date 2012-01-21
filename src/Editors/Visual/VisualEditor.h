@@ -53,9 +53,12 @@ protected:
 	virtual void OnRotate( float inAngle, float inDelta );
 	virtual void OnAlpha( float inAlpha, float inDelta );
 	virtual void OnActivateGizmo();
+	virtual void OnSelect( const Vector2& inPos );
+	virtual void OnSelectRect( const Vector2& inMin, const Vector2& inMax );
 	
 	// Menu callbacks
 	virtual void OnMenuShowCurve( int unused );
+	virtual void OnMenuAddAnimatable( int unused );
 
 	// File management
 	virtual const char*	GetFileExtension() { return "xvsl"; }
@@ -65,11 +68,13 @@ protected:
 	
 private:
 	// Local methods
-	void RenderTrack( TrackInfo& inTrackInfo, int inPosY );
-	void RenderTrackKeys( TrackType::E inType, int inPosY );
+	void RenderTrack( TrackInfo& inTrackInfo );
+	void RenderTrackKeys( TrackInfo& inTrackInfo );
 	void RenderTrackCurves( TrackType::E inType, int inPosY );
 	void RenderCurve( Curve& inCurve, bool inSelected, int inPosY );
 	void RenderSelectedTrackKeys();
+
+	void AddAnimatable();
 
 	void OnKeyframeSelected();
 	void OnKeyframeAllSelected();
