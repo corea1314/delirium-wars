@@ -89,6 +89,17 @@ bool ShaderGLSL::CreateShader( unsigned int & in_iShader, unsigned int in_eShade
 	return true;
 }
 
+
+void gl_Uniform1fv(GLint location, GLsizei count, const GLfloat * value) {	glUniform1fv( location, count, value ); }
+void gl_Uniform2fv(GLint location, GLsizei count, const GLfloat * value) {	glUniform2fv( location, count, value ); }
+void gl_Uniform3fv(GLint location, GLsizei count, const GLfloat * value) {	glUniform3fv( location, count, value ); }
+void gl_Uniform4fv(GLint location, GLsizei count, const GLfloat * value) {	glUniform4fv( location, count, value ); }
+
+void gl_UniformMatrix2fv (GLint location, GLsizei count, const GLfloat * value) { glUniformMatrix2fv(location, count, false, value); }
+void gl_UniformMatrix3fv (GLint location, GLsizei count, const GLfloat * value) { glUniformMatrix3fv(location, count, false, value); }
+void gl_UniformMatrix4fv (GLint location, GLsizei count, const GLfloat * value) { glUniformMatrix4fv(location, count, false, value); }
+
+
 bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType, unsigned int in_eOutPrimType, unsigned int in_nMaxOutVertices ) 
 { 	
 	char szFilename[MAX_PATH];
@@ -148,6 +159,60 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 	m_iUniformSampler[1] = glGetUniformLocationARB( m_iProgram, "uTextureMap1" );
 	m_iUniformSampler[2] = glGetUniformLocationARB( m_iProgram, "uTextureMap2" );
 	m_iUniformSampler[3] = glGetUniformLocationARB( m_iProgram, "uTextureMap3" );
+
+	GLint nActiveUniformCount = 0;
+	glGetProgramiv( m_iProgram, GL_ACTIVE_UNIFORMS, &nActiveUniformCount ); 
+	
+	for( int i=0; i<nActiveUniformCount; i++ )
+	{
+		GLsizei length;
+		GLint size;  
+		GLenum type;
+
+		glGetActiveUniform( m_iProgram, i, MAX_PATH, &length, &size, &type, szFilename );
+		szFilename[length] = '\0';
+
+		unsigned int nLocation = glGetUniformLocation( m_iProgram, szFilename );
+
+		switch( type )
+		{
+		case GL_FLOAT:		m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size, 1, &gl_Uniform1fv ) ) );	break;																	   
+		case GL_FLOAT_VEC2:	m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size, 2, &gl_Uniform2fv ) ) );	break;																	   
+		case GL_FLOAT_VEC3:	m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size, 3, &gl_Uniform3fv ) ) );	break;																	   
+		case GL_FLOAT_VEC4:	m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size, 4, &gl_Uniform4fv ) ) );	break;
+			/*
+		case GL_INT:
+		case GL_INT_VEC2:
+		case GL_INT_VEC3:
+		case GL_INT_VEC4:
+		case GL_BOOL:
+		case GL_BOOL_VEC2:
+		case GL_BOOL_VEC3:
+		case GL_BOOL_VEC4:
+			break;
+			*/
+			/*
+		case GL_FLOAT_MAT2:
+			m_mapUniform.insert( std::make_pair(szFilename, new UniformMatrix( glGetUniformLocation( m_iProgram, szFilename ), size, &gl_UniformMatrix2fv ) ) );
+			break;
+		case GL_FLOAT_MAT3:
+			m_mapUniform.insert( std::make_pair(szFilename, new UniformMatrix( glGetUniformLocation( m_iProgram, szFilename ), size, &gl_UniformMatrix3fv ) ) );
+			break;
+			*/
+		case GL_FLOAT_MAT4:
+			m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size, 16, &gl_UniformMatrix4fv ) ) );
+			break;
+			
+		case GL_SAMPLER_2D:
+		case GL_SAMPLER_CUBE:
+			break;
+
+		default:
+			Lair::GetLogMan()->Log( "ShaderGLSL", "Uniform named %s is not yet implemented!", szFilename );
+			assert(!"Not yet implemented!");
+			break;
+		}
+	}
 
 //	m_iUniformDeltaTime = glGetUniformLocationARB( m_iProgram, "uDeltaTime" );
 //	m_iUniformTotalTime = glGetUniformLocationARB( m_iProgram, "uTotalTime" );
