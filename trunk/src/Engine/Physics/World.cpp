@@ -7,8 +7,21 @@
 #include "Lair/Lair.h"
 #include "Engine/Engine.h"
 
-CWorld::CWorld() : m_fHz(60.0f), m_nVelocityIterations(8), m_nPositionIterations(3), m_bEnableWarmStarting(true), m_bEnableContinuous(true), 
-	m_pWorld(0), m_pContactListener(0), m_pContactFilter(0), m_pDestructionListener(0), m_pBodyDefMan(0)
+static const int kVelocityIterations = 10; //8;
+static const int kPositionIterations = 10; //3;
+
+CWorld::CWorld() 
+	: CEntity("world")
+	, m_fHz(60.0f)
+	, m_nVelocityIterations(kVelocityIterations)
+	, m_nPositionIterations(kPositionIterations)
+	, m_bEnableWarmStarting(true)
+	, m_bEnableContinuous(true)
+	, m_pWorld(0)
+	, m_pContactListener(0)
+	, m_pContactFilter(0)
+	, m_pDestructionListener(0)
+	, m_pBodyDefMan(0)
 {
 }
 
@@ -64,7 +77,7 @@ void CWorld::RenderDebug( CDebugDraw* in_pDebugDraw )
 
 void  CWorld::Update( float in_fDeltaTime )
 {
-	float32 timeStep = m_fHz > 0.0f ? 1.0f / m_fHz : float32(0.0f);
+	float32 timeStep = in_fDeltaTime; //m_fHz > 0.0f ? 1.0f / m_fHz : float32(0.0f);
 
 	m_pWorld->SetWarmStarting(m_bEnableWarmStarting);
 	m_pWorld->SetContinuousPhysics(m_bEnableContinuous);
@@ -72,12 +85,13 @@ void  CWorld::Update( float in_fDeltaTime )
 	m_pWorld->Step(timeStep, m_nVelocityIterations, m_nPositionIterations);
 }
 
-b2Body* CWorld::CreateBody( CEntityPhysics* in_pEntity, const std::string& in_szBodyDefinitionFilename, const b2Vec2& in_vPos, bool in_bActive )
+b2Body* CWorld::CreateBody( CEntity* in_pEntity, const std::string& in_szBodyDefinitionFilename, const Vector2& in_vPos, bool in_bActive )
 {
 	BodyDefinition* pBodyDef = m_pBodyDefMan->Get( in_szBodyDefinitionFilename );
 	if( pBodyDef )
 	{
-		pBodyDef->GetBody().position = in_vPos;
+		pBodyDef->GetBody().position.x = in_vPos.x;
+		pBodyDef->GetBody().position.y = in_vPos.y;
 		pBodyDef->GetBody().active = in_bActive;
 		b2Body* pBody = m_pWorld->CreateBody( &pBodyDef->GetBody() );
 
@@ -88,7 +102,9 @@ b2Body* CWorld::CreateBody( CEntityPhysics* in_pEntity, const std::string& in_sz
 		for( std::vector<b2FixtureDef>::iterator it = pBodyDef->GetFixtures().begin(); it != itEnd; it++ )
 		{
 			pBody->CreateFixture( &(*it) );
-		}	
+		}
+
+		return pBody;
 	}
 
 	return 0;	

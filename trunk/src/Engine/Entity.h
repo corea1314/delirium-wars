@@ -11,13 +11,6 @@
 #include <Math/Vector2.h>
 
 class CEngine;
-class GotoComponent;
-class TurnComponent;
-class VisualComponent; 
-class InputComponent;
-class EngineComponent;
-class CameraComponent;
-
 class CDebugDraw;
 
 // this class defines a basic entity of the engine.
@@ -28,7 +21,7 @@ class CEntity : public has_slots<>
 	DECLARE_CLASS_TYPE_ROOT(CEntity);
 
 public:
-	CEntity();
+	CEntity( const std::string in_szName );
 	virtual ~CEntity();
 
 	// connects object to game engine
@@ -41,13 +34,15 @@ public:
 	bool CEntity::Load( const std::string& in_szLuaFilename );
 
 	// get access engine
-	CEngine*	GetEngine() { return m_pEngine; }
+	CEngine*	GetEngine() const { return m_pEngine; }
 
 	// get access to lua context
 	Lua::LuaContext& GetLuaContext() { return m_LuaContext; }
 
 	inline Vector2& GetPos() { return m_vPos; }
 	inline float& GetAngle() { return m_fAngle; }
+
+	inline const std::string& GetName() const { m_szName; }
 
 protected:
 	// engine callbacks
@@ -102,6 +97,7 @@ protected:
 	 }
 	 	
 private:
+	const std::string m_szName;
 	std::string	m_szLuaFilename;
 
 	Vector2	m_vPos;
@@ -109,6 +105,40 @@ private:
 	CEngine* m_pEngine;
 	Lua::LuaContext	m_LuaContext;
 	std::vector<std::shared_ptr<Component>>	m_vecComponents;
+};
+
+class CEntityDefinition
+{
+public:
+	std::string mLuaFilename;
+};
+
+template <typename T>
+class Factory
+{
+public:
+	typedef std::shared_ptr<T> Element;
+	typedef std::map<std::string, typename Element> MapElement;
+	typedef typename MapElement::iterator MapElementIterator;
+
+	T Get( const std::string& inName ) 
+	{ 
+		MapElementIterator itElement = mMapElements.find(inName);
+		if( itElement != mMapElements.end() )
+			return itElement->second;
+		else
+		{
+			Element newElement(new T);
+			if( newElement->Load( inName ) )
+			{
+				mMapElements.insert( std::make_pair(inName,newElement) );
+			}
+			return newElement;
+		}
+	}
+
+private:
+	std::map<std::string, Element>	mMapElements;
 };
 
 

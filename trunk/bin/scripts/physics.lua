@@ -4,22 +4,27 @@
 
 -- gotoComponent = this:createGotoComponent()
 -- turnComponent = this:createTurnComponent()
- inputComponent = this:createInputComponent()
--- visualComponent = this:createVisualComponent()
- engineComponent = this:createEngineComponent()
+inputComponent = this:createInputComponent()
+visualComponent = this:createVisualComponent()
+-- engineComponent = this:createEngineComponent()
+physicsComponent = this:createPhysicsComponent()
 
 -------------------------------------------------------------------------------
 -- onConnect: called when the entity is connected to the engine
 -------------------------------------------------------------------------------
 function OnConnect()
-	engineComponent:create_entity( "camera", "scripts/camera.lua", 0,0,0 )
-	engineComponent:create_entity( "tester", "scripts/tester.lua", 0,0,0 )
+	
+	visualComponent:play( "sample.spr", false )
+	physicsComponent:create_body( "sprite.xbd", true )
+
 end
 
 -------------------------------------------------------------------------------
 -- onDisconnect: called when the entity is disconnected from the engine
 -------------------------------------------------------------------------------
 function OnDisconnect()
+
+	physicsComponent:destroy_body()
 
 end
 
@@ -47,26 +52,20 @@ end
 -------------------------------------------------------------------------------
 -- InputComponent callbacks
 -------------------------------------------------------------------------------
-function OnInputComponent_Keyboard( key ) 
-
-end
-
-function OnInputComponent_MouseClick( button, screenx, screeny, worldx, worldy )
+-- function OnInputComponent_Keyboard( key ) end
+function OnInputComponent_MouseClick( button, screen_x, screen_y, world_x, world_y ) 
 
 	if button == 1 then
-        engineComponent:create_entity( "tester2", "scripts/physics.lua", worldx, worldy, 0 )
-    end
-end
+		physicsComponent:warp( world_x, world_y, 90 );
 
-function OnInputComponent_MouseWheel( value ) 
-	engineComponent:create_entity( "tester3", "scripts/tester.lua", value * 100, 0, 0 )
+	end
+
 end
+-- function OnInputComponent_MouseWheel( value ) end
 
 
 -------------------------------------------------------------------------------
 -- EngineComponent callbacks
 -------------------------------------------------------------------------------
 -- function OnEngineComponent_Update( deltatime ) end
-
-
 

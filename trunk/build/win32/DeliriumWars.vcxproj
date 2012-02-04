@@ -204,6 +204,7 @@
     <ClCompile Include="..\..\src\Engine\Components\EngineComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\GotoComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\InputComponent.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\PhysicsComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\TurnComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\VisualComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Database\Database.cpp" />
@@ -323,6 +324,7 @@
     <ClInclude Include="..\..\src\Engine\Components\EngineComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\GotoComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\InputComponent.h" />
+    <ClInclude Include="..\..\src\Engine\Components\PhysicsComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\TurnComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\VisualComponent.h" />
     <ClInclude Include="..\..\src\Engine\Database\Database.h" />
@@ -332,6 +334,7 @@
     <ClInclude Include="..\..\src\Engine\Physics\BodyDef.h" />
     <ClInclude Include="..\..\src\Engine\Physics\EntityPhysics.h" />
     <ClInclude Include="..\..\src\Engine\Physics\World.h" />
+    <ClInclude Include="..\..\src\Engine\PostProcess\PostProcess.h" />
     <ClInclude Include="..\..\src\Engine\SigSlot.h" />
     <ClInclude Include="..\..\src\fw.h" />
     <ClInclude Include="..\..\src\gfx.h" />
@@ -376,7 +379,10 @@
     <None Include="..\..\bin\scripts\camera.lua" />
     <None Include="..\..\bin\scripts\entity.lua" />
     <None Include="..\..\bin\scripts\entrypoint.lua" />
+    <None Include="..\..\bin\scripts\physics.lua" />
     <None Include="..\..\bin\scripts\tester.lua" />
+    <None Include="..\..\bin\shaders\godrays.fs" />
+    <None Include="..\..\bin\shaders\godrays.vs" />
     <None Include="..\..\bin\shaders\spriter.fs" />
     <None Include="..\..\bin\shaders\spriter.gs" />
     <None Include="..\..\bin\shaders\spriter.vs" />

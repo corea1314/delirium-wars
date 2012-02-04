@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #include "Engine/Physics/EntityPhysics.h"
 
 class CPlayer : public CEntityPhysics
@@ -13,3 +14,4 @@ public:
 	virtual void OnContactPersist() {}
 	virtual void OnContactRemove() {}
 };
+*/

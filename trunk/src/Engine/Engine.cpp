@@ -31,14 +31,14 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 	m_pWorld->Connect( this );
 
 	// Entry point entity
-	m_pEntryPointEntity = GetEntity( "%entry_point%", "scripts/entrypoint.lua" );
+	m_pEntryPointEntity = GetEntity( "%entry_point%", "scripts/entrypoint.lua", Vector2(0,0) );
 
 	// Create debug draw interface
 	m_pDebugDraw = new CDebugDraw( 1024, 1024, 3.0f );
 
 	// Create player
-	m_pPlayer = new CPlayer;
-	m_pPlayer->Connect( this );
+//	m_pPlayer = new CPlayer;
+//	m_pPlayer->Connect( this );
 
 	// Render targets
 	m_pRT = new RenderTarget;
@@ -56,17 +56,28 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 		m_pRT->SetActiveTextureTarget( eRTT_Diffusion1 );
 		glClear( GL_COLOR_BUFFER_BIT );
 	m_pRT->Unbind();
+
+	m_pShaderGodRays = new ShaderGLSL;
+	m_pShaderGodRays->Create( "shaders/godrays" );
+
+	m_pExposure = m_pShaderGodRays->GetUniform("exposure");
+	m_pDecay = m_pShaderGodRays->GetUniform("decay");
+	m_pDensity = m_pShaderGodRays->GetUniform("density");
+	m_pWeight = m_pShaderGodRays->GetUniform("weight");
+	m_pLightPositionOnScreen = m_pShaderGodRays->GetUniform("lightPositionOnScreen");
 }
 
 CEngine::~CEngine()
 {
+	SAFE_DELETE( m_pShaderGodRays );
+
 	m_pRT->Destroy();
 	SAFE_DELETE( m_pRT );	
 
 	SAFE_DELETE(m_pDebugDraw);
 
-	m_pPlayer->Disconnect( this );
-	SAFE_DELETE(m_pPlayer);
+//	m_pPlayer->Disconnect( this );
+//	SAFE_DELETE(m_pPlayer);
 
 	m_pWorld->Disconnect(this);
 	SAFE_DELETE(m_pWorld);
@@ -92,7 +103,7 @@ CEntity* CEngine::GetEntity( const std::string& in_szEntityName )
 	return 0;
 }
 
-CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript )
+CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript, const Vector2& in_vPos, float in_fAngle )
 {
 	CEntity* pEntity = GetEntity(in_szEntityName);
 
@@ -104,7 +115,9 @@ CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::stri
 	else
 	{
 		// not found, load it, return it
-		pEntity = new CEntity();
+		pEntity = new CEntity( in_szEntityName );
+		pEntity->GetPos() = in_vPos;
+		pEntity->GetAngle() = in_fAngle;
 
 		if( pEntity->Load(in_szLuaScript) )
 		{
@@ -119,9 +132,23 @@ CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::stri
 	return 0;
 }
 
+void CEngine::FreeEntity( const std::string& in_szEntityName )
+{
+	std::map< std::string, CEntity* >::iterator it = m_mapEntity.find( in_szEntityName );
+
+	if( it != m_mapEntity.end() )
+	{
+		// found it, free it
+		CEntity* pEntity = it->second;
+		pEntity->Disconnect(this);
+		m_mapEntity.erase(it);
+	}
+}
+
 void CEngine::Update( float in_fDeltaTime )
 {
 	OnUpdate( in_fDeltaTime );
+	OnPostUpdate();
 }
 
 void CEngine::Render()
@@ -223,17 +250,29 @@ void CEngine::RenderGUI()
 	glEnable( GL_TEXTURE_2D );
 
 	glColor4f(1,1,1,1);
-	glClearColor( 0.2f, 0.2f, 0.2f, 0.0f );
+	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 
+	m_pShaderGodRays->Bind();
+
+	m_pExposure->Set( 0.0014f );
+	m_pDecay->Set( 1.0f );
+	m_pDensity->Set( 0.44f );
+	m_pWeight->Set( 5.65f );
+
+	float fPos[2] = { 0.5f, 0.5f };
+	m_pLightPositionOnScreen->Set( 2, fPos );
+	
 	m_pRTT[eRTT_BackLayer]->Bind();
 	RENDER_QUAD();
 	
 //	m_pRTT[m_nCurrentDiffusion]->Bind();
 //	RENDER_QUAD();
 
+	m_pShaderGodRays->Unbind();
+
 	m_pRTT[eRTT_FrontLayer]->Bind();
 	RENDER_QUAD();
-
+	
 	// Then we render GUI on top
 	OnRenderGUI();
 }

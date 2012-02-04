@@ -223,7 +223,7 @@ if (_p_p)					\
 //
 #ifndef DEG_TO_RAD
 #define DEG_TO_RAD(p_ang)	\
-	((p_ang) * PI / 180.0f)
+	(float)((p_ang) * PI / 180.0f)
 #endif
 
 //////

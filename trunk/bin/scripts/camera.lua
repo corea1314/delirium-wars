@@ -62,7 +62,7 @@ end
 
 function OnInputComponent_MouseClick( button, screen_x, screen_y, world_x, world_y ) 
     if button == 0 then
-        gotoComponent:goto( world_x, world_y, 1.0 )
+--        gotoComponent:goto( world_x, world_y, 1.0 )
     end
 end
 

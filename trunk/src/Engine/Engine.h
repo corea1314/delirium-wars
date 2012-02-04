@@ -18,6 +18,8 @@ class SpriteRenderer;
 class CPlayer;
 class CEntity;
 
+#include "Lair/Shader/ShaderGLSL.h"
+
 #include <Math/Vector2.h>
 
 //Objects should use the proxy when trying to connect with it
@@ -40,6 +42,7 @@ class CEngineProxy
     NEW_SIGNAL1( OnLoadFile, const char* ); // filename
 	 
 	NEW_PROTECTED_SIGNAL1( OnUpdate, float );	// delta time
+	NEW_PROTECTED_SIGNAL0( OnPostUpdate );
 	NEW_PROTECTED_SIGNAL0( OnRenderFrontLayer );
 	NEW_PROTECTED_SIGNAL0( OnRenderBackLayer );
 	NEW_PROTECTED_SIGNAL0( OnRenderDiffusionLayer );
@@ -62,8 +65,9 @@ public:
 	void RenderGUI();
 	void Update( float in_fDeltaTime );
 
-	CEntity* CEngine::GetEntity( const std::string& in_szEntityName );
-	CEntity* CEngine::GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript );
+	CEntity* GetEntity( const std::string& in_szEntityName );
+	CEntity* GetEntity( const std::string& in_szEntityName, const std::string& in_szLuaScript, const Vector2& in_vPos, float in_fAngle = 0.0f );
+	void FreeEntity( const std::string& in_szEntityName );
 
 private:
 	CClock*		m_pClock;
@@ -76,6 +80,16 @@ private:
 	
 	RenderTarget*	m_pRT;
 	Texture*		m_pRTT[4];
+
+	ShaderGLSL*		m_pShaderGodRays;
+
+	//
+	std::shared_ptr<ShaderGLSL::Uniform> m_pExposure;
+	std::shared_ptr<ShaderGLSL::Uniform> m_pDecay;
+	std::shared_ptr<ShaderGLSL::Uniform> m_pDensity;
+	std::shared_ptr<ShaderGLSL::Uniform> m_pWeight;
+	std::shared_ptr<ShaderGLSL::Uniform> m_pLightPositionOnScreen;
+	//
 
 	unsigned int	m_nCurrentDiffusion;
 

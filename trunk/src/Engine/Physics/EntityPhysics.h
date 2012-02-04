@@ -4,6 +4,7 @@
 #include "Engine/Entity.h"
 #include <string>
 
+/*
 class b2Body;
 
 class CEntityPhysics : public has_slots<>
@@ -32,6 +33,7 @@ private:
 	b2Body*		m_pBody;
 	CEngine* m_pEngine;
 };
+*/
 
 #endif//_ENTITY_PHYSICS_H
 
