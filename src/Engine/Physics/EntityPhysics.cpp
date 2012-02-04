@@ -1,4 +1,5 @@
 
+/*
 #include "EntityPhysics.h"
 
 #include "Engine/Engine.h"
@@ -33,3 +34,4 @@ void CEntityPhysics::DestroyBody()
 	if( m_pBody )
 		GetEngine()->GetWorld()->DestroyBody( &m_pBody );
 }
+*/

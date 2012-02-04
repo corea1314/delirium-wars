@@ -4,23 +4,24 @@
 #include <vector>
 
 #include <Box2D/Box2D.h>
-#include <Engine/Physics/EntityPhysics.h>
+//#include <Engine/Physics/EntityPhysics.h>
+#include <Engine/Entity.h>
 #include <DebugDraw/DebugDraw.h>
 
 // 8 pixels is 2 meters
 #define PixelToPhysics( a ) ((a)/8)
 
-class CEntityPhysics;
+// class CEntityPhysics;
 class BodyDefinitionMan;
 
-class CWorld : public CEntityPhysics
+class CWorld : public CEntity
 {
 public:
 	CWorld();
 	void Connect( CEngine* );		// connects object to game engine
 	void Disconnect( CEngine* );	// disconnects object from game engine
 
-	b2Body* CreateBody( CEntityPhysics* in_pEntity, const std::string& in_szBodyDefinitionFilename, const b2Vec2& in_vPos, bool m_bActive );
+	b2Body* CreateBody( CEntity* in_pEntity, const std::string& in_szBodyDefinitionFilename, const Vector2& in_vPos, bool m_bActive );
 	void DestroyBody( b2Body** in_ppBody );
 
 private:

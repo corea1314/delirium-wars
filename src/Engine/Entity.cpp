@@ -12,6 +12,7 @@ IMPLEMENT_CLASS_TYPE(CEntity)
 #include "Components/InputComponent.h"
 #include "Components/EngineComponent.h"
 #include "Components/CameraComponent.h"
+#include "Components/PhysicsComponent.h"
 
 #include <luawrapper/LuaContext.h>
 
@@ -23,7 +24,7 @@ IMPLEMENT_CLASS_TYPE(CEntity)
 // CEntity
 //
 
-CEntity::CEntity() : m_fAngle(0.0f)
+CEntity::CEntity( const std::string in_szName ) : m_fAngle(0.0f), m_szName(in_szName)
 {
 	m_vecComponents.reserve(8);	//FIXME arbitrary number of components
 }
@@ -57,6 +58,7 @@ bool CEntity::Load( const std::string& in_szLuaFilename )
 		m_LuaContext.registerFunction("createInputComponent",	&CEntity::CreateComponent<InputComponent> );
 		m_LuaContext.registerFunction("createEngineComponent",	&CEntity::CreateComponent<EngineComponent> );
 		m_LuaContext.registerFunction("createCameraComponent",	&CEntity::CreateComponent<CameraComponent> );
+		m_LuaContext.registerFunction("createPhysicsComponent",	&CEntity::CreateComponent<PhysicsComponent> );
 
 		m_LuaContext.writeVariable("this", std::shared_ptr<CEntity>(this) );
 
@@ -177,5 +179,5 @@ void CEntity::Component::BindCallback( const char* in_szName, LuaCallbackInfo& i
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// CEntityFactory
+// CEntityDefinition
 // 

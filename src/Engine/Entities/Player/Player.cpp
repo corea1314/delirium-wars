@@ -1,3 +1,4 @@
+/*
 #include "Player.h"
 
 #include "Engine/Engine.h"
@@ -16,3 +17,4 @@ void CPlayer::Disconnect( CEngine* in_pEngine )
 
 	CEntityPhysics::Disconnect( in_pEngine );
 }
+*/

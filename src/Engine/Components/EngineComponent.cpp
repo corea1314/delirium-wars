@@ -22,13 +22,7 @@ EngineComponent::~EngineComponent()
 
 void EngineComponent::CreateEntity( std::string in_szEntityName, std::string in_szLuaScript, float in_fPosX, float in_fPosY, float in_fAngle )
 {
-	CEntity* pEntity = GetEngine()->GetEntity( in_szEntityName, in_szLuaScript );
-	if( pEntity )
-	{
-		pEntity->GetPos().x = in_fPosX;
-		pEntity->GetPos().y = in_fPosY;
-		pEntity->GetAngle() = in_fAngle;
-	}
+	GetEngine()->GetEntity( in_szEntityName, in_szLuaScript, Vector2(in_fPosX,in_fPosY), in_fAngle );
 }
 
 // engine connection //////////////////////////////////////////////////////////

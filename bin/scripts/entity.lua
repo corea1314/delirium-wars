@@ -7,6 +7,8 @@
 -- inputComponent = this:createInputComponent()
 -- visualComponent = this:createVisualComponent()
 -- engineComponent = this:createEngineComponent()
+-- physicsComponent = this:createPhysicsComponent()
+
 
 -------------------------------------------------------------------------------
 -- onConnect: called when the entity is connected to the engine

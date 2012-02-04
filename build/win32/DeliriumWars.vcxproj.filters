@@ -486,6 +486,9 @@
     <ClCompile Include="..\..\src\Editors\Gizmo\GizmoSelection.cpp">
       <Filter>editors\gizmos</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\PhysicsComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\app.h">
@@ -833,6 +836,12 @@
     <ClInclude Include="..\..\src\Editors\Gizmo\GizmoSelection.h">
       <Filter>editors\gizmos</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\PhysicsComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\PostProcess\PostProcess.h">
+      <Filter>source\Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todo.txt" />
@@ -868,6 +877,15 @@
     </None>
     <None Include="..\..\bin\scripts\tester.lua">
       <Filter>bin\scipts</Filter>
+    </None>
+    <None Include="..\..\bin\scripts\physics.lua">
+      <Filter>bin\scipts</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\godrays.fs">
+      <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\godrays.vs">
+      <Filter>bin\shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -172,7 +172,10 @@ void App::OnMouseClick( int button, int state, int x, int y, int mod )
 		m_pActiveEditor->OnMouseClick( button, state, mm );
 	}
 	else
-		GetEngine()->OnMouseClick( button, x, y, v );	
+	{
+		if( state == 1 )	// send only down event
+			GetEngine()->OnMouseClick( button, x, y, v );	
+	}
 }
 
 void App::OnMouseMotion( int x, int y, int mod )
