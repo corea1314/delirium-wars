@@ -46,10 +46,10 @@ void InputComponent::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity )
 
 // engine callbacks ///////////////////////////////////////////////////////////
 
-void InputComponent::OnKeyboard( unsigned char in_cKey )
+void InputComponent::OnKeyboard( unsigned char in_cKey, bool in_bKeyDown )
 {
 	if( m_cbOnKeyboardKey.IsEnabled() )
-		GetEntity()->GetLuaContext().callLuaFunction<int>(m_cbOnKeyboardKey.GetName(), (char)in_cKey );
+		GetEntity()->GetLuaContext().callLuaFunction<int>(m_cbOnKeyboardKey.GetName(), (char)in_cKey, in_bKeyDown );
 }
 
 void InputComponent::OnMouseClick( unsigned int in_nButton, int in_nScreenSpacePositionX, int in_nScreenSpacePositionY, const Vector2& in_vWorldPos )

@@ -13,6 +13,7 @@ IMPLEMENT_CLASS_TYPE(CEntity)
 #include "Components/EngineComponent.h"
 #include "Components/CameraComponent.h"
 #include "Components/PhysicsComponent.h"
+#include "Components/AsmComponent.h"
 
 #include <luawrapper/LuaContext.h>
 
@@ -59,6 +60,7 @@ bool CEntity::Load( const std::string& in_szLuaFilename )
 		m_LuaContext.registerFunction("createEngineComponent",	&CEntity::CreateComponent<EngineComponent> );
 		m_LuaContext.registerFunction("createCameraComponent",	&CEntity::CreateComponent<CameraComponent> );
 		m_LuaContext.registerFunction("createPhysicsComponent",	&CEntity::CreateComponent<PhysicsComponent> );
+		m_LuaContext.registerFunction("createAsmComponent",		&CEntity::CreateComponent<AsmComponent> );
 
 		m_LuaContext.writeVariable("this", std::shared_ptr<CEntity>(this) );
 

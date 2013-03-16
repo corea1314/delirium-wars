@@ -32,9 +32,9 @@ bool EditorElement::OnSelectRect( const Vector2& inMin, const Vector2& inMax )
 	return Vector2::IsPointInRect( mPos, inMin, inMax );
 }
 
-void EditorElement::OnKeyboard( unsigned char key, int mod )
+void EditorElement::OnKeyboard( unsigned char key, int mod, bool down )
 {
-	if( mSelected == false )
+	if( !down && mSelected == false )
 		return;
 
 	switch( key )
@@ -53,7 +53,7 @@ void EditorElement::OnKeyboard( unsigned char key, int mod )
 	}
 }
 
-void EditorElement::OnSpecialKey( int key, int mod ) {}
+void EditorElement::OnSpecialKey( int key, int mod, bool down ) {}
 bool EditorElement::OnMouseMotion( const MouseMotion& mm ) { return false; }
 bool EditorElement::OnMouseClick( int button, int state, const MouseMotion& mm ) { return false; }
 

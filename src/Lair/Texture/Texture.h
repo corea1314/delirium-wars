@@ -13,6 +13,7 @@ public:
 	virtual ~Texture();
 
 	void Bind() const;
+	void Bind( unsigned int in_nTextureUnit );
 	void Unbind() const;
 
 	bool LoadFromImage( Image* in_pImage );
@@ -38,6 +39,8 @@ private:
 
 	unsigned long m_nWidth;
 	unsigned long m_nHeight;
+
+	unsigned int m_nTextureUnit;
 };
 
 class TextureMan

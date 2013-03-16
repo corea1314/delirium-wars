@@ -1,0 +1,10 @@
+[Frames]
+# sprite_id,	filename,			delay,	x,   y,		angle,		sx, sy
+frame0 =		atlas\walk.0.png		33		0   0			0		1.0 1.0 
+frame1 =		atlas\walk.1.png		33		0   0			0		1.0 1.0 
+frame2 =		atlas\walk.2.png		33		0   0			0		1.0 1.0 
+frame3 =		atlas\walk.3.png		33		0   0			0		1.0 1.0 
+frame4 =		atlas\walk.4.png		33		0   0			0		1.0 1.0 
+frame5 =		atlas\walk.5.png		33		0   0			0		1.0 1.0 
+frame6 =		atlas\walk.6.png		33		0   0			0		1.0 1.0 
+frame7 =		atlas\walk.7.png		33		0   0			0		1.0 1.0 

@@ -106,8 +106,11 @@ void GizmoRotation::OnRenderGUI()
 	glLineWidth(2.0f);
 }
 
-void GizmoRotation::OnKeyboard( unsigned char key, int mod )
+void GizmoRotation::OnKeyboard( unsigned char key, int mod, bool down )
 {
+	if( !down ) 
+		return; // process key down only
+
 	switch( key )
 	{		
 	case 13:	// Enter key
@@ -116,7 +119,7 @@ void GizmoRotation::OnKeyboard( unsigned char key, int mod )
 	}
 	
 	if( mMode != Mode::Dragging )
-		Gizmo::OnKeyboard( key, mod );
+		Gizmo::OnKeyboard( key, mod, down );
 }
 
 void GizmoRotation::OnMouseMotion( const MouseMotion& mm )

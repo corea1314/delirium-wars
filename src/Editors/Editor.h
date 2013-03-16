@@ -45,8 +45,8 @@ public:
 	virtual void OnMouseWheel( int v, int mod );
 	virtual void OnMouseMotion( const MouseMotion& mm );
 	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
-	virtual void OnKeyboard( unsigned char key, int mod );
-	virtual void OnSpecialKey( int key, int mod );
+	virtual void OnKeyboard( unsigned char key, int mod, bool down );
+	virtual void OnSpecialKey( int key, int mod, bool down );
 	virtual void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
 	
 	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );

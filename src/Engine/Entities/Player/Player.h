@@ -1,17 +1,19 @@
 #pragma once
 
-/*
-#include "Engine/Physics/EntityPhysics.h"
+#include "Engine\Entity.h"
+#include "Engine\Components\VisualComponent.h"
 
-class CPlayer : public CEntityPhysics
+
+
+class CPlayer : public CEntity
 {
 public:
 	virtual void Connect( CEngine* );		// connects object to game engine
 	virtual void Disconnect( CEngine* );	// disconnects object from game engine
 
-public:
-	virtual void OnContactAdd() {}
-	virtual void OnContactPersist() {}
-	virtual void OnContactRemove() {}
+	virtual void OnUpdate( float in_fDeltaTime );
+
+private:
+
+	std::shared_ptr<VisualComponent>	mVisualComponent;
 };
-*/

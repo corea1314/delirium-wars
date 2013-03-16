@@ -48,8 +48,11 @@ void GizmoSelection::OnRenderGUI()
 	}
 }
 
-void GizmoSelection::OnKeyboard( unsigned char key, int mod )
+void GizmoSelection::OnKeyboard( unsigned char key, int mod, bool down )
 {	
+	if( !down ) 
+		return; // process key down only
+
 	switch( key )
 	{		
 	case 27: 	// Escape key
@@ -57,7 +60,7 @@ void GizmoSelection::OnKeyboard( unsigned char key, int mod )
 	}
 
 	if( mMode != Mode::Dragging )
-		Gizmo::OnKeyboard( key, mod );
+		Gizmo::OnKeyboard( key, mod, down );
 }
 
 void GizmoSelection::OnMouseMotion( const MouseMotion& mm )

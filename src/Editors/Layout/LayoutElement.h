@@ -16,8 +16,8 @@ public:
 public:
 	virtual void OnRender();
 	virtual void OnRenderGUI();
-	virtual void OnKeyboard( unsigned char key, int mod );
-	virtual void OnSpecialKey( int key, int mod );
+	virtual void OnKeyboard( unsigned char key, int mod, bool down );
+	virtual void OnSpecialKey( int key, int mod, bool down );
 
 	virtual void OnTranslate( const Vector2& inNewPos, const Vector2& inDelta );
 	virtual void OnScale( const Vector2& inNewScale, const Vector2& inDelta );

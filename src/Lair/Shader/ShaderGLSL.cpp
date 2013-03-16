@@ -191,17 +191,9 @@ bool ShaderGLSL::Create( const char* in_szFilename, unsigned int in_eInPrimType,
 		case GL_BOOL_VEC4:
 			break;
 			*/
-			/*
-		case GL_FLOAT_MAT2:
-			m_mapUniform.insert( std::make_pair(szFilename, new UniformMatrix( glGetUniformLocation( m_iProgram, szFilename ), size, &gl_UniformMatrix2fv ) ) );
-			break;
-		case GL_FLOAT_MAT3:
-			m_mapUniform.insert( std::make_pair(szFilename, new UniformMatrix( glGetUniformLocation( m_iProgram, szFilename ), size, &gl_UniformMatrix3fv ) ) );
-			break;
-			*/
-		case GL_FLOAT_MAT4:
-			m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size, 16, &gl_UniformMatrix4fv ) ) );
-			break;
+		case GL_FLOAT_MAT2:	m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size,  4, &gl_UniformMatrix2fv ) ) );	break;
+		case GL_FLOAT_MAT3:	m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size,  9, &gl_UniformMatrix3fv ) ) );	break;
+		case GL_FLOAT_MAT4:	m_mapUniform.insert( std::make_pair(szFilename, new Uniform( nLocation, size, 16, &gl_UniformMatrix4fv ) ) );	break;
 			
 		case GL_SAMPLER_2D:
 		case GL_SAMPLER_CUBE:
