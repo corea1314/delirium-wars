@@ -8,8 +8,11 @@ void Gizmo::OnUpdate( float inDeltaTime ) {}
 void Gizmo::OnMouseMotion( const MouseMotion& mm ) {}
 void Gizmo::OnMouseClick( int button, int state, const MouseMotion& mm ) {}
 
-void Gizmo::OnKeyboard( unsigned char key, int mod )
+void Gizmo::OnKeyboard( unsigned char key, int mod, bool down )
 {
+	if( !down ) 
+		return; // process key down only
+
 	switch( key )
 	{
 	case  8:	// Backspace key

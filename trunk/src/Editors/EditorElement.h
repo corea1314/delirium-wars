@@ -36,8 +36,8 @@ public:
 	virtual void OnRender() = 0;
 	virtual void OnRenderGUI() = 0;
 
-	virtual void OnKeyboard( unsigned char key, int mod );
-	virtual void OnSpecialKey( int key, int mod );
+	virtual void OnKeyboard( unsigned char key, int mod, bool down );
+	virtual void OnSpecialKey( int key, int mod, bool down );
 	virtual bool OnMouseMotion( const MouseMotion& mm );
 	virtual bool OnMouseClick( int button, int state, const MouseMotion& mm );
 

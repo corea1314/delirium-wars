@@ -19,7 +19,7 @@ protected:
 	virtual void OnRenderGUI();
 	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
 	virtual void OnMouseMotion( const MouseMotion& mm );
-	virtual void OnSpecialKey( int key, int mod );
+	virtual void OnSpecialKey( int key, int mod, bool down );
 	virtual void OnCreateMenu();
 
 	// Menu callbacks

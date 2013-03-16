@@ -199,8 +199,11 @@ void Editor::OnSelectTextEntry( const std::string& inText )
 ///////////////////////////////////////////////////////////////////////////////
 // OnKeyboard: Called by app when keys are pressed
 //
-void Editor::OnKeyboard( unsigned char key, int mod )
+void Editor::OnKeyboard( unsigned char key, int mod, bool down )
 {
+	if( !down ) 
+		return; // process key down only
+
 	if( mTextEntryRequest )
 	{		
 		switch(key)
@@ -214,7 +217,7 @@ void Editor::OnKeyboard( unsigned char key, int mod )
 					for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
 					{
 						if( (*it)->mSelected )
-							(*it)->OnKeyboard( key, mod );
+							(*it)->OnKeyboard( key, mod, down );
 					}
 				}
 				break;
@@ -223,7 +226,7 @@ void Editor::OnKeyboard( unsigned char key, int mod )
 	else
 	{
 		if( mActiveGizmo )
-			mActiveGizmo->OnKeyboard( key, mod );
+			mActiveGizmo->OnKeyboard( key, mod, down );
 
 		switch(key)
 		{
@@ -311,12 +314,15 @@ void Editor::OnMouseMotion( const MouseMotion& mm )
 ///////////////////////////////////////////////////////////////////////////////
 // OnSpecialKey: Called by app on keyboard entry
 //
-void Editor::OnSpecialKey( int key, int mod )
+void Editor::OnSpecialKey( int key, int mod, bool down )
 {
+	if( !down )
+		return; // process key down only
+
 	for( std::list<EditorElement*>::iterator it=mElements.begin(); it != mElements.end(); it++ )
 	{
 		if( (*it)->mSelected )
-			(*it)->OnSpecialKey( key, mod );
+			(*it)->OnSpecialKey( key, mod, down );
 	}
 }
 

@@ -200,6 +200,7 @@
     <ClCompile Include="..\..\src\Editors\WidgetRect.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Clock.cpp" />
     <ClCompile Include="..\..\src\Engine\Clock\Timer.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\AsmComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\CameraComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\EngineComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\GotoComponent.cpp" />
@@ -228,6 +229,7 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Lair\Analog\Analog.cpp" />
     <ClCompile Include="..\..\src\Lair\Animation\Curve.cpp" />
+    <ClCompile Include="..\..\src\Lair\ASM\ASM.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Atlas.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.cpp" />
     <ClCompile Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.cpp" />
@@ -320,6 +322,7 @@
     <ClInclude Include="..\..\src\Editors\WidgetRect.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Clock.h" />
     <ClInclude Include="..\..\src\Engine\Clock\Timer.h" />
+    <ClInclude Include="..\..\src\Engine\Components\AsmComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\CameraComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\EngineComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\GotoComponent.h" />
@@ -340,6 +343,7 @@
     <ClInclude Include="..\..\src\gfx.h" />
     <ClInclude Include="..\..\src\Lair\Analog\Analog.h" />
     <ClInclude Include="..\..\src\Lair\Animation\Curve.h" />
+    <ClInclude Include="..\..\src\Lair\ASM\ASM.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Atlas.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\GuillotineBinPack.h" />
     <ClInclude Include="..\..\src\Lair\Atlas\Packing\MaxRectsBinPack.h" />
@@ -381,6 +385,9 @@
     <None Include="..\..\bin\scripts\entrypoint.lua" />
     <None Include="..\..\bin\scripts\physics.lua" />
     <None Include="..\..\bin\scripts\tester.lua" />
+    <None Include="..\..\bin\shaders\blur.fs" />
+    <None Include="..\..\bin\shaders\diffusion.fs" />
+    <None Include="..\..\bin\shaders\diffusion.vs" />
     <None Include="..\..\bin\shaders\godrays.fs" />
     <None Include="..\..\bin\shaders\godrays.vs" />
     <None Include="..\..\bin\shaders\spriter.fs" />

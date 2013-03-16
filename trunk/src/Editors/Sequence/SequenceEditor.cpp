@@ -125,32 +125,35 @@ void SequenceEditor::OnMouseMotion( const MouseMotion& mm )
 	Editor::OnMouseMotion( mm );
 }
 
-void SequenceEditor::OnSpecialKey( int key, int mod )
+void SequenceEditor::OnSpecialKey( int key, int mod, bool down )
 {
-	Editor::OnSpecialKey(key, mod);
+	Editor::OnSpecialKey(key, mod, down);
 
-	switch( key )
+	if( down )
 	{
-	case SK_HOME:	SetCurrFrame(0);	break;
-	case SK_LEFT:	
-		mCurrFrame--; 
-		mCurrFrame = std::max( 0, mCurrFrame ); 
-		SetCurrFrame(mCurrFrame); 
-		break;
-	case SK_RIGHT:	
-		mCurrFrame++; 
-		mCurrFrame = std::min( (int)mSequence.GetFrameCount()-1, mCurrFrame); 
-		SetCurrFrame(mCurrFrame); 
-		break;
-	
-	case SK_PAGE_UP:	
-		mFPS++;	
-		break;
-	case SK_PAGE_DOWN:	
-		mFPS--;	
-		mFPS = std::max( 1, mFPS ); 
-		break;
-	}
+		switch( key )
+		{
+		case SK_HOME:	SetCurrFrame(0);	break;
+		case SK_LEFT:	
+			mCurrFrame--; 
+			mCurrFrame = std::max( 0, mCurrFrame ); 
+			SetCurrFrame(mCurrFrame); 
+			break;
+		case SK_RIGHT:	
+			mCurrFrame++; 
+			mCurrFrame = std::min( (int)mSequence.GetFrameCount()-1, mCurrFrame); 
+			SetCurrFrame(mCurrFrame); 
+			break;
+
+		case SK_PAGE_UP:	
+			mFPS++;	
+			break;
+		case SK_PAGE_DOWN:	
+			mFPS--;	
+			mFPS = std::max( 1, mFPS ); 
+			break;
+		}
+	}	
 }
 
 void SequenceEditor::OnCreateMenu()

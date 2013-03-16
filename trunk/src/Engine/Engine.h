@@ -34,7 +34,7 @@ class CEngineProxy
     NEW_SIGNAL3( OnGamepad2, unsigned int, unsigned int, float* );	// button state, axis count, axis values
     NEW_SIGNAL3( OnGamepad3, unsigned int, unsigned int, float* );	// button state, axis count, axis values
 
-	NEW_SIGNAL1( OnKeyboard, unsigned char );	// key
+	NEW_SIGNAL2( OnKeyboard, unsigned char, bool );	// key, down state
 
 	NEW_SIGNAL4( OnMouseClick, unsigned int, int, int, const Vector2& );	// button, state, screen space x, screen space y, world position
 	NEW_SIGNAL1( OnMouseWheel, unsigned int );	// wheel value
@@ -80,8 +80,9 @@ private:
 	
 	RenderTarget*	m_pRT;
 	Texture*		m_pRTT[4];
-
+		
 	ShaderGLSL*		m_pShaderGodRays;
+	ShaderGLSL*		m_pShaderDiffusion;
 
 	//
 	std::shared_ptr<ShaderGLSL::Uniform> m_pExposure;
@@ -93,7 +94,14 @@ private:
 
 	unsigned int	m_nCurrentDiffusion;
 
-	enum E { eRTT_Diffusion0, eRTT_Diffusion1, eRTT_FrontLayer, eRTT_BackLayer, eRTT_Max };
+	enum ERTT { eRTT_Diffusion0, eRTT_Diffusion1, eRTT_Diffusion2, eRTT_FrontLayer, eRTT_BackLayer, eRTT_Max };
+
+	ERTT	m_eDiffusionLast;	// Result of last composition
+	ERTT	m_eDiffusionCurr;	// Current composition
+	ERTT	m_eDiffusionDest;	// Destination composition
+
+	void	ProcessDiffusionTextures();
+
 	
 	//todo: refactor later
 	std::map<std::string, CEntity*>	m_mapEntity;

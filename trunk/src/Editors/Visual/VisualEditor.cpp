@@ -462,51 +462,57 @@ void VisualEditor::OnMouseMotion( const MouseMotion& mm )
 	}
 }
 
-void VisualEditor::OnSpecialKey( int key, int mod )
+void VisualEditor::OnSpecialKey( int key, int mod, bool down )
 {
-	Editor::OnSpecialKey(key, mod);
+	Editor::OnSpecialKey(key, mod, down);
 
-	switch( key )
+	if( down )
 	{
-	case SK_HOME:	SetCurrFrame(0);	break;
-	case SK_END:	
-		if( mod == SK_MOD_SHIFT )
-			mLastFrame = mCurrFrame;
-		else
-			SetCurrFrame(mLastFrame);	break;
-	case SK_LEFT:	mCurrFrame--;	mCurrFrame = std::max( 0, mCurrFrame ); SetCurrFrame(mCurrFrame); break;
-	case SK_RIGHT:	mCurrFrame++;	SetCurrFrame(mCurrFrame); break;
+		switch( key )
+		{
+		case SK_HOME:	SetCurrFrame(0);	break;
+		case SK_END:	
+			if( mod == SK_MOD_SHIFT )
+				mLastFrame = mCurrFrame;
+			else
+				SetCurrFrame(mLastFrame);	break;
+		case SK_LEFT:	mCurrFrame--;	mCurrFrame = std::max( 0, mCurrFrame ); SetCurrFrame(mCurrFrame); break;
+		case SK_RIGHT:	mCurrFrame++;	SetCurrFrame(mCurrFrame); break;
 
-	case SK_PAGE_UP:	
-		mFPS++;	
-		break;
-	case SK_PAGE_DOWN:	
-		mFPS--;	
-		mFPS = std::max( 1, mFPS ); 
-		break;
-	}
+		case SK_PAGE_UP:	
+			mFPS++;	
+			break;
+		case SK_PAGE_DOWN:	
+			mFPS--;	
+			mFPS = std::max( 1, mFPS ); 
+			break;
+		}
+	}	
 }
 
-void VisualEditor::OnKeyboard( unsigned char key, int mod )
+void VisualEditor::OnKeyboard( unsigned char key, int mod, bool down )
 {
-	Editor::OnKeyboard(key, mod);
+	Editor::OnKeyboard(key, mod, down);
 
-	switch( key )
+	if( down ) 
 	{
-	case 'k':	// Keyframe selected tracks
-		OnKeyframeSelected();		break;
-	case 'K':	// Keyframe all tracks
-		OnKeyframeAllSelected();	break;
-		break;
-	case 27:	// Escape key
-		ClearSelection();	
-		break;
-	case 'p':
-		mIsPlaying = !mIsPlaying;
-		break;
-	case 'c':
-		mShowCurve = !mShowCurve;
-		break;
+		switch( key )
+		{
+		case 'k':	// Keyframe selected tracks
+			OnKeyframeSelected();		break;
+		case 'K':	// Keyframe all tracks
+			OnKeyframeAllSelected();	break;
+			break;
+		case 27:	// Escape key
+			ClearSelection();	
+			break;
+		case 'p':
+			mIsPlaying = !mIsPlaying;
+			break;
+		case 'c':
+			mShowCurve = !mShowCurve;
+			break;
+		}
 	}
 }
 

@@ -94,6 +94,7 @@ App::App()
 }
 
 #include "objLoader/obj.h"
+#include "Lair/ASM/ASM.h"
 
 void App::Init()
 {
@@ -210,9 +211,9 @@ void App::OnMouseWheel( int v, int mod )
 		GetEngine()->OnMouseWheel( v );
 }
 
-void App::OnKeyboard( unsigned char key, int mod )
+void App::OnKeyboard( unsigned char key, int mod, bool down )
 {
-	if( key == 9 )	// TAB key
+	if( down && key == 9 )	// TAB key
 	{
 		mEditMode = !mEditMode;
 
@@ -227,15 +228,18 @@ void App::OnKeyboard( unsigned char key, int mod )
 	}
 
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnKeyboard( key, mod );
+		m_pActiveEditor->OnKeyboard( key, mod, down );
 	else
-		GetEngine()->OnKeyboard( key );
+		GetEngine()->OnKeyboard( key, down );
 }
 
-void App::OnSpecialKey( int key, int mod )
+void App::OnSpecialKey( int key, int mod, bool down )
 {
 	if( m_pActiveEditor )
-		m_pActiveEditor->OnSpecialKey( key, mod );
+		m_pActiveEditor->OnSpecialKey( key, mod, down );
+
+	if( !down ) 
+		return; // process key down only
 
 	switch( key )
 	{

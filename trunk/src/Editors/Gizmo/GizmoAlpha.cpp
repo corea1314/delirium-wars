@@ -74,8 +74,11 @@ void GizmoAlpha::OnRenderGUI()
 	}
 }
 
-void GizmoAlpha::OnKeyboard( unsigned char key, int mod )
+void GizmoAlpha::OnKeyboard( unsigned char key, int mod, bool down )
 {
+	if( !down ) 
+		return; // process key down only
+
 	switch( key )
 	{
 	case 13:	// Enter key
@@ -84,7 +87,7 @@ void GizmoAlpha::OnKeyboard( unsigned char key, int mod )
 	}
 
 	if( mMode != Mode::Dragging )
-		Gizmo::OnKeyboard( key, mod );
+		Gizmo::OnKeyboard( key, mod, down );
 }
 
 void GizmoAlpha::OnMouseMotion( const MouseMotion& mm )

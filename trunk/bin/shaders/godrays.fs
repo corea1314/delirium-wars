@@ -1,3 +1,4 @@
+
 uniform float exposure;
 uniform float decay;
 uniform float density;
@@ -13,7 +14,7 @@ void main()
 	deltaTextCoord *= 1.0 / float(NUM_SAMPLES) * density;
 	float illuminationDecay = 1.0;
 
-	gl_FragColor = 0.0f;
+	gl_FragColor = vec4(0,0,0,1);
 
 	for(int i=0; i < NUM_SAMPLES ; i++)
 	{

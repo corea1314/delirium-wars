@@ -118,7 +118,7 @@ void CameraComponent::OnUpdate( float in_fDeltaTime )
 			m_pCamera->GetZoom() = LERP( m_vOZoom, m_vDZoom, fRatio );
 
 			if( m_cbOnZooming.IsEnabled() )
-				GetEntity()->GetLuaContext().callLuaFunction<void>( m_cbOnZooming.GetName(), fRatio );
+				GetEntity()->GetLuaContext().callLuaFunction<float>( m_cbOnZooming.GetName(), fRatio );
 		}
 	}
 }

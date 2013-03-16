@@ -46,30 +46,48 @@ CEngine::CEngine() : m_nCurrentDiffusion(0)
 
 	m_pRTT[eRTT_Diffusion0] = m_pRT->SetTextureTarget( eRTT_Diffusion0, GL_TEXTURE_2D, GL_RGBA );	// diffusion 0
 	m_pRTT[eRTT_Diffusion1] = m_pRT->SetTextureTarget( eRTT_Diffusion1, GL_TEXTURE_2D, GL_RGBA );	// diffusion 1
+	m_pRTT[eRTT_Diffusion2] = m_pRT->SetTextureTarget( eRTT_Diffusion2, GL_TEXTURE_2D, GL_RGBA );	// diffusion 1
 	m_pRTT[eRTT_BackLayer]	= m_pRT->SetTextureTarget( eRTT_BackLayer, GL_TEXTURE_2D, GL_RGBA );	// back layer
 	m_pRTT[eRTT_FrontLayer] = m_pRT->SetTextureTarget( eRTT_FrontLayer, GL_TEXTURE_2D, GL_RGBA );	// front layer
 
+	m_pRTT[eRTT_Diffusion0]->SetWrap( Texture::WrapCoord::U, Texture::WrapMode::Clamp );
+	m_pRTT[eRTT_Diffusion0]->SetWrap( Texture::WrapCoord::V, Texture::WrapMode::Clamp );
+	m_pRTT[eRTT_Diffusion1]->SetWrap( Texture::WrapCoord::U, Texture::WrapMode::Clamp );
+	m_pRTT[eRTT_Diffusion1]->SetWrap( Texture::WrapCoord::V, Texture::WrapMode::Clamp );
+	m_pRTT[eRTT_Diffusion2]->SetWrap( Texture::WrapCoord::U, Texture::WrapMode::Clamp );
+	m_pRTT[eRTT_Diffusion2]->SetWrap( Texture::WrapCoord::V, Texture::WrapMode::Clamp );
+
 	m_pRT->Bind();
-	glClearColor(0,0,0,1);
+	glClearColor(0,0,0,0);
 		m_pRT->SetActiveTextureTarget( eRTT_Diffusion0 );
 		glClear( GL_COLOR_BUFFER_BIT );
 		m_pRT->SetActiveTextureTarget( eRTT_Diffusion1 );
+		glClear( GL_COLOR_BUFFER_BIT );
+		m_pRT->SetActiveTextureTarget( eRTT_Diffusion2 );
 		glClear( GL_COLOR_BUFFER_BIT );
 	m_pRT->Unbind();
 
 	m_pShaderGodRays = new ShaderGLSL;
 	m_pShaderGodRays->Create( "shaders/godrays" );
 
+	m_pShaderDiffusion = new ShaderGLSL;
+	m_pShaderDiffusion->Create( "shaders/diffusion" );
+
 	m_pExposure = m_pShaderGodRays->GetUniform("exposure");
 	m_pDecay = m_pShaderGodRays->GetUniform("decay");
 	m_pDensity = m_pShaderGodRays->GetUniform("density");
 	m_pWeight = m_pShaderGodRays->GetUniform("weight");
 	m_pLightPositionOnScreen = m_pShaderGodRays->GetUniform("lightPositionOnScreen");
+
+	m_eDiffusionLast = eRTT_Diffusion0;
+	m_eDiffusionCurr = eRTT_Diffusion1;
+	m_eDiffusionDest = eRTT_Diffusion2;
 }
 
 CEngine::~CEngine()
 {
 	SAFE_DELETE( m_pShaderGodRays );
+	SAFE_DELETE( m_pShaderDiffusion );
 
 	m_pRT->Destroy();
 	SAFE_DELETE( m_pRT );	
@@ -170,7 +188,7 @@ void CEngine::Render()
 	glEnable( GL_TEXTURE_2D );
 
 	glClearColor( 1.0f, 1.0f, 1.0f, 0.0f );
-
+	
 	// Here we build all the frame layers
 	m_pRT->Bind();
 		
@@ -227,7 +245,9 @@ void CEngine::Render()
 		
 		//
 		*/
-				
+
+		ProcessDiffusionTextures();
+								
 	m_pRT->Unbind();
 		
 	glMatrixMode(GL_PROJECTION);
@@ -235,6 +255,56 @@ void CEngine::Render()
 
 	glMatrixMode( GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void CEngine::ProcessDiffusionTextures()
+{
+	// Rotate diffusion RT textures
+	ERTT eTemp = m_eDiffusionCurr;
+	m_eDiffusionCurr = m_eDiffusionLast;
+	m_eDiffusionLast = m_eDiffusionDest;	
+	m_eDiffusionDest = eTemp;
+
+	// Render current diffusion
+	m_pRT->SetActiveTextureTarget( m_eDiffusionCurr );
+	glClear( GL_COLOR_BUFFER_BIT );
+	Lair::GetSpriteMan()->Render();
+
+	// Now composite last and current diffusion
+	m_pRT->SetActiveTextureTarget( m_eDiffusionDest );
+	glClear( GL_COLOR_BUFFER_BIT );
+
+	m_pShaderDiffusion->Bind();
+
+//	m_pShaderDiffusion->GetUniform("fadeout")->Set(0.99f);
+	float displacement[2] = { -4.0f/1024.0f, -4.0f/1024.0f };
+//	m_pShaderDiffusion->GetUniform("displacement")->Set( 2, displacement );
+
+	m_pRTT[m_eDiffusionLast]->Bind(0);
+	m_pRTT[m_eDiffusionCurr]->Bind(1);
+	
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glOrtho(0,1,0,1,-1,1);
+
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	
+#define p	0.0f //1.0f / 1024.0f
+#define f	1.0f
+	glColor4f(f,f,f,1);	
+		
+	glBegin( GL_QUADS );
+	glTexCoord2f(0,0+p);	glVertex2f(0,0+p);	//add effect here
+	glTexCoord2f(1,0+p);	glVertex2f(1,0+p);
+	glTexCoord2f(1,1+p);	glVertex2f(1,1+p);
+	glTexCoord2f(0,1+p);	glVertex2f(0,1+p);
+	glEnd();
+
+	m_pRTT[m_eDiffusionLast]->Unbind();
+	m_pRTT[m_eDiffusionCurr]->Unbind();
+
+	m_pShaderDiffusion->Unbind();
 }
 
 void CEngine::RenderGUI()
@@ -258,19 +328,21 @@ void CEngine::RenderGUI()
 	m_pDecay->Set( 1.0f );
 	m_pDensity->Set( 0.44f );
 	m_pWeight->Set( 5.65f );
-
 	float fPos[2] = { 0.5f, 0.5f };
 	m_pLightPositionOnScreen->Set( 2, fPos );
-	
+		
 	m_pRTT[eRTT_BackLayer]->Bind();
-	RENDER_QUAD();
+//	RENDER_QUAD();
 	
 //	m_pRTT[m_nCurrentDiffusion]->Bind();
 //	RENDER_QUAD();
-
+	
 	m_pShaderGodRays->Unbind();
 
-	m_pRTT[eRTT_FrontLayer]->Bind();
+
+	// diffusion effect, combine previous and current into result
+	
+	m_pRTT[m_eDiffusionDest]->Bind();// m_pRTT[eRTT_FrontLayer]->Bind();
 	RENDER_QUAD();
 	
 	// Then we render GUI on top

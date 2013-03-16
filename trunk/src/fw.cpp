@@ -53,12 +53,17 @@ void glut_OnMouse(int b,int s,int x,int y)
 
 void glut_OnKeyboard(unsigned char key, int posX, int posY )
 {	
-	g_App.OnKeyboard( key, glutGetModifiers() );
+	g_App.OnKeyboard( key, glutGetModifiers(), true );
+}
+
+void glut_OnKeyboardUp(unsigned char key, int posX, int posY )
+{	
+	g_App.OnKeyboard( key, glutGetModifiers(), false );
 }
 
 void glut_OnSpecialKey( int key, int posX, int posY )
 {		
-	g_App.OnSpecialKey( key, glutGetModifiers() );
+	g_App.OnSpecialKey( key, glutGetModifiers(), true );
 
 	/*
 	switch(key)
@@ -88,6 +93,11 @@ void glut_OnSpecialKey( int key, int posX, int posY )
 		case GLUT_KEY_INSERT:		break;
 	}
 	*/
+}
+
+void glut_OnSpecialKeyUp( int key, int posX, int posY )
+{		
+	g_App.OnSpecialKey( key, glutGetModifiers(), false );
 }
 
 void glut_OnJoystickEx( unsigned int gamepad, unsigned int buttons, int axe_count, float* axe_values )
@@ -160,7 +170,9 @@ int main( int argc, char** argv )
 	 glutMouseFunc(glut_OnMouse);
 	 glutMotionFunc(glut_OnMotion);
 	 glutKeyboardFunc(glut_OnKeyboard);
+	 glutKeyboardUpFunc(glut_OnKeyboardUp);
 	 glutSpecialFunc(glut_OnSpecialKey);
+	 glutSpecialUpFunc(glut_OnSpecialKeyUp);
 	 glutJoystickExFunc( glut_OnJoystickEx, 0 );
 	 glutIdleFunc( glut_OnIdle );
 

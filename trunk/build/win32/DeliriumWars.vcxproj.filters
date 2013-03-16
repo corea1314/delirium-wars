@@ -163,6 +163,9 @@
     <Filter Include="editors\sequence">
       <UniqueIdentifier>{0985933f-abaf-44ef-bb86-3d3816c90538}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\Lair\ASM">
+      <UniqueIdentifier>{a6592c07-cb91-478b-9011-e767012764bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\app.cpp">
@@ -487,6 +490,12 @@
       <Filter>editors\gizmos</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Engine\Components\PhysicsComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\ASM\ASM.cpp">
+      <Filter>source\Lair\ASM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\AsmComponent.cpp">
       <Filter>source\Engine\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -842,6 +851,12 @@
     <ClInclude Include="..\..\src\Engine\PostProcess\PostProcess.h">
       <Filter>source\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Lair\ASM\ASM.h">
+      <Filter>source\Lair\ASM</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\AsmComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todo.txt" />
@@ -885,6 +900,15 @@
       <Filter>bin\shaders</Filter>
     </None>
     <None Include="..\..\bin\shaders\godrays.vs">
+      <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\blur.fs">
+      <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\diffusion.fs">
+      <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\diffusion.vs">
       <Filter>bin\shaders</Filter>
     </None>
   </ItemGroup>

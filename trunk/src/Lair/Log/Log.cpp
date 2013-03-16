@@ -7,7 +7,7 @@
 
 LogMan::LogMan() : m_pLogFile(0)
 {
-	fopen_s( &m_pLogFile, LOG_FILENAME, "w" );
+	fopen_s( &m_pLogFile, LOG_FILENAME, "w+" );
 }
 
 LogMan::~LogMan()

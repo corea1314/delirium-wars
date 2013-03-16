@@ -1,4 +1,4 @@
-/*
+
 #include "Player.h"
 
 #include "Engine/Engine.h"
@@ -6,15 +6,22 @@
 
 void CPlayer::Connect( CEngine* in_pEngine )
 {
-	CEntityPhysics::Connect( in_pEngine );
+	mVisualComponent = CreateComponent<VisualComponent>();
 
-	CreateBody( "Player.body.xml", 0, 0, true );
+	CEntity::Connect( in_pEngine );
+
+	in_pEngine->Connect_OnUpdate( this, &CPlayer::OnUpdate );
 }
 
 void CPlayer::Disconnect( CEngine* in_pEngine )
 {
-	DestroyBody();
+	in_pEngine->Disconnect_OnUpdate( this );
 
-	CEntityPhysics::Disconnect( in_pEngine );
+	CEntity::Disconnect( in_pEngine );
 }
-*/
+
+
+void CPlayer::OnUpdate( float in_fDeltaTime ) 
+{
+
+}

@@ -20,8 +20,8 @@ public:
 	void OnMouseClick( int button, int state, int x, int y, int mod );	// down is 1, up is 0
 	void OnMouseMotion( int x, int y, int mod );
 
-	void OnKeyboard( unsigned char key, int mod );
-	void OnSpecialKey( int key, int mod );
+	void OnKeyboard( unsigned char key, int mod, bool down );
+	void OnSpecialKey( int key, int mod, bool down );
 
 	void OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values );
 

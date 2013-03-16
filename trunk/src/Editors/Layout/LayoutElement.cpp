@@ -35,9 +35,9 @@ void LayoutElement::OnRenderGUI()
 	gl_RenderText( x + 8, y - 16, "\"%s\" @ %0.2f, %0.2f", mName.c_str(), mPos.x, mPos.y );
 }
 
-void LayoutElement::OnKeyboard( unsigned char key, int mod )
+void LayoutElement::OnKeyboard( unsigned char key, int mod, bool down )
 {
-	if( mSelected == false )
+	if( !down && mSelected == false )
 		return;
 	
 	switch( key )
@@ -53,13 +53,13 @@ void LayoutElement::OnKeyboard( unsigned char key, int mod )
 			if( IsAcceptableCharForText(key) )
 				mName += key;
 			else
-				EditorElement::OnKeyboard( key, mod );
+				EditorElement::OnKeyboard( key, mod, down );
 		}
 		break;
 	}
 }
 
-void LayoutElement::OnSpecialKey( int key, int mod )
+void LayoutElement::OnSpecialKey( int key, int mod, bool down )
 {
 }
 

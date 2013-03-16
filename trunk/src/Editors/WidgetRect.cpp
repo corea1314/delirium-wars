@@ -70,14 +70,17 @@ void WidgetRect::OnRenderGUI()
 	}
 }
 
-void WidgetRect::OnKeyboard( unsigned char key, int mod )
+void WidgetRect::OnKeyboard( unsigned char key, int mod, bool down )
 {
-	switch( key )
-	{		
-	case 13:	// Enter key
-	case 27: 	// Escape key
-		mMode = Mode::NotDragging;	break;	// Clear widget
-	}
+	if( down ) 
+	{
+		switch( key )
+		{		
+		case 13:	// Enter key
+		case 27: 	// Escape key
+			mMode = Mode::NotDragging;	break;	// Clear widget
+		}
+	}	
 }
 
 void WidgetRect::OnMouseMotion( const MouseMotion& mm )

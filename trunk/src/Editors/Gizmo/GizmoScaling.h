@@ -26,7 +26,7 @@ public:
 	virtual void OnRender();
 	virtual void OnRenderGUI();
 
-	virtual void OnKeyboard( unsigned char key, int mod );
+	virtual void OnKeyboard( unsigned char key, int mod, bool down );
 	virtual void OnMouseMotion( const MouseMotion& mm );
 	virtual void OnMouseClick( int button, int state, const MouseMotion& mm );
 

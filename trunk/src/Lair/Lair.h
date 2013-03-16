@@ -19,6 +19,8 @@ private:																	\
 #include "Camera/Camera.h"
 #include "Input/Input.h"
 
+#include "ASM/ASM.h"
+
 class Lair
 {	
 public:

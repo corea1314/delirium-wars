@@ -18,7 +18,7 @@ public:
 
 	// engine callbacks
 	// void OnUpdate( float in_fDeltaTime );
-	void OnKeyboard( unsigned char in_cKey );
+	void OnKeyboard( unsigned char in_cKey, bool in_bKeyDown );
 	void OnMouseClick( unsigned int in_nButton, int in_nScreenSpacePositionX,  int in_nScreenSpacePositionY, const Vector2& in_vWorldPos );
 	void OnMouseWheel( unsigned int in_nValue );
 

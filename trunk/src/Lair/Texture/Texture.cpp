@@ -20,9 +20,27 @@ void Texture::Bind() const
 	glBindTexture( GL_TEXTURE_2D, m_nId );
 }
 
+void Texture::Bind( unsigned int in_nTextureUnit )
+{
+	m_nTextureUnit = in_nTextureUnit;
+
+	glActiveTexture( GL_TEXTURE0 + m_nTextureUnit );
+	if( m_nTextureUnit != 0 )
+		glEnable( GL_TEXTURE_2D );
+	glBindTexture( GL_TEXTURE_2D, m_nId );
+	glActiveTexture( GL_TEXTURE0 );
+}
+
 void Texture::Unbind() const
 {
+	if( m_nTextureUnit )
+	{
+		glActiveTexture( GL_TEXTURE0 + m_nTextureUnit );
+		glDisable( GL_TEXTURE_2D );
+	}
+
 	glBindTexture( GL_TEXTURE_2D, 0 );
+	glActiveTexture( GL_TEXTURE0 );
 }
 
 void Texture::SetWrap( WrapCoord::Enum ec, WrapMode::Enum em )
@@ -116,8 +134,12 @@ bool Texture::LoadFromParam( unsigned int in_nWidth, unsigned int in_nHeight, un
 
 	switch( in_nBytePerPixel )
 	{
+		/*
 	case 3:	glTexImage2D( GL_TEXTURE_2D, 0, 3, in_nWidth, in_nHeight, 0, GL_RGB,  GL_UNSIGNED_BYTE, 0 ); break;
 	case 4:	glTexImage2D( GL_TEXTURE_2D, 0, 4, in_nWidth, in_nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0 ); break;
+	*/
+	case 3:	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB32F, in_nWidth, in_nHeight, 0, GL_RGB,  GL_FLOAT, 0 ); break;
+	case 4:	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA32F, in_nWidth, in_nHeight, 0, GL_RGBA, GL_FLOAT, 0 ); break;
 	default:
 		return false;	//not supported
 	}

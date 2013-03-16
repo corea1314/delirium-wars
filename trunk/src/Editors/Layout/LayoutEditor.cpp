@@ -112,15 +112,15 @@ void LayoutEditor::OnMouseMotion( const MouseMotion& mm )
 	}
 }
 
-void LayoutEditor::OnKeyboard( unsigned char key, int mod )
+void LayoutEditor::OnKeyboard( unsigned char key, int mod, bool down )
 {
-	Editor::OnKeyboard(key, mod);
+	Editor::OnKeyboard(key, mod, down);
 
 	switch( mMode )
 	{
 	case Mode::Rect:
 		{
-			mWidgetRect->OnKeyboard( key, mod );
+			mWidgetRect->OnKeyboard( key, mod, down );
 		}
 		break;
 	}	

@@ -2,19 +2,20 @@
 -- variables: entity logic variables
 -------------------------------------------------------------------------------
 
--- gotoComponent = this:createGotoComponent()
--- turnComponent = this:createTurnComponent()
+ gotoComponent = this:createGotoComponent()
+ turnComponent = this:createTurnComponent()
  inputComponent = this:createInputComponent()
--- visualComponent = this:createVisualComponent()
- engineComponent = this:createEngineComponent()
+ visualComponent = this:createVisualComponent()
+ asmComponent = this:createAsmComponent()
+-- engineComponent = this:createEngineComponent()
+
+ destCounter = 0
 
 -------------------------------------------------------------------------------
 -- onConnect: called when the entity is connected to the engine
 -------------------------------------------------------------------------------
 function OnConnect()
-	engineComponent:create_entity( "camera", "scripts/camera.lua", 0,0,0 )
---	engineComponent:create_entity( "tester", "scripts/tester.lua", 0,0,0 )
-	engineComponent:create_entity( "pilot", "scripts/pilot.lua", 0,0,0 )
+    asmComponent:load("pilot.asm")
 end
 
 -------------------------------------------------------------------------------
@@ -48,19 +49,25 @@ end
 -------------------------------------------------------------------------------
 -- InputComponent callbacks
 -------------------------------------------------------------------------------
-function OnInputComponent_Keyboard( key ) 
+function OnInputComponent_Keyboard( key, down )
 
+--	if key == 113 then --113 is letter Q
+--		asmComponent:set_bool("Jump",true);
+--	end
+	
+	if key == 113 then --113 is letter Q
+		asmComponent:set_bool("Throw", down);
+	end
 end
 
-function OnInputComponent_MouseClick( button, screenx, screeny, worldx, worldy )
+--function OnInputComponent_MouseClick( button, screen_x, screen_y, world_x, world_y )
+--	if button == 0 then
+--		gotoComponent:goto( world_x, world_y, 1 )
+--	end
+--end
 
-	if button == 1 then
-        engineComponent:create_entity( "tester2", "scripts/physics.lua", worldx, worldy, 0 )
-    end
-end
+function OnInputComponent_MouseWheel( value )
 
-function OnInputComponent_MouseWheel( value ) 
-	engineComponent:create_entity( "tester3", "scripts/tester.lua", value * 100, 0, 0 )
 end
 
 
@@ -68,6 +75,4 @@ end
 -- EngineComponent callbacks
 -------------------------------------------------------------------------------
 -- function OnEngineComponent_Update( deltatime ) end
-
-
 
