@@ -12,7 +12,17 @@ void AsmComponent::Load(  const char* inFileName )
 	mpMachine->Load( inFileName );
 }
 
-void AsmComponent::SetBool(  const char* inParameterName, bool inValue )
+void AsmComponent::SetParameterInt(  const char* inParameterName, int inValue )
+{
+	mpMachine->SetParameter( inParameterName, inValue );
+}
+
+void AsmComponent::SetParameterFloat(  const char* inParameterName, float inValue )
+{
+	mpMachine->SetParameter( inParameterName, inValue );
+}
+
+void AsmComponent::SetParameterBool(  const char* inParameterName, bool inValue )
 {
 	mpMachine->SetParameter( inParameterName, inValue );
 }
@@ -40,7 +50,9 @@ void AsmComponent::Connect( CEngine* in_pEngine, CEntity* in_pEntity )
 	mpMachine = new ASM::CMachine;
 
 	GetEntity()->GetLuaContext().registerFunction("load", &AsmComponent::Load);
-	GetEntity()->GetLuaContext().registerFunction("set_bool", &AsmComponent::SetBool);
+	GetEntity()->GetLuaContext().registerFunction("set_int", &AsmComponent::SetParameterInt);
+	GetEntity()->GetLuaContext().registerFunction("set_float", &AsmComponent::SetParameterFloat);
+	GetEntity()->GetLuaContext().registerFunction("set_bool", &AsmComponent::SetParameterBool);
 }
 
 void AsmComponent::Disconnect( CEngine* in_pEngine, CEntity* in_pEntity )

@@ -57,6 +57,7 @@
 				</State>
 				<State>
 					<Name>Walking</Name>
+          <Loop>true</Loop>
 					<SequenceName>pilot/walking.spr</SequenceName>
 					<Transitions>
 						<Transition>
@@ -65,7 +66,7 @@
 								<ConditionParameter>
 									<Parameter>Speed</Parameter>
 									<Operator>Less</Operator>
-									<Value>0.0</Value>				
+									<Value>0.1</Value>				
 								</ConditionParameter>
 							</Conditions>
 						</Transition>

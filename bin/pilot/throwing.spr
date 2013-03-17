@@ -1,6 +1,6 @@
 [Frames]
 # sprite_id,	filename,			delay,	x,   y,		angle,		sx, sy
-frame0 =		atlas\throw.0.png		33		0   0			0		1.0 1.0 
-frame1 =		atlas\throw.1.png		33		0   0			0		1.0 1.0 
-frame2 =		atlas\throw.2.png		33		0   0			0		1.0 1.0 
-frame3 =		atlas\throw.3.png		33		0   0			0		1.0 1.0 
+frame0 =		atlas\throw.0.png		66		0   0			0		1.0 1.0 
+frame1 =		atlas\throw.1.png		66		0   0			0		1.0 1.0 
+frame2 =		atlas\throw.2.png		66		0   0			0		1.0 1.0 
+frame3 =		atlas\throw.3.png		66		0   0			0		1.0 1.0 

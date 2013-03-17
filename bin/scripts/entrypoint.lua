@@ -60,7 +60,7 @@ function OnInputComponent_MouseClick( button, screenx, screeny, worldx, worldy )
 end
 
 function OnInputComponent_MouseWheel( value ) 
-	engineComponent:create_entity( "tester3", "scripts/tester.lua", value * 100, 0, 0 )
+--	engineComponent:create_entity( "tester3", "scripts/tester.lua", value * 100, 0, 0 )
 end
 
 

@@ -273,7 +273,12 @@ void App::OnSpecialKey( int key, int mod, bool down )
 }
 
 void App::OnGamepad( unsigned int gamepad, unsigned int buttons, int axis_count, float* axis_values )
-{
+{	
+	Lair::GetInputMan()->UpdateGamepad( gamepad, buttons, axis_count, axis_values );
+
+	if( buttons == 0 ) // FIXME, for now only gamepad buttons go thru
+		return;
+
 	if( m_pActiveEditor )
 		m_pActiveEditor->OnGamepad( gamepad, buttons, axis_count, axis_values );
 	else

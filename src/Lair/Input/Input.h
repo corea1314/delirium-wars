@@ -1,38 +1,78 @@
 #pragma once
 
 
-typedef struct
+class Xbox360Gamepad
 {
+public:
 	struct Button { enum Enum { A, B, X, Y, LeftBumper, RightBumper, Back, Start, LeftThumbClick, RightThumbClick }; };
+	unsigned int mButtonsState;
+	unsigned int mButtonsChanged;	// holds the change status (lit bit equals just changed)
 
-	unsigned int mButtons;
+	struct Pad { enum Enum { Left, Right, Up, Down }; };
+	unsigned char mPadState;
+	unsigned char mPadChanged;	// holds the change status (lit bit equals just changed)
 
 	Vector2		mLeftThumbstick;
 	Vector2		mRightThumbstick;
 	Vector2		mTriggers;
 	Vector2		mPad;
 
-	inline bool IsButtonPressed( Button::Enum inButton ) { return (MAKE_BIT(inButton) & mButtons) != 0; }
+	inline bool IsButtonDown( Button::Enum inButton ) const
+	{ 
+		return (MAKE_BIT(inButton) & mButtonsState) != 0; 
+	}
+	inline bool IsButtonJustDown( Button::Enum inButton ) const
+	{ 
+		return (MAKE_BIT(inButton) & mButtonsState & mButtonsChanged) != 0; 
+	}
+	inline bool IsButtonJustUp( Button::Enum inButton ) const 
+	{ 
+		return (MAKE_BIT(inButton) & mButtonsState) == 0 &&	(MAKE_BIT(inButton) & mButtonsChanged) != 0; 
+	}
 
-} Xbox360Gamepad;
+	inline bool IsPadDown( Pad::Enum inPad ) const 
+	{ 
+		return (MAKE_BIT(inPad) & mPadState) != 0; 
+	}
+	inline bool IsPadJustDown( Pad::Enum inPad ) const 
+	{ 
+		return (MAKE_BIT(inPad) & mPadState & mPadChanged) != 0; 
+	}
+	inline bool IsPadJustUp( Pad::Enum inPad ) const 
+	{ 
+		return (MAKE_BIT(inPad) & mPadState) == 0 && (MAKE_BIT(inPad) & mPadChanged) != 0; 
+	}
+
+	Xbox360Gamepad()
+	{
+		mButtonsState = 0;
+		mButtonsChanged = 0;
+		mPadState = 0;
+		mPadChanged = 0;
+	}
+};
 
 
 class InputMan
 {
 private:
-	typedef struct
+	class MouseButtonState
 	{
+	public:
+		MouseButtonState()
+		{
+			bState = false;
+			fTimeStamp = 0.0f;
+		}
+
+	public:
 		bool	bState;
-		float	fTimeStamp;	// time when it changed status
-	
-	} MouseButtonState;
+		float	fTimeStamp;	// time when it changed status	
+	};
 
 public:
 	InputMan()
 	{
-		mMouseButtonState[0].bState = false;
-		mMouseButtonState[1].bState = false;
-		mMouseButtonState[2].bState = false;
 	}
 
 	void UpdateMouseButtonState( int inButtonIndex, bool inState )
@@ -45,14 +85,33 @@ public:
 
 	void UpdateGamepad( int inGamepadIndex, int inButtons, int inAxisCount, float* inAxisValues )
 	{
-		mGamepad[inGamepadIndex].mButtons = inButtons;
-		mGamepad[inGamepadIndex].mLeftThumbstick.x = inAxisValues[0];	// -1000 L, 1000 R
-		mGamepad[inGamepadIndex].mLeftThumbstick.y = inAxisValues[1];	// -1000 U, 1000 D
-		mGamepad[inGamepadIndex].mRightThumbstick.x = inAxisValues[3];	// -1000 U, 1000 D
-		mGamepad[inGamepadIndex].mRightThumbstick.y = inAxisValues[4];	// -1000 L, 1000 R
-		mGamepad[inGamepadIndex].mTriggers.x = inAxisValues[2];			// -1000 R, 1000 L
-		mGamepad[inGamepadIndex].mPad.x = inAxisValues[6];				// -1000 L, 1000 R
-		mGamepad[inGamepadIndex].mPad.y = inAxisValues[7];				// -1000 D, 1000 U
+		if( inGamepadIndex > 3 || inAxisCount < 7 )
+			return;
+
+		mGamepad[inGamepadIndex].mButtonsChanged = (mGamepad[inGamepadIndex].mButtonsState ^ inButtons);
+
+		mGamepad[inGamepadIndex].mButtonsState = inButtons;
+		mGamepad[inGamepadIndex].mLeftThumbstick.x	= inAxisValues[0] / 1000.0f;	// -1000 L, 1000 R
+		mGamepad[inGamepadIndex].mLeftThumbstick.y	= inAxisValues[1] / 1000.0f;	// -1000 U, 1000 D
+		mGamepad[inGamepadIndex].mRightThumbstick.x = inAxisValues[3] / 1000.0f;	// -1000 U, 1000 D
+		mGamepad[inGamepadIndex].mRightThumbstick.y = inAxisValues[4] / 1000.0f;	// -1000 L, 1000 R
+		mGamepad[inGamepadIndex].mTriggers.x		= inAxisValues[2] / 1000.0f;	// -1000 R, 1000 L
+		mGamepad[inGamepadIndex].mPad.x				= inAxisValues[6] / 1000.0f;	// -1000 L, 1000 R
+		mGamepad[inGamepadIndex].mPad.y				= inAxisValues[7] / 1000.0f;	// -1000 D, 1000 U
+
+#define THRESHOLD 0.01f
+		unsigned char pad = 0;
+		if( mGamepad[inGamepadIndex].mPad.x >  THRESHOLD )
+			pad |= MAKE_BIT(Xbox360Gamepad::Pad::Right);
+		if( mGamepad[inGamepadIndex].mPad.x < -THRESHOLD )
+			pad |= MAKE_BIT(Xbox360Gamepad::Pad::Left);
+		if( mGamepad[inGamepadIndex].mPad.y >  THRESHOLD )
+			pad |= MAKE_BIT(Xbox360Gamepad::Pad::Up);
+		if( mGamepad[inGamepadIndex].mPad.y < -THRESHOLD )
+			pad |= MAKE_BIT( Xbox360Gamepad::Pad::Down);
+
+		mGamepad[inGamepadIndex].mPadChanged = (mGamepad[inGamepadIndex].mPadState ^ pad);
+		mGamepad[inGamepadIndex].mPadState = pad;
 	}
 
 	class MouseButton { public: enum E { Left, Middle, Right } ; };

@@ -127,9 +127,6 @@
     <Filter Include="source\Engine\Components">
       <UniqueIdentifier>{21c96857-08b3-44ab-8e19-c8eedcd8d2ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="bin\scipts">
-      <UniqueIdentifier>{3a55b118-e9d7-4457-9c37-36747b46f5a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="source\Lair\Animation">
       <UniqueIdentifier>{d2f70369-4190-4cac-b440-cabb1682cecd}</UniqueIdentifier>
     </Filter>
@@ -165,6 +162,12 @@
     </Filter>
     <Filter Include="source\Lair\ASM">
       <UniqueIdentifier>{a6592c07-cb91-478b-9011-e767012764bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bin\pilot">
+      <UniqueIdentifier>{aa185548-a997-4d8b-be64-41e7b8052675}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="bin\scripts">
+      <UniqueIdentifier>{3a55b118-e9d7-4457-9c37-36747b46f5a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +499,12 @@
       <Filter>source\Lair\ASM</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\Engine\Components\AsmComponent.cpp">
+      <Filter>source\Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Lair\Input\Input.cpp">
+      <Filter>source\Lair\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Engine\Components\GamepadComponent.cpp">
       <Filter>source\Engine\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -857,6 +866,9 @@
     <ClInclude Include="..\..\src\Engine\Components\AsmComponent.h">
       <Filter>source\Engine\Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Engine\Components\GamepadComponent.h">
+      <Filter>source\Engine\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todo.txt" />
@@ -882,19 +894,19 @@
       <Filter>bin</Filter>
     </None>
     <None Include="..\..\bin\scripts\entity.lua">
-      <Filter>bin\scipts</Filter>
+      <Filter>bin\scripts</Filter>
     </None>
     <None Include="..\..\bin\scripts\camera.lua">
-      <Filter>bin\scipts</Filter>
+      <Filter>bin\scripts</Filter>
     </None>
     <None Include="..\..\bin\scripts\entrypoint.lua">
-      <Filter>bin\scipts</Filter>
+      <Filter>bin\scripts</Filter>
     </None>
     <None Include="..\..\bin\scripts\tester.lua">
-      <Filter>bin\scipts</Filter>
+      <Filter>bin\scripts</Filter>
     </None>
     <None Include="..\..\bin\scripts\physics.lua">
-      <Filter>bin\scipts</Filter>
+      <Filter>bin\scripts</Filter>
     </None>
     <None Include="..\..\bin\shaders\godrays.fs">
       <Filter>bin\shaders</Filter>
@@ -910,6 +922,21 @@
     </None>
     <None Include="..\..\bin\shaders\diffusion.vs">
       <Filter>bin\shaders</Filter>
+    </None>
+    <None Include="..\..\bin\pilot\idle.spr">
+      <Filter>bin\pilot</Filter>
+    </None>
+    <None Include="..\..\bin\pilot\throwing.spr">
+      <Filter>bin\pilot</Filter>
+    </None>
+    <None Include="..\..\bin\pilot\walking.spr">
+      <Filter>bin\pilot</Filter>
+    </None>
+    <None Include="..\..\bin\pilot.asm">
+      <Filter>bin\pilot</Filter>
+    </None>
+    <None Include="..\..\bin\scripts\pilot.lua">
+      <Filter>bin\pilot</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
