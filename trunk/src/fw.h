@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <sstream>
+#include <iomanip>
 
 #include "Math/Vector2.h"
 #include "Math/Vector3.h"

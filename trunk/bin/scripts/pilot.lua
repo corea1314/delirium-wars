@@ -2,14 +2,14 @@
 -- variables: entity logic variables
 -------------------------------------------------------------------------------
 
- gotoComponent = this:createGotoComponent()
- turnComponent = this:createTurnComponent()
- inputComponent = this:createInputComponent()
- visualComponent = this:createVisualComponent()
+-- gotoComponent = this:createGotoComponent()
+-- turnComponent = this:createTurnComponent()
+-- inputComponent = this:createInputComponent()
+-- visualComponent = this:createVisualComponent()
  asmComponent = this:createAsmComponent()
--- engineComponent = this:createEngineComponent()
+ engineComponent = this:createEngineComponent()
+ gamepadComponent = this:createGamepadComponent()
 
- destCounter = 0
 
 -------------------------------------------------------------------------------
 -- onConnect: called when the entity is connected to the engine
@@ -24,7 +24,6 @@ end
 function OnDisconnect()
 
 end
-
 
 -------------------------------------------------------------------------------
 -- GotoComponent callbacks
@@ -49,30 +48,22 @@ end
 -------------------------------------------------------------------------------
 -- InputComponent callbacks
 -------------------------------------------------------------------------------
-function OnInputComponent_Keyboard( key, down )
-
---	if key == 113 then --113 is letter Q
---		asmComponent:set_bool("Jump",true);
---	end
-	
-	if key == 113 then --113 is letter Q
-		asmComponent:set_bool("Throw", down);
-	end
-end
-
---function OnInputComponent_MouseClick( button, screen_x, screen_y, world_x, world_y )
---	if button == 0 then
---		gotoComponent:goto( world_x, world_y, 1 )
---	end
---end
-
-function OnInputComponent_MouseWheel( value )
-
-end
-
+-- function OnInputComponent_Keyboard( key, down ) end
+-- function OnInputComponent_MouseClick( button, screen_x, screen_y, world_x, world_y ) end
+-- function OnInputComponent_MouseWheel( value ) end
 
 -------------------------------------------------------------------------------
 -- EngineComponent callbacks
 -------------------------------------------------------------------------------
--- function OnEngineComponent_Update( deltatime ) end
+function OnEngineComponent_Update( deltatime ) 
+
+	asmComponent:set_bool("Throw", gamepadComponent:is_button_just_down(0,0) )
+
+	if gamepadComponent:is_pad_down(0,1) then
+		asmComponent:set_float( "Speed", 1.0 )
+	else
+		asmComponent:set_float( "Speed", 0.0 )
+	end
+
+end
 

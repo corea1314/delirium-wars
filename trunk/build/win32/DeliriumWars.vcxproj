@@ -203,6 +203,7 @@
     <ClCompile Include="..\..\src\Engine\Components\AsmComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\CameraComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\EngineComponent.cpp" />
+    <ClCompile Include="..\..\src\Engine\Components\GamepadComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\GotoComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\InputComponent.cpp" />
     <ClCompile Include="..\..\src\Engine\Components\PhysicsComponent.cpp" />
@@ -242,6 +243,7 @@
     <ClCompile Include="..\..\src\Lair\Image\Image.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\LodePNG\LoaderPNG.cpp" />
     <ClCompile Include="..\..\src\Lair\Image\LodePNG\lodepng.cpp" />
+    <ClCompile Include="..\..\src\Lair\Input\Input.cpp" />
     <ClCompile Include="..\..\src\Lair\Lair.cpp" />
     <ClCompile Include="..\..\src\Lair\Log\Log.cpp" />
     <ClCompile Include="..\..\src\Lair\RenderTarget\RenderTarget.cpp" />
@@ -325,6 +327,7 @@
     <ClInclude Include="..\..\src\Engine\Components\AsmComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\CameraComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\EngineComponent.h" />
+    <ClInclude Include="..\..\src\Engine\Components\GamepadComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\GotoComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\InputComponent.h" />
     <ClInclude Include="..\..\src\Engine\Components\PhysicsComponent.h" />
@@ -378,12 +381,17 @@
     <ClInclude Include="..\..\src\Math\Vector4.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\bin\pilot.asm" />
+    <None Include="..\..\bin\pilot\idle.spr" />
+    <None Include="..\..\bin\pilot\throwing.spr" />
+    <None Include="..\..\bin\pilot\walking.spr" />
     <None Include="..\..\bin\sample.spr" />
     <None Include="..\..\bin\sample.xml" />
     <None Include="..\..\bin\scripts\camera.lua" />
     <None Include="..\..\bin\scripts\entity.lua" />
     <None Include="..\..\bin\scripts\entrypoint.lua" />
     <None Include="..\..\bin\scripts\physics.lua" />
+    <None Include="..\..\bin\scripts\pilot.lua" />
     <None Include="..\..\bin\scripts\tester.lua" />
     <None Include="..\..\bin\shaders\blur.fs" />
     <None Include="..\..\bin\shaders\diffusion.fs" />

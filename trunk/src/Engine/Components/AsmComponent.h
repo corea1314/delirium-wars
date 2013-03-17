@@ -11,8 +11,10 @@ public:
 	virtual ~AsmComponent() {}
 
 	// exposed methods
-	void Load(  const char* inFileName );
-	void SetBool(  const char* inParameterName, bool inValue );
+	void Load( const char* inFileName );
+	void SetParameterInt( const char* inParameterName, int inValue );
+	void SetParameterFloat( const char* inParameterName, float inValue );
+	void SetParameterBool( const char* inParameterName, bool inValue );
 
 	void Set( float x, float y, float a = 0.0f, float sx = 1.0f, float sy = 1.0f );
 	void SetAlpha( float a );
